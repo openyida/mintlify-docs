@@ -527,53 +527,6 @@
             ]
           }
         ]
-      },
-      {
-        "language": "zh-Hant",
-        "groups": [
-          {
-            "group": "開始使用",
-            "pages": [
-              "zh-TW/introduction/overview",
-              "zh-TW/introduction/demo",
-              "zh-TW/quickstart"
-            ]
-          },
-          {
-            "group": "功能特性",
-            "pages": [
-              "zh-TW/features/common-prompts",
-              "zh-TW/features/skills",
-              "zh-TW/features/use-cases",
-              "zh-TW/features/connector",
-              "zh-TW/features/data-management",
-              "zh-TW/features/report",
-              "zh-TW/features/doctor"
-            ]
-          },
-          {
-            "group": "架構設計",
-            "pages": [
-              "zh-TW/architecture/overview",
-              "zh-TW/architecture/project-structure",
-              "zh-TW/architecture/tech-stack"
-            ]
-          },
-          {
-            "group": "使用指南",
-            "pages": [
-              "zh-TW/guides/best-practices",
-              "zh-TW/guides/faq"
-            ]
-          },
-          {
-            "group": "社區",
-            "pages": [
-              "zh-TW/contributing",
-              "zh-TW/license"
-            ]
-          }
-        ]
       }
     ],
     "global": {
