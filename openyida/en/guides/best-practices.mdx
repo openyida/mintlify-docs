@@ -1,0 +1,133 @@
+---
+title: "Best Practices"
+description: "Best practices for using OpenYida and AI-driven app generation."
+icon: "star"
+---
+
+## 1. Write Detailed Prompts
+
+The quality of generated applications is proportional to the detail in your prompts. Compare:
+
+<CodeGroup>
+
+```text Vague (Avoid)
+Create a CRM
+```
+
+```text Detailed (Recommended)
+Create a CRM with three related forms:
+1. Leads form — fields: name, company, phone, email, source (dropdown: referral/website/event/cold call), status (dropdown: new/contacted/qualified/lost), assigned to (member picker)
+2. Contacts form — converted from leads, fields: company name, industry, annual revenue, key contact, account manager
+3. Opportunities form — linked to contact, fields: opportunity name, amount, stage (dropdown: proposal/negotiation/won/lost), expected close date, notes
+```
+
+</CodeGroup>
+
+---
+
+## 2. Use Requirements Documents
+
+For complex applications, write a PRD first, then hand it to AI:
+
+```
+Generate a Yida app based on this requirements document:
+
+[paste PRD — field names, types, validation rules, workflows, etc.]
+```
+
+This approach produces more accurate results than iterative prompting.
+
+---
+
+## 3. Iterate Incrementally
+
+Don't try to build everything in one prompt. Build the core structure first, then add complexity:
+
+```
+Step 1: Create basic employee information form
+Step 2: Add leave application form linked to employees
+Step 3: Configure leave approval workflow
+Step 4: Add manager dashboard showing pending approvals
+Step 5: Publish dashboard as a public page
+```
+
+---
+
+## 4. Verify Each Step
+
+After AI creates each component, have it verify:
+
+```
+Show current schema of [form name] form
+Check if [page name] page is published and accessible
+```
+
+Catch issues early before they compound.
+
+---
+
+## 5. Reuse Project Working Directory
+
+Run `openyida copy` only once per project, not every session. The `project/config.json` file stores `appId` and `corpId` — AI uses this to know the target application. Don't delete this file mid-project.
+
+---
+
+## 6. Environment-Specific Login
+
+Different AI tools require different login methods:
+
+| AI Tool | Login Command |
+|---------|---------------|
+| Claude Code, Cursor, VSCode | `openyida login` |
+| Wukong | `openyida login --wukong` |
+| OpenCode, Aone Copilot | `openyida login` |
+
+When switching tools, run `openyida env` first to confirm the active environment.
+
+---
+
+## 7. Use CDN for Custom Page Images
+
+When custom pages include images, upload to CDN first for reliable rendering:
+
+```bash
+openyida cdn-config   # Configure Alibaba Cloud OSS + CDN (one-time)
+openyida cdn-upload ./my-image.png   # Get stable CDN URL
+```
+
+Then reference the CDN URL in your page prompt:
+```
+Use this CDN URL to add a hero banner image to the landing page: https://cdn.example.com/banner.png
+```
+
+---
+
+## 8. Handle Multi-Organization Setup
+
+When you have access to multiple Yida organizations:
+
+```bash
+openyida org list          # View all available organizations
+openyida org switch --corp-id <id>   # Switch to target organization
+openyida env               # Confirm the switch
+```
+
+Always verify the active organization before creating applications to avoid building in the wrong space.
+
+---
+
+## 9. Run Doctor Before Debugging
+
+Before spending time debugging a failing command, run:
+
+```bash
+openyida doctor --fix
+```
+
+Automatically detects and resolves the most common issues: expired sessions, missing config files, environment mismatches.
+
+---
+
+## 10. AI-Assisted PRs Welcome
+
+When contributing to OpenYida itself, AI-generated code is fully accepted. Note which AI tool you used in your PR description — this helps maintainers understand the generation context and review more efficiently.

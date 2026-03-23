@@ -1,0 +1,85 @@
+---
+title: "常见问题"
+description: "OpenYida 常见问题解答。"
+icon: "circle-question"
+---
+
+<AccordionGroup>
+
+  <Accordion title="使用 OpenYida 需要宜搭账号吗？">
+    需要。OpenYida 在[宜搭](https://www.aliwork.com)低代码平台上创建和管理应用，需要阿里/钉钉账号且已开通宜搭。运行 `openyida login` 认证。
+  </Accordion>
+
+  <Accordion title="支持哪些 AI 工具？">
+    OpenYida 兼容任何支持 MCP（模型上下文协议）或能读取 markdown 技能文档的 AI 编码工具。已确认支持：**Claude Code、Aone Copilot、OpenCode、Cursor、Visual Studio Code、Qoder、悟空**。实际上，任何能执行 shell 命令的工具都可用。
+  </Accordion>
+
+  <Accordion title="需要什么 Node.js 版本？">
+    需要 Node.js **≥ 18**。用 `node --version` 检查版本。从 [nodejs.org](https://nodejs.org) 下载最新 LTS 版。
+  </Accordion>
+
+  <Accordion title="登录二维码不显示怎么办？">
+    尝试在支持浏览器启动的终端运行 `openyida login`。如处于无头环境（如远程服务器），若在钉钉/悟空环境使用 `openyida login --wukong`，或复制终端输出的登录 URL 在本地浏览器打开。
+  </Accordion>
+
+  <Accordion title="会话过期如何刷新？">
+    运行 `openyida auth refresh` 续期会话，无需完整登录流程。如失败，运行 `openyida login` 重新认证。
+  </Accordion>
+
+  <Accordion title="可访问多个宜搭组织，如何切换？">
+    ```bash
+    openyida org list       # 列出所有组织及 corpId
+    openyida org switch --corp-id <corpId>   # 切换到目标组织
+    openyida env            # 确认切换
+    ```
+  </Accordion>
+
+  <Accordion title="AI 生成的表单缺少字段，如何添加？">
+    直接告诉 AI：
+    ```
+    给 [页面名] 添加一个 [字段名] 字段，字段类型：[文本/数字/日期/下拉框/...]，设为必填
+    ```
+    OpenYida 会调用 `openyida create-form` 用更新后的 Schema，合并新字段而不覆盖现有字段。
+  </Accordion>
+
+  <Accordion title="可在宜搭可视化编辑器中编辑生成的应用吗？">
+    完全可以。产出是标准宜搭应用 —— 可随时在宜搭平台可视化编辑器中打开并手动修改。OpenYida 生成应用，而非锁定配置。
+  </Accordion>
+
+  <Accordion title="如何让应用公开访问？">
+    ```
+    把 [页面名] 页面设为公开访问
+    ```
+    或直接运行：
+    ```bash
+    openyida save-share-config
+    ```
+    配置页面分享设置，任何人可通过链接访问，无需登录。
+  </Accordion>
+
+  <Accordion title="可用 OpenYida 迁移现有宜搭应用吗？**
+    可以。用 `openyida export` 从现有应用生成迁移包，用 `openyida import` 在其他组织或环境重建。
+  </Accordion>
+
+  <Accordion title="`create-form` 和 `create-page` 有什么区别？">
+    - **`create-form`**：创建宜搭**表单页面** —— 数据录入表单，底层使用宜搭内置数据存储。用于结构化数据收集（报名、申请、记录）。
+    - **`create-page`**：创建**自定义展示页面** —— 基于 JSX 的页面，用于看板、落地页、交互式 UI。通过 `openyida publish` 编译发布。
+  </Accordion>
+
+  <Accordion title="OpenYida 支持流程/审批工作流吗？**
+    支持。用 `openyida create-process` 创建带审批步骤的流程表单，用 `openyida configure-process` 定义工作流规则（审批人、条件、通知）。
+  </Accordion>
+
+  <Accordion title="出问题了，如何调试？">
+    1. 运行 `openyida doctor --fix` — 自动检测修复常见问题
+    2. 运行 `openyida env` — 验证登录状态和环境
+    3. 运行 `openyida auth status` — 检查会话有效性
+    4. 查看 [GitHub Issues](https://github.com/openyida/openyida/issues) 了解已知问题
+    5. 如是新 bug，提交 issue 并附：Node.js 版本、运行的命令、完整错误输出
+  </Accordion>
+
+  <Accordion title="如何为 OpenYida 做贡献？">
+    阅读[贡献指南](/openyida/zh/contributing)了解完整流程。简言之：fork 仓库、在功能分支修改、运行 `npm test`、提交 PR。欢迎 AI 辅助贡献！
+  </Accordion>
+
+</AccordionGroup>

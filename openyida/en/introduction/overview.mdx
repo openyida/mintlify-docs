@@ -1,101 +1,120 @@
 ---
-title: "What is OpenYida?"
-description: "AI-powered CLI tool for Yida low-code platform. Zero configuration, ready to use."
+title: "Overview"
+description: "OpenYida is a CLI tool that enables AI agents to build Yida applications using natural language."
 icon: "rocket"
 ---
 
-<img
-  className="block dark:hidden"
-  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
-  alt="OpenYida Banner"
-/>
-<img
-  className="hidden dark:block"
-  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
-  alt="OpenYida Banner"
-/>
+## What is OpenYida?
 
-> *"We are on the verge of the Singularity"* — Vernor Vinge
+OpenYida is a command-line interface that bridges AI agents with the [Yida](https://www.aliwork.com) low-code platform. It allows you to create, manage, and deploy enterprise applications using natural language prompts — no manual drag-and-drop required.
 
-## Overview
+Think of it as a way to describe what you want ("a CRM with leads, contacts, and deals") and have AI build it for you on the Yida platform.
 
-**OpenYida** is a zero-configuration CLI tool that bridges AI coding assistants with the [Yida](https://www.aliwork.com) low-code platform. Install once, then describe your needs in natural language — OpenYida automatically handles: app creation, form management, page publishing, connector configuration, report generation, and deployment to Yida in seconds.
+---
+
+## Key Features
 
 <CardGroup cols={2}>
-  <Card title="One-sentence App Generation" icon="wand-magic-sparkles">
-    Describe your requirements in one sentence, and AI automatically generates a complete multi-form business system.
+  <Card title="Natural Language App Creation" icon="message">
+    Describe your application in plain English. AI translates your requirements into Yida forms, pages, and workflows.
   </Card>
-  <Card title="Requirements Doc to App" icon="file-lines">
-    Paste your requirements document and get a fully functional Yida app with all specified fields and logic.
+  <Card title="Multi-AI Tool Support" icon="robot">
+    Works with Claude Code, Cursor, VS Code, Wukong, and any MCP-compatible AI assistant.
   </Card>
-  <Card title="Form & Page Operations" icon="table-columns">
-    Create, modify, and configure forms and custom display pages through natural language commands.
+  <Card title="Full Yida Integration" icon="plug">
+    Creates real Yida applications — not mockups. All standard Yida features: forms, processes, reports, connectors.
   </Card>
-  <Card title="Publish & Share" icon="share-nodes">
-    Complete page compilation, publishing, and public access configuration with a single command.
+  <Card title="Custom Page Compilation" icon="code">
+    JSX-based custom pages are compiled with Babel and published to Yida automatically.
+  </Card>
+  <Card title="Data Management" icon="database">
+    Query, export, and manage form data, processes, tasks, and subforms via CLI.
+  </Card>
+  <Card title="HTTP Connector Management" icon="link">
+    Create and manage HTTP connectors for API integrations, including smart creation from curl commands.
   </Card>
 </CardGroup>
 
 ---
 
-## Core Features
+## How It Works
 
-| Feature Module | Description |
-|---------------|-------------|
-| **App Management** | Create apps, import/export, migration deployment |
-| **Form Management** | Create/update forms, get Schema, configure permissions |
-| **Page Publishing** | Custom page development, Babel compilation, one-click publish |
-| **Process Configuration** | Process form creation, approval rule configuration |
-| **Data Management** | Form data query, process instances, task management |
-| **Connectors** | HTTP connector creation, API integration, curl smart import |
-| **Reports & Charts** | Yida report creation, chart append, data visualization |
-| **CDN Management** | Image upload, cache refresh, OSS configuration |
+```
+┌─────────────────┐     ┌──────────────┐     ┌─────────────────┐
+│   You / AI      │────▶│   OpenYida   │────▶│     Yida        │
+│   (Natural      │     │    CLI       │     │   Platform      │
+│    Language)    │     │              │     │                 │
+└─────────────────┘     └──────────────┘     └─────────────────┘
+                              │
+                              ▼
+                       ┌──────────────┐
+                       │  Local Files │
+                       │  (Config,    │
+                       │   Code)      │
+                       └──────────────┘
+```
 
----
-
-## Differences from Other AI Builders
-
-| Dimension | OpenYida | Other AI Builders |
-|-----------|----------|-------------------|
-| **Target Users** | Developers (code-savvy) | Business users (non-developers) |
-| **Interaction** | Natural language + AI chat | Visual drag-and-drop + config panels |
-| **Output** | Yida app (editable, full low-code capabilities) | Config (black-box execution) |
-| **Deployment** | Yida platform | SaaS platform lock-in |
-| **AI Model** | Choose the best model for the job | Platform-specified, not swappable |
-| **Security & Compliance** | Yida's enterprise-grade security | Platform-dependent |
+1. **Describe** what you want in natural language
+2. **OpenYida** translates to Yida API calls
+3. **Yida** creates the application
+4. **Result** is a real, editable Yida app
 
 ---
 
-## Supported AI Coding Tools
+## Quick Example
 
-OpenYida works as an MCP-compatible skill pack and integrates natively with all major AI coding environments:
+```bash
+# Login to Yida
+openyida login
 
-| Tool | Status |
-|------|--------|
-| [Claude Code](https://claude.ai/code) | ✅ Full support |
-| [Aone Copilot](https://copilot.code.alibaba-inc.com) | ✅ Full support |
-| [OpenCode](https://opencode.ai) | ✅ Full support |
-| [Cursor](https://cursor.com/) | ✅ Full support |
-| [Visual Studio Code](https://code.visualstudio.com/) | ✅ Full support |
-| [Qoder](https://qoder.com) | ✅ Full support |
-| [Wukong](https://dingtalk.com/wukong) | ✅ Full support |
+# Create an application
+openyida create-app --name "My CRM"
 
----
+# AI generates forms from your description
+openyida create-form --page "Leads" --schema '{...}'
+```
 
-## Requirements
+Or simply tell your AI assistant:
 
-| Dependency | Version | Purpose |
-|------------|---------|---------|
-| Node.js | ≥ 18 | CLI runtime & page publishing |
+> "Create a CRM with leads, contacts, and deals forms. Each lead should have name, company, phone, and status fields."
 
-No Python, no Playwright, no build step — pure Node.js.
+The AI will use OpenYida commands to build it.
 
 ---
 
-## Badges
+## Use Cases
 
-[![npm version](https://img.shields.io/npm/v/openyida?color=brightgreen&label=npm)](https://www.npmjs.com/package/openyida)
-[![npm downloads](https://img.shields.io/npm/dm/openyida?color=blue)](https://www.npmjs.com/package/openyida)
-[![CI](https://github.com/openyida/openyida/actions/workflows/ci.yml/badge.svg)](https://github.com/openyida/openyida/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/openyida/openyida/blob/main/LICENSE)
-[![Node.js ≥18](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
+- **Rapid Prototyping** — Build MVPs in minutes instead of hours
+- **Internal Tools** — Create HR, IT, or operations apps with natural language
+- **Form Builders** — Generate complex forms with validation and workflows
+- **Landing Pages** — Build custom showcase pages with JSX
+- **Process Automation** — Design approval workflows and business processes
+
+---
+
+## Architecture
+
+OpenYida is built with a modular architecture:
+
+- **Core Layer** — Authentication, environment, i18n, logging
+- **Yida API Layer** — HTTP client with automatic retries and CSRF handling
+- **Feature Modules** — App management, form/page creation, data operations
+- **CLI Interface** — Command parsing and execution
+
+Read more in [Technical Stack](/openyida/en/architecture/tech-stack).
+
+---
+
+## Next Steps
+
+<CardGroup>
+  <Card title="Quick Start" icon="play" href="/openyida/en/quickstart">
+    Install and create your first app in 5 minutes
+  </Card>
+  <Card title="Demo Cases" icon="images" href="/openyida/en/introduction/demo">
+    See real applications built with OpenYida
+  </Card>
+  <Card title="Skills Reference" icon="book" href="/openyida/en/features/skills">
+    Full list of supported commands
+  </Card>
+</CardGroup>

@@ -109,6 +109,53 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "openyida/en/introduction/overview",
+              "openyida/en/introduction/demo",
+              "openyida/en/quickstart"
+            ]
+          },
+          {
+            "group": "Features",
+            "pages": [
+              "openyida/en/features/common-prompts",
+              "openyida/en/features/skills",
+              "openyida/en/features/use-cases",
+              "openyida/en/features/connector",
+              "openyida/en/features/data-management",
+              "openyida/en/features/report",
+              "openyida/en/features/doctor"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "openyida/en/architecture/overview",
+              "openyida/en/architecture/project-structure",
+              "openyida/en/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "openyida/en/guides/best-practices",
+              "openyida/en/guides/faq"
+            ]
+          },
+          {
+            "group": "Community",
+            "pages": [
+              "openyida/en/contributing",
+              "openyida/en/license"
+            ]
+          }
+        ]
       }
     ],
     "global": {

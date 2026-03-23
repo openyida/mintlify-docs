@@ -1,30 +1,26 @@
 ---
-title: "快速开始"
-description: "2 分钟内安装 OpenYida 并创建第一个宜搭应用。"
-icon: "bolt"
+title: "Quick Start"
+description: "Get started with OpenYida in minutes."
+icon: "play"
 ---
 
-## 环境准备
+## Prerequisites
 
-开始前，请确保已安装以下依赖：
-
-| 依赖 | 版本 | 检查命令 |
-|------|------|----------|
-| [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
-
-<Tip>
-  仅需 Node.js，无需 Python、Playwright、构建步骤 — 纯 Node.js 实现。
-</Tip>
+- Node.js ≥ 18
+- A Yida (宜搭) account with organization access
+- An AI coding tool (Claude Code, Cursor, VS Code, etc.)
 
 ---
 
-## 步骤 1 — 安装
+## Installation
+
+Install OpenYida globally via npm:
 
 ```bash
 npm install -g openyida
 ```
 
-验证安装：
+Verify installation:
 
 ```bash
 openyida --version
@@ -32,121 +28,88 @@ openyida --version
 
 ---
 
-## 步骤 2 — 登录宜搭
+## Login
+
+Authenticate with your Yida account:
 
 ```bash
 openyida login
 ```
 
-OpenYida 会打开浏览器窗口（或显示二维码）供你使用宜搭/阿里账号认证。凭证本地缓存，只需登录一次。
-
-<Info>
-  如使用 **悟空** 作为 AI 工具，请使用特殊登录参数：
-
-  ```bash
-  openyida login --wukong
-  ```
-</Info>
-
----
-
-## 步骤 3 — 检查环境
+This will open a browser for OAuth authentication. For DingTalk/Wukong environments:
 
 ```bash
-openyida env
+openyida login --wukong
 ```
-
-检测当前激活的 AI 工具环境（Claude Code、Cursor、悟空等）并显示登录状态。切换环境时建议运行此命令。
 
 ---
 
-## 步骤 4 — 初始化工作目录
+## Create Your First App
+
+### Step 1: Create Application
 
 ```bash
-openyida copy
+openyida create-app --name "My First App"
 ```
 
-将 `project/` 工作目录模板复制到当前 AI 工具的工作目录，使 AI 能够访问应用配置和页面模板。
+Note the returned `appId` — you'll need it for subsequent commands.
 
----
+### Step 2: Create a Form
 
-## 步骤 5 — 开始构建
-
-直接与 AI 编程助手对话，以下是一些启动提示：
-
-```
-帮我用宜搭创建一个 IPD 系统，管理芯片生产全流程
-```
-
-```
-帮我搭建一个 CRM，包含线索、客户和商机
-```
-
-```
-帮我搭建个人薪资计算器应用
+```bash
+openyida create-form \
+  --page "Contact Form" \
+  --schema '{
+    "fields": [
+      {"name": "name", "type": "TextField", "label": "Name", "required": true},
+      {"name": "email", "type": "TextField", "label": "Email", "required": true},
+      {"name": "message", "type": "TextareaField", "label": "Message"}
+    ]
+  }'
 ```
 
-```
-帮我创建一个生日祝福小游戏
-```
-
-AI 会使用 OpenYida 技能包按序调用 CLI 命令：`create-app` → `create-form` / `create-page` → `publish` → `save-share-config`。
-
----
-
-## 步骤 6 — 发布应用
-
-AI 生成应用后，执行发布：
+### Step 3: Publish
 
 ```bash
 openyida publish
 ```
 
-或让 AI 执行：
-```
-发布 xxx 页面
-将页面设置为公开访问
-```
+Your form is now live on Yida!
 
 ---
 
-## 运行诊断
+## Using with AI
 
-如遇问题，运行内置诊断工具：
+The real power comes from AI integration. Here's how to use OpenYida with Claude Code:
 
-```bash
-openyida doctor
-```
+1. **Install Claude Code** following [their documentation](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)
 
-检查 Node.js 版本、登录状态、环境配置，支持 `--fix` 自动修复常见问题。
+2. **Start a session** in your project directory:
+   ```bash
+   claude
+   ```
 
----
+3. **Describe what you want**:
+   ```
+   Create a simple CRM with leads, contacts, and deals.
+   Each lead should have: name, company, phone, email, status.
+   Status should be a dropdown: New, Contacted, Qualified, Lost.
+   ```
 
-## OpenClaw 集成
-
-如使用 OpenClaw，直接安装 OpenYida 技能包：
-
-```bash
-npx clawhub@latest install nicky1108/yida-app
-```
-
-然后通过 [yida-app on ClawHub](https://clawhub.ai/nicky1108/yida-app) 使用。
+4. **Claude will use OpenYida** to build the application for you
 
 ---
 
-## 下一步
+## Next Steps
 
-<CardGroup cols={2}>
-  <Card title="常用提示词" icon="comments" href="/openyida/zh/features/common-prompts">
-    浏览 OpenYida 支持的自然语言提示词完整列表。
+<CardGroup>
+  <Card title="Common Prompts" icon="comments" href="/openyida/en/features/common-prompts">
+    See example prompts for different use cases
   </Card>
-  <Card title="CLI 参考" icon="terminal" href="/openyida/zh/features/skills">
-    探索所有 CLI 命令和技能模块。
+  <Card title="Use Cases" icon="lightbulb" href="/openyida/en/features/use-cases">
+    Explore real-world application examples
   </Card>
-  <Card title="演示案例" icon="images" href="/openyida/zh/introduction/demo">
-    查看使用 OpenYida 构建的真实应用。
-  </Card>
-  <Card title="最佳实践" icon="star" href="/openyida/zh/guides/best-practices">
-    获取 AI 驱动应用生成的最佳实践建议。
+  <Card title="Best Practices" icon="star" href="/openyida/en/guides/best-practices">
+    Tips for effective AI-driven development
   </Card>
 </CardGroup>

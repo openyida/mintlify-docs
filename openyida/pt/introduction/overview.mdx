@@ -1,101 +1,48 @@
 ---
-title: "什么是 OpenYida？"
-description: "AI 驱动的宜搭低代码平台 CLI 工具，零配置，即装即用。"
+title: "Visão geral"
+description: "OpenYida é uma ferramenta CLI para criar aplicativos Yida usando linguagem natural."
 icon: "rocket"
 ---
 
-<img
-  className="block dark:hidden"
-  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
-  alt="OpenYida Banner"
-/>
-<img
-  className="hidden dark:block"
-  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
-  alt="OpenYida Banner"
-/>
+## O que é OpenYida?
 
-> *"We are on the verge of the Singularity"* — Vernor Vinge
+OpenYida é uma interface de linha de comando que conecta agentes de IA à plataforma low-code [Yida](https://www.aliwork.com). Permite criar, gerenciar e implantar aplicativos empresariais usando prompts em linguagem natural.
 
-## 概述
-
-**OpenYida** 是一个零配置 CLI 工具，连接 AI 编程助手与[宜搭 (Yida)](https://www.aliwork.com) 低代码平台。安装一次，然后用自然语言描述需求 — OpenYida 会自动处理：创建应用、管理表单、发布页面、配置连接器、生成报表，秒级部署到宜搭。
+## Principais recursos
 
 <CardGroup cols={2}>
-  <Card title="一句话生成应用" icon="wand-magic-sparkles">
-    用一句话描述需求，AI 自动生成完整的多表单业务系统。
+  <Card title="Criação de apps em linguagem natural" icon="message">
+    Descreva seu aplicativo em português. A IA traduz seus requisitos para formulários, páginas e fluxos de trabalho do Yida.
   </Card>
-  <Card title="需求文档转应用" icon="file-lines">
-    粘贴需求文档，获得功能完整的宜搭应用，包含所有指定字段和逻辑。
+  <Card title="Suporte multi-ferramentas de IA" icon="robot">
+    Funciona com Claude Code, Cursor, VS Code, Wukong e qualquer assistente de IA compatível com MCP.
   </Card>
-  <Card title="表单与页面操作" icon="table-columns">
-    通过自然语言命令创建、修改、配置表单和自定义展示页面。
+  <Card title="Integração completa com Yida" icon="plug">
+    Cria aplicativos Yida reais — não maquetes.
   </Card>
-  <Card title="发布与分享" icon="share-nodes">
-    一条指令完成页面编译、发布和公开访问配置。
+  <Card title="Compilação de páginas personalizadas" icon="code">
+    Páginas personalizadas baseadas em JSX são compiladas com Babel e publicadas automaticamente no Yida.
   </Card>
 </CardGroup>
 
----
+## Início rápido
 
-## 核心功能
+```bash
+# Instalação
+npm install -g openyida
 
-| 功能模块 | 说明 |
-|---------|------|
-| **应用管理** | 创建应用、导入导出、迁移部署 |
-| **表单管理** | 创建/更新表单、获取 Schema、配置权限 |
-| **页面发布** | 自定义页面开发、Babel 编译、一键发布 |
-| **流程配置** | 流程表单创建、审批规则配置 |
-| **数据管理** | 表单数据查询、流程实例、任务管理 |
-| **连接器** | HTTP 连接器创建、API 集成、curl 智能导入 |
-| **报表图表** | 宜搭报表创建、图表追加、数据可视化 |
-| **CDN 管理** | 图片上传、缓存刷新、OSS 配置 |
+# Login
+openyida login
 
----
+# Criar app
+openyida create-app --name "Meu CRM"
+```
 
-## 与其他 AI 搭建平台的区别
-
-| 维度 | OpenYida | 其他 AI 搭建平台 |
-|------|----------|------------------|
-| **目标用户** | 开发者（懂代码的人） | 业务人员（非开发者） |
-| **交互方式** | 自然语言 + AI 对话 | 可视化拖拽 + 配置面板 |
-| **产出物** | 宜搭应用（可二次编辑，支持完备低代码能力） | 配置（黑盒运行） |
-| **部署方式** | 宜搭平台 | SaaS 平台绑定 |
-| **AI 模型** | 按需选择，选择最适合的模型 | 平台指定，无法更换 |
-| **安全合规** | 宜搭具备完善的安全和合规能力 | 依赖平台能力 |
-
----
-
-## 支持的 AI 编程工具
-
-OpenYida 作为 MCP 兼容的技能包，原生集成所有主流 AI 编程环境：
-
-| 工具 | 状态 |
-|------|------|
-| [Claude Code](https://claude.ai/code) | ✅ 完整支持 |
-| [Aone Copilot](https://copilot.code.alibaba-inc.com) | ✅ 完整支持 |
-| [OpenCode](https://opencode.ai) | ✅ 完整支持 |
-| [Cursor](https://cursor.com/) | ✅ 完整支持 |
-| [Visual Studio Code](https://code.visualstudio.com/) | ✅ 完整支持 |
-| [Qoder](https://qoder.com) | ✅ 完整支持 |
-| [悟空](https://dingtalk.com/wukong) | ✅ 完整支持 |
-
----
-
-## 环境要求
-
-| 依赖 | 版本 | 用途 |
-|------|------|------|
-| Node.js | ≥ 18 | CLI 运行、页面发布 |
-
-无需 Python、Playwright、构建步骤 — 纯 Node.js 实现。
-
----
-
-## 徽章
-
-[![npm version](https://img.shields.io/npm/v/openyida?color=brightgreen&label=npm)](https://www.npmjs.com/package/openyida)
-[![npm downloads](https://img.shields.io/npm/dm/openyida?color=blue)](https://www.npmjs.com/package/openyida)
-[![CI](https://github.com/openyida/openyida/actions/workflows/ci.yml/badge.svg)](https://github.com/openyida/openyida/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/openyida/openyida/blob/main/LICENSE)
-[![Node.js ≥18](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
+<CardGroup>
+  <Card title="Início rápido" icon="play" href="/openyida/pt/quickstart">
+    Crie seu primeiro app em 5 minutos
+  </Card>
+  <Card title="Casos de demonstração" icon="images" href="/openyida/pt/introduction/demo">
+    Ver aplicativos reais construídos com OpenYida
+  </Card>
+</CardGroup>

@@ -1,0 +1,85 @@
+---
+title: "FAQ"
+description: "Frequently asked questions about OpenYida."
+icon: "circle-question"
+---
+
+<AccordionGroup>
+
+  <Accordion title="Do I need a Yida account to use OpenYida?">
+    Yes. OpenYida creates and manages applications on the [Yida](https://www.aliwork.com) low-code platform. You need an Alibaba/DingTalk account with Yida access. Run `openyida login` to authenticate.
+  </Accordion>
+
+  <Accordion title="Which AI tools are supported?">
+    OpenYida is compatible with any AI coding tool that supports MCP (Model Context Protocol) or can read markdown skill documentation. Confirmed support: **Claude Code, Aone Copilot, OpenCode, Cursor, Visual Studio Code, Qoder, Wukong**. Essentially, any tool that can execute shell commands can work.
+  </Accordion>
+
+  <Accordion title="What Node.js version is required?">
+    Node.js **≥ 18** is required. Check your version with `node --version`. Download the latest LTS from [nodejs.org](https://nodejs.org).
+  </Accordion>
+
+  <Accordion title="What if the login QR code doesn't display?">
+    Try running `openyida login` in a terminal that supports browser launching. If you're in a headless environment (e.g., remote server), use `openyida login --wukong` if in DingTalk/Wukong environment, or copy the login URL from terminal output and open it in your local browser.
+  </Accordion>
+
+  <Accordion title="How do I refresh an expired session?">
+    Run `openyida auth refresh` to renew your session without going through the full login flow. If that fails, run `openyida login` to re-authenticate.
+  </Accordion>
+
+  <Accordion title="How do I switch between multiple Yida organizations?">
+    ```bash
+    openyida org list       # List all organizations with corpId
+    openyida org switch --corp-id <corpId>   # Switch to target organization
+    openyida env            # Confirm the switch
+    ```
+  </Accordion>
+
+  <Accordion title="How do I add fields if AI-generated form is missing some?">
+    Simply tell the AI:
+    ```
+    Add a [field name] field to [page name], type: [text/number/date/dropdown/...], make it required
+    ```
+    OpenYida will call `openyida create-form` with the updated schema, merging new fields without overwriting existing ones.
+  </Accordion>
+
+  <Accordion title="Can I edit generated apps in Yida's visual editor?">
+    Absolutely. The output is a standard Yida application — you can open and manually modify it in Yida's visual editor at any time. OpenYida generates applications, not locked configurations.
+  </Accordion>
+
+  <Accordion title="How do I make an app publicly accessible?">
+    ```
+    Make [page name] page publicly accessible
+    ```
+    Or run directly:
+    ```bash
+    openyida save-share-config
+    ```
+    Configure page sharing settings so anyone can access via link without logging in.
+  </Accordion>
+
+  <Accordion title="Can OpenYida migrate existing Yida applications?">
+    Yes. Use `openyida export` to generate a migration package from an existing app, and `openyida import` to recreate it in another organization or environment.
+  </Accordion>
+
+  <Accordion title="What's the difference between create-form and create-page?">
+    - **`create-form`**: Creates a Yida **form page** — data entry forms that use Yida's built-in data storage. Use for structured data collection (registrations, applications, records).
+    - **`create-page`**: Creates a **custom display page** — JSX-based pages for dashboards, landing pages, interactive UIs. Published via `openyida publish`.
+  </Accordion>
+
+  <Accordion title="Does OpenYida support process/approval workflows?">
+    Yes. Use `openyida create-process` to create process forms with approval steps, and `openyida configure-process` to define workflow rules (approvers, conditions, notifications).
+  </Accordion>
+
+  <Accordion title="Something went wrong, how do I debug?">
+    1. Run `openyida doctor --fix` — auto-detects and fixes common issues
+    2. Run `openyida env` — verify login status and environment
+    3. Run `openyida auth status` — check session validity
+    4. Check [GitHub Issues](https://github.com/openyida/openyida/issues) for known problems
+    5. If it's a new bug, file an issue with: Node.js version, command you ran, full error output
+  </Accordion>
+
+  <Accordion title="How can I contribute to OpenYida?">
+    Read the [Contributing Guide](/openyida/en/contributing) for the full process. In short: fork the repo, make changes on a feature branch, run `npm test`, submit a PR. AI-assisted contributions are welcome!
+  </Accordion>
+
+</AccordionGroup>
