@@ -1,9 +1,229 @@
 ---
 title: "진단 도구"
-description: "환경 진단 및 문제 해결."
+description: "환경 확인, 앱 진단, 스마트 복구, 헬스 모니터링."
 icon: "stethoscope"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/doctor) or [Chinese version](/zh/features/doctor) for complete content.
-</Tip>
+OpenYida에는 강력한 진단 도구 `doctor`가 내장되어 있으며 개발자가 환경을 확인하고 문제를 진단하고 자동으로 복구하며 앱의 건전성을 지속적으로 모니터링하는 데 도움이 됩니다.
+
+---
+
+## 기능 개요
+
+<CardGroup cols={2}>
+  <Card title="환경 확인" icon="laptop-code">
+    Node.js, Python, Playwright, 로그인 상태 등 환경 종속성을 확인합니다.
+  </Card>
+  <Card title="앱 진단" icon="magnifying-glass">
+    PRD, 페이지 소스 코드, Schema 캐시, React Hooks 규범을 확인합니다.
+  </Card>
+  <Card title="스마트 복구" icon="wand-magic">
+    복구 가능한 문제를 자동으로 복구하고 수동 복구 가이드를 제공합니다.
+  </Card>
+  <Card title="헬스 모니터링" icon="heart-pulse">
+    앱의 건전성을 지속적으로 모니터링하고 추세 보고서를 생성합니다.
+  </Card>
+</CardGroup>
+
+---
+
+## 기본 사용법
+
+### 진단 실행
+
+```bash
+openyida doctor
+```
+
+### 자동 복구
+
+```bash
+openyida doctor --fix
+```
+
+### 보고서 생성
+
+```bash
+# Markdown 형식
+openyida doctor --report markdown
+
+# JSON 형식
+openyida doctor --report json
+
+# HTML 형식
+openyida doctor --report html
+```
+
+---
+
+## 환경 확인 항목
+
+| 확인 항목 | 설명 | 자동 복구 |
+|--------|------|----------|
+| Node.js 버전 | ≥ 16인지 확인 | ❌ |
+| Python 버전 | ≥ 3.10인지 확인 | ❌ |
+| Playwright | 설치되어 있는지 확인 | ✅ |
+| Chromium | 브라우저가 설치되어 있는지 확인 | ✅ |
+| gh CLI | GitHub CLI 확인 | ❌ |
+| gh 로그인 | gh CLI 로그인 상태 확인 | ✅ |
+| config.json | 구성 파일 확인 | ✅ |
+| Skills | 스킬 패키지 설치 확인 | ❌ |
+| Yida 로그인 | 로그인 상태 확인 | ✅ |
+| 네트워크 연결 | aliwork.com 연결성 확인 | ❌ |
+
+---
+
+## 앱 진단 항목
+
+| 확인 항목 | 설명 |
+|--------|------|
+| PRD 파일 | 요구사항 문서가 있는지 확인 |
+| 페이지 소스 코드 | 소스 코드 파일, console.log, 빈 파일 확인 |
+| Schema 캐시 | 캐시 파일 형식 확인 |
+| React Hooks | Hooks 사용 규범 확인 |
+
+---
+
+## 헬스 모니터링 모드
+
+지속 모니터링을 시작하고 1분마다 확인합니다：
+
+```bash
+openyida doctor --monitor
+```
+
+출력 예：
+
+```
+[14:32:01] 건전성: 95/100 📈
+  통과: 18/19 | 오류: 0 | 경고: 1
+
+[14:33:01] 건전성: 100/100 ➡️
+  통과: 19/19 | 오류: 0 | 경고: 0
+```
+
+`Ctrl+C`로 모니터링을 중지합니다.
+
+---
+
+## 프로덕션 진단
+
+게시된 앱의 프로덕션 진단：
+
+```bash
+openyida doctor --production --app <appId>
+```
+
+확인 내용：
+- 앱 ID 유효성
+- 프로덕션 오류 로그
+- 성능 지표
+
+---
+
+## 티켓 및 VOC
+
+### 티켓 생성（Bug）
+
+```bash
+openyida doctor --create-ticket
+```
+
+제목과 설명을 대화식으로 입력하고 GitHub Issues에 자동으로 제출합니다.
+
+### VOC 생성（요구사항）
+
+```bash
+openyida doctor --create-voc
+```
+
+### 스마트 제출
+
+시스템이 Bug인지 요구사항인지 자동으로 판단합니다：
+
+```bash
+openyida doctor --auto-submit
+```
+
+---
+
+## 진단 보고서 예
+
+### 콘솔 출력
+
+```
+🔍 OpenYida 환경 종속성 확인 중...
+
+✅ Node.js v18.19.0（요구사항 ≥ 16）
+✅ Python 3.11.4（요구사항 ≥ 3.10）
+✅ Playwright가 설치되어 있습니다
+✅ Playwright Chromium이 설치되어 있습니다
+✅ gh version 2.40.1
+✅ gh CLI가 로그인되어 있습니다
+✅ config.json이 존재하고 형식이 올바릅니다
+⚠️  Skills 설치 감지
+   Skills가 설치되지 않았습니다. bash install-skills.sh를 실행하여 설치하세요
+✅ Yida 로그인 상태：로그인됨
+✅ 네트워크 연결성（aliwork.com）
+✅ PRD 파일（2개）
+✅ 페이지 소스 코드（3개 파일）
+✅ Schema 캐시（5개）
+✅ React Hooks 규범
+
+1개의 문제가 발견되었습니다（0개 오류, 1개 경고）
+```
+
+### Markdown 보고서
+
+```bash
+openyida doctor --report markdown
+```
+
+보고서는 `.cache/reports/doctor-2024-01-15T10-30-00-000Z.md`에 저장됩니다.
+
+---
+
+## 사전 확인
+
+중요한 작업 전에 자동으로 확인을 실행합니다：
+
+### 게시 전 확인
+
+```bash
+# 자동 실행
+openyida publish 전에 자동으로 사전 확인이 실행됩니다
+```
+
+### 생성 전 확인
+
+```bash
+# 자동 실행
+openyida create-app 전에 자동으로 사전 확인이 실행됩니다
+```
+
+---
+
+## 복구 유형
+
+| 유형 | 설명 | 예 |
+|------|------|------|
+| `AUTO` | 자동 복구 | config.json 생성, 손상된 캐시 삭제 |
+| `COMMAND` | 명령 복구 | `pip install playwright` 실행 |
+| `MANUAL` | 수동 복구 | gh CLI 설치, PRD 작성 |
+
+---
+
+## 건전성 점수 계산
+
+건전성 점수（0-100）계산식：
+
+```
+건전성 = 통과율 × 100 - 오류 수 × 10 - 경고 수 × 3
+```
+
+| 점수 | 상태 |
+|------|------|
+| 90-100 | 우수 🟢 |
+| 70-89 | 양호 🟡 |
+| 50-69 | 일반 🟠 |
+| < 50 | 개선 필요 🔴 |

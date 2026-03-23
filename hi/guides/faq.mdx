@@ -1,9 +1,85 @@
 ---
 title: "अक्सर पूछे जाने वाले प्रश्न"
-description: "OpenYida के बारे में सामान्य प्रश्न और उत्तर।"
+description: "OpenYida के बारे में अक्सर पूछे जाने वाले प्रश्न।"
 icon: "circle-question"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/guides/faq) or [Chinese version](/zh/guides/faq) for complete content.
-</Tip>
+<AccordionGroup>
+
+  <Accordion title="OpenYida का उपयोग करने के लिए YiDa खाता चाहिए?">
+    हाँ। OpenYida [YiDa](https://www.aliwork.com) लो-कोड प्लेटफॉर्म पर ऐप्स बनाता और प्रबंधित करता है, जिसके लिए YiDa सक्षम Alibaba/DingTalk खाते की आवश्यकता होती है। प्रमाणित करने के लिए `openyida login` चलाएं।
+  </Accordion>
+
+  <Accordion title="कौन से AI टूल्स समर्थित हैं?">
+    OpenYida किसी भी AI कोडिंग टूल के साथ संगत है जो MCP (Model Context Protocol) का समर्थन करता है या markdown कौशल दस्तावेज़ पढ़ सकता है। पुष्टि समर्थन: **Claude Code, Aone Copilot, OpenCode, Cursor, Visual Studio Code, Qoder, Wukong**। व्यवहार में, कोई भी टूल जो शेल कमांड चला सकता है, काम करता है।
+  </Accordion>
+
+  <Accordion title="किस Node.js संस्करण की आवश्यकता है?">
+    Node.js **≥ 18** की आवश्यकता है। `node --version` से अपना संस्करण जांचें। [nodejs.org](https://nodejs.org) से नवीनतम LTS डाउनलोड करें।
+  </Accordion>
+
+  <Accordion title="यदि लॉगिन QR कोड प्रदर्शित नहीं होता तो क्या करें?">
+    ब्राउज़र लॉन्चिंग का समर्थन करने वाले टर्मिनल में `openyida login` चलाने का प्रयास करें। यदि हेडलेस वातावरण (जैसे रिमोट सर्वर) में हैं, तो DingTalk/Wukong वातावरण में `openyida login --wukong` का उपयोग करें, या टर्मिनल आउटपुट से लॉगिन URL कॉपी करें और अपने स्थानीय ब्राउज़र में खोलें।
+  </Accordion>
+
+  <Accordion title="समाप्त सत्र को कैसे रीफ्रेश करें?">
+    पूर्ण लॉगिन फ्लो से गुजरे बिना सत्र को नवीनीकृत करने के लिए `openyida auth refresh` चलाएं। यदि विफल होता है, तो पुनःमाणित करने के लिए `openyida login` चलाएं।
+  </Accordion>
+
+  <Accordion title="कई YiDa संगठनों के बीच कैसे स्विच करें?">
+    ```bash
+    openyida org list       # सभी संगठनों और corpIds की सूची बनाएं
+    openyida org switch --corp-id <corpId>   # लक्ष्य संगठन पर स्विच करें
+    openyida env            # स्विच की पुष्टि करें
+    ```
+  </Accordion>
+
+  <Accordion title="AI-जनरेटेड फॉर्म में लापता फ़ील्ड कैसे जोड़ें?">
+    AI को सीधे बताएं:
+    ```
+    [पृष्ठ नाम] में [फ़ील्ड नाम] फ़ील्ड जोड़ें, फ़ील्ड प्रकार: [टेक्स्ट/संख्या/तिथि/ड्रॉपडाउन/...], इसे आवश्यक बनाएं
+    ```
+    OpenYida अपडेटेड Schema के साथ `openyida create-form` को कॉल करेगा, मौजूदा फ़ील्ड्स को ओवरराइट किए बिना नए फ़ील्ड्स को मर्ज करेगा।
+  </Accordion>
+
+  <Accordion title="क्या मैं YiDa विज़ुअल एडिटर में जनरेटेड ऐप्स संपादित कर सकता हूं?">
+    बिल्कुल। आउटपुट एक मानक YiDa ऐप है — आप इसे YiDa प्लेटफॉर्म के विज़ुअल एडिटर में कभी भी खोल सकते हैं और मैन्युअल संशोधन कर सकते हैं। OpenYida ऐप्स जनरेट करता है, लॉक्ड कॉन्फ़िगरेशन नहीं।
+  </Accordion>
+
+  <Accordion title="ऐप को सार्वजनिक रूप से सुलभ कैसे बनाएं?">
+    ```
+    [पृष्ठ नाम] पृष्ठ को सार्वजनिक रूप से सुलभ बनाएं
+    ```
+    या सीधे चलाएं:
+    ```bash
+    openyida save-share-config
+    ```
+    पृष्ठ साझाकरण सेटिंग्स कॉन्फ़िगर करें ताकि कोई भी लॉगिन के बिना लिंक के माध्यम से एक्सेस कर सके।
+  </Accordion>
+
+  <Accordion title="क्या मैं OpenYida के साथ मौजूदा YiDa ऐप्स माइग्रेट कर सकता हूं?">
+    हाँ। मौजूदा ऐप से माइग्रेशन पैकेज जनरेट करने के लिए `openyida export` का उपयोग करें, और इसे किसी अन्य संगठन या वातावरण में पुनर्निर्माण करने के लिए `openyida import` का उपयोग करें।
+  </Accordion>
+
+  <Accordion title="`create-form` और `create-page` में क्या अंतर है?">
+    - **`create-form`**: YiDa **फॉर्म पेज** बनाता है — डेटा एंट्री फॉर्म जो YiDa के अंतर्निहित डेटा स्टोरेज का उपयोग करता है। संरचित डेटा संग्रह (पंजीकरण, आवेदन, रिकॉर्ड) के लिए उपयोग किया जाता है।
+    - **`create-page`**: **कस्टम डिस्प्ले पेज** बनाता है — डैशबोर्ड, लैंडिंग पेज, इंटरैक्टिव UI के लिए JSX-आधारित पेज। `openyida publish` के माध्यम से कंपाइल और प्रकाशित।
+  </Accordion>
+
+  <Accordion title="क्या OpenYida प्रक्रिया/अनुमोदन वर्कफ़्लो का समर्थन करता है?">
+    हाँ। अनुमोदन चरणों वाले प्रक्रिया फॉर्म बनाने के लिए `openyida create-process` का उपयोग करें, और वर्कफ़्लो नियम (अनुमोदक, शर्तें, सूचनाएं) परिभाषित करने के लिए `openyida configure-process` का उपयोग करें।
+  </Accordion>
+
+  <Accordion title="कुछ गलत हो गया, डीबग कैसे करें?">
+    1. `openyida doctor --fix` चलाएं — सामान्य समस्याओं का स्वचालित पता लगाता और ठीक करता है
+    2. `openyida env` चलाएं — लॉगिन स्थिति और वातावरण सत्यापित करें
+    3. `openyida auth status` चलाएं — सत्र वैधता जांचें
+    4. ज्ञात समस्याओं के लिए [GitHub Issues](https://github.com/openyida/openyida/issues) जांचें
+    5. यदि यह नया बग है, तो issue सबमिट करें: Node.js संस्करण, चलाया गया कमांड, पूर्ण त्रुटि आउटपुट
+  </Accordion>
+
+  <Accordion title="OpenYida में कैसे योगदान दें?">
+    पूर्ण प्रक्रिया के लिए [योगदान गाइड](/hi/contributing) पढ़ें। संक्षेप में: repo फोर्क करें, फीचर ब्रांच पर बदलाव करें, `npm test` चलाएं, PR सबमिट करें। AI-सहायता प्राप्त योगदान का स्वागत है!
+  </Accordion>
+
+</AccordionGroup>

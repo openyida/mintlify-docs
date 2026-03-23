@@ -1,9 +1,150 @@
 ---
 title: "Anwendungsfälle"
-description: "Konkrete Beispiele für Anwendungen, die mit OpenYida erstellt werden können."
+description: "Anwendungsszenarien von OpenYida in echten Geschäftstätigkeiten."
 icon: "lightbulb"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/use-cases) or [Chinese version](/zh/features/use-cases) for complete content.
-</Tip>
+OpenYida eignet sich für verschiedene Geschäftsszenarien. Hier sind Beispiele für gängige Anwendungstypen.
+
+---
+
+## 🏢 Unternehmensgeschäftssysteme
+
+Erstellen Sie Multi-Modul-Geschäftsplattformen, die komplexe Formulare, Workflows und Datenbeziehungen unterstützen.
+
+<AccordionGroup>
+  <Accordion title="IPD (Integrated Product Development)">
+    **Prompt:**
+    ```
+    Helfen Sie mir, ein IPD-System mit Yida zu erstellen, um den gesamten Chip-Herstellungsprozess zu verwalten,
+    einschließlich Projektinitialisierung, Design-Review, Wafer-Fertigung, Massenproduktion usw.
+    ```
+    **Ergebnis:** Anwendung mit mehreren Formularen, einschließlich Phasenverfolgung, Prüfungslisten, Meilenstein-Management, Teamübergreifende Sichtbarkeit.
+  </Accordion>
+
+  <Accordion title="CRM (Customer Relationship Management)">
+    **Prompt:**
+    ```
+    Helfen Sie mir, ein CRM zu erstellen, einschließlich Module für Leads, Kunden, Opportunities, Follow-up-Aufzeichnungen usw.
+    ```
+    **Ergebnis:** Verknüpfte Formulare: Leads → Kunden → Opportunities → Verträge, mit Statusverfolgung und Zuweisungsfeldern.
+  </Accordion>
+
+  <Accordion title="HR- und Urlaubsverwaltung">
+    **Prompt:**
+    ```
+    Erstellen Sie ein HR-Urlaubsverwaltungssystem, einschließlich Urlaubsanträge, Genehmigungsprozess, Urlaubskontostatistiken
+    ```
+    **Ergebnis:** Urlaubsantragsformular mit Genehmigungsprozess, Kontenrechner, Manager-Dashboard.
+  </Accordion>
+
+  <Accordion title="Projektverwaltung">
+    **Prompt:**
+    ```
+    Erstellen Sie eine Projektverwaltungsanwendung, einschließlich Aufgaben, Meilensteine, Teammitglieder, Fortschrittsverfolgung
+    ```
+    **Ergebnis:** Aufgabenliste mit Prioritäts-/Status-/Verantwortlichen-Feldern, Meilenstein-Tracker, Gantt-Diagramm-Ansicht.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 💰 Dienstprogramme und Rechner
+
+Einmalige Rechen- oder Datensammelwerkzeuge.
+
+<AccordionGroup>
+  <Accordion title="Persönlicher Gehaltsrechner">
+    **Prompt:**
+    ```
+    Helfen Sie mir, eine persönliche Gehaltsrechner-Anwendung zu erstellen, geben Sie das Bruttogehalt ein, berechnen Sie automatisch die Einkommensteuer und das Nettogehalt
+    ```
+    **Ergebnis:** Formular mit Formelfeldern für Vorabzüge, Einkommensteuerberechnung, Nettosumme.
+  </Accordion>
+
+  <Accordion title="Budget-Tracker">
+    **Prompt:**
+    ```
+    Helfen Sie mir, einen persönlichen Budget-Tracker zu erstellen, zeichnen Sie Einnahmen, kategorisierte Ausgaben und monatliche Zusammenfassungen auf
+    ```
+    **Ergebnis:** Einnahmen-/Ausgaben-Eingabeformular mit Dropdown-Kategorien und automatisch berechnetem monatlichen Saldo.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🌐 Landing Pages und Portale
+
+Marketingseiten, Produktpräsentationen und interne Portale.
+
+<AccordionGroup>
+  <Accordion title="Unternehmensprodukt-Landing Page">
+    **Prompt:**
+    ```
+    Generieren Sie eine Landing Page für das Unternehmenskollaborationsprodukt ZhiLian Xietong, einschließlich Hero-Screen, Funktionsvorstellung, Kontaktformular
+    ```
+    **Ergebnis:** Vollständige benutzerdefinierte Anzeigeseite, mit Hero-Banner, Funktionskarten, integriertem Kontaktformular.
+  </Accordion>
+
+  <Accordion title="Veranstaltungsanmeldeseite">
+    **Prompt:**
+    ```
+    Erstellen Sie eine Anmeldeseite für eine jährliche Technikkonferenz, einschließlich Teilnehmerinformationsformular und Auswahl paralleler Foren
+    ```
+    **Ergebnis:** Markierte Anmeldeseite, mit Formularvalidierung und Bestätigungslogik.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🎮 Interaktive Aktivitäten und Minispiele
+
+Interaktive Werkzeuge für interne Aktivitäten, Feiertage und Marketingveranstaltungen.
+
+<AccordionGroup>
+  <Accordion title="Laternenrätsel zum Laternenfest">
+    **Prompt:**
+    ```
+    Erstellen Sie ein Laternenrätsel-Spiel zum Laternenfest, die KI generiert Laternenrätsel-Bilder, Benutzer senden Antworten, bei Fehlern gibt die KI humorvolle Antworten
+    ```
+    **Ergebnis:** Spielseite mit KI-generierten Laternenrätsel-Bildern, Antwortübermittlungsformular, bedingte Antwortlogik.
+  </Accordion>
+
+  <Accordion title="Geburtstagsgruß-Minispiel">
+    **Prompt:**
+    ```
+    Erstellen Sie ein Geburtstagsgruß-Minispiel, Benutzer geben ihren Namen ein und erhalten eine personalisierte KI-Grußkarte
+    ```
+    **Ergebnis:** Interaktiver Grußkartengenerator, mit Datenspeicherung für Antwortverfolgung.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🔌 API-Integration (Konnektoren)
+
+Verbinden Sie Yida-Anwendungen mit externen Systemen über HTTP-Konnektoren.
+
+<AccordionGroup>
+  <Accordion title="Webhook-Benachrichtigungen">
+    **Prompt:**
+    ```
+    Erstellen Sie einen HTTP-Konnektor für unseren DingTalk Webhook, fügen Sie eine POST-Aktion hinzu, um Formularübermittlungsbenachrichtigungen zu senden
+    ```
+    **Ergebnis:** Konfigurierter Konnektor mit Testfähigkeit, kann bei Formularereignissen ausgelöst werden.
+  </Accordion>
+
+  <Accordion title="Intelligente Erstellung aus curl">
+    **Prompt:**
+    ```
+    Erstellen Sie intelligent einen Konnektor aus diesem curl-Befehl: curl -X POST https://api.example.com/v1/users -H "Authorization: Bearer TOKEN" -d '{"name":"test"}'
+    ```
+    **Ergebnis:** Automatisch konfigurierter Konnektor, extrahiert Basis-URL, Anforderungsheader, Aktionsparameter.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+Dies sind Ausgangspunkte. Da das Ergebnis eine vollständig bearbeitbare Anwendung auf der Yida-Plattform ist (und keine Blackbox-Konfiguration), können Sie die generierte Anwendung jederzeit über den visuellen Editor von Yida oder durch nachfolgende Anweisungen an die KI optimieren.
+</Note>

@@ -1,26 +1,26 @@
 ---
-title: "Architecture Overview"
-description: "OpenYida overall architecture design and technology selection explanation"
+title: アーキテクチャ概要
+description: OpenYidaの全体アーキテクチャ設計と技術選定の説明
 ---
 
-# Architecture Overview
+# アーキテクチャ概要
 
-OpenYida is a Node.js-based CLI tool with a layered architecture design that organically combines AI capabilities, Yida platform integration, and developer experience.
+OpenYidaはNode.jsベースのCLIツールで、階層アーキテクチャ設計を採用し、AI能力、Yidaプラットフォーム統合、開発者エクスペリエンスを有機的に結合しています。
 
-## Overall Workflow
+## 全体ワークフロー
 
-![OpenYida Workflow](/images/architecture-workflow.png)
+![OpenYida ワークフロー](/images/architecture-workflow.png)
 
-OpenYida's workflow consists of 6 stages:
+OpenYidaのワークフローは6つの段階に分かれています：
 
-1. **User Requirement** - Users describe requirements in natural language
-2. **AI Understanding** - AI understands and analyzes user requirements
-3. **PRD Document** - Generate product requirement document
-4. **CLI Execution** - Execute CLI commands to create applications
-5. **YiDa Platform** - Build applications on Yida platform
-6. **Online Access** - Application goes live for access
+1. **User Requirement** - ユーザーが自然言語で要件を記述
+2. **AI Understanding** - AIがユーザーの要件を理解・分析
+3. **PRD Document** - 製品要件ドキュメントを生成
+4. **CLI Execution** - CLIコマンドを実行してアプリを作成
+5. **YiDa Platform** - Yidaプラットフォームでアプリを構築
+6. **Online Access** - アプリをオンラインでアクセス可能に
 
-## System Architecture
+## システムアーキテクチャ
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -56,7 +56,7 @@ OpenYida's workflow consists of 6 stages:
 │  ├─────────────────┤    │    │   │   Application       │   │
 │  │ Claude (3.5)    │    │    │   │   Engine            │   │
 │  ├─────────────────┤    │    │   ├─────────────────────┤   │
-│  │ Tongyi Qwen     │    │    │   │   Form Builder      │   │
+│  │ 通义千问        │    │    │   │   Form Builder      │   │
 │  ├─────────────────┤    │    │   ├─────────────────────┤   │
 │  │ DeepSeek        │    │    │   │   Page Designer     │   │
 │  └─────────────────┘    │    │   ├─────────────────────┤   │
@@ -69,71 +69,71 @@ OpenYida's workflow consists of 6 stages:
 └─────────────────────────┘    └─────────────────────────────┘
 ```
 
-## Authentication Flow
+## 認証フロー
 
-![Authentication Flow](/images/architecture-auth.png)
+![認証フロー](/images/architecture-auth.png)
 
-OpenYida's authentication flow:
+OpenYidaの認証フロー：
 
-1. **config.json** - Store configuration information
-2. **Login Session** - Establish login session
-3. **Cookie Cache** - Cache authentication information
-4. **API Request** - Send API requests
-5. **YiDa Backend** - Yida backend processing
-6. **Page/Form Output** - Output page/form
+1. **config.json** - 設定情報を保存
+2. **Login Session** - ログインセッションを確立
+3. **Cookie Cache** - 認証情報をキャッシュ
+4. **API Request** - APIリクエストを送信
+5. **YiDa Backend** - Yidaバックエンドで処理
+6. **Page/Form Output** - ページ/フォームを出力
 
-## CLI Architecture
+## CLIアーキテクチャ
 
-![CLI Architecture](/images/architecture-cli.png)
+![CLIアーキテクチャ](/images/architecture-cli.png)
 
-OpenYida CLI interaction with Yida platform:
+OpenYida CLIとYidaプラットフォームの対話：
 
 - **AI Coding Tool** → **OpenYida CLI**
-  - Login
-  - Create App
-  - Create Page
-  - Publish
-  - Get Schema
+  - Login（ログイン）
+  - Create App（アプリ作成）
+  - Create Page（ページ作成）
+  - Publish（公開）
+  - Get Schema（構造取得）
 - **YiDa Low-Code Platform**
-  - App Management
-  - Form Pages
-  - Custom Pages
+  - App Management（アプリ管理）
+  - Form Pages（フォームページ）
+  - Custom Pages（カスタムページ）
 
-## Skill System
+## スキル体系
 
-![Skill System](/images/architecture-skills.png)
+![スキル体系](/images/architecture-skills.png)
 
-OpenYida's skills are divided into three categories:
+OpenYidaのスキルは3つのカテゴリに分類されます：
 
-### Login Skills
-- `login` - Login to Yida platform
-- `logout` - Logout
+### Login Skills（ログインスキル）
+- `login` - Yidaプラットフォームにログイン
+- `logout` - ログアウト
 
-### Create Skills
-- `create-app` - Create application
-- `create-page` - Create page
-- `create-form` - Create form
-- `get-schema` - Get data structure
+### Create Skills（作成スキル）
+- `create-app` - アプリを作成
+- `create-page` - ページを作成
+- `create-form` - フォームを作成
+- `get-schema` - データ構造を取得
 
-### Publish Skills
-- `publish` - Publish application
+### Publish Skills（公開スキル）
+- `publish` - アプリを公開
 
-## Core Design Principles
+## コア設計原則
 
-### 1. Modular Design
+### 1. モジュール設計
 
-Each functional module is independently encapsulated and interacts through clear interfaces:
+各機能モジュールは独立してカプセル化され、明確なインターフェースを通じて対話します：
 
-- **Command Layer**: Handles CLI input, calls core services
-- **Service Layer**: Encapsulates business logic, provides unified API
-- **Adapter Layer**: Interfaces with external systems (AI, Yida platform)
+- **コマンド層**: CLI入力を処理し、コアサービスを呼び出す
+- **サービス層**: ビジネスロジックをカプセル化し、統一APIを提供
+- **アダプタ層**: 外部システム（AI、Yidaプラットフォーム）と対話
 
-### 2. Plugin Extension
+### 2. プラグイン拡張
 
-Skill system supports dynamic loading and extension:
+Skillシステムは動的ロードと拡張をサポートします：
 
 ```typescript
-// Skill interface definition
+// Skillインターフェース定義
 interface Skill {
   name: string;
   version: string;
@@ -142,21 +142,21 @@ interface Skill {
 }
 ```
 
-### 3. Configuration Driven
+### 3. 設定駆動
 
-Supports multi-environment configuration with flexible switching:
+マルチ環境設定をサポートし、柔軟に切り替え可能：
 
-- Local global configuration (~/.openyida/)
-- Project-level configuration (.openyidarc.json)
-- Environment variable override
+- ローカルグローバル設定（~/.openyida/）
+- プロジェクトレベル設定（.openyidarc.json）
+- 環境変数による上書き
 
-### 4. Type Safety
+### 4. タイプセーフティ
 
-Full-chain TypeScript type support to reduce runtime errors.
+全チェーンTypeScriptタイプサポート、ランタイムエラーを削減。
 
-## Data Flow
+## データフロー
 
-### Application Creation Flow
+### アプリ作成フロー
 
 ```
 User Input → AI Service → Code Generation → Yida API → Application
@@ -166,7 +166,7 @@ User Input → AI Service → Code Generation → Yida API → Application
            Template Selection           Deployment
 ```
 
-### Data Operation Flow
+### データ操作フロー
 
 ```
 User Command → Config Load → Auth Check → Yida API → Data Response
@@ -174,52 +174,52 @@ User Command → Config Load → Auth Check → Yida API → Data Response
                                          Cache/Store
 ```
 
-## Technology Stack
+## 技術スタック
 
-| Layer | Technology |
+| レベル | テクノロジー |
 |------|------|
-| Runtime | Node.js 18+ |
-| Language | TypeScript 5.x |
-| CLI Framework | Commander.js |
-| HTTP Client | Axios |
+| ランタイム | Node.js 18+ |
+| 言語 | TypeScript 5.x |
+| CLIフレームワーク | Commander.js |
+| HTTPクライアント | Axios |
 | AI SDK | OpenAI SDK, Anthropic SDK |
-| Configuration Management | Cosmiconfig |
-| Logging | Winston |
-| Testing | Jest |
+| 設定管理 | Cosmiconfig |
+| ログ | Winston |
+| テスト | Jest |
 
-## Security Design
+## セキュリティ設計
 
-### Authentication Security
+### 認証セキュリティ
 
-- OAuth 2.0 standard flow
-- Token auto-refresh mechanism
-- Local encrypted storage of sensitive information
+- OAuth 2.0標準フロー
+- Token自動更新メカニズム
+- 機密情報のローカル暗号化保存
 
-### Data Transmission
+### データ転送
 
-- Full-chain HTTPS
-- API signature verification
-- Request retry and timeout control
+- 全チェーンHTTPS
+- API署名検証
+- リクエスト再試行とタイムアウト制御
 
-## Performance Optimization
+## パフォーマンス最適化
 
-- **Connection Pool**: Reuse HTTP connections
-- **Smart Caching**: Local caching of configuration and metadata
-- **Incremental Updates**: Only transmit changed content
-- **Concurrency Control**: Limit simultaneous API calls
+- **接続プール**: HTTP接続を再利用
+- **スマートキャッシュ**: 設定とメタデータをローカルキャッシュ
+- **増分更新**: 変更内容のみを転送
+- **並行制御**: 同時API呼び出しを制限
 
-## Extension Points
+## 拡張ポイント
 
-Developers can extend at the following levels:
+開発者は以下のレベルで拡張できます：
 
-1. **New Commands**: Add custom CLI commands
-2. **New Skills**: Extend AI capabilities
-3. **New Templates**: Custom code generation templates
-4. **New AI Providers**: Integrate other LLMs
+1. **新コマンド**: カスタムCLIコマンドを追加
+2. **新Skill**: AI能力を拡張
+3. **新テンプレート**: カスタムコード生成テンプレート
+4. **新AI Provider**: 他の大規模モデルに接続
 
-## Version Compatibility
+## バージョン互換性
 
-| OpenYida Version | Supported Node.js | Yida API Version |
-|------------------|-------------------|------------------|
+| OpenYidaバージョン | サポートされるNode.js | Yida APIバージョン |
+|--------------|----------------|--------------|
 | 1.x | >= 18.0.0 | v1 |
 | 2.x | >= 20.0.0 | v2 |

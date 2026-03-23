@@ -1,9 +1,228 @@
 ---
 title: "Công Cụ Chẩn Đoán"
-description: "Chẩn đoán môi trường và giải quyết vấn đề."
+description: "Kiểm tra môi trường, chẩn đoán ứng dụng, sửa chữa thông minh, giám sát sức khỏe."
 icon: "stethoscope"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/doctor) or [Chinese version](/zh/features/doctor) for complete content.
-</Tip>
+OpenYida tích hợp công cụ chẩn đoán mạnh mẽ `doctor`, giúp nhà phát triển kiểm tra môi trường, chẩn đoán vấn đề, tự động sửa chữa, giám sát liên tục sức khỏe ứng dụng.
+
+---
+
+## Tổng Quan
+
+<CardGroup cols={2}>
+  <Card title="Kiểm Tra Môi Trường" icon="laptop-code">
+    Kiểm tra phụ thuộc môi trường như Node.js, Python, Playwright, trạng thái đăng nhập, v.v.
+  </Card>
+  <Card title="Chẩn Đoán Ứng Dụng" icon="magnifying-glass">
+    Kiểm tra PRD, mã nguồn trang, bộ nhớ đệm Schema, quy chuẩn React Hooks.
+  </Card>
+  <Card title="Sửa Chữa Thông Minh" icon="wand-magic">
+    Tự động sửa chữa vấn đề có thể sửa, cung cấp hướng dẫn sửa chữa thủ công.
+  </Card>
+  <Card title="Giám Sát Sức Khỏe" icon="heart-pulse">
+    Giám sát liên tục sức khỏe ứng dụng, tạo báo cáo xu hướng.
+  </Card>
+</CardGroup>
+
+---
+
+## Sử Dụng Cơ Bản
+
+### Chạy Chẩn Đoán
+
+```bash
+openyida doctor
+```
+
+### Sửa Chữa Tự Động
+
+```bash
+openyida doctor --fix
+```
+
+### Tạo Báo Cáo
+
+```bash
+# Định dạng Markdown
+openyida doctor --report markdown
+
+# Định dạng JSON
+openyida doctor --report json
+
+# Định dạng HTML
+openyida doctor --report html
+```
+
+---
+
+## Mục Kiểm Tra Môi Trường
+
+| Mục | Mô Tả | Sửa Chữa Tự Động |
+|--------|------|----------|
+| Phiên bản Node.js | Kiểm tra nếu ≥ 16 |❌
+| Phiên bản Python | Kiểm tra nếu ≥ 3.10 |❌
+| Playwright | Kiểm tra nếu đã cài đặt | ✅ |
+| Chromium | Kiểm tra nếu trình duyệt đã cài đặt | ✅ |
+| gh CLI | Kiểm tra GitHub CLI |❌
+| Đăng nhập gh | Kiểm tra trạng thái đăng nhập gh CLI | ✅ |
+| config.json | Kiểm tra tệp cấu hình | ✅ |
+| Skills | Kiểm tra cài đặt gói kỹ năng |❌
+| Đăng nhập Yida | Kiểm tra trạng thái đăng nhập | ✅ |
+| Kết nối mạng | Kiểm tra kết nối aliwork.com |❌
+
+---
+
+## Mục Chẩn Đoán Ứng Dụng
+
+| Mục | Mô Tả |
+|--------|------|
+| Tệp PRD | Kiểm tra nếu tồn tại tài liệu yêu cầu |
+| Mã nguồn trang | Kiểm tra tệp mã nguồn, console.log, tệp trống |
+| Bộ nhớ đệm Schema | Kiểm tra định dạng tệp bộ nhớ đệm |
+| React Hooks | Kiểm tra quy chuẩn sử dụng Hooks |
+
+---
+
+## Chế Độ Giám Sát Sức Khỏe
+
+Khởi động giám sát liên tục, kiểm tra mỗi phút:
+
+```bash
+openyida doctor --monitor
+```
+
+Ví dụ đầu ra:
+
+```
+[14:32:01] Sức khỏe: 95/100  Đạt: 18/19 | Lỗi: 0 | Cảnh báo: 1
+
+[14:33:01] Sức khỏe: 100/100➡
+  Đạt: 19/19 | Lỗi: 0 | Cảnh báo: 0
+```
+
+Nhấn `Ctrl+C` để dừng giám sát.
+
+---
+
+## Chẩn Đoán Trực Tuyến
+
+Chẩn đoán trực tuyến cho ứng dụng đã xuất bản:
+
+```bash
+openyida doctor --production --app <appId>
+```
+
+Nội dung kiểm tra:
+- Tính hợp lệ của ID ứng dụng
+- Nhật ký lỗi trực tuyến
+- Chỉ số hiệu suất
+
+---
+
+## Ticket và VOC
+
+### Tạo Ticket (Bug)
+
+```bash
+openyida doctor --create-ticket
+```
+
+Nhập tiêu đề và mô tả tương tác, tự động gửi đến GitHub Issues.
+
+### Tạo VOC (Yêu cầu)
+
+```bash
+openyida doctor --create-voc
+```
+
+### Gửi Thông Minh
+
+Hệ thống tự động phán đoán là Bug hay yêu cầu:
+
+```bash
+openyida doctor --auto-submit
+```
+
+---
+
+## Ví Dụ Báo Cáo Chẩn Đoán
+
+### Đầu Ra Console
+
+```
+ tra phụ thuộc môi trường OpenYida...
+
+✅ Node.js v18.19.0 (yêu cầu ≥ 16)
+✅ Python 3.11.4 (yêu cầu ≥ 3.10)
+✅ Playwright đã cài đặt
+✅ Playwright Chromium đã cài đặt
+✅ gh version 2.40.1
+✅ gh CLI đã đăng nhập
+✅ config.json tồn tại và định dạng đúng
+  Kiểm tra cài đặt Skills
+   Skills chưa cài đặt, chạy bash install-skills.sh để cài đặt
+✅ Trạng thái đăng nhập Yida: Đã đăng nhập
+✅ Kết nối mạng (aliwork.com)
+✅ Tệp PRD (2 tệp)
+✅ Mã nguồn trang (3 tệp)
+✅ Bộ nhớ đệm Schema (5 tệp)
+✅ Quy chuẩn React Hooks
+
+Phát hiện 1 vấn đề (0 lỗi, 1 cảnh báo)
+```
+
+### Báo Cáo Markdown
+
+```bash
+openyida doctor --report markdown
+```
+
+Báo cáo lưu vào `.cache/reports/doctor-2024-01-15T10-30-00-000Z.md`
+
+---
+
+## Kiểm Tra Trước
+
+Tự động thực hiện kiểm tra trước các thao tác quan trọng:
+
+### Kiểm Tra Trước Khi Xuất Bản
+
+```bash
+# Tự động thực hiện
+openyida publish tự động chạy kiểm tra trước
+```
+
+### Kiểm Tra Trước Khi Tạo
+
+```bash
+# Tự động thực hiện
+openyida create-app tự động chạy kiểm tra trước
+```
+
+---
+
+## Loại Sửa Chữa
+
+| Loại | Mô Tả | Ví Dụ |
+|------|------|------|
+| `AUTO` | Sửa chữa tự động | Tạo config.json, xóa bộ nhớ đệm hỏng |
+| `COMMAND` | Sửa chữa bằng lệnh | Chạy `pip install playwright` |
+| `MANUAL` | Sửa chữa thủ công | Cài đặt gh CLI, viết PRD |
+
+---
+
+## Tính Toán Sức Khỏe
+
+Công thức tính điểm sức khỏe (0-100):
+
+```
+Sức khỏe = Tỷ lệ đạt × 100 - Lỗi × 10 - Cảnh báo × 3
+```
+
+| Điểm | Trạng Thái |
+|------|------|
+| 90-100 | Xuất sắc
+| 70-89 | Tốt
+| 50-69 | Bình thường
+| < 50 | Cần cải thiện🔴

@@ -1,10 +1,22 @@
 ---
-title: "Bắt đầu nhanh"
-description: "Cài đặt OpenYida và tạo ứng dụng Yida đầu tiên trong 5 phút."
-icon: "play"
+title: "Bắt Đầu Nhanh"
+description: "Cài đặt OpenYida và xây dựng ứng dụng Yida đầu tiên của bạn trong 2 phút."
+icon: "bolt"
 ---
 
-Hướng dẫn này chỉ cách cài đặt OpenYida và tạo một ứng dụng cơ bản.
+## Điều kiện tiên quyết
+
+Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt các phụ thuộc sau:
+
+| Phụ thuộc | Phiên bản | Lệnh kiểm tra |
+|------|------|----------|
+| [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
+
+<Tip>
+  Đó là tất cả những gì bạn cần. OpenYida là triển khai thuần Node.js — không cần Python, không cần Playwright, không cần bước build.
+</Tip>
+
+---
 
 ## Bước 1 — Cài đặt
 
@@ -12,91 +24,129 @@ Hướng dẫn này chỉ cách cài đặt OpenYida và tạo một ứng dụn
 npm install -g openyida
 ```
 
-Kiểm tra cài đặt thành công:
+Xác minh cài đặt:
 
 ```bash
 openyida --version
 ```
 
-## Bước 2 — Đăng nhập
+---
+
+## Bước 2 — Đăng nhập vào Yida
 
 ```bash
 openyida login
 ```
 
-Thao tác này sẽ mở cửa sổ trình duyệt để xác thực. Sau khi đăng nhập thành công, bạn có thể đóng trình duyệt và quay lại terminal.
+OpenYida sẽ mở cửa sổ trình duyệt (hoặc hiển thị mã QR) để bạn xác thực bằng tài khoản Yida/Alibaba. Thông tin đăng nhập được lưu trữ cục bộ — bạn chỉ cần làm điều này một lần.
 
-## Bước 3 — Tạo ứng dụng
+<Info>
+  Nếu bạn đang sử dụng **Wukong** làm công cụ AI, hãy sử dụng cờ đăng nhập đặc biệt:
 
-### Phương án A: Tạo với mô tả ngôn ngữ tự nhiên
+  ```bash
+  openyida login --wukong
+  ```
+</Info>
+
+---
+
+## Bước 3 — Kiểm tra môi trường
 
 ```bash
-openyida create-app --prompt "Tạo hệ thống CRM với quản lý khách hàng, theo dõi bán hàng và bảng điều khiển phân tích"
+openyida env
 ```
 
-### Phương án B: Tạo với tệp yêu cầu
+Điều này phát hiện công cụ mã hóa AI hiện đang hoạt động (Claude Code, Cursor, Wukong, v.v.) và hiển thị trạng thái đăng nhập hiện tại của bạn. Chạy lệnh này bất cứ khi nào bạn chuyển đổi môi trường.
+
+---
+
+## Bước 4 — Khởi tạo không gian làm việc dự án
 
 ```bash
-openyida create-app --file requirements.md
+openyida copy
 ```
 
-## Bước 4 — Quản lý biểu mẫu
+Điều này sao chép mẫu không gian làm việc `project/` vào thư mục làm việc của công cụ AI hiện tại của bạn, cho phép AI truy cập cấu hình ứng dụng và mẫu trang của bạn.
 
-### Liệt kê biểu mẫu
+---
 
-```bash
-openyida list-forms --app-id YOUR_APP_ID
+## Bước 5 — Bắt đầu xây dựng
+
+Bây giờ chỉ cần nói chuyện với trợ lý mã hóa AI của bạn. Dưới đây là một số prompt bắt đầu:
+
+```
+Xây dựng cho tôi một hệ thống IPD trên Yida để quản lý quy trình sản xuất chip hoàn chỉnh
 ```
 
-### Tạo biểu mẫu mới
-
-```bash
-openyida create-form --app-id YOUR_APP_ID --prompt "Biểu mẫu thông tin khách hàng với tên, công ty, điện thoại, email và ghi chú"
+```
+Giúp tôi xây dựng một hệ thống CRM với leads, contacts và deals
 ```
 
-### Cập nhật biểu mẫu hiện có
-
-```bash
-openyida update-form --form-id YOUR_FORM_ID --prompt "Thêm trường trạng thái với các tùy chọn: Khách hàng tiềm năng, Cơ hội, Khách hàng"
+```
+Tạo một ứng dụng máy tính lương cá nhân
 ```
 
-## Bước 5 — Xuất bản trang
-
-### Biên dịch và xuất bản trang tùy chỉnh
-
-```bash
-openyida publish-page --app-id YOUR_APP_ID --file custom-page.jsx
+```
+Tạo một mini-game chúc mừng sinh nhật trên Yida
 ```
 
-### Cấu hình truy cập công khai
+AI sẽ sử dụng gói kỹ năng OpenYida để gọi các lệnh CLI đúng theo thứ tự: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
+
+---
+
+## Bước 6 — Xuất bản ứng dụng
+
+Sau khi AI tạo ra ứng dụng, sử dụng lệnh sau để xuất bản:
 
 ```bash
-openyida set-public --page-id YOUR_PAGE_ID
+openyida publish
 ```
 
-## Bước 6 — Cấu hình trình kết nối
-
-### Tạo trình kết nối HTTP
-
-```bash
-openyida create-connector --app-id YOUR_APP_ID --name "API Thanh toán" --config connector-config.json
+Hoặc hỏi AI:
 ```
-
-### Nhập từ curl
-
-```bash
-openyida import-curl --app-id YOUR_APP_ID --curl 'curl -X GET "https://api.example.com/data" -H "Authorization: Bearer token"'
+Xuất bản trang [tên trang]
+Làm cho trang có thể truy cập công khai
 ```
 
 ---
 
-## Các bước tiếp theo
+## Chạy chẩn đoán
+
+Nếu có gì đó không ổn, chạy công cụ chẩn đoán tích hợp:
+
+```bash
+openyida doctor
+```
+
+Nó kiểm tra phiên bản Node.js, trạng thái đăng nhập và cấu hình môi trường của bạn, và có thể tự động sửa các vấn đề phổ biến với `--fix`.
+
+---
+
+## Tích hợp OpenClaw
+
+Nếu bạn đang sử dụng OpenClaw, cài đặt trực tiếp gói kỹ năng OpenYida:
+
+```bash
+npx clawhub@latest install nicky1108/yida-app
+```
+
+Sau đó sử dụng nó qua [yida-app trên ClawhHub](https://clawhub.ai/nicky1108/yida-app).
+
+---
+
+## Bước tiếp theo
 
 <CardGroup cols={2}>
-  <Card title="Trường hợp demo" icon="images" href="/vi/introduction/demo">
-    Xem các ứng dụng thực được xây dựng bằng OpenYida
+  <Card title="Prompt phổ biến" icon="comments" href="/vi/features/common-prompts">
+    Duyệt qua danh sách đầy đủ các prompt ngôn ngữ tự nhiên được hỗ trợ bởi OpenYida.
   </Card>
-  <Card title="Tham khảo lệnh" icon="terminal" href="/vi/features/skills">
-    Khám phá tất cả các lệnh có sẵn
+  <Card title="Tham khảo CLI" icon="terminal" href="/vi/features/skills">
+    Khám phá tất cả các lệnh CLI và mô-đun kỹ năng.
+  </Card>
+  <Card title="Trường hợp demo" icon="images" href="/vi/introduction/demo">
+    Xem các ứng dụng thực tế được xây dựng với OpenYida.
+  </Card>
+  <Card title="Thực hành tốt nhất" icon="star" href="/vi/guides/best-practices">
+    Mẹo để tận dụng tối đa việc tạo ứng dụng được điều khiển bởi AI.
   </Card>
 </CardGroup>

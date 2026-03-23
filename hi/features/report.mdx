@@ -1,9 +1,234 @@
 ---
 title: "रिपोर्ट्स और चार्ट्स"
-description: "Yida रिपोर्ट्स और डेटा विज़ुअलाइज़ेशन का निर्माण।"
+description: "Yida रिपोर्ट्स बनाएं और डेटा विज़ुअलाइज़ेशन चार्ट जोड़ें।"
 icon: "chart-column"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/report) or [Chinese version](/zh/features/report) for complete content.
-</Tip>
+OpenYida Yida रिपोर्ट्स बनाने और विभिन्न चार्ट जोड़ने का समर्थन करता है, डेटा विज़ुअलाइज़ेशन प्राप्त करने के लिए।
+
+---
+
+## अवलोकन
+
+<CardGroup cols={2}>
+  <Card title="रिपोर्ट निर्माण" icon="file-plus">
+    एक क्लिक से Yida रिपोर्ट बनाएं, कस्टम कॉन्फ़िगरेशन का समर्थन करता है।
+  </Card>
+  <Card title="चार्ट जोड़ें" icon="chart-pie">
+    मौजूदा रिपोर्ट्स में कई प्रकार के चार्ट जोड़ें।
+  </Card>
+  <Card title="डेटा बाइंडिंग" icon="link">
+    फॉर्म डेटा स्रोत स्वचालित रूप से बाइंड करें, रीयल-टाइम डेटा प्रदर्शित करें।
+  </Card>
+  <Card title="चार्ट प्रकार" icon="shapes">
+    बार, लाइन, पाई, टेबल और अन्य चार्ट का समर्थन करता है।
+  </Card>
+</CardGroup>
+
+---
+
+## रिपोर्ट बनाएं
+
+### बुनियादी उपयोग
+
+```bash
+openyida create-report <appType> "रिपोर्ट नाम" '<चार्ट परिभाषा JSON>'
+```
+
+### उदाहरण: बिक्री रिपोर्ट बनाएं
+
+```bash
+openyida create-report APP_XXXXXX "मासिक बिक्री रिपोर्ट" '{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "मासिक बिक्री",
+      "dataSource": "form_sales",
+      "xField": "month",
+      "yField": "amount"
+    },
+    {
+      "type": "pie",
+      "title": "उत्पाद बिक्री अनुपात",
+      "dataSource": "form_sales",
+      "categoryField": "product_type",
+      "valueField": "amount"
+    }
+  ]
+}'
+```
+
+### फ़ाइल से चार्ट परिभाषा लोड करें
+
+```bash
+openyida create-report APP_XXXXXX "वार्षिक सांख्यिकी रिपोर्ट" ./charts-config.json
+```
+
+---
+
+## चार्ट परिभाषा प्रारूप
+
+### बार चार्ट
+
+```json
+{
+  "type": "bar",
+  "title": "बार चार्ट शीर्षक",
+  "dataSource": "form_uuid",
+  "xField": "category_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### लाइन चार्ट
+
+```json
+{
+  "type": "line",
+  "title": "प्रवृत्ति चार्ट शीर्षक",
+  "dataSource": "form_uuid",
+  "xField": "date_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### पाई चार्ट
+
+```json
+{
+  "type": "pie",
+  "title": "अनुपात चार्ट शीर्षक",
+  "dataSource": "form_uuid",
+  "categoryField": "category_field",
+  "valueField": "value_field"
+}
+```
+
+### डेटा टेबल
+
+```json
+{
+  "type": "table",
+  "title": "डेटा विवरण",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "नाम" },
+    { "field": "amount", "title": "राशि" },
+    { "field": "date", "title": "तारीख" }
+  ]
+}
+```
+
+---
+
+## रिपोर्ट में चार्ट जोड़ें
+
+```bash
+openyida append-chart <appType> <reportId> '<चार्ट परिभाषा JSON>'
+```
+
+### उदाहरण
+
+```bash
+openyida append-chart APP_XXXXXX REPORT_XXXXX '{
+  "type": "line",
+  "title": "वृद्धि प्रवृत्ति",
+  "dataSource": "form_sales",
+  "xField": "month",
+  "yField": "growth_rate"
+}'
+```
+
+---
+
+## पूर्ण कॉन्फ़िगरेशन उदाहरण
+
+### sales-report-charts.json
+
+```json
+{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "मासिक बिक्री सांख्यिकी",
+      "dataSource": "form_monthly_sales",
+      "xField": "month",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "color": "#0066FF"
+    },
+    {
+      "type": "pie",
+      "title": "उत्पाद श्रेणी अनुपात",
+      "dataSource": "form_sales",
+      "categoryField": "product_category",
+      "valueField": "sales_amount",
+      "showLegend": true
+    },
+    {
+      "type": "line",
+      "title": "बिक्री प्रवृत्ति",
+      "dataSource": "form_daily_sales",
+      "xField": "date",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "smooth": true
+    },
+    {
+      "type": "table",
+      "title": "बिक्री विवरण",
+      "dataSource": "form_sales",
+      "columns": [
+        { "field": "order_no", "title": "ऑर्डर नंबर", "width": 150 },
+        { "field": "customer_name", "title": "ग्राहक नाम", "width": 200 },
+        { "field": "product_name", "title": "उत्पाद नाम", "width": 200 },
+        { "field": "amount", "title": "राशि", "width": 120, "align": "right" },
+        { "field": "sales_date", "title": "बिक्री तिथि", "width": 150 }
+      ],
+      "pageSize": 10
+    }
+  ]
+}
+```
+
+रिपोर्ट बनाएं:
+
+```bash
+openyida create-report APP_XXXXXX "बिक्री विश्लेषण रिपोर्ट" ./sales-report-charts.json
+```
+
+---
+
+## चार्ट प्रकार संदर्भ
+
+| प्रकार | विवरण | आवश्यक फ़ील्ड |
+|------|------|----------|
+| `bar` | बार चार्ट | xField, yField |
+| `line` | लाइन चार्ट | xField, yField |
+| `pie` | पाई चार्ट | categoryField, valueField |
+| `table` | डेटा टेबल | columns |
+| `area` | एरिया चार्ट | xField, yField |
+| `scatter` | स्कैटर चार्ट | xField, yField |
+
+---
+
+## एग्रीगेशन फ़ंक्शन
+
+| फ़ंक्शन | विवरण |
+|------|------|
+| `sum` | योग |
+| `avg` | औसत |
+| `count` | गणना |
+| `max` | अधिकतम |
+| `min` | न्यूनतम |
+
+---
+
+## सर्वोत्तम अभ्यास
+
+1. **उचित चार्ट प्रकार चुनें** - प्रवृत्ति के लिए लाइन, तुलना के लिए बार, अनुपात के लिए पाई
+2. **चार्ट की संख्या नियंत्रित करें** - प्रति रिपोर्ट 6 से अधिक चार्ट न रखें
+3. **डेटा टेबल का उपयोग करें** - चार्ट के साथ विस्तृत डेटा प्रदर्शित करें, मूल मान देखने के लिए
+4. **उचित पेजिनेशन सेट करें** - डेटा टेबल के लिए प्रति पृष्ठ 10-20 रिकॉर्ड की अनुशंसा

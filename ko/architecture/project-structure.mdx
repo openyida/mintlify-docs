@@ -1,13 +1,13 @@
 ---
-title: "프로젝트 구조"
-description: "OpenYida 프로젝트 디렉토리 구조 및 코드 조직 방식"
+title: 프로젝트 구조
+description: OpenYida 프로젝트 디렉터리 구조 및 코드 조직
 ---
 
 # 프로젝트 구조
 
-OpenYida는 모듈형 아키텍처 설계를 채택하여 코드 조직이 명확하고 유지보수와 확장이 용이합니다.
+OpenYida는 모듈형 아키텍처 설계를 채택하며 코드 조직이 명확하여 유지 관리와 확장이 쉽습니다.
 
-## 디렉토리 개요
+## 디렉터리 개요
 
 ```
 openyida/
@@ -26,24 +26,24 @@ openyida/
 │   ├── core/              # 핵심 기능 모듈
 │   │   ├── yida-api.ts    # Yida API 캡슐화
 │   │   ├── ai-service.ts  # AI 서비스 통합
-│   │   ├── config.ts      # 설정 관리
+│   │   ├── config.ts      # 구성 관리
 │   │   └── auth.ts        # 인증 처리
 │   ├── utils/             # 유틸리티 함수
 │   │   ├── logger.ts
 │   │   ├── file.ts
 │   │   └── validator.ts
-│   └── types/             # TypeScript 타입 정의
+│   └── types/             # TypeScript 유형 정의
 │       ├── yida.ts
 │       ├── ai.ts
 │       └── index.ts
 ├── skills/                # 스킬 시스템
 │   ├── builtin/           # 내장 스킬
-│   └── custom/            # 커스텀 스킬
+│   └── custom/            # 사용자 정의 스킬
 ├── templates/             # 코드 템플릿
 │   ├── app/
 │   ├── form/
 │   └── page/
-├── docs/                  # 문서
+├── docs/                  # 문서 리소스
 ├── tests/                 # 테스트 파일
 ├── package.json
 ├── tsconfig.json
@@ -54,45 +54,45 @@ openyida/
 
 ### src/commands/
 
-모든 CLI 명령 구현을 포함하며, 각 파일은 서브명령에 대응:
+모든 CLI 명령 구현을 저장하며 각 파일이 하위 명령에 해당합니다：
 
 | 파일 | 기능 |
 |------|------|
 | `create-app.ts` | Yida 앱 생성 |
-| `create-form.ts` | 폼 페이지 생성 |
-| `create-page.ts` | 커스텀 페이지 생성 |
+| `create-form.ts` | 양식 페이지 생성 |
+| `create-page.ts` | 사용자 정의 페이지 생성 |
 | `publish.ts` | 앱 게시 |
 | `share.ts` | 앱 공유 |
 | `data.ts` | 데이터 관리 작업 |
 | `connector.ts` | 커넥터 관리 |
-| `report.ts` | 리포트 작업 |
+| `report.ts` | 보고서 작업 |
 | `doctor.ts` | 진단 도구 |
 | `login.ts` | 로그인 인증 |
 
 ### src/core/
 
-핵심 비즈니스 로직 모듈:
+핵심 비즈니스 로직 모듈：
 
-- **yida-api.ts**: Yida 오픈 플랫폼 API 캡슐화, 통합 인터페이스 호출 제공
-- **ai-service.ts**: 여러 AI 서비스(OpenAI, Claude, 통의천문 등) 통합
-- **config.ts**: 로컬 설정 파일(~/.openyida/config.json) 관리
-- **auth.ts**: 로그인 상태, 토큰 갱신, 멀티 조직 전환 처리
+- **yida-api.ts**: Yida 오픈 플랫폼 API를 캡슐화하고 통일 인터페이스 호출 제공
+- **ai-service.ts**: 여러 AI 서비스（OpenAI, Claude, 通义千問 등）통합
+- **config.ts**: 로컬 구성 파일（~/.openyida/config.json）관리
+- **auth.ts**: 로그인 상태, 토큰 갱신, 여러 조직 전환 처리
 
 ### src/utils/
 
-범용 유틸리티 함수:
+일반 유틸리티 함수：
 
-- **logger.ts**: 로그 출력, 레벨 분류 및 컬러 지원
-- **file.ts**: 파일 작업 헬퍼 함수
-- **validator.ts**: 입력 검증 및 체크
+- **logger.ts**: 로그 출력, 레벨별 및 색상 지원
+- **file.ts**: 파일 작업 보조 함수
+- **validator.ts**: 입력 검증 및 검사
 
 ### src/types/
 
-TypeScript 타입 정의, 코드 타입 안전성 보장:
+TypeScript 유형 정의, 코드 유형 안전성 보장：
 
-- **yida.ts**: Yida API 관련 타입
-- **ai.ts**: AI 서비스 관련 타입
-- **index.ts**: 범용 타입 내보내기
+- **yida.ts**: Yida API 관련 유형
+- **ai.ts**: AI 서비스 관련 유형
+- **index.ts**: 일반 유형 내보내기
 
 ## 스킬 시스템
 
@@ -100,20 +100,20 @@ TypeScript 타입 정의, 코드 타입 안전성 보장:
 skills/
 ├── builtin/               # 내장 스킬
 │   ├── code-generator/    # 코드 생성
-│   ├── form-builder/      # 폼 빌드
+│   ├── form-builder/      # 양식 구축
 │   ├── page-designer/     # 페이지 디자인
 │   └── data-analyzer/     # 데이터 분석
-└── custom/                # 사용자 커스텀 스킬
+└── custom/                # 사용자 정의 스킬
     └── (사용자 확장)
 ```
 
-스킬은 플러그인 아키텍처를 채택하여 핫 로드와 동적 확장을 지원합니다.
+스킬은 플러그인 아키텍처를 채택하며 핫 로딩과 동적 확장을 지원합니다.
 
-## 설정 관리
+## 구성 관리
 
-### 로컬 설정
+### 로컬 구성
 
-저장 위치: `~/.openyida/config.json`
+저장 위치：`~/.openyida/config.json`
 
 ```json
 {
@@ -133,9 +133,9 @@ skills/
 }
 ```
 
-### 프로젝트 설정
+### 프로젝트 구성
 
-프로젝트 루트 디렉토리에 `.openyidarc.json` 생성 가능:
+프로젝트 루트 디렉터리에 `.openyidarc.json`을 만들 수 있습니다：
 
 ```json
 {
@@ -152,19 +152,19 @@ skills/
 
 ### 새 명령 추가
 
-1. `src/commands/`에 새 파일 생성
+1. `src/commands/`에서 새 파일 만들기
 2. 명령 처리 함수 구현
 3. `src/index.ts`에서 명령 등록
 
 ### 새 스킬 추가
 
-1. `skills/custom/`에 스킬 디렉토리 생성
+1. `skills/custom/`에서 스킬 디렉터리 만들기
 2. `skill.json`과 메인 로직 구현
-3. `openyida skill load`로 로드
+3. `openyida skill load` 사용하여 로드
 
 ## 개발 규범
 
-- 모든 새 기능에 타입 정의 포함
-- 명령 구현에 `--help` 문서 포함
-- 핵심 기능에 단위 테스트 커버리지 필요
-- ESLint와 Prettier 설정 준수
+- 모든 새 기능에는 유형 정의가 필요합니다
+- 명령 구현에는 `--help` 문서가 필요합니다
+- 핵심 기능에는 단위 테스트 커버리지가 필요합니다
+- ESLint 및 Prettier 구성을 따릅니다

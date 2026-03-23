@@ -1,9 +1,234 @@
 ---
-title: "レポートとグラフ"
-description: "宜搭レポートとデータ可視化の作成。"
+title: "レポートとチャート"
+description: "Yidaレポートを作成し、データ可視化チャートを追加します。"
 icon: "chart-column"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/report) or [Chinese version](/zh/features/report) for complete content.
-</Tip>
+OpenYidaはYidaレポートの作成と各種チャートの追加をサポートし、データの可視化表示を実現します。
+
+---
+
+## 機能概要
+
+<CardGroup cols={2}>
+  <Card title="レポート作成" icon="file-plus">
+    ワンクリックでYidaレポートを作成し、カスタム設定をサポートします。
+  </Card>
+  <Card title="チャート追加" icon="chart-pie">
+    既存のレポートに複数タイプのチャートを追加します。
+  </Card>
+  <Card title="データバインディング" icon="link">
+    フォームデータソースを自動的にバインドし、データをリアルタイムで表示します。
+  </Card>
+  <Card title="チャートタイプ" icon="shapes">
+    棒グラフ、折れ線グラフ、円グラフ、テーブルなど、複数のチャートタイプをサポートします。
+  </Card>
+</CardGroup>
+
+---
+
+## レポート作成
+
+### 基本的な使用法
+
+```bash
+openyida create-report <appType> "レポート名" '<チャート定義JSON>'
+```
+
+### 例：販売レポートの作成
+
+```bash
+openyida create-report APP_XXXXXX "月次販売レポート" '{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "月次売上高",
+      "dataSource": "form_sales",
+      "xField": "month",
+      "yField": "amount"
+    },
+    {
+      "type": "pie",
+      "title": "製品販売比率",
+      "dataSource": "form_sales",
+      "categoryField": "product_type",
+      "valueField": "amount"
+    }
+  ]
+}'
+```
+
+### ファイルからチャート定義を読み込む
+
+```bash
+openyida create-report APP_XXXXXX "年度統計レポート" ./charts-config.json
+```
+
+---
+
+## チャート定義形式
+
+### 棒グラフ
+
+```json
+{
+  "type": "bar",
+  "title": "棒グラフタイトル",
+  "dataSource": "form_uuid",
+  "xField": "category_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### 折れ線グラフ
+
+```json
+{
+  "type": "line",
+  "title": "トレンドグラフタイトル",
+  "dataSource": "form_uuid",
+  "xField": "date_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### 円グラフ
+
+```json
+{
+  "type": "pie",
+  "title": "比率グラフタイトル",
+  "dataSource": "form_uuid",
+  "categoryField": "category_field",
+  "valueField": "value_field"
+}
+```
+
+### データテーブル
+
+```json
+{
+  "type": "table",
+  "title": "データ詳細",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "名称" },
+    { "field": "amount", "title": "金額" },
+    { "field": "date", "title": "日付" }
+  ]
+}
+```
+
+---
+
+## レポートへのチャート追加
+
+```bash
+openyida append-chart <appType> <reportId> '<チャート定義JSON>'
+```
+
+### 例
+
+```bash
+openyida append-chart APP_XXXXXX REPORT_XXXXX '{
+  "type": "line",
+  "title": "成長トレンド",
+  "dataSource": "form_sales",
+  "xField": "month",
+  "yField": "growth_rate"
+}'
+```
+
+---
+
+## 完全な設定例
+
+### sales-report-charts.json
+
+```json
+{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "月次売上高統計",
+      "dataSource": "form_monthly_sales",
+      "xField": "month",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "color": "#0066FF"
+    },
+    {
+      "type": "pie",
+      "title": "製品カテゴリ比率",
+      "dataSource": "form_sales",
+      "categoryField": "product_category",
+      "valueField": "sales_amount",
+      "showLegend": true
+    },
+    {
+      "type": "line",
+      "title": "販売トレンド",
+      "dataSource": "form_daily_sales",
+      "xField": "date",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "smooth": true
+    },
+    {
+      "type": "table",
+      "title": "販売詳細",
+      "dataSource": "form_sales",
+      "columns": [
+        { "field": "order_no", "title": "注文番号", "width": 150 },
+        { "field": "customer_name", "title": "顧客名", "width": 200 },
+        { "field": "product_name", "title": "製品名", "width": 200 },
+        { "field": "amount", "title": "金額", "width": 120, "align": "right" },
+        { "field": "sales_date", "title": "販売日", "width": 150 }
+      ],
+      "pageSize": 10
+    }
+  ]
+}
+```
+
+レポート作成：
+
+```bash
+openyida create-report APP_XXXXXX "販売分析レポート" ./sales-report-charts.json
+```
+
+---
+
+## チャートタイプ参照
+
+| タイプ | 説明 | 必須フィールド |
+|------|------|----------|
+| `bar` | 棒グラフ | xField, yField |
+| `line` | 折れ線グラフ | xField, yField |
+| `pie` | 円グラフ | categoryField, valueField |
+| `table` | データテーブル | columns |
+| `area` | 面グラフ | xField, yField |
+| `scatter` | 散布図 | xField, yField |
+
+---
+
+## 集計関数
+
+| 関数 | 説明 |
+|------|------|
+| `sum` | 合計 |
+| `avg` | 平均 |
+| `count` | カウント |
+| `max` | 最大値 |
+| `min` | 最小値 |
+
+---
+
+## ベストプラクティス
+
+1. **適切なチャートタイプを選択** - トレンドは折れ線グラフ、比較は棒グラフ、比率は円グラフ
+2. **チャート数を制御** - 1つのレポートは6つ以下のチャートを推奨
+3. **データテーブルを使用** - チャートと組み合わせて詳細データを表示し、元の値を確認しやすくします
+4. **適切なページネーションを設定** - データテーブルは1ページあたり10-20件を推奨

@@ -1,9 +1,132 @@
 ---
-title: "Technologie-Stack"
-description: "Technische Architektur und Abhängigkeiten von OpenYida."
+title: "Technische Architektur"
+description: "Technische Architektur von OpenYida, Kernmodule und Designprinzipien."
 icon: "layer-group"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/tech-stack) or [Chinese version](/zh/architecture/tech-stack) for complete content.
-</Tip>
+## Technische Stack-Architektur
+
+![Technische Stack-Architektur](/images/architecture-tech-stack.png)
+
+Die technische Stack von OpenYida ist in zwei Teile unterteilt: Entwicklungsumgebung und Cloud-Plattform:
+
+### Entwicklungsumgebung (Development Environment)
+- **Node.js** - Laufzeitumgebung
+- **Python** - Playwright-Automatisierungstests
+- **Git** - Versionskontrolle
+
+### Automatisierte Tests (Playwright)
+- Browser-Automatisierung
+- End-to-End-Tests
+| Datei | Funktion |
+|------|------|
+| `create-app.ts` | Yida-Anwendung erstellen |
+| `create-form.ts` | Formularseiten erstellen |
+| `create-page.ts` | Benutzerdefinierte Seiten erstellen |
+| `publish.ts` | Anwendung veröffentlichen |
+| `share.ts` | Anwendung teilen |
+| `data.ts` | Datenverwaltungsoperationen |
+| `connector.ts` | Konnektorverwaltung |
+| `report.ts` | Berichtsoperationen |
+| `doctor.ts` | Diagnosetool |
+| `login.ts` | Anmeldeauthentifizierung |
+
+### src/core/
+
+Kerngeschäftslogik-Module:
+
+- **yida-api.ts** : Kapselt die Yida-Open-Plattform-API, stellt einheitliche Schnittstellenaufrufe bereit
+- **ai-service.ts** : Integriert mehrere KI-Dienste (OpenAI, Claude, 通义千问, etc.)
+- **config.ts** : Verwaltet lokale Konfigurationsdateien (~/.openyida/config.json)
+- **auth.ts** : Verarbeitet Anmeldestatus, Token-Aktualisierung, Multi-Organisationswechsel
+
+### src/utils/
+
+Allgemeine Hilfsfunktionen:
+
+- **logger.ts** : Protokollausgabe, unterstützt Klassifizierung und Farben
+- **file.ts** : Dateioperationshilfsfunktionen
+- **validator.ts** : Eingabevalidierung und -prüfung
+
+### src/types/
+
+TypeScript-Typdefinitionen, stellen Codesicherheit sicher:
+
+- **yida.ts** : Yida-API-bezogene Typen
+- **ai.ts** : KI-Dienst-bezogene Typen
+- **index.ts** : Allgemeine Typexporte
+
+## Skill-System
+
+```
+skills/
+├── builtin/               # Integrierte Skills
+│   ├── code-generator/    # Codegenerierung
+│   ├── form-builder/      # Formularerstellung
+│   ├── page-designer/     # Seitendesign
+│   └── data-analyzer/     # Datenanalyse
+└── custom/                # Benutzerdefinierte Skills
+    └── (Benutzererweiterungen)
+```
+
+Skills verwenden eine Plugin-Architektur, unterstützen Hot-Loading und dynamische Erweiterung.
+
+## Konfigurationsverwaltung
+
+### Lokale Konfiguration
+
+Speicherort: `~/.openyida/config.json`
+
+```json
+{
+  "defaultOrg": "org-default",
+  "orgs": {
+    "org-default": {
+      "accessToken": "xxx",
+      "refreshToken": "xxx",
+      "expiresAt": 1234567890
+    }
+  },
+  "aiProvider": "openai",
+  "aiConfig": {
+    "apiKey": "sk-xxx",
+    "model": "gpt-4"
+  }
+}
+```
+
+### Projektkonfiguration
+
+Projektstammverzeichnis kann `.openyidarc.json` erstellen:
+
+```json
+{
+  "appId": "APP-XXX",
+  "defaultEnv": "dev",
+  "environments": {
+    "dev": { "appKey": "xxx", "appSecret": "xxx" },
+    "prod": { "appKey": "xxx", "appSecret": "xxx" }
+  }
+}
+```
+
+## Erweiterungsmechanismus
+
+### Neuen Befehl hinzufügen
+
+1. Neue Datei in `src/commands/` erstellen
+2. Befehlsverarbeitungsfunktion implementieren
+3. Befehl in `src/index.ts` registrieren
+
+### Neuen Skill hinzufügen
+
+1. Skill-Verzeichnis in `skills/custom/` erstellen
+2. `skill.json` und Hauptlogik implementieren
+3. Mit `openyida skill load` laden
+
+## Entwicklungsnormen
+
+- Alle neuen Funktionen müssen Typdefinitionen enthalten
+- Befehlsimplementierung muss `--help`-Dokumentation enthalten
+- Kernfunktionen müssen durch Unit-Tests abgedeckt sein
+- Befolgen Sie ESLint- und Prettier-Konfigurationen

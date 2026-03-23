@@ -1,0 +1,84 @@
+---
+title: "常見問題"
+description: "OpenYida 常見問題解答。"
+icon: "circle-question"
+---
+
+<AccordionGroup>
+
+  <Accordion title="使用 OpenYida 需要宜搭帳號嗎？">
+    需要。OpenYida 在[宜搭](https://www.aliwork.com)低代碼平台上建立和管理應用程式，需要阿里/釘釘帳號且已開通宜搭。執行 `openyida login` 認證。
+  </Accordion>
+
+  <Accordion title="支援哪些 AI 工具？">
+    OpenYida 相容任何支援 MCP（模型上下文協議）或能讀取 markdown 技能文件的 AI 編碼工具。已確認支援：**Claude Code、Aone Copilot、OpenCode、Cursor、Visual Studio Code、Qoder、悟空**。實際上，任何能執行 shell 指令的工具都可用。
+  </Accordion>
+
+  <Accordion title="需要什麼 Node.js 版本？">
+    需要 Node.js **≥ 18**。用 `node --version` 檢查版本。從 [nodejs.org](https://nodejs.org) 下載最新 LTS 版。
+  </Accordion>
+
+  <Accordion title="登入二維碼不顯示怎麼辦？">
+    嘗試在支援瀏覽器啟動的終端機執行 `openyida login`。如處於無頭環境（如遠端伺服器），若在釘釘/悟空環境使用 `openyida login --wukong`，或複製終端機輸出的登入 URL 於本地瀏覽器開啟。
+  </Accordion>
+
+  <Accordion title="工作階段過期如何重新整理？">
+    執行 `openyida auth refresh` 續期工作階段，無需完整登入流程。如失敗，執行 `openyida login` 重新認證。
+  </Accordion>
+
+  <Accordion title="可存取多個宜搭組織，如何切換？">
+    ```bash
+    openyida org list       # 列出所有組織及 corpId
+    openyida org switch --corp-id <corpId>   # 切換到目標組織
+    openyida env            # 確認切換
+    ```
+  </Accordion>
+
+  <Accordion title="AI 產生的表單缺少欄位，如何新增？">
+    直接告知 AI：
+    ```
+    給 [頁面名] 新增一個 [欄位名] 欄位，欄位類型：[文字/數字/日期/下拉式選單/...]，設為必填
+    ```
+    OpenYida 會呼叫 `openyida create-form` 使用更新後的 Schema，合併新欄位而不覆蓋現有欄位。
+  </Accordion>
+
+  <Accordion title="可在宜搭視覺化編輯器中編輯產生的應用嗎？">
+    完全可以。產出是標準宜搭應用程式 —— 可隨時在宜搭平台視覺化編輯器中開啟並手動修改。OpenYida 產生應用程式，而非鎖定設定。
+  </Accordion>
+
+  <Accordion title="如何讓應用公開存取？">
+    ```
+    把 [頁面名] 頁面設為公開存取
+    ```
+    或直接執行：
+    ```bash
+    openyida save-share-config
+    ```
+    設定頁面分享設定，任何人可透過連結存取，無需登入。
+  </Accordion>
+
+  <Accordion title="可用 OpenYida 遷移現有的宜搭應用嗎？">
+    可以。用 `openyida export` 從現有應用程式產生遷移套件，用 `openyida import` 在其他組織或環境重建。
+  </Accordion>
+
+  <Accordion title="`create-form` 和 `create-page` 有什麼區別？">
+    - **`create-form`**：建立宜搭**表單頁面** —— 資料錄入表單，底層使用宜搭內建資料儲存。用於結構化資料收集（報名、申請、記錄）。
+    - **`create-page`**：建立**自訂展示頁面** —— 基於 JSX 的頁面，用於儀表板、登陸頁面、互動式 UI。透過 `openyida publish` 編譯發布。
+  </Accordion>
+
+  <Accordion title="OpenYida 支援流程/審批工作流程嗎？">
+    支援。用 `openyida create-process` 建立帶審批步驟的流程表單，用 `openyida configure-process` 定義工作流程規則（審批人、條件、通知）。
+  </Accordion>
+
+  <Accordion title="出問題了，如何除錯？">
+    自動偵測並解決最常見問題：過期工作階段、缺失設定檔案、環境不匹配。    2. 執行 `openyida env` — 驗證登入狀態和環境
+    3. 執行 `openyida auth status` — 檢查工作階段有效性
+    4. 檢視 [GitHub Issues](https://github.com/openyida/openyida/issues) 了解已知問題
+    5. 如是新 bug，提交 issue 並附：Node.js 版本、執行的指令、完整錯誤輸出
+  </Accordion>
+
+  <Accordion title="如何為 OpenYida 做貢獻？">
+    閱讀[貢獻指南](/zh-HK/contributing)了解完整流程。簡言之：fork 倉庫、在功能分支修改、執行 `npm test`、提交 PR。歡迎 AI 輔助貢獻！
+  </Accordion>
+
+</AccordionGroup>

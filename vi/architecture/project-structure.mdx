@@ -1,17 +1,17 @@
 ---
-title: "Cấu trúc dự án"
-description: "Cấu trúc thư mục dự án OpenYida và tổ chức mã"
+title: Cấu Trúc Dự Án
+description: Cấu trúc thư mục dự án OpenYida và cách tổ chức mã nguồn
 ---
 
-# Cấu trúc dự án
+# Cấu Trúc Dự Án
 
-OpenYida áp dụng thiết kế kiến trúc mô-đun với tổ chức mã rõ ràng, giúp dễ dàng bảo trì và mở rộng.
+OpenYida áp dụng thiết kế kiến trúc mô-đun với tổ chức mã nguồn rõ ràng, thuận tiện cho việc bảo trì và mở rộng.
 
-## Tổng quan thư mục
+## Tổng Quan Thư Mục
 
 ```
 openyida/
-├── src/
+├ src/
 │   ├── commands/          # Triển khai lệnh CLI
 │   │   ├── create-app.ts
 │   │   ├── create-form.ts
@@ -22,39 +22,39 @@ openyida/
 │   │   ├── connector.ts
 │   │   ├── report.ts
 │   │   ├── doctor.ts
-│   │   └── login.ts
+│   │  └ login.ts
 │   ├── core/              # Mô-đun chức năng cốt lõi
 │   │   ├── yida-api.ts    # Đóng gói API Yida
 │   │   ├── ai-service.ts  # Tích hợp dịch vụ AI
 │   │   ├── config.ts      # Quản lý cấu hình
-│   │   └── auth.ts        # Xử lý xác thực
+│   │  └ auth.ts        # Xử lý xác thực
 │   ├── utils/             # Hàm tiện ích
 │   │   ├── logger.ts
 │   │   ├── file.ts
-│   │   └── validator.ts
-│   └── types/             # Định nghĩa kiểu TypeScript
+│   │  └ validator.ts
+│  └ types/             # Định nghĩa kiểu TypeScript
 │       ├── yida.ts
 │       ├── ai.ts
-│       └── index.ts
-├── skills/                # Hệ thống kỹ năng
-│   ├── builtin/           # Kỹ năng tích hợp
-│   └── custom/            # Kỹ năng tùy chỉnh
-├── templates/             # Mẫu mã
+│      └ index.ts
+├ skills/                # Hệ thống Skills
+│   ├── builtin/           # Skills tích hợp sẵn
+│  └ custom/            # Skills tùy chỉnh
+├ templates/             # Template mã nguồn
 │   ├── app/
 │   ├── form/
-│   └── page/
-├── docs/                  # Tài liệu
-├── tests/                 # Tệp kiểm thử
-├── package.json
-├── tsconfig.json
-└── README.md
+│  └ page/
+├ docs/                  # Tài nguyên tài liệu
+├ tests/                 # Tệp kiểm thử
+├ package.json
+├ tsconfig.json
+└ README.md
 ```
 
-## Mô tả mô-đun cốt lõi
+## Mô Tả Mô-đun Cốt Lõi
 
 ### src/commands/
 
-Chứa triển khai tất cả lệnh CLI, mỗi tệp tương ứng với một lệnh con:
+Lưu trữ triển khai tất cả lệnh CLI, mỗi tệp tương ứng với một lệnh con:
 
 | Tệp | Chức năng |
 |------|------|
@@ -64,54 +64,54 @@ Chứa triển khai tất cả lệnh CLI, mỗi tệp tương ứng với một
 | `publish.ts` | Xuất bản ứng dụng |
 | `share.ts` | Chia sẻ ứng dụng |
 | `data.ts` | Thao tác quản lý dữ liệu |
-| `connector.ts` | Quản lý trình kết nối |
+| `connector.ts` | Quản lý connector |
 | `report.ts` | Thao tác báo cáo |
 | `doctor.ts` | Công cụ chẩn đoán |
 | `login.ts` | Xác thực đăng nhập |
 
 ### src/core/
 
-Mô-đun logic kinh doanh cốt lõi:
+Mô-đun logic nghiệp vụ cốt lõi:
 
-- **yida-api.ts**: Đóng gói API nền tảng mở Yida, cung cấp giao diện gọi thống nhất
-- **ai-service.ts**: Tích hợp nhiều dịch vụ AI (OpenAI, Claude, Tongyi Qwen, v.v.)
+- **yida-api.ts**: Đóng gói API nền tảng mở Yida, cung cấp gọi giao diện thống nhất
+- **ai-service.ts**: Tích hợp nhiều dịch vụ AI (OpenAI, Claude, Thông Nghĩa Thiên Vấn, v.v.)
 - **config.ts**: Quản lý tệp cấu hình cục bộ (~/.openyida/config.json)
-- **auth.ts**: Xử lý trạng thái đăng nhập, làm mới token, chuyển đổi đa tổ chức
+- **auth.ts**: Xử lý trạng thái đăng nhập, làm mới Token, chuyển đổi nhiều tổ chức
 
 ### src/utils/
 
 Hàm tiện ích chung:
 
-- **logger.ts**: Xuất log, hỗ trợ cấp độ và màu sắc
+- **logger.ts**: Xuất log, hỗ trợ phân cấp và màu sắc
 - **file.ts**: Hàm hỗ trợ thao tác tệp
 - **validator.ts**: Xác thực và kiểm tra đầu vào
 
 ### src/types/
 
-Định nghĩa kiểu TypeScript, đảm bảo an toàn kiểu mã:
+Định nghĩa kiểu TypeScript, đảm bảo an toàn kiểu mã nguồn:
 
-- **yida.ts**: Các kiểu liên quan API Yida
-- **ai.ts**: Các kiểu liên quan dịch vụ AI
-- **index.ts**: Xuất các kiểu chung
+- **yida.ts**: Kiểu liên quan đến API Yida
+- **ai.ts**: Kiểu liên quan đến dịch vụ AI
+- **index.ts**: Xuất kiểu chung
 
-## Hệ thống kỹ năng
+## Hệ Thống Skills
 
 ```
 skills/
-├── builtin/               # Kỹ năng tích hợp
-│   ├── code-generator/    # Tạo mã
+├ builtin/               # Skills tích hợp sẵn
+│   ├── code-generator/    # Tạo mã nguồn
 │   ├── form-builder/      # Xây dựng biểu mẫu
 │   ├── page-designer/     # Thiết kế trang
-│   └── data-analyzer/     # Phân tích dữ liệu
-└── custom/                # Kỹ năng tùy chỉnh người dùng
-    └── (phần mở rộng người dùng)
+│  └ data-analyzer/     # Phân tích dữ liệu
+└ custom/                # Skills tùy chỉnh người dùng
+   └ (mở rộng người dùng)
 ```
 
-Kỹ năng áp dụng kiến trúc plugin, hỗ trợ tải động và mở rộng.
+Skills áp dụng kiến trúc plugin, hỗ trợ tải nóng và mở rộng động.
 
-## Quản lý cấu hình
+## Quản Lý Cấu Hình
 
-### Cấu hình cục bộ
+### Cấu Hình Cục Bộ
 
 Vị trí lưu trữ: `~/.openyida/config.json`
 
@@ -133,7 +133,7 @@ Vị trí lưu trữ: `~/.openyida/config.json`
 }
 ```
 
-### Cấu hình dự án
+### Cấu Hình Dự Án
 
 Có thể tạo `.openyidarc.json` trong thư mục gốc dự án:
 
@@ -148,23 +148,23 @@ Có thể tạo `.openyidarc.json` trong thư mục gốc dự án:
 }
 ```
 
-## Cơ chế mở rộng
+## Cơ Chế Mở Rộng
 
-### Thêm lệnh mới
+### Thêm Lệnh Mới
 
 1. Tạo tệp mới trong `src/commands/`
 2. Triển khai hàm xử lý lệnh
 3. Đăng ký lệnh trong `src/index.ts`
 
-### Thêm kỹ năng mới
+### Thêm Skill Mới
 
-1. Tạo thư mục kỹ năng trong `skills/custom/`
+1. Tạo thư mục Skill trong `skills/custom/`
 2. Triển khai `skill.json` và logic chính
-3. Tải với `openyida skill load`
+3. Tải bằng `openyida skill load`
 
-## Quy chuẩn phát triển
+## Quy Chuẩn Phát Triển
 
-- Tất cả tính năng mới phải bao gồm định nghĩa kiểu
+- Tất cả chức năng mới phải bao gồm định nghĩa kiểu
 - Triển khai lệnh phải bao gồm tài liệu `--help`
-| Tính năng cốt lõi phải có độ phủ kiểm thử đơn vị
-| Tuân theo cấu hình ESLint và Prettier
+- Chức năng cốt lõi phải có độ phủ kiểm thử đơn vị
+- Tuân thủ cấu hình ESLint và Prettier

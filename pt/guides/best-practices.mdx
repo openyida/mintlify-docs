@@ -1,9 +1,133 @@
 ---
-title: "Melhores Práticas"
-description: "Recomendações para aproveitar ao máximo o OpenYida."
+title: "Melhores práticas"
+description: "Recomendações de melhores práticas para usar o OpenYida e a geração de aplicativos orientada por IA."
 icon: "star"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/guides/best-practices) or [Chinese version](/zh/guides/best-practices) for complete content.
-</Tip>
+## 1. Escrever prompts detalhados
+
+A qualidade dos aplicativos gerados é proporcional ao nível de detalhe dos prompts. Comparação:
+
+<CodeGroup>
+
+```text Vago (Evitar)
+Criar um CRM
+```
+
+```text Detalhado (Recomendado)
+Criar um CRM com três formulários relacionados:
+1. Formulário de leads — Campos: Nome, Empresa, Telefone, E-mail, Fonte (Dropdown: Indicação/Site/Evento/Ligação fria), Status (Dropdown: Novo lead/Contatado/Qualificado/Desqualificado), Atribuído a (Seletor de membro)
+2. Formulário de cliente — Convertido de leads, Campos: Nome da empresa, Setor, Receita anual, Contato principal, Gerente de conta
+3. Formulário de oportunidade — Vinculado a clientes, Campos: Nome da oportunidade, Valor, Estágio (Dropdown: Proposta/Negociação/Ganho/Perdido), Data prevista de fechamento, Notas
+```
+
+</CodeGroup>
+
+---
+
+## 2. Usar documentos de requisitos
+
+Para aplicativos complexos, escreva primeiro um PRD e depois entregue à IA:
+
+```
+Gerar um aplicativo YiDa com base no seguinte documento de requisitos:
+
+[Colar PRD — nomes de campos, tipos, regras de validação, fluxos de trabalho, etc.]
+```
+
+Esta abordagem produz resultados mais precisos do que prompts iterativos.
+
+---
+
+## 3. Iteração incremental
+
+Não tente construir tudo em um único prompt. Construa primeiro a estrutura central e depois adicione complexidade gradualmente:
+
+```
+Etapa 1: Criar um formulário básico de informações do funcionário
+Etapa 2: Adicionar um formulário de solicitação de férias vinculado aos funcionários
+Etapa 3: Configurar o fluxo de trabalho de aprovação de férias
+Etapa 4: Adicionar um painel do gerente mostrando aprovações pendentes
+Etapa 5: Publicar o painel como página pública
+```
+
+---
+
+## 4. Verificar cada etapa
+
+Após a IA criar cada componente, faça-a verificar:
+
+```
+Mostrar o Schema atual do formulário [Nome do formulário]
+Verificar se a página [Nome da página] está publicada e acessível
+```
+
+Detecte problemas cedo antes que se acumulem em problemas maiores.
+
+---
+
+## 5. Reutilizar diretório de trabalho do projeto
+
+Execute `openyida copy` apenas uma vez por projeto, não a cada sessão. O arquivo `project/config.json` armazena `appId` e `corpId` — a IA o usa para conhecer o aplicativo alvo. Não exclua este arquivo no meio do projeto.
+
+---
+
+## 6. Login específico do ambiente
+
+Diferentes ferramentas de IA requerem diferentes métodos de login:
+
+| Ferramenta de IA | Comando de login |
+|---------|----------|
+| Claude Code, Cursor, VSCode | `openyida login` |
+| Wukong | `openyida login --wukong` |
+| OpenCode, Aone Copilot | `openyida login` |
+
+Ao alternar ferramentas, execute primeiro `openyida env` para confirmar o ambiente ativo.
+
+---
+
+## 7. Usar CDN para imagens de páginas personalizadas
+
+Quando páginas personalizadas contêm imagens, faça upload delas para o CDN primeiro para garantir renderização confiável:
+
+```bash
+openyida cdn-config   # Configurar Alibaba Cloud OSS + CDN (uma vez)
+openyida cdn-upload ./my-image.png   # Obter URL de CDN estável
+```
+
+Em seguida, referencie a URL do CDN em seu prompt de página:
+```
+Adicionar uma imagem de banner hero à página de destino usando esta URL de CDN: https://cdn.example.com/banner.png
+```
+
+---
+
+## 8. Lidar com configuração multi-organização
+
+Quando você pode acessar várias organizações YiDa:
+
+```bash
+openyida org list          # Ver todas as organizações disponíveis
+openyida org switch --corp-id <id>   # Alternar para a organização alvo
+openyida env               # Confirmar a alternância
+```
+
+Sempre verifique a organização ativa antes de criar aplicativos para evitar construir no espaço errado.
+
+---
+
+## 9. Executar Doctor antes de depurar
+
+Antes de gastar tempo depurando comandos com falha, execute:
+
+```bash
+openyida doctor --fix
+```
+
+Detecta e resolve automaticamente os problemas mais comuns: sessões expiradas, arquivos de configuração ausentes, incompatibilidades de ambiente.
+
+---
+
+## 10. PRs assistidas por IA bem-vindas
+
+Ao contribuir para o próprio OpenYida, aceite completamente o código gerado por IA. Indique a ferramenta de IA usada na descrição do PR — isso ajuda os mantenedores a entender o contexto de geração e revisar de forma mais eficiente.

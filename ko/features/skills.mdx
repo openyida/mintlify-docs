@@ -1,9 +1,242 @@
 ---
 title: "CLI 참조"
-description: "OpenYida CLI 명령어에 대한 완전한 참조."
+description: "OpenYida의 모든 CLI 명령에 대한 완전한 참조."
 icon: "terminal"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/skills) or [Chinese version](/zh/features/skills) for complete content.
-</Tip>
+OpenYida는 풍부한 CLI 명령을 제공하며 앱의 전체 수명 주기 관리를 지원합니다.
+
+---
+
+## 환경 및 인증
+
+```bash
+# 환경 감지
+openyida env
+
+# 로그인
+openyida login [--qr]              # --qr은 터미널 QR 코드 사용
+openyida login --wukong            # Wukong 환경 전용
+
+# 로그아웃
+openyida logout
+
+# 로그인 상태 관리
+openyida auth status               # 로그인 상태 확인
+openyida auth login                # 로그인 실행
+openyida auth refresh              # 로그인 상태 갱신
+openyida auth logout               # 로그아웃
+
+# 조직 관리
+openyida org list                  # 액세스 가능한 조직 나열
+openyida org switch --corp-id <id> # 조직 전환
+
+# 작업 디렉터리 초기화
+openyida copy [--force]            # project 디렉터리 복사
+
+# 진단 도구
+openyida doctor [--fix]            # 환경 진단
+openyida doctor --monitor          # 헬스 모니터링
+openyida doctor --report <format>  # 보고서 생성 (json|markdown|html)
+```
+
+---
+
+## 앱 관리
+
+```bash
+# 앱 생성
+openyida create-app "<名称>" [desc] [icon] [color] [themeColor]
+
+# 앱 내보내기
+openyida export <appType> [output] # 마이그레이션 패키지 생성
+
+# 앱 가져오기
+openyida import <file> [name]      # 마이그레이션 패키지에서 앱 재구축
+```
+
+---
+
+## 양식 관리
+
+```bash
+# 양식 생성
+openyida create-form create <appType> "<表单名>" <字段JSON> \
+  [--layout <布局>] \
+  [--theme <主题>] \
+  [--label-align <对齐>]
+
+# 양식 업데이트
+openyida create-form update <appType> <formUuid> <修改JSON>
+
+# 양식 Schema 가져오기
+openyida get-schema <appType> <formUuid>
+
+# 양식 구성 업데이트
+openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+```
+
+---
+
+## 페이지 관리
+
+```bash
+# 사용자 정의 페이지 생성
+openyida create-page <appType> "<页面名>"
+
+# 페이지 컴파일 및 게시
+openyida publish <源文件路径> <appType> <formUuid>
+
+# 페이지 공유 구성
+openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
+openyida get-page-config <appType> <formUuid>
+openyida verify-short-url <appType> <formUuid> <url>
+```
+
+---
+
+## 데이터 관리
+
+```bash
+# 통합 데이터 관리
+openyida data <action> <resource> [args]
+
+# 양식 데이터
+openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
+openyida data get form <appType> --inst-id <id>
+openyida data create form <appType> <formUuid> --data-json <JSON>
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
+
+# 프로세스 데이터
+openyida data query process <appType> <formUuid> [--instance-status STATUS]
+openyida data get process <appType> --process-inst-id <id>
+openyida data create process <appType> <formUuid> --process-code <code> --data-json <JSON>
+
+# 작업 관리
+openyida data query tasks <appType> --type <todo|done|submitted|cc>
+openyida data execute task <appType> --task-id <id> --process-inst-id <id> --out-result <AGREE|DISAGREE>
+
+# 하위 양식
+openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id <fieldId>
+```
+
+---
+
+## 프로세스 관리
+
+```bash
+# 프로세스 양식 생성
+openyida create-process <appType> "<表单名>" <字段JSON> --process-code <code>
+
+# 프로세스 규칙 구성
+openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+```
+
+---
+
+## 권한 관리
+
+```bash
+# 양식 권한 쿼리
+openyida get-permission <appType> <formUuid>
+
+# 양식 권한 저장
+openyida save-permission <appType> <formUuid> \
+  [--data-permission <json>] \
+  [--action-permission <json>]
+```
+
+---
+
+## 커넥터 관리
+
+```bash
+# 커넥터 나열
+openyida connector list [--page N] [--size N]
+
+# 커넥터 생성
+openyida connector create "<名称>" "<域名>" --operations <file> [选项]
+
+# 커넥터 세부 정보
+openyida connector detail <connector-id>
+
+# 커넥터 삭제
+openyida connector delete <connector-id> [--force]
+
+# 작업 관리
+openyida connector add-action --connector-id <id> --operations <file> [--confirm]
+openyida connector list-actions <connector-id>
+openyida connector delete-action <connector-id> <operation-id> [--force]
+openyida connector test --connector-id <id> --action <actionId> [选项]
+
+# 인증 계정 관리
+openyida connector list-connections <connector-id>
+openyida connector create-connection <connector-id> "<名称>" [选项]
+
+# 스마트 생성
+openyida connector smart-create --curl "<curl命令>" [--name <name>] [--desc <desc>]
+
+# 보조 도구
+openyida connector parse-api --curl "<curl命令>" --output <file>
+openyida connector gen-template [输出路径]
+```
+
+---
+
+## 보고서 관리
+
+```bash
+# 보고서 생성
+openyida create-report <appType> "<报表名称>" <图表定义JSON或文件路径>
+
+# 차트 추가
+openyida append-chart <appType> <reportId> <图表定义JSON或文件路径>
+```
+
+---
+
+## CDN 관리
+
+```bash
+# CDN 구성
+openyida cdn-config
+
+# 이미지 업로드
+openyida cdn-upload <文件路径>
+
+# 캐시 새로고침
+openyida cdn-refresh <路径>
+```
+
+---
+
+## 전역 옵션
+
+| 옵션 | 설명 |
+|------|------|
+| `--help`, `-h` | 도움말 정보 표시 |
+| `--version`, `-v` | 버전 표시 |
+| `--qr` | 터미널 QR 코드로 로그인 |
+| `--force` | 강제 실행, 확인 건너뛰기 |
+
+---
+
+## 환경 변수
+
+| 변수 | 설명 | 예 |
+|------|------|------|
+| `OPENYIDA_LANG` | 언어 설정 | `zh`, `en`, `ja` |
+| `LANG` / `LC_ALL` | 시스템 언어 | `zh_CN.UTF-8` |
+
+---
+
+## 종료 코드
+
+| 코드 | 의미 |
+|----|------|
+| 0 | 성공 |
+| 1 | 일반 오류 |
+| 2 | 매개변수 오류 |
+| 3 | 로그인 실패/미로그인 |
+| 4 | 네트워크 오류 |
+| 5 | API 오류 |

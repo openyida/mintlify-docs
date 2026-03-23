@@ -1,9 +1,150 @@
 ---
-title: "Cas d'Usage"
-description: "Exemples concrets d'applications pouvant être construites avec OpenYida."
+title: "Cas d'utilisation"
+description: "Scénarios d'application d'OpenYida dans les activités métiers réelles."
 icon: "lightbulb"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/use-cases) or [Chinese version](/zh/features/use-cases) for complete content.
-</Tip>
+OpenYida convient à divers scénarios métiers. Voici des exemples de types d'applications courants.
+
+---
+
+## 🏢 Systèmes métier d'entreprise
+
+Construire des plateformes métier multi-modules, prenant en charge des formulaires complexes, des flux de travail et des relations de données.
+
+<AccordionGroup>
+  <Accordion title="IPD (Integrated Product Development)">
+    **Prompt :**
+    ```
+    Aidez-moi à créer un système IPD avec Yida pour gérer l'ensemble du processus de production de puces,
+    incluant la création de projet, l'examen de conception, la fabrication de wafers, la production de masse, etc.
+    ```
+    **Résultat :** Application à plusieurs formulaires, incluant le suivi des étapes, les listes d'examen, la gestion des jalons, la visibilité inter-équipes.
+  </Accordion>
+
+  <Accordion title="CRM (Customer Relationship Management)">
+    **Prompt :**
+    ```
+    Aidez-moi à créer un CRM, incluant des modules pour les prospects, les clients, les opportunités, les enregistrements de suivi, etc.
+    ```
+    **Résultat :** Formulaires associés : prospects → clients → opportunités → contrats, avec suivi de statut et champs d'attribution.
+  </Accordion>
+
+  <Accordion title="Gestion RH et des congés">
+    **Prompt :**
+    ```
+    Créer un système de gestion des congés RH, incluant les demandes de congé, le processus d'approbation, les statistiques des soldes de congé
+    ```
+    **Résultat :** Formulaire de demande de congé avec processus d'approbation, calculateur de solde, tableau de bord du manager.
+  </Accordion>
+
+  <Accordion title="Gestion de projet">
+    **Prompt :**
+    ```
+    Créer une application de gestion de projet, incluant des tâches, des jalons, des membres de l'équipe, le suivi des progrès
+    ```
+    **Résultat :** Liste de tâches avec champs de priorité/statut/responsable, suivi de jalons, vue de diagramme de Gantt.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 💰 Utilitaires et calculateurs
+
+Outils de calcul ou de collecte de données à usage unique.
+
+<AccordionGroup>
+  <Accordion title="Calculateur de salaire personnel">
+    **Prompt :**
+    ```
+    Aidez-moi à créer une application de calculateur de salaire personnel, entrez le salaire brut, calculez automatiquement l'impôt sur le revenu et le salaire net
+    ```
+    **Résultat :** Formulaire avec champs de formule pour les déductions avant impôt, le calcul de l'impôt, le résumé net.
+  </Accordion>
+
+  <Accordion title="Suivi de budget">
+    **Prompt :**
+    ```
+    Aidez-moi à créer un suivi de budget personnel, enregistrez les revenus, les dépenses catégorisées et les résumés mensuels
+    ```
+    **Résultat :** Formulaire de saisie de revenus/dépenses avec liste déroulante de catégories et calcul automatique du solde mensuel.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🌐 Landing pages et portails
+
+Pages marketing, présentations de produits et portails internes.
+
+<AccordionGroup>
+  <Accordion title="Landing page de produit d'entreprise">
+    **Prompt :**
+    ```
+    Générer une landing page pour le produit de collaboration d'entreprise ZhiLian Xietong, incluant l'écran d'accueil, l'introduction des fonctionnalités, le formulaire de contact
+    ```
+    **Résultat :** Page d'affichage personnalisée complète, avec bannière d'écran d'accueil, cartes de fonctionnalités, formulaire de contact intégré.
+  </Accordion>
+
+  <Accordion title="Page d'inscription à un événement">
+    **Prompt :**
+    ```
+    Créer une page d'inscription pour une conférence technique annuelle, incluant le formulaire d'informations des participants et le choix des forums parallèles
+    ```
+    **Résultat :** Page d'inscription personnalisée, avec validation de formulaire et logique de confirmation.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🎮 Activités interactives et mini-jeux
+
+Outils interactifs pour les activités internes, les festivals et les événements marketing.
+
+<AccordionGroup>
+  <Accordion title="Devinettes de lanternes du festival des lanternes">
+    **Prompt :**
+    ```
+    Créer un jeu de devinettes de lanternes pour le festival des lanternes, l'IA génère des images de lanternes, les utilisateurs soumettent des réponses, en cas d'erreur, l'IA donne des réponses humoristiques
+    ```
+    **Résultat :** Page de jeu avec images de lanternes générées par l'IA, formulaire de soumission de réponses, logique de réponse conditionnelle.
+  </Accordion>
+
+  <Accordion title="Mini-jeu de vœux d'anniversaire">
+    **Prompt :**
+    ```
+    Créer un mini-jeu de vœux d'anniversaire, les utilisateurs entrent leur nom et reçoivent une carte de vœux personnalisée par l'IA
+    ```
+    **Résultat :** Générateur de cartes de vœux interactives, avec stockage de données pour le suivi des réponses.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🔌 Intégration API (connecteurs)
+
+Connecter les applications Yida à des systèmes externes via des connecteurs HTTP.
+
+<AccordionGroup>
+  <Accordion title="Notifications Webhook">
+    **Prompt :**
+    ```
+    Créer un connecteur HTTP pour notre webhook DingTalk, ajouter une action POST pour envoyer des notifications de soumission de formulaire
+    ```
+    **Résultat :** Connecteur configuré avec capacité de test, pouvant être déclenché lors d'événements de formulaire.
+  </Accordion>
+
+  <Accordion title="Création intelligente à partir de curl">
+    **Prompt :**
+    ```
+    Créer intelligemment un connecteur à partir de cette commande curl : curl -X POST https://api.example.com/v1/users -H "Authorization: Bearer TOKEN" -d '{"name":"test"}'
+    ```
+    **Résultat :** Connecteur configuré automatiquement, extrayant l'URL de base, les en-têtes de requête, les paramètres d'action.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+Ce sont des points de départ. Comme le résultat est une application entièrement modifiable sur la plateforme Yida (et non une configuration en boîte noire), vous pouvez toujours optimiser l'application générée via l'éditeur visuel de Yida ou en donnant des instructions ultérieures à l'IA.
+</Note>

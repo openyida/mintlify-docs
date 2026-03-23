@@ -1,10 +1,22 @@
 ---
-title: "त्वरित आरंभ"
-description: "OpenYida इंस्टॉल करें और 5 मिनट में अपना पहला Yida ऐप बनाएं।"
-icon: "play"
+title: "त्वरित प्रारंभ"
+description: "OpenYida इंस्टॉल करें और 2 मिनट में अपना पहला Yida ऐप बनाएं।"
+icon: "bolt"
 ---
 
-यह गाइड दिखाता है कि OpenYida कैसे इंस्टॉल करें और एक बुनियादी ऐप कैसे बनाएं।
+## पूर्वापेक्षाएँ
+
+शुरू करने से पहले, सुनिश्चित करें कि निम्नलिखित निर्भरताएँ इंस्टॉल हैं:
+
+| निर्भरता | संस्करण | जाँच कमांड |
+|------|------|----------|
+| [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
+
+<Tip>
+  बस इतना ही चाहिए। OpenYida एक शुद्ध Node.js कार्यान्वयन है — कोई Python नहीं, कोई Playwright नहीं, कोई build चरण नहीं।
+</Tip>
+
+---
 
 ## चरण 1 — इंस्टॉलेशन
 
@@ -12,91 +24,129 @@ icon: "play"
 npm install -g openyida
 ```
 
-सत्यापित करें कि इंस्टॉलेशन सफल रहा:
+इंस्टॉलेशन सत्यापित करें:
 
 ```bash
 openyida --version
 ```
 
-## चरण 2 — लॉगिन
+---
+
+## चरण 2 — Yida में लॉगिन
 
 ```bash
 openyida login
 ```
 
-यह प्रमाणीकरण के लिए एक ब्राउज़र विंडो खोलेगा। सफल लॉगिन के बाद, आप ब्राउज़र बंद करके टर्मिनल पर वापस आ सकते हैं।
+OpenYida एक ब्राउज़र विंडो खोलेगा (या QR कोड प्रदर्शित करेगा) ताकि आप अपने Yida/Alibaba खाते से प्रमाणित कर सकें। क्रेडेंशियल स्थानीय रूप से कैश किए जाते हैं — आपको इसे केवल एक बार करने की आवश्यकता है।
 
-## चरण 3 — ऐप बनाएं
+<Info>
+  यदि आप AI टूल के रूप में **Wukong** का उपयोग कर रहे हैं, तो विशेष लॉगिन फ्लैग का उपयोग करें:
 
-### विकल्प A: प्राकृतिक भाषा विवरण से बनाएं
+  ```bash
+  openyida login --wukong
+  ```
+</Info>
+
+---
+
+## चरण 3 — वातावरण जाँचें
 
 ```bash
-openyida create-app --prompt "एक CRM सिस्टम बनाएं जिसमें ग्राहक प्रबंधन, बिक्री ट्रैकिंग और एनालिटिक्स डैशबोर्ड शामिल हो"
+openyida env
 ```
 
-### विकल्प B: आवश्यकता फ़ाइल से बनाएं
+यह वर्तमान में सक्रिय AI कोडिंग टूल (Claude Code, Cursor, Wukong, आदि) का पता लगाता है और आपकी वर्तमान लॉगिन स्थिति प्रदर्शित करता है। जब भी आप वातावरण बदलते हैं तो इस कमांड को चलाएं।
+
+---
+
+## चरण 4 — प्रोजेक्ट वर्कस्पेस प्रारंभ करें
 
 ```bash
-openyida create-app --file requirements.md
+openyida copy
 ```
 
-## चरण 4 — फॉर्म प्रबंधन
+यह `project/` वर्कस्पेस टेम्पलेट को आपके वर्तमान AI टूल की कार्य निर्देशिका में कॉपी करता है, जिससे AI आपकी ऐप कॉन्फ़िगरेशन और पेज टेम्पलेट्स तक पहुँच सकता है।
 
-### फॉर्म सूचीबद्ध करें
+---
 
-```bash
-openyida list-forms --app-id YOUR_APP_ID
+## चरण 5 — निर्माण शुरू करें
+
+अब बस अपने AI कोडिंग सहायक से बात करें। यहाँ कुछ स्टार्टर प्रॉम्प्ट हैं:
+
+```
+Yida पर मुझे एक IPD सिस्टम बनाएं जो पूर्ण चिप उत्पादन वर्कफ़्लो का प्रबंधन करे
 ```
 
-### नया फॉर्म बनाएं
-
-```bash
-openyida create-form --app-id YOUR_APP_ID --prompt "ग्राहक जानकारी फॉर्म जिसमें नाम, कंपनी, फोन, ईमेल और नोट्स शामिल हों"
+```
+मुझे leads, contacts और deals के साथ एक CRM सिस्टम बनाने में मदद करें
 ```
 
-### मौजूदा फॉर्म अपडेट करें
-
-```bash
-openyida update-form --form-id YOUR_FORM_ID --prompt "स्टेटस फ़ील्ड जोड़ें जिसमें विकल्प: लीड, अवसर, ग्राहक"
+```
+एक व्यक्तिगत वेतन कैलकुलेटर ऐप बनाएं
 ```
 
-## चरण 5 — पेज प्रकाशित करें
-
-### कस्टम पेज संकलित और प्रकाशित करें
-
-```bash
-openyida publish-page --app-id YOUR_APP_ID --file custom-page.jsx
+```
+Yida पर एक जन्मदिन की बधाई मिनी-गेम बनाएं
 ```
 
-### सार्वजनिक पहुंच कॉन्फ़िगर करें
+AI OpenYida के स्किल पैक का उपयोग करके सही CLI कमांड्स को क्रम में कॉल करेगा: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`।
+
+---
+
+## चरण 6 — ऐप प्रकाशित करें
+
+AI द्वारा ऐप जनरेट होने के बाद, प्रकाशित करने के लिए निम्नलिखित कमांड का उपयोग करें:
 
 ```bash
-openyida set-public --page-id YOUR_PAGE_ID
+openyida publish
 ```
 
-## चरण 6 — कनेक्टर कॉन्फ़िगर करें
-
-### HTTP कनेक्टर बनाएं
-
-```bash
-openyida create-connector --app-id YOUR_APP_ID --name "भुगतान API" --config connector-config.json
+या AI से पूछें:
 ```
-
-### curl से आयात करें
-
-```bash
-openyida import-curl --app-id YOUR_APP_ID --curl 'curl -X GET "https://api.example.com/data" -H "Authorization: Bearer token"'
+[पेज नाम] पेज प्रकाशित करें
+पेज को सार्वजनिक रूप से सुलभ बनाएं
 ```
 
 ---
 
-## अगले चरण
+## निदान चलाएं
+
+यदि कुछ गलत लगता है, तो अंतर्निहित निदान टूल चलाएं:
+
+```bash
+openyida doctor
+```
+
+यह आपके Node.js संस्करण, लॉगिन स्थिति और वातावरण कॉन्फ़िगरेशन की जाँच करता है, और `--fix` के साथ सामान्य समस्याओं को स्वचालित रूप से ठीक कर सकता है।
+
+---
+
+## OpenClaw एकीकरण
+
+यदि आप OpenClaw का उपयोग कर रहे हैं, तो OpenYida स्किल पैक सीधे इंस्टॉल करें:
+
+```bash
+npx clawhub@latest install nicky1108/yida-app
+```
+
+फिर इसे [ClawhHub पर yida-app](https://clawhub.ai/nicky1108/yida-app) के माध्यम से उपयोग करें।
+
+---
+
+## अगले कदम
 
 <CardGroup cols={2}>
-  <Card title="डेमो केस" icon="images" href="/hi/introduction/demo">
-    OpenYida से बने वास्तविक ऐप्स देखें
+  <Card title="सामान्य प्रॉम्प्ट" icon="comments" href="/hi/features/common-prompts">
+    OpenYida द्वारा समर्थित प्राकृतिक भाषा प्रॉम्प्ट की पूर्ण सूची ब्राउज़ करें।
   </Card>
-  <Card title="कमांड संदर्भ" icon="terminal" href="/hi/features/skills">
-    सभी उपलब्ध कमांड देखें
+  <Card title="CLI संदर्भ" icon="terminal" href="/hi/features/skills">
+    सभी CLI कमांड्स और स्किल मॉड्यूल अन्वेषण करें।
+  </Card>
+  <Card title="डेमो केस" icon="images" href="/hi/introduction/demo">
+    OpenYida के साथ बनाए गए वास्तविक एप्लिकेशन देखें।
+  </Card>
+  <Card title="सर्वोत्तम अभ्यास" icon="star" href="/hi/guides/best-practices">
+    AI-संचालित ऐप जनरेशन का अधिकतम लाभ उठाने के लिए टिप्स।
   </Card>
 </CardGroup>

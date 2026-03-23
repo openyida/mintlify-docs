@@ -4,6 +4,231 @@ description: "Arquitetura técnica e dependências do OpenYida."
 icon: "layer-group"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/tech-stack) or [Chinese version](/zh/architecture/tech-stack) for complete content.
-</Tip>
+## Arquitetura de Stack Tecnológico
+
+![Arquitetura de stack tecnológico](/images/architecture-tech-stack.png)
+
+O stack tecnológico do OpenYida é dividido em duas partes: ambiente de desenvolvimento e plataforma em nuvem:
+
+### Ambiente de Desenvolvimento (Development Environment)
+- **Node.js** - Ambiente de execução
+- **Python** - Testes automatizados com Playwright
+- **Git** - Controle de versão
+
+### Testes Automatizados (Playwright)
+- Automação de navegador
+- Testes de ponta a ponta
+- Comparação de capturas de tela de páginas
+
+### Plataforma em Nuvem Yida (YiDa Cloud Platform)
+- **App** - Gerenciamento de aplicativos
+- **Form** - Páginas de formulário
+- **Custom Page** - Páginas personalizadas
+
+## Visão Geral da Arquitetura
+
+OpenYida adota um design arquitetônico modular, dividido em três camadas: entrada CLI, módulos principais e módulos funcionais.
+
+```
+┌─────────────────────────────────────────────────────┐│                      Camada de Entrada CLI (bin/)                       │
+│                      yida.js - Roteamento de comandos                       │
+└─────────────────────────────────────────────────────┘                              │
+                              ▼
+┌─────────────────────────────────────────────────────┐│                      Módulos Principais (lib/core/)                     │
+│ ┌──┐┌──┐┌──┐┌──┐ │
+│  │   i18n   │ │   env    │ │  utils   │ │  doctor  │       │
+│  │  Internacionalização   │ │ Detecção de ambiente │ │ Funções utilitárias │ │ Ferramenta de diagnóstico │       │
+│ └──┘└──┘└──┘└──┘ │
+│ ┌──┐┌──┐┌──┐┌──┐ │
+│  │  check   │ │   copy   │ │  babel   │ │  locales │       │
+│  │ Verificação de atualização │ │Cópia de diretório  │ │ Compilador   │ │  Pacote de idiomas  │       │
+│ └──┘└──┘└──┘└──┘ │
+└─────────────────────────────────────────────────────┘                              │
+                              ▼
+┌─────────────────────────────────────────────────────┐│                      Módulos Funcionais (lib/)                          │
+│ ┌──┐┌──┐┌──┐┌──┐ │
+│  │   auth   │ │   app    │ │   data   │ │  report  │       │
+│  │ Módulo de autenticação │ │Gerenciamento de aplicativos  │ │ Gerenciamento de dados │ │  Relatórios    │       │
+│ └──┘└──┘└──┘└──┘ │
+│ ┌──┐┌──┐┌──┐┌──┐ │
+│  │ connector│ │  process │ │permission│ │   cdn    │       │
+│  │ Conector   │ │ Gerenciamento de processos │ │  Permissões    │ │ Gerenciamento de CDN  │       │
+│ └──┘└──┘└──┘└──┘ │
+└─────────────────────────────────────────────────────┘                              │
+                              ▼
+┌─────────────────────────────────────────────────────┐│                    API da Plataforma Yida (aliwork.com)                  │
+└─────────────────────────────────────────────────────┘```
+
+---
+
+## Detalhes dos Módulos Principais
+
+### Internacionalização (i18n.js)
+
+Sistema de internacionalização que suporta 12 idiomas:
+
+```javascript
+const { t, getLanguage, setLanguage } = require('./i18n');
+
+// Usar tradução
+console.log(t('login.success'));
+console.log(t('create_app.usage', 'appName'));
+
+// Obter/definir idioma
+console.log(getLanguage()); // 'zh'
+setLanguage('en');
+```
+
+**Prioridade de detecção de idioma:**
+1. Variável de ambiente `OPENYIDA_LANG`
+2. Variáveis de ambiente do sistema `LANG` / `LC_ALL`
+3. Padrão: Chinês simplificado
+
+### Detecção de Ambiente (env.js)
+
+Detecta automaticamente o ambiente de ferramenta AI em execução:
+
+| Método de detecção | Ferramenta |
+|----------|------|
+| Detecção de existência de diretório | Claude Code, Cursor, OpenCode, Aone Copilot, Qoder |
+| Detecção de arquivo especial | Wukong (悟空) |
+
+### Motor de Diagnóstico (doctor.js)
+
+Design de arquitetura de três camadas:
+
+1. **DiagnosticEngine** - Agendador de diagnóstico
+2. **EnvironmentChecker** - Verificador de ambiente
+3. **ApplicationChecker** - Verificador de aplicativo
+4. **FixEngine** - Motor de reparo inteligente
+
+---
+
+## Detalhes dos Módulos Funcionais
+
+### Módulo de Autenticação (auth/)
+
+```
+auth/
+├ login.js          # Login no Yida (cache de Cookie + escaneamento de código QR)
+├ auth.js           # Gerenciamento de estado de login
+├ org.js            # Gerenciamento de organização
+└ qr-login.js       # Login com código QR no terminal
+```
+
+**Processo de login:**
+1. Detectar ambiente de ferramenta AI atual
+2. Selecionar método de login de acordo com o ambiente (escaneamento de código QR / CDP / leitura de arquivo)
+3. Obter Cookie e armazenar em cache local criptografada
+4. Comandos subsequentes usam automaticamente o estado de login armazenado em cache
+
+### Módulo de Conector (connector/)
+
+```
+connector/
+├ api.js                    # Encapsulamento de API de conector Yida
+├ curl-parser.js            # Analisador de comandos curl
+├ action-generator.js       # Gerador de ações
+├ desc-generator.js         # Gerador de descrições
+├ connector-smart-create.js # Entrada de criação inteligente
+└ ...
+```
+
+**Processo de criação inteligente:**
+```
+Comando curl → Analisador → Extração de informações API → Detecção de autenticação → Coincidir com conector existente → Gerar configuração → Criar/atualizar
+```
+
+### Módulo de Gerenciamento de Dados (data-management.js)
+
+Interface unificada de operações de dados, suporta:
+
+| Tipo de recurso | Operações |
+|----------|------|
+| form | query, get, create, update |
+| process | query, get, create |
+| task | query, execute |
+| subform | query |
+
+---
+
+## Diretório de Trabalho do Projeto
+
+```
+project/
+├ config.json          # Configuração do aplicativo
+│   ├── appType          # ID do tipo de aplicativo
+│   ├── pageId           # ID da página
+│   ├── corpId           # ID da organização
+│  └ ...
+├ pages/
+│   ├── src/             # Código fonte da página (React + SDK do Yida)
+│  └ dist/            # Produto compilado
+├ prd/                 # Documento de requisitos
+└ .cache/
+    ├── cookies.json     # Cache do estado de login
+    ├── *-schema.json    # Cache do Schema do formulário
+   └ reports/         # Relatórios de diagnóstico
+```
+
+---
+
+## Chamadas de API do Yida
+
+### Configuração Básica
+
+```javascript
+const BASE_URL = 'https://www.aliwork.com';
+
+// Cabeçalhos de solicitação
+const headers = {
+  'Content-Type': 'application/json',
+  'X-Csrf-Token': csrfToken,
+  'Cookie': cookies,
+};
+```
+
+### APIs Principais
+
+| Endpoint | Uso |
+|------|------|
+| `/dingtalk/web/APP_xxx/xxx` | Interface dentro do aplicativo |
+| `/dingtalk/web/APP_xxx/form/getFormDataList` | Consulta de dados do formulário |
+| `/dingtalk/web/APP_xxx/form/saveFormData` | Salvar dados do formulário |
+| `/dingtalk/web/APP_xxx/proc/getProcessInstances` | Consulta de instâncias de processo |
+
+---
+
+## Design de Segurança
+
+1. **Armazenamento criptografado de Cookie** - Cache local armazenado criptografado
+2. **Verificação de Token CSRF** - Cada solicitação leva Token
+3. **Sem credenciais codificadas** - Todas as credenciais são obtidas dinamicamente
+4. **Isolamento de ambiente** - Ambientes de diferentes ferramentas AI independentes
+
+---
+
+## Otimização de Desempenho
+
+1. **Carregamento tardio de arquivos de tradução** - Carregamento de pacotes de idiomas sob demanda
+2. **Cache local de Schema** - Reduz chamadas de API
+3. **Controle de solicitações concorrentes** - Evita ser limitado por excesso de solicitações
+4. **Atualização incremental** - Atualizações de formulário usam mesclagem em vez de sobrescrita
+
+---
+
+## Mecanismo de Extensão
+
+### Adicionar Novo Comando
+
+1. Criar `new-feature.js` em `lib/`
+2. Registrar roteamento de comando em `bin/yida.js`
+3. Atualizar `README.md` e documentação
+4. Adicionar chave de internacionalização
+
+### Adicionar Novo Idioma
+
+1. Criar `xx.js` em `lib/core/locales/`
+2. Traduzir todas as chaves (usando `zh.js` como base)
+3. Atualizar `SUPPORTED_LANGUAGES` em `i18n.js`
+4. Executar `npm run validate-i18n` para verificar integridade

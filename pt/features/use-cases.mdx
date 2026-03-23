@@ -1,9 +1,150 @@
 ---
 title: "Casos de Uso"
-description: "Exemplos concretos de aplicações que podem ser construídas com OpenYida."
+description: "Cenários de aplicação do OpenYida em negócios reais."
 icon: "lightbulb"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/use-cases) or [Chinese version](/zh/features/use-cases) for complete content.
-</Tip>
+O OpenYida é aplicável a múltiplos cenários de negócio, abaixo estão exemplos comuns de tipos de aplicação.
+
+---
+
+## Empresariais
+
+Construa plataformas de negócio multimodulares, suportando formulários complexos, fluxos de trabalho e associações de dados.
+
+<AccordionGroup>
+  <Accordion title="IPD (Desenvolvimento Integrado de Produtos)">
+    **Prompt:**
+    ```
+    Ajude-me a criar um sistema IPD no Yida para gerenciar todo o processo de produção de chips,
+    incluindo fases de início de projeto, revisão de design, produção de wafers e produção em massa
+    ```
+    **Resultado:** Aplicativo multi-formulário com rastreamento de fases, listas de revisão, gestão de marcos e visibilidade inter-equipes.
+  </Accordion>
+
+  <Accordion title="CRM (Gestão de Relacionamento com Clientes)">
+    **Prompt:**
+    ```
+    Ajude-me a construir um CRM com módulos de leads, clientes, oportunidades e registros de acompanhamento
+    ```
+    **Resultado:** Formulários associados: Lead → Cliente → Oportunidade → Contrato, com rastreamento de status e campos de atribuição.
+  </Accordion>
+
+  <Accordion title="Gestão de RH e Licenças">
+    **Prompt:**
+    ```
+    Crie um sistema de gestão de licenças de RH com solicitações de licença, fluxo de aprovação e estatísticas de saldo de férias
+    ```
+    **Resultado:** Formulário de solicitação de licença com fluxo de aprovação, calculadora de saldo e painel do gerente.
+  </Accordion>
+
+  <Accordion title="Gestão de Projetos">
+    **Prompt:**
+    ```
+    Construa um aplicativo de gestão de projetos com tarefas, marcos, membros da equipe e rastreamento de progresso
+    ```
+    **Resultado:** Lista de tarefas com campos de prioridade/status/responsável, rastreador de marcos e visualização de diagrama de Gantt.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+##💰amentas Práticas e Calculadoras
+
+Ferramentas de cálculo ou coleta de dados de propósito único.
+
+<AccordionGroup>
+  <Accordion title="Calculadora de Salário Pessoal">
+    **Prompt:**
+    ```
+    Ajude-me a construir uma calculadora de salário pessoal, insira o salário bruto, calcule automaticamente o imposto e o salário líquido
+    ```
+    **Resultado:** Formulário com campos de fórmula para deduções antes dos impostos, cálculo de impostos e resumo do salário líquido.
+  </Accordion>
+
+  <Accordion title="Rastreador de Orçamento">
+    **Prompt:**
+    ```
+    Ajude-me a construir um rastreador de orçamento pessoal para registrar receitas, categorias de despesas e resumos mensais
+    ```
+    **Resultado:** Formulário de entrada de receitas/despesas com menu suspenso de categorias e saldo mensal calculado automaticamente.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Pages e Portais
+
+Páginas de marketing, apresentações de produtos e portais internos.
+
+<AccordionGroup>
+  <Accordion title="Landing Page de Produto Empresarial">
+    **Prompt:**
+    ```
+    Gere uma landing page para o produto de colaboração empresarial Zhilian Xietong, incluindo tela principal, introdução de funções e formulário de contato
+    ```
+    **Resultado:** Página de exibição personalizada completa com banner principal, cartões de funções e formulário de contato integrado.
+  </Accordion>
+
+  <Accordion title="Página de Inscrição de Eventos">
+    **Prompt:**
+    ```
+    Crie uma página de inscrição para a conferência técnica anual com formulário de informações do participante e seleção de sub-fóruns
+    ```
+    **Resultado:** Página de inscrição com marca, validação de formulário e lógica de confirmação.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Interativas e Mini Jogos
+
+Ferramentas interativas para atividades internas, festivais e marketing.
+
+<AccordionGroup>
+  <Accordion title="Jogo de Adivinhações do Festival das Lanternas">
+    **Prompt:**
+    ```
+    Crie um jogo de adivinhações para o Festival das Lanternas, a IA gera imagens de adivinhações, os usuários enviam respostas, se errarem a IA responde com humor
+    ```
+    **Resultado:** Página de jogo com imagens de adivinhações geradas por IA, formulário de envio de respostas e lógica de resposta condicional.
+  </Accordion>
+
+  <Accordion title="Mini Jogo de Felicitações de Aniversário">
+    **Prompt:**
+    ```
+    Construa um mini jogo de felicitações de aniversário onde os usuários inserem seu nome e obtêm um cartão de felicitações personalizado da IA
+    ```
+    **Resultado:** Gerador de cartões interativos com armazenamento de dados para rastreamento de respostas.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+##🔌ção API (Conectores)
+
+Conecte aplicativos Yida com sistemas externos por meio de conectores HTTP.
+
+<AccordionGroup>
+  <Accordion title="Notificações Webhook">
+    **Prompt:**
+    ```
+    Crie um conector HTTP para nosso webhook do DingTalk, adicione uma ação POST para enviar notificações de envio de formulários
+    ```
+    **Resultado:** Conector configurado com capacidade de teste, ativável em eventos de formulário.
+  </Accordion>
+
+  <Accordion title="Criação Inteligente a partir de curl">
+    **Prompt:**
+    ```
+    Crie inteligentemente um conector a partir deste comando curl: curl -X POST https://api.example.com/v1/users -H "Authorization: Bearer TOKEN" -d '{"name":"test"}'
+    ```
+    **Resultado:** Conector configurado automaticamente, extraindo URL base, cabeçalhos e parâmetros de ação.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+Estes são pontos de partida. Como o resultado é um aplicativo completamente editável na plataforma Yida (não uma configuração de caixa preta), você sempre pode otimizar o aplicativo gerado por meio do editor visual do Yida ou dando instruções posteriores à IA.
+</Note>

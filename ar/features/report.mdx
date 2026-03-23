@@ -1,9 +1,234 @@
 ---
 title: "التقارير والرسوم البيانية"
-description: "إنشاء تقارير Yida وتصورات البيانات."
+description: "أنشئ تقارير Yida وأضف رسوم بيانية لتصور البيانات."
 icon: "chart-column"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/report) or [Chinese version](/zh/features/report) for complete content.
-</Tip>
+يدعم OpenYida إنشاء تقارير Yida وإضافة أنواع مختلفة من الرسوم البيانية لتحقيق تصور البيانات.
+
+---
+
+## نظرة عامة
+
+<CardGroup cols={2}>
+  <Card title="إنشاء التقارير" icon="file-plus">
+    أنشئ تقارير Yida بنقرة واحدة، يدعم التكوين المخصص.
+  </Card>
+  <Card title="إضافة رسوم بيانية" icon="chart-pie">
+    أضف أنواعًا متعددة من الرسوم البيانية إلى التقارير الموجودة.
+  </Card>
+  <Card title="ربط البيانات" icon="link">
+    اربط مصادر بيانات النماذج تلقائيًا، اعرض البيانات في الوقت الفعلي.
+  </Card>
+  <Card title="أنواع الرسوم البيانية" icon="shapes">
+    يدعم الرسوم البيانية العمودية والخطية والدائرية والجداول والمزيد.
+  </Card>
+</CardGroup>
+
+---
+
+## إنشاء تقرير
+
+### الاستخدام الأساسي
+
+```bash
+openyida create-report <appType> "اسم التقرير" '<JSON تعريف الرسم البياني>'
+```
+
+### مثال: إنشاء تقرير المبيعات
+
+```bash
+openyida create-report APP_XXXXXX "تقرير المبيعات الشهري" '{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "المبيعات الشهرية",
+      "dataSource": "form_sales",
+      "xField": "month",
+      "yField": "amount"
+    },
+    {
+      "type": "pie",
+      "title": "نسبة مبيعات المنتجات",
+      "dataSource": "form_sales",
+      "categoryField": "product_type",
+      "valueField": "amount"
+    }
+  ]
+}'
+```
+
+### تحميل تعريف الرسم البياني من ملف
+
+```bash
+openyida create-report APP_XXXXXX "التقرير الإحصائي السنوي" ./charts-config.json
+```
+
+---
+
+## تنسيق تعريف الرسم البياني
+
+### الرسم البياني العمودي
+
+```json
+{
+  "type": "bar",
+  "title": "عنوان الرسم البياني العمودي",
+  "dataSource": "form_uuid",
+  "xField": "category_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### الرسم البياني الخطي
+
+```json
+{
+  "type": "line",
+  "title": "عنوان رسم بياني الاتجاهات",
+  "dataSource": "form_uuid",
+  "xField": "date_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### الرسم البياني الدائري
+
+```json
+{
+  "type": "pie",
+  "title": "عنوان رسم بياني النسبة",
+  "dataSource": "form_uuid",
+  "categoryField": "category_field",
+  "valueField": "value_field"
+}
+```
+
+### جدول البيانات
+
+```json
+{
+  "type": "table",
+  "title": "تفاصيل البيانات",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "الاسم" },
+    { "field": "amount", "title": "المبلغ" },
+    { "field": "date", "title": "التاريخ" }
+  ]
+}
+```
+
+---
+
+## إضافة رسوم بيانية إلى التقرير
+
+```bash
+openyida append-chart <appType> <reportId> '<JSON تعريف الرسم البياني>'
+```
+
+### مثال
+
+```bash
+openyida append-chart APP_XXXXXX REPORT_XXXXX '{
+  "type": "line",
+  "title": "اتجاه النمو",
+  "dataSource": "form_sales",
+  "xField": "month",
+  "yField": "growth_rate"
+}'
+```
+
+---
+
+## مثال تكوين كامل
+
+### sales-report-charts.json
+
+```json
+{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "إحصائيات المبيعات الشهرية",
+      "dataSource": "form_monthly_sales",
+      "xField": "month",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "color": "#0066FF"
+    },
+    {
+      "type": "pie",
+      "title": "نسبة فئة المنتج",
+      "dataSource": "form_sales",
+      "categoryField": "product_category",
+      "valueField": "sales_amount",
+      "showLegend": true
+    },
+    {
+      "type": "line",
+      "title": "اتجاه المبيعات",
+      "dataSource": "form_daily_sales",
+      "xField": "date",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "smooth": true
+    },
+    {
+      "type": "table",
+      "title": "تفاصيل المبيعات",
+      "dataSource": "form_sales",
+      "columns": [
+        { "field": "order_no", "title": "رقم الطلب", "width": 150 },
+        { "field": "customer_name", "title": "اسم العميل", "width": 200 },
+        { "field": "product_name", "title": "اسم المنتج", "width": 200 },
+        { "field": "amount", "title": "المبلغ", "width": 120, "align": "right" },
+        { "field": "sales_date", "title": "تاريخ البيع", "width": 150 }
+      ],
+      "pageSize": 10
+    }
+  ]
+}
+```
+
+إنشاء التقرير:
+
+```bash
+openyida create-report APP_XXXXXX "تقرير تحليل المبيعات" ./sales-report-charts.json
+```
+
+---
+
+## مرجع أنواع الرسوم البيانية
+
+| النوع | الوصف | الحقول المطلوبة |
+|------|------|----------|
+| `bar` | رسم بياني عمودي | xField, yField |
+| `line` | رسم بياني خطي | xField, yField |
+| `pie` | رسم بياني دائري | categoryField, valueField |
+| `table` | جدول بيانات | columns |
+| `area` | رسم بياني مساحي | xField, yField |
+| `scatter` | رسم بياني مبعثر | xField, yField |
+
+---
+
+## دوال التجميع
+
+| الدالة | الوصف |
+|------|------|
+| `sum` | المجموع |
+| `avg` | المتوسط |
+| `count` | العد |
+| `max` | القيمة القصوى |
+| `min` | القيمة الدنيا |
+
+---
+
+## أفضل الممارسات
+
+1. **اختر نوع الرسم البياني المناسب** - الاتجاهات بالخطي، المقارنات بالعمودي، النسب بالدائري
+2. **تحكم في عدد الرسوم البيانية** - يُنصح بعدم تجاوز 6 رسوم بيانية لكل تقرير
+3. **استخدم جداول البيانات** - أكمل الرسوم البيانية ببيانات مفصلة لعرض القيم الأصلية
+4. **اضبط التقسيم إلى صفحات المناسب** - يُنصح بـ 10-20 سجلًا لكل صفحة للجداول

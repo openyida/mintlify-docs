@@ -1,9 +1,170 @@
 ---
-title: "هيكل المشروع"
-description: "تخطيط الدليل وهيكل الملفات لـ OpenYida."
-icon: "folder-tree"
+title: هيكل المشروع
+description: هيكل دليل مشروع OpenYida وطريقة تنظيم الكود
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/project-structure) or [Chinese version](/zh/architecture/project-structure) for complete content.
-</Tip>
+# هيكل المشروع
+
+يعتمد OpenYida تصميمًا معماريًا معياريًا بتنظيم كود واضح، مما يسهل الصيانة والتوسع.
+
+## نظرة عامة على الدليل
+
+```
+openyida/
+├ src/
+│   ├── commands/          # تنفيذ أوامر CLI
+│   │   ├── create-app.ts
+│   │   ├── create-form.ts
+│   │   ├── create-page.ts
+│   │   ├── publish.ts
+│   │   ├── share.ts
+│   │   ├── data.ts
+│   │   ├── connector.ts
+│   │   ├── report.ts
+│   │   ├── doctor.ts
+│   │  └ login.ts
+│   ├── core/              # وحدات الوظائف الأساسية
+│   │   ├── yida-api.ts    # تغليف API Yida
+│   │   ├── ai-service.ts  # تكامل خدمات AI
+│   │   ├── config.ts      # إدارة التكوين
+│   │  └ auth.ts        # معالجة المصادقة
+│   ├── utils/             # وظائف الأداة المساعدة
+│   │   ├── logger.ts
+│   │   ├── file.ts
+│   │  └ validator.ts
+│  └ types/             # تعريفات أنواع TypeScript
+│       ├── yida.ts
+│       ├── ai.ts
+│      └ index.ts
+├ skills/                # نظام Skills
+│   ├── builtin/           # Skills المدمجة
+│  └ custom/            # Skills مخصصة
+├ templates/             # قوالب الكود
+│   ├── app/
+│   ├── form/
+│  └ page/
+├ docs/                  # موارد التوثيق
+├ tests/                 # ملفات الاختبار
+├ package.json
+├ tsconfig.json
+└ README.md
+```
+
+## وصف الوحدات الأساسية
+
+### src/commands/
+
+يخزن تنفيذ جميع أوامر CLI، كل ملف يتوافق مع أمر فرعي:
+
+| الملف | الوظيفة |
+|------|------|
+| `create-app.ts` | إنشاء تطبيق Yida |
+| `create-form.ts` | إنشاء صفحة نموذج |
+| `create-page.ts` | إنشاء صفحة مخصصة |
+| `publish.ts` | نشر التطبيق |
+| `share.ts` | مشاركة التطبيق |
+| `data.ts` | عمليات إدارة البيانات |
+| `connector.ts` | إدارة الموصلات |
+| `report.ts` | عمليات التقارير |
+| `doctor.ts` | أداة التشخيص |
+| `login.ts` | مصادقة تسجيل الدخول |
+
+### src/core/
+
+وحدة منطق الأعمال الأساسية:
+
+- **yida-api.ts**: يغلف API منصة Yida المفتوحة، يوفر استدعاءات واجهة موحدة
+- **ai-service.ts**: يدمج خدمات AI متعددة (OpenAI، Claude، Tongyi Qianwen، إلخ)
+- **config.ts**: يدير ملفات التكوين المحلية (~/.openyida/config.json)
+- **auth.ts**: يتعامل مع حالة تسجيل الدخول، تحديث Token، تبديل المنظمات المتعددة
+
+### src/utils/
+
+وظائف الأداة المساعدة العامة:
+
+- **logger.ts**: إخراج السجل، يدعم المستويات والألوان
+- **file.ts**: وظائف مساعدة عمليات الملفات
+- **validator.ts**: التحقق من الإدخال والتحقق منه
+
+### src/types/
+
+تعريفات أنواع TypeScript، تضمن أمان أنواع الكود:
+
+- **yida.ts**: أنواع متعلقة بـ API Yida
+- **ai.ts**: أنواع متعلقة بخدمات AI
+- **index.ts**: تصدير الأنواع العامة
+
+## نظام Skills
+
+```
+skills/
+├ builtin/               # Skills المدمجة
+│   ├── code-generator/    # توليد الكود
+│   ├── form-builder/      # بناء النماذج
+│   ├── page-designer/     # تصميم الصفحات
+│  └ data-analyzer/     # تحليل البيانات
+└ custom/                # Skills مخصصة من المستخدمين
+   └ (توسع المستخدمين)
+```
+
+تعتمد Skills بنية الإضافات، تدعم التحميل الساخن والتوسع الديناميكي.
+
+## إدارة التكوين
+
+### التكوين المحلي
+
+موقع التخزين: `~/.openyida/config.json`
+
+```json
+{
+  "defaultOrg": "org-default",
+  "orgs": {
+    "org-default": {
+      "accessToken": "xxx",
+      "refreshToken": "xxx",
+      "expiresAt": 1234567890
+    }
+  },
+  "aiProvider": "openai",
+  "aiConfig": {
+    "apiKey": "sk-xxx",
+    "model": "gpt-4"
+  }
+}
+```
+
+### تكوين المشروع
+
+يمكن إنشاء `.openyidarc.json` في الدليل الجذري للمشروع:
+
+```json
+{
+  "appId": "APP-XXX",
+  "defaultEnv": "dev",
+  "environments": {
+    "dev": { "appKey": "xxx", "appSecret": "xxx" },
+    "prod": { "appKey": "xxx", "appSecret": "xxx" }
+  }
+}
+```
+
+## آلية التوسع
+
+### إضافة أمر جديد
+
+1. إنشاء ملف جديد في `src/commands/`
+2. تنفيذ وظيفة معالجة الأوامر
+3. تسجيل الأمر في `src/index.ts`
+
+### إضافة Skill جديد
+
+1. إنشاء دليل Skill في `skills/custom/`
+2. تنفيذ `skill.json` والمنطق الرئيسي
+3. التحميل باستخدام `openyida skill load`
+
+## معايير التطوير
+
+- يجب أن تتضمن جميع الميزات الجديدة تعريفات الأنواع
+- يجب أن يتضمن تنفيذ الأوامر توثيق `--help`
+- يجب أن تحتوي الوظائف الأساسية على تغطية اختبارات الوحدة
+- اتبع تكوين ESLint و Prettier

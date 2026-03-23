@@ -1,0 +1,152 @@
+---
+title: "快速開始"
+description: "安裝 OpenYida，在 2 分鐘內構建您的第一個宜搭應用。"
+icon: "bolt"
+---
+
+## 環境要求
+
+在開始之前，請確保已安裝以下依賴：
+
+| 依賴 | 版本 | 檢查命令 |
+|------|------|----------|
+| [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
+
+<Tip>
+  這就是全部所需。OpenYida 是純 Node.js 實現 — 無需 Python、無需 Playwright、無需構建步驟。
+</Tip>
+
+---
+
+## 第 1 步 — 安裝
+
+```bash
+npm install -g openyida
+```
+
+驗證安裝：
+
+```bash
+openyida --version
+```
+
+---
+
+## 第 2 步 — 登入宜搭
+
+```bash
+openyida login
+```
+
+OpenYida 將開啟瀏覽器視窗（或顯示二維碼）供您使用宜搭/阿里巴巴帳號進行身份驗證。憑證會快取於本地 — 只需執行一次。
+
+<Info>
+  如果您使用 **悟空** 作為 AI 工具，請使用特殊登入標誌：
+
+  ```bash
+  openyida login --wukong
+  ```
+</Info>
+
+---
+
+## 第 3 步 — 檢查環境
+
+```bash
+openyida env
+```
+
+這將檢測當前啟用的 AI 程式設計工具（Claude Code、Cursor、悟空等）並顯示您的當前登入狀態。切換環境時隨時執行此命令。
+
+---
+
+## 第 4 步 — 初始化專案工作區
+
+```bash
+openyida copy
+```
+
+這將把 `project/` 工作區範本複製至您目前 AI 工具的工作目錄中，讓 AI 能夠存取您的應用程式配置和頁面範本。
+
+---
+
+## 第 5 步 — 開始構建
+
+現在只需與您的 AI 程式設計助手對話。以下是一些入門提示詞：
+
+```
+在宜搭上為我構建一個 IPD 系統，管理完整的晶片生產工作流程
+```
+
+```
+幫我搭建一個包含線索、客戶和交易的 CRM 系統
+```
+
+```
+創建一個個人工資計算器應用
+```
+
+```
+在宜搭上生成一個生日祝福小遊戲
+```
+
+AI 將使用 OpenYida 的技能包依序呼叫正確的 CLI 命令：`create-app` → `create-form` / `create-page` → `publish` → `save-share-config`。
+
+---
+
+## 第 6 步 — 發布應用
+
+AI 產生應用程式後，使用以下指令發布：
+
+```bash
+openyida publish
+```
+
+或者詢問 AI：
+```
+發布 [頁面名稱] 頁面
+讓頁面可以公開存取
+```
+
+---
+
+## 執行診斷
+
+如果感覺有任何問題，執行內建的診斷工具：
+
+```bash
+openyida doctor
+```
+
+它會檢查您的 Node.js 版本、登入狀態和環境配置，並可使用 `--fix` 自動修復常見問題。
+
+---
+
+## OpenClaw 整合
+
+如果您使用 OpenClaw，直接安裝 OpenYida 技能包：
+
+```bash
+npx clawhub@latest install nicky1108/yida-app
+```
+
+然後透過 [ClawhHub 上的 yida-app](https://clawhub.ai/nicky1108/yida-app) 使用它。
+
+---
+
+## 下一步
+
+<CardGroup cols={2}>
+  <Card title="常用提示詞" icon="comments" href="/zh-HK/features/common-prompts">
+    瀏覽 OpenYida 支援的自然語言提示詞完整列表。
+  </Card>
+  <Card title="CLI 參考" icon="terminal" href="/zh-HK/features/skills">
+    探索所有 CLI 命令和技能模組。
+  </Card>
+  <Card title="示範案例" icon="images" href="/zh-HK/introduction/demo">
+    查看使用 OpenYida 構建的真實應用。
+  </Card>
+  <Card title="最佳實踐" icon="star" href="/zh-HK/guides/best-practices">
+    充分利用 AI 驅動應用生成的技巧。
+  </Card>
+</CardGroup>

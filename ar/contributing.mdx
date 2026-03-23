@@ -1,9 +1,110 @@
 ---
-title: "دليل المساهمة"
-description: "كيفية المساهمة في مشروع OpenYida."
+title: "المساهمة"
+description: "كيفية المساهمة في OpenYiDA — تقارير الأخطاء، الميزات، الوثائق والمهارات."
 icon: "handshake"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/contributing) or [Chinese version](/zh/contributing) for complete content.
-</Tip>
+مرحبًا بك في OpenYiDA! متحمسون لاهتمامك بالمساهمة. يغطي هذا الدليل كل ما تحتاجه للبدء.
+
+## روابط سريعة
+
+- **GitHub:** https://github.com/openyida/openyida
+- **Issues:** https://github.com/openyida/openyida/issues
+- **npm:** https://www.npmjs.com/package/openyida
+
+---
+
+## المشرفون
+
+| الاسم | الدور | GitHub |
+|------|------|--------|
+| **九神 (yize)** | البنية الأساسية، تصميم CLI | [@yize](https://github.com/yize) |
+| **alex-mm** | تطوير الميزات، الاختبار | [@alex-mm](https://github.com/alex-mm) |
+| **nicky1108** | تكامل OpenClaw، توسيع المهارات | [@nicky1108](https://github.com/nicky1108) |
+
+---
+
+## طرق المساهمة
+
+1. **الإبلاغ عن خطأ** → افتح Issue مع خطوات إعادة الإنتاج ومعلومات البيئة
+2. **اقتراح ميزة** → ابدأ Discussion أو Issue أولاً، ثم نفذ
+3. **تحسين الوثائق** → PRs للوثائق مرحب بها دائمًا
+4. **إضافة مهارات** → وسّع حزمة المهارات تحت `yida-skills/`
+5. **إصلاح الأخطاء / ميزات جديدة** → اتبع سير عمل التطوير أدناه
+
+---
+
+## إعداد التطوير
+
+```bash
+# 1. Fork واستنساخ المستودع
+git clone git@github.com:your-username/openyida.git
+cd openyida
+
+# 2. تثبيت التبعيات
+npm install
+
+# 3. ربط عالميًا للتصحيح المحلي
+npm link
+
+# 4. تشغيل الاختبارات
+npm test
+```
+
+---
+
+## قائمة مراجعة PR
+
+قبل إرسال pull request، تحقق:
+
+- [ ] تم اختبار الميزة ذات الصلة بحساب Yida حقيقي محليًا
+- [ ] جميع الاختبارات تمر: `npm test`
+- [ ] فحص بناء جملة JS يمر:
+  ```bash
+  node --check bin/yida.js && for f in lib/*.js lib/locales/*.js; do node --check "$f"; done
+  ```
+- [ ] يشرح وصف PR بوضوح ما تغير ولماذا
+- [ ] مرفقات لقطات شاشة أو تسجيلات إذا كانت هناك تغييرات في واجهة المستخدم/السلوك
+
+---
+
+## إرشادات PR
+
+- **PR واحد، شيء واحد** — لا تخلط التغييرات غير المرتبطة
+- **تنسيق عنوان PR:** `feat: add xxx` / `fix: fix xxx` / `docs: update xxx`
+- **الوصف** يجب أن يغطي: ماذا، لماذا، وكيفية الاختبار
+- إذا أغلق PR Issue، أضف `Closes #123` في الوصف
+
+---
+
+## اتفاقية Commit
+
+اتبع [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat: add export-app command
+fix: fix get-page-config path error
+docs: update CLI command reference
+refactor: refactor login module
+test: add utils unit tests
+chore: upgrade dependencies
+```
+
+---
+
+## نمط الكود
+
+- اتبع نمط الكود الحالي (وحدات CommonJS، تفضل واجهات برمجة تطبيقات Node.js الأصلية)
+- استخدم أسماء إنجليزية ذات معنى للمتغيرات والدوال؛ تجنب الاختصارات
+- تعامل مع الأخطاء تمامًا — لا تبتلع الاستثناءات بصمت
+- عند إضافة أمر جديد، حدّث جدول أوامر CLI في `README.md`
+
+---
+
+## مرحبًا بـ PRs المدعومة بالذكاء الاصطناعي!PRs المدعومة بـ Claude Code أو Cursor أو Aone Copilot أو أي أداة ذكاء اصطناعي أخرى مرحب بها تمامًا! يرجى ذكر أداة الذكاء الاصطناعي التي استخدمتها في وصف PR — يساعد ذلك المشرفين على فهم سياق التوليد.
+
+---
+
+## الترخيص
+
+بالمساهمة، فإنك توافق على ترخيص مساهمتك بموجب [MIT License](https://github.com/openyida/openyida/blob/main/LICENSE).

@@ -1,9 +1,85 @@
 ---
 title: "FAQ"
-description: "Questions et réponses courantes sur OpenYida."
+description: "Questions fréquemment posées sur OpenYida."
 icon: "circle-question"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/guides/faq) or [Chinese version](/zh/guides/faq) for complete content.
-</Tip>
+<AccordionGroup>
+
+  <Accordion title="Ai-je besoin d'un compte YiDa pour utiliser OpenYida ?">
+    Oui. OpenYida crée et gère des applications sur la plateforme low-code [YiDa](https://www.aliwork.com), nécessitant un compte Alibaba/DingTalk avec YiDa activé. Exécutez `openyida login` pour vous authentifier.
+  </Accordion>
+
+  <Accordion title="Quels outils IA sont pris en charge ?">
+    OpenYida est compatible avec tout outil de codage IA qui prend en charge MCP (Model Context Protocol) ou peut lire des documents de compétences markdown. Support confirmé : **Claude Code, Aone Copilot, OpenCode, Cursor, Visual Studio Code, Qoder, Wukong**. En pratique, tout outil pouvant exécuter des commandes shell fonctionne.
+  </Accordion>
+
+  <Accordion title="Quelle version de Node.js est requise ?">
+    Node.js **≥ 18** est requis. Vérifiez votre version avec `node --version`. Téléchargez la dernière LTS depuis [nodejs.org](https://nodejs.org).
+  </Accordion>
+
+  <Accordion title="Que faire si le code QR de connexion ne s'affiche pas ?">
+    Essayez d'exécuter `openyida login` dans un terminal qui prend en charge le lancement du navigateur. Si dans un environnement headless (ex. serveur distant), utilisez `openyida login --wukong` dans les environnements DingTalk/Wukong, ou copiez l'URL de connexion de la sortie du terminal et ouvrez-la dans votre navigateur local.
+  </Accordion>
+
+  <Accordion title="Comment rafraîchir une session expirée ?">
+    Exécutez `openyida auth refresh` pour renouveler la session sans passer par le flux de connexion complet. Si cela échoue, exécutez `openyida login` pour vous réauthentifier.
+  </Accordion>
+
+  <Accordion title="Comment basculer entre plusieurs organisations YiDa ?">
+    ```bash
+    openyida org list       # Lister toutes les organisations et corpIds
+    openyida org switch --corp-id <corpId>   # Basculer vers l'organisation cible
+    openyida env            # Confirmer le basculement
+    ```
+  </Accordion>
+
+  <Accordion title="Comment ajouter des champs manquants aux formulaires générés par l'IA ?">
+    Dites directement à l'IA :
+    ```
+    Ajouter un champ [nom du champ] à [nom de la page], type de champ : [texte/nombre/date/menu déroulant/...], le rendre obligatoire
+    ```
+    OpenYida appellera `openyida create-form` avec le Schema mis à jour, fusionnant les nouveaux champs sans écraser les existants.
+  </Accordion>
+
+  <Accordion title="Puis-je modifier les applications générées dans l'éditeur visuel YiDa ?">
+    Absolument. La sortie est une application YiDa standard — vous pouvez l'ouvrir dans l'éditeur visuel de la plateforme YiDa à tout moment et apporter des modifications manuelles. OpenYida génère des applications, pas des configurations verrouillées.
+  </Accordion>
+
+  <Accordion title="Comment rendre une application accessible publiquement ?">
+    ```
+    Rendre la page [nom de la page] accessible publiquement
+    ```
+    Ou exécuter directement :
+    ```bash
+    openyida save-share-config
+    ```
+    Configurez les paramètres de partage de page pour que quiconque puisse y accéder via un lien sans connexion.
+  </Accordion>
+
+  <Accordion title="Puis-je migrer des applications YiDa existantes avec OpenYida ?">
+    Oui. Utilisez `openyida export` pour générer un package de migration à partir d'une application existante, et `openyida import` pour la reconstruire dans une autre organisation ou environnement.
+  </Accordion>
+
+  <Accordion title="Quelle est la différence entre `create-form` et `create-page` ?">
+    - **`create-form`** : Crée une **page de formulaire** YiDa — un formulaire de saisie de données utilisant le stockage de données intégré de YiDa en dessous. Utilisé pour la collecte de données structurées (inscriptions, demandes, enregistrements).
+    - **`create-page`** : Crée une **page d'affichage personnalisée** — une page basée sur JSX pour les tableaux de bord, les pages de destination, l'UI interactive. Compilée et publiée via `openyida publish`.
+  </Accordion>
+
+  <Accordion title="OpenYida prend-il en charge les workflows de processus/approbation ?">
+    Oui. Utilisez `openyida create-process` pour créer des formulaires de processus avec des étapes d'approbation, et `openyida configure-process` pour définir les règles de workflow (approbateurs, conditions, notifications).
+  </Accordion>
+
+  <Accordion title="Quelque chose s'est mal passé, comment déboguer ?">
+    1. Exécutez `openyida doctor --fix` — détecte et corrige automatiquement les problèmes courants
+    2. Exécutez `openyida env` — vérifiez l'état de connexion et l'environnement
+    3. Exécutez `openyida auth status` — vérifiez la validité de la session
+    4. Consultez [GitHub Issues](https://github.com/openyida/openyida/issues) pour les problèmes connus
+    5. S'il s'agit d'un nouveau bug, soumettez un issue avec : version Node.js, commande exécutée, sortie d'erreur complète
+  </Accordion>
+
+  <Accordion title="Comment contribuer à OpenYida ?">
+    Lisez le [Guide de contribution](/fr/contributing) pour le processus complet. En bref : forkez le repo, apportez des modifications sur une branche fonctionnelle, exécutez `npm test`, soumettez une PR. Les contributions assistées par l'IA sont les bienvenues !
+  </Accordion>
+
+</AccordionGroup>

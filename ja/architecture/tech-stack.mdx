@@ -1,170 +1,242 @@
 ---
-title: "プロジェクト構成"
-description: "OpenYidaのプロジェクトディレクトリ構成とコード組織方法"
+title: "技術アーキテクチャ"
+description: "OpenYidaの技術アーキテクチャ、コアモジュール、設計原理。"
+icon: "layer-group"
 ---
 
-# プロジェクト構成
+## 技術スタックアーキテクチャ
 
-OpenYidaはモジュラーアーキテクチャ設計を採用し、コード組織が明確で、メンテナンスと拡張が容易です。
+![技術スタックアーキテクチャ](/images/architecture-tech-stack.png)
 
-## ディレクトリ概要
+OpenYidaの技術スタックは開発環境とクラウドプラットフォームの2つの部分に分かれています：
+
+### 開発環境 (Development Environment)
+- **Node.js** - ランタイム環境
+- **Python** - Playwright自動化テスト
+- **Git** - バージョン管理
+
+### 自動化テスト (Playwright)
+- ブラウザ自動化
+- エンドツーエンドテスト
+- ページスクリーンショット比較
+
+### Yidaクラウドプラットフォーム (YiDa Cloud Platform)
+- **App** - アプリ管理
+- **Form** - フォームページ
+- **Custom Page** - カスタムページ
+
+## アーキテクチャ概要
+
+OpenYidaはモジュールアーキテクチャ設計を採用し、コアはCLIエントリー、コアモジュール、機能モジュールの3層に分かれています。
 
 ```
-openyida/
-├── src/
-│   ├── commands/          # CLIコマンド実装
-│   │   ├── create-app.ts
-│   │   ├── create-form.ts
-│   │   ├── create-page.ts
-│   │   ├── publish.ts
-│   │   ├── share.ts
-│   │   ├── data.ts
-│   │   ├── connector.ts
-│   │   ├── report.ts
-│   │   ├── doctor.ts
-│   │   └── login.ts
-│   ├── core/              # コア機能モジュール
-│   │   ├── yida-api.ts    # Yida APIカプセル化
-│   │   ├── ai-service.ts  # AIサービス統合
-│   │   ├── config.ts      # 設定管理
-│   │   └── auth.ts        # 認証処理
-│   ├── utils/             # ユーティリティ関数
-│   │   ├── logger.ts
-│   │   ├── file.ts
-│   │   └── validator.ts
-│   └── types/             # TypeScript型定義
-│       ├── yida.ts
-│       ├── ai.ts
-│       └── index.ts
-├── skills/                # スキルシステム
-│   ├── builtin/           # 組み込みスキル
-│   └── custom/            # カスタムスキル
-├── templates/             # コードテンプレート
-│   ├── app/
-│   ├── form/
-│   └── page/
-├── docs/                  # ドキュメント
-├── tests/                 # テストファイル
-├── package.json
-├── tsconfig.json
-└── README.md
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI 入口層 (bin/)                       │
+│                      yida.js - 命令ルーティング                  │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      コアモジュール (lib/core/)                 │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │   i18n   │ │   env    │ │  utils   │ │  doctor  │       │
+│  │  国際化   │ │ 環境検出 │ │ ユーティリティ │ │  診断ツール │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │  check   │ │   copy   │ │  babel   │ │  locales │       │
+│  │ 更新チェック │ │ディレクトリコピー  │ │ コンパイラ   │ │  言語パック  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      機能モジュール (lib/)                      │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │   auth   │ │   app    │ │   data   │ │  report  │       │
+│  │ 認証モジュール │ │アプリ管理  │ │ データ管理 │ │  レポート   │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │ connector│ │  process │ │permission│ │   cdn    │       │
+│  │ コネクタ   │ │ プロセス管理 │ │  権限    │ │ CDN管理  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    YidaプラットフォームAPI (aliwork.com)         │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-## コアモジュール説明
+---
 
-### src/commands/
+## コアモジュール詳細
 
-全CLIコマンドの実装を格納、各ファイルがサブコマンドに対応：
+### 国際化 (i18n.js)
 
-| ファイル | 機能 |
+12言語の国際化システムをサポート：
+
+```javascript
+const { t, getLanguage, setLanguage } = require('./i18n');
+
+// 翻訳を使用
+console.log(t('login.success'));
+console.log(t('create_app.usage', 'appName'));
+
+// 言語の取得/設定
+console.log(getLanguage()); // 'zh'
+setLanguage('en');
+```
+
+**言語検出優先順位：**
+1. `OPENYIDA_LANG`環境変数
+2. `LANG` / `LC_ALL`システム環境変数
+3. デフォルト：簡体字中国語
+
+### 環境検出 (env.js)
+
+現在実行中のAIツール環境を自動検出：
+
+| 検出方法 | ツール |
+|----------|------|
+| ディレクトリ存在検出 | Claude Code、Cursor、OpenCode、Aone Copilot、Qoder |
+| 特殊ファイル検出 | 悟空 (Wukong)
+
+### 診断エンジン (doctor.js)
+
+3層アーキテクチャ設計：
+
+1. **DiagnosticEngine** - 診断スケジューラ
+2. **EnvironmentChecker** - 環境チェッカー
+3. **ApplicationChecker** - アプリケーションチェッカー
+4. **FixEngine** - スマート修復エンジン
+
+---
+
+## 機能モジュール詳細
+
+### 認証モジュール (auth/)
+
+```
+auth/
+├── login.js          # Yidaログイン（Cookieキャッシュ + QRコード）
+├── auth.js           # ログイン状態管理
+├── org.js            # 組織管理
+└── qr-login.js       # ターミナルQRコードログイン
+```
+
+**ログインフロー：**
+1. 現在のAIツール環境を検出
+2. 環境に応じてログイン方法を選択（QRコード / CDP / ファイル読み取り）
+3. Cookieを取得し、ローカルで暗号化してキャッシュ
+4. 後続のコマンドでキャッシュされたログイン状態を自動的に使用
+
+### コネクタモジュール (connector/)
+
+```
+connector/
+├── api.js                    # YidaコネクタAPIカプセル化
+├── curl-parser.js            # curlコマンドパーサー
+├── action-generator.js       # アクションジェネレーター
+├── desc-generator.js         # 説明ジェネレーター
+├── connector-smart-create.js # スマート作成エントリー
+└── ...
+```
+
+**スマート作成フロー：**
+```
+curlコマンド → パーサー → API情報抽出 → 認証検出 → 既存コネクタ照合 → 設定生成 → 作成/更新
+```
+
+### データ管理モジュール (data-management.js)
+
+統一データ操作インターフェース、以下をサポート：
+
+| リソースタイプ | 操作 |
+|----------|------|
+| form | query, get, create, update |
+| process | query, get, create |
+| task | query, execute |
+| subform | query |
+
+---
+
+## プロジェクト作業ディレクトリ
+
+```
+project/
+├── config.json          # アプリ設定
+│   ├── appType          # アプリタイプID
+│   ├── pageId           # ページID
+│   ├── corpId           # 組織ID
+│   └── ...
+├── pages/
+│   ├── src/             # ページソースコード（React + Yida SDK）
+│   └── dist/            # コンパイル成果物
+├── prd/                 # 要件ドキュメント
+└── .cache/
+    ├── cookies.json     # ログイン状態キャッシュ
+    ├── *-schema.json    # フォームSchemaキャッシュ
+    └── reports/         # 診断レポート
+```
+
+---
+
+## Yida API呼び出し
+
+### 基本設定
+
+```javascript
+const BASE_URL = 'https://www.aliwork.com';
+
+// リクエストヘッダー
+const headers = {
+  'Content-Type': 'application/json',
+  'X-Csrf-Token': csrfToken,
+  'Cookie': cookies,
+};
+```
+
+### コアAPI
+
+| エンドポイント | 用途 |
 |------|------|
-| `create-app.ts` | Yidaアプリ作成 |
-| `create-form.ts` | フォームページ作成 |
-| `create-page.ts` | カスタムページ作成 |
-| `publish.ts` | アプリ公開 |
-| `share.ts` | アプリ共有 |
-| `data.ts` | データ管理操作 |
-| `connector.ts` | コネクタ管理 |
-| `report.ts` | レポート操作 |
-| `doctor.ts` | 診断ツール |
-| `login.ts` | ログイン認証 |
+| `/dingtalk/web/APP_xxx/xxx` | アプリ内インターフェース |
+| `/dingtalk/web/APP_xxx/form/getFormDataList` | フォームデータクエリ |
+| `/dingtalk/web/APP_xxx/form/saveFormData` | フォームデータ保存 |
+| `/dingtalk/web/APP_xxx/proc/getProcessInstances` | プロセスインスタンスクエリ |
 
-### src/core/
+---
 
-コアビジネスロジックモジュール：
+## セキュリティ設計
 
-- **yida-api.ts**: YidaオープンプラットフォームAPIをカプセル化、統一インターフェース呼び出しを提供
-- **ai-service.ts**: 複数のAIサービス（OpenAI、Claude、通義千問など）を統合
-- **config.ts**: ローカル設定ファイル（~/.openyida/config.json）を管理
-- **auth.ts**: ログイン状態、トークン更新、マルチ組織切り替えを処理
+1. **Cookie暗号化保存** - ローカルキャッシュ暗号化保存
+2. **CSRF Token検証** - 各リクエストでTokenを携帯
+3. **ハードコードされた認証情報なし** - すべての認証情報は動的に取得
+4. **環境分離** - 異なるAIツール環境は独立
 
-### src/utils/
+---
 
-汎用ユーティリティ関数：
+## パフォーマンス最適化
 
-- **logger.ts**: ログ出力、レベル分けとカラー対応
-- **file.ts**: ファイル操作ヘルパー関数
-- **validator.ts**: 入力検証とチェック
+1. **遅延ロード翻訳ファイル** - 言語パックをオンデマンドでロード
+2. **Schemaローカルキャッシュ** - API呼び出しを削減
+3. **並行リクエスト制御** - 過度なリクエストによる制限を回避
+4. **増分更新** - フォーム更新は上書きではなくマージを採用
 
-### src/types/
-
-TypeScript型定義、コードの型安全性を確保：
-
-- **yida.ts**: Yida API関連型
-- **ai.ts**: AIサービス関連型
-- **index.ts**: 汎用型エクスポート
-
-## スキルシステム
-
-```
-skills/
-├── builtin/               # 組み込みスキル
-│   ├── code-generator/    # コード生成
-│   ├── form-builder/      # フォーム構築
-│   ├── page-designer/     # ページデザイン
-│   └── data-analyzer/     # データ分析
-└── custom/                # ユーザーカスタムスキル
-    └── (ユーザー拡張)
-```
-
-スキルはプラグインアーキテクチャを採用、ホットロードと動的拡張をサポート。
-
-## 設定管理
-
-### ローカル設定
-
-保存場所：`~/.openyida/config.json`
-
-```json
-{
-  "defaultOrg": "org-default",
-  "orgs": {
-    "org-default": {
-      "accessToken": "xxx",
-      "refreshToken": "xxx",
-      "expiresAt": 1234567890
-    }
-  },
-  "aiProvider": "openai",
-  "aiConfig": {
-    "apiKey": "sk-xxx",
-    "model": "gpt-4"
-  }
-}
-```
-
-### プロジェクト設定
-
-プロジェクトルートディレクトリに`.openyidarc.json`を作成可能：
-
-```json
-{
-  "appId": "APP-XXX",
-  "defaultEnv": "dev",
-  "environments": {
-    "dev": { "appKey": "xxx", "appSecret": "xxx" },
-    "prod": { "appKey": "xxx", "appSecret": "xxx" }
-  }
-}
-```
+---
 
 ## 拡張メカニズム
 
-### 新規コマンド追加
+### 新コマンドの追加
 
-1. `src/commands/`に新規ファイル作成
-2. コマンド処理関数を実装
-3. `src/index.ts`でコマンドを登録
+1. `lib/`で`new-feature.js`を作成
+2. `bin/yida.js`でコマンドルートを登録
+3. `README.md`とドキュメントを更新
+4. 国際化キーを追加
 
-### 新規スキル追加
+### 新言語の追加
 
-1. `skills/custom/`にスキルディレクトリ作成
-2. `skill.json`とメインロジックを実装
-3. `openyida skill load`でロード
-
-## 開発規範
-
-- 全新機能に型定義を含める
-- コマンド実装に`--help`ドキュメントを含める
-- コア機能にユニットテストカバレッジが必要
-- ESLintとPrettier設定に従う
+1. `lib/core/locales/`で`xx.js`を作成
+2. すべてのキーを翻訳（`zh.js`を基準）
+3. `i18n.js`の`SUPPORTED_LANGUAGES`を更新
+4. `npm run validate-i18n`を実行して完全性をチェック

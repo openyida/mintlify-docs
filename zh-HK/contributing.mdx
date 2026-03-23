@@ -1,0 +1,110 @@
+---
+title: "貢獻指南"
+description: "如何為 OpenYiDA 做出貢獻 — 錯誤報告、功能、文件和技能。"
+icon: "handshake"
+---
+
+歡迎來到 OpenYiDA！我們很高興您有興趣參與貢獻。本指南涵蓋了您需要的一切入門資訊。
+
+## 快速連結
+
+- **GitHub:** https://github.com/openyida/openyida
+- **Issues:** https://github.com/openyida/openyida/issues
+- **npm:** https://www.npmjs.com/package/openyida
+
+---
+
+## 維護者
+
+| 名稱 | 角色 | GitHub |
+|------|------|--------|
+| **九神 (yize)** | 核心架構、CLI 設計 | [@yize](https://github.com/yize) |
+| **alex-mm** | 功能開發、測試 | [@alex-mm](https://github.com/alex-mm) |
+| **nicky1108** | OpenClaw 整合、技能擴充 | [@nicky1108](https://github.com/nicky1108) |
+
+---
+
+## 貢獻方式
+
+1. **報告錯誤** → 開啟 Issue 並附上重現步驟和環境資訊
+2. **建議功能** → 先發起 Discussion 或 Issue，然後實作
+3. **改進文件** → 歡迎提交文件相關的 PR
+4. **新增技能** → 於 `yida-skills/` 下擴充技能包
+5. **修復錯誤 / 新功能** → 遵循下方的開發工作流程
+
+---
+
+## 開發環境設定
+
+```bash
+# 1. Fork 並克隆倉庫
+git clone git@github.com:your-username/openyida.git
+cd openyida
+
+# 2. 安裝依賴
+npm install
+
+# 3. 全域連結以便本地除錯
+npm link
+
+# 4. 執行測試
+npm test
+```
+
+---
+
+## PR 檢查清單
+
+提交 pull request 前，請確認：
+
+- [ ] 已使用真實的 Yida 帳號於本地測試相關功能
+- [ ] 所有測試通過：`npm test`
+- [ ] JS 語法檢查通過：
+  ```bash
+  node --check bin/yida.js && for f in lib/*.js lib/locales/*.js; do node --check "$f"; done
+  ```
+- [ ] PR 描述清楚說明了變更內容和原因
+- [ ] 若有 UI/行為變更，附上截圖或錄製畫面
+
+---
+
+## PR 規範
+
+- **一個 PR 做一件事** — 勿混合不相關的變更
+- **PR 標題格式：** `feat: add xxx` / `fix: fix xxx` / `docs: update xxx`
+- **描述** 應涵蓋：做了什麼、為何、如何測試
+- 若 PR 關閉了 Issue，請在描述中加上 `Closes #123`
+
+---
+
+## 提交規範
+
+遵循 [Conventional Commits](https://www.conventionalcommits.org/)：
+
+```
+feat: add export-app command
+fix: fix get-page-config path error
+docs: update CLI command reference
+refactor: refactor login module
+test: add utils unit tests
+chore: upgrade dependencies
+```
+
+---
+
+## 程式碼風格
+
+- 遵循現有程式碼風格（CommonJS 模組，優先使用 Node.js 原生 API）
+- 變數和函數使用有意義的英文名稱；避免縮寫
+- 完整處理錯誤 — 勿靜默吞掉例外
+- 新增指令時，更新 `README.md` 中的 CLI 指令表格
+
+---
+
+## 歡迎 AI / Vibe-Coded PR！完全歡迎由 Claude Code、Cursor、Aone Copilot 或任何其他 AI 工具輔助的 PR！請於 PR 描述中註明您使用的 AI 工具 — 這有助於維護者理解生成背景。
+
+---
+
+## 授權條款
+
+透過貢獻，您同意將您的貢獻依據 [MIT License](https://github.com/openyida/openyida/blob/main/LICENSE) 授權。

@@ -1,48 +1,101 @@
 ---
-title: "Übersicht"
-description: "OpenYida ist ein CLI-Tool zum Erstellen von Yida-Anwendungen in natürlicher Sprache."
+title: "Was ist OpenYida?"
+description: "KI-gesteuertes CLI-Tool für die Yida-Low-Code-Plattform, null Konfiguration, sofort einsatzbereit."
 icon: "rocket"
 ---
 
-## Was ist OpenYida?
+<img
+  className="block dark:hidden"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
+<img
+  className="hidden dark:block"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
 
-OpenYida ist eine Befehlszeilenschnittstelle, die KI-Agenten mit der [Yida](https://www.aliwork.com) Low-Code-Plattform verbindet. Sie ermöglicht die Erstellung, Verwaltung und Bereitstellung von Unternehmensanwendungen mithilfe natürlicher Spracheingaben.
+> *"We are on the verge of the Singularity"* — Vernor Vinge
 
-## Hauptfunktionen
+<p align="center">
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/v/openyida?color=brightgreen&label=npm" alt="npm version"/></a>
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/dm/openyida?color=blue" alt="npm downloads"/></a>
+  <a href="https://github.com/openyida/openyida/actions/workflows/ci.yml"><img src="https://github.com/openyida/openyida/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+  <a href="https://github.com/openyida/openyida/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"/></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen" alt="Node.js ≥18"/></a>
+</p>
+
+## Übersicht
+
+**OpenYida** ist ein CLI-Tool ohne Konfiguration, das KI-Programmierassistenten mit der Low-Code-Plattform [Yida](https://www.aliwork.com) verbindet. Installieren Sie es einmal und beschreiben Sie dann Ihre Anforderungen in natürlicher Sprache — OpenYida übernimmt automatisch: Anwendungserstellung, Formularverwaltung, Seitenveröffentlichung, Konnektor-Konfiguration, Berichtserstellung, Sekundenschnelle Bereitstellung auf Yida.
+
+🌐 **Offizielle Website**: [https://openyida.ai](https://openyida.ai)
 
 <CardGroup cols={2}>
-  <Card title="App-Erstellung in natürlicher Sprache" icon="message">
-    Beschreiben Sie Ihre Anwendung auf Deutsch. Die KI übersetzt Ihre Anforderungen in Yida-Formulare, Seiten und Workflows.
+  <Card title="Anwendung in einem Satz erstellen" icon="wand-magic-sparkles">
+    Beschreiben Sie Ihre Anforderungen in einem Satz, die KI generiert automatisch ein vollständiges Geschäftssystem mit mehreren Formularen.
   </Card>
-  <Card title="Unterstützung mehrerer KI-Tools" icon="robot">
-    Funktioniert mit Claude Code, Cursor, VS Code, Wukong und jedem MCP-kompatiblen KI-Assistenten.
+  <Card title="Anforderungsdokument zu Anwendung" icon="file-lines">
+    Fügen Sie ein Anforderungsdokument ein, erhalten Sie eine funktionsfähige Yida-Anwendung mit allen angegebenen Feldern und Logiken.
   </Card>
-  <Card title="Vollständige Yida-Integration" icon="plug">
-    Erstellt echte Yida-Anwendungen — keine Mockups.
+  <Card title="Formular- und Seitenoperationen" icon="table-columns">
+    Erstellen, ändern und konfigurieren Sie Formulare und benutzerdefinierte Anzeigeseiten über natürliche Sprachbefehle.
   </Card>
-  <Card title="Kompilierung benutzerdefinierter Seiten" icon="code">
-    JSX-basierte benutzerdefinierte Seiten werden mit Babel automatisch kompiliert und auf Yida veröffentlicht.
-  </Card>
-</CardGroup>
-
-## Schnellstart
-
-```bash
-# Installation
-npm install -g openyida
-
-# Anmeldung
-openyida login
-
-# App erstellen
-openyida create-app --name "Mein CRM"
-```
-
-<CardGroup>
-  <Card title="Schnellstart" icon="play" href="/de/quickstart">
-    Erstellen Sie Ihre erste App in 5 Minuten
-  </Card>
-  <Card title="Demo-Fälle" icon="images" href="/de/introduction/demo">
-    Echte Anwendungen ansehen, die mit OpenYida erstellt wurden
+  <Card title="Veröffentlichung und Freigabe" icon="share-nodes">
+    Ein einziger Befehl zum Kompilieren, Veröffentlichen und Konfigurieren des öffentlichen Zugriffs auf Seiten.
   </Card>
 </CardGroup>
+
+---
+
+## Kernfunktionen
+
+| Funktionsmodul | Beschreibung |
+|---------|------|
+| **Anwendungsverwaltung** | Anwendungserstellung, Import/Export, Migration und Bereitstellung |
+| **Formularverwaltung** | Erstellung/Aktualisierung von Formularen, Schema-Abfrage, Berechtigungskonfiguration |
+| **Seitenveröffentlichung** | Entwicklung benutzerdefinierter Seiten, Babel-Kompilierung, Ein-Klick-Veröffentlichung |
+| **Prozesskonfiguration** | Erstellung von Prozessformularen, Konfiguration von Genehmigungsregeln |
+| **Datenverwaltung** | Formulardatenabfragen, Prozessinstanzen, Aufgabenverwaltung |
+| **Konnektoren** | HTTP-Konnektor-Erstellung, API-Integration, intelligenter curl-Import |
+| **Berichte und Diagramme** | Yida-Berichtserstellung, Diagramm-Anfügung, Datenvisualisierung |
+| **CDN-Verwaltung** | Bild-Upload, Cache-Aktualisierung, OSS-Konfiguration |
+
+---
+
+## Unterschiede zu anderen KI-Bau-Plattformen
+
+| Dimension | OpenYida | Andere KI-Bau-Plattformen |
+|------|----------|------------------|
+| **Zielbenutzer** | Entwickler (Personen mit Programmierkenntnissen) | Fachpersonal (Nicht-Entwickler) |
+| **Interaktionsweise** | Natürliche Sprache + KI-Gespräch | Visuelles Drag-and-Drop + Konfigurationspanel |
+| **Ergebnis** | Yida-Anwendung (nachbearbeitbar, unterstützt vollständige Low-Code-Fähigkeiten) | Konfiguration (Ausführung in Blackbox) |
+| **Bereitstellungsart** | Yida-Plattform | Bindung an SaaS-Plattform |
+| **KI-Modell** | Auswahl nach Bedarf, passendstes Modell | Von Plattform festgelegt, nicht austauschbar |
+| **Sicherheit und Compliance** | Yida verfügt über vollständige Sicherheits- und Compliance-Fähigkeiten | Abhängig von Plattformfähigkeiten |
+
+---
+
+## Unterstützte KI-Programmiertools
+
+OpenYida ist ein MCP-kompatibles Skill-Paket, nativ in alle gängigen KI-Programmierumgebungen integriert:
+
+| Tool | Status |
+|------|------|
+| [Claude Code](https://claude.ai/code) | ✅ Vollständige Unterstützung |
+| [Aone Copilot](https://copilot.code.alibaba-inc.com) | ✅ Vollständige Unterstützung |
+| [OpenCode](https://opencode.ai) | ✅ Vollständige Unterstützung |
+| [Cursor](https://cursor.com/) | ✅ Vollständige Unterstützung |
+| [Visual Studio Code](https://code.visualstudio.com/) | ✅ Vollständige Unterstützung |
+| [Qoder](https://qoder.com) | ✅ Vollständige Unterstützung |
+| [Wukong](https://dingtalk.com/wukong) | ✅ Vollständige Unterstützung |
+
+---
+
+## Umgebungsanforderungen
+
+| Abhängigkeit | Version | Verwendung |
+|------|------|------|
+| Node.js | ≥ 18 | CLI-Ausführung, Seitenveröffentlichung |
+
+Kein Python, Playwright oder Build-Schritte erforderlich — reine Node.js-Implementierung.

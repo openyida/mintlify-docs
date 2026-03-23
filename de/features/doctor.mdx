@@ -1,9 +1,229 @@
 ---
-title: "Diagnose-Tool"
-description: "Umgebungsdiagnose und Problemlösung."
+title: "Diagnosetool"
+description: "Umgebungsprüfung, Anwendungsdiagnose, intelligente Reparatur, Gesundheitsüberwachung."
 icon: "stethoscope"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/doctor) or [Chinese version](/zh/features/doctor) for complete content.
-</Tip>
+OpenYida verfügt über ein leistungsstarkes Diagnosetool `doctor`, das Entwicklern hilft, die Umgebung zu überprüfen, Probleme zu diagnostizieren, automatisch zu reparieren und die Gesundheit von Anwendungen kontinuierlich zu überwachen.
+
+---
+
+## Funktionsübersicht
+
+<CardGroup cols={2}>
+  <Card title="Umgebungsprüfung" icon="laptop-code">
+    Überprüfen Sie Umgebungsabhängigkeiten: Node.js, Python, Playwright, Verbindungsstatus usw.
+  </Card>
+  <Card title="Anwendungsdiagnose" icon="magnifying-glass">
+    Überprüfen Sie PRD, Seitenquellcode, Schema-Cache, React Hooks-Standards.
+  </Card>
+  <Card title="Intelligente Reparatur" icon="wand-magic">
+    Reparieren Sie automatisch behebbare Probleme, bieten Sie manuelle Reparaturhinweise.
+  </Card>
+  <Card title="Gesundheitsüberwachung" icon="heart-pulse">
+    Überwachen Sie kontinuierlich die Gesundheit von Anwendungen, generieren Sie Trendberichte.
+  </Card>
+</CardGroup>
+
+---
+
+## Grundlegende Verwendung
+
+### Diagnose ausführen
+
+```bash
+openyida doctor
+```
+
+### Automatische Reparatur
+
+```bash
+openyida doctor --fix
+```
+
+### Bericht generieren
+
+```bash
+# Markdown-Format
+openyida doctor --report markdown
+
+# JSON-Format
+openyida doctor --report json
+
+# HTML-Format
+openyida doctor --report html
+```
+
+---
+
+## Umgebungsprüfungselemente
+
+| Prüfelement | Beschreibung | Automatische Reparatur |
+|--------|------|----------|
+| Node.js-Version | Prüfen, ob ≥ 16 | ❌ |
+| Python-Version | Prüfen, ob ≥ 3.10 | ❌ |
+| Playwright | Installation prüfen | ✅ |
+| Chromium | Browserinstallation prüfen | ✅ |
+| gh CLI | GitHub CLI prüfen | ❌ |
+| gh login | gh CLI-Verbindungsstatus prüfen | ✅ |
+| config.json | Konfigurationsdatei prüfen | ✅ |
+| Skills | Skill-Paket-Installation prüfen | ❌ |
+| Yida-Verbindung | Verbindungsstatus prüfen | ✅ |
+| Netzwerkkonnektivität | aliwork.com-Konnektivität prüfen | ❌ |
+
+---
+
+## Anwendungsdiagnoseelemente
+
+| Prüfelement | Beschreibung |
+|--------|------|
+| PRD-Datei | Existenz des Anforderungsdokuments prüfen |
+| Seitenquellcode | Quelldateien, console.log, leere Dateien prüfen |
+| Schema-Cache | Cache-Dateiformat prüfen |
+| React Hooks | Hooks-Nutzungsstandards prüfen |
+
+---
+
+## Gesundheitsüberwachungsmodus
+
+Starten Sie die kontinuierliche Überwachung, prüfen Sie jede Minute:
+
+```bash
+openyida doctor --monitor
+```
+
+Beispielausgabe:
+
+```
+[14:32:01] Gesundheit: 95/100 📈
+  Erfolgreich: 18/19 | Fehler: 0 | Warnungen: 1
+
+[14:33:01] Gesundheit: 100/100 ➡️
+  Erfolgreich: 19/19 | Fehler: 0 | Warnungen: 0
+```
+
+Drücken Sie `Ctrl+C`, um die Überwachung zu stoppen.
+
+---
+
+## Online-Diagnose
+
+Online-Diagnose für bereits veröffentlichte Anwendungen:
+
+```bash
+openyida doctor --production --app <appId>
+```
+
+Prüfungsinhalt:
+- Gültigkeit der Anwendungs-ID
+- Online-Fehlerprotokolle
+- Leistungskennzahlen
+
+---
+
+## Tickets und VOC
+
+### Ticket erstellen (Bug)
+
+```bash
+openyida doctor --create-ticket
+```
+
+Geben Sie interaktiv Titel und Beschreibung ein, senden Sie automatisch an GitHub Issues.
+
+### VOC erstellen (Bedarf)
+
+```bash
+openyida doctor --create-voc
+```
+
+### Intelligente Übermittlung
+
+Das System bestimmt automatisch, ob es sich um einen Bug oder einen Bedarf handelt:
+
+```bash
+openyida doctor --auto-submit
+```
+
+---
+
+## Diagnoseberichtbeispiel
+
+### Konsolenausgabe
+
+```
+🔍 Überprüfung der OpenYida-Umgebungsabhängigkeiten...
+
+✅ Node.js v18.19.0 (erforderlich ≥ 16)
+✅ Python 3.11.4 (erforderlich ≥ 3.10)
+✅ Playwright installiert
+✅ Playwright Chromium installiert
+✅ gh version 2.40.1
+✅ gh CLI verbunden
+✅ config.json vorhanden und Format korrekt
+⚠️  Skills-Installationserkennung
+   Skills nicht installiert, führen Sie bash install-skills.sh zur Installation aus
+✅ Yida-Verbindungsstatus: verbunden
+✅ Netzwerkkonnektivität (aliwork.com)
+✅ PRD-Datei (2)
+✅ Seitenquellcode (3 Dateien)
+✅ Schema-Cache (5)
+✅ React Hooks-Standards
+
+1 Problem gefunden (0 Fehler, 1 Warnung)
+```
+
+### Markdown-Bericht
+
+```bash
+openyida doctor --report markdown
+```
+
+Bericht gespeichert unter `.cache/reports/doctor-2024-01-15T10-30-00-000Z.md`
+
+---
+
+## Vorprüfung
+
+Führen Sie automatisch die Prüfung vor wichtigen Operationen aus:
+
+### Prüfung vor Veröffentlichung
+
+```bash
+# Automatisch ausgeführt
+openyida publish führt automatisch die Vorprüfung aus
+```
+
+### Prüfung vor Erstellung
+
+```bash
+# Automatisch ausgeführt
+openyida create-app führt automatisch die Vorprüfung aus
+```
+
+---
+
+## Reparaturtypen
+
+| Typ | Beschreibung | Beispiel |
+|------|------|------|
+| `AUTO` | Automatische Reparatur | config.json erstellen, beschädigten Cache löschen |
+| `COMMAND` | Befehlsreparatur | `pip install playwright` ausführen |
+| `MANUAL` | Manuelle Reparatur | gh CLI installieren, PRD schreiben |
+
+---
+
+## Gesundheitsberechnung
+
+Formel zur Berechnung des Gesundheitswerts (0-100):
+
+```
+Gesundheit = Erfolgsrate × 100 - Fehleranzahl × 10 - Warnungsanzahl × 3
+```
+
+| Wert | Zustand |
+|------|------|
+| 90-100 | Ausgezeichnet 🟢 |
+| 70-89 | Gut 🟡 |
+| 50-69 | Durchschnitt 🟠 |
+| < 50 | Verbesserungsbedarf 🔴 |

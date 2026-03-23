@@ -1,9 +1,199 @@
 ---
-title: "Conectores"
-description: "Criação e gerenciamento de conectores HTTP."
+title: "Conectores (Integração HTTP)"
+description: "Integre aplicativos Yida com APIs externas por meio de conectores HTTP."
 icon: "plug"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/connector) or [Chinese version](/zh/features/connector) for complete content.
-</Tip>
+O OpenYida fornece poderosas funções de gerenciamento de conectores HTTP, suporta criação inteligente de conectores a partir de comandos curl, alcançando integração perfeita entre Yida e sistemas externos.
+
+---
+
+## Visão Geral
+
+<CardGroup cols={2}>
+  <Card title="Criação Inteligente" icon="wand-magic-sparkles">
+    Analisa e cria conectores automaticamente a partir de comandos curl, suporta extração de informações de autenticação.
+  </Card>
+  <Card title="Gestão de API" icon="code">
+    Gestão completa do ciclo de vida do conector: criar, atualizar, testar, excluir.
+  </Card>
+  <Card title="Suporte de Autenticação" icon="key">
+    Suporta Bearer Token, API Key, OAuth2 e outros métodos de autenticação.
+  </Card>
+  <Card title="Gestão de Ações" icon="play">
+    Adicionar, testar e gerenciar ações de execução do conector.
+  </Card>
+</CardGroup>
+
+---
+
+## Criação Inteligente de Conectores
+
+Crie conectores com um único comando curl:
+
+```bash
+openyida connector smart-create \
+  --curl "curl 'https://api.example.com/v1/users' -H 'Authorization: Bearer xxx'" \
+  --name "Conector de Gestão de Usuários" \
+  --desc "Conector HTTP para gerenciar dados de usuários"
+```
+
+Processo de criação inteligente:
+
+1. **Analisar informações de API** - Extrair protocolo, Host, método, rota, tipo de autenticação
+2. **Coincidir com conectores existentes** - Buscar conectores existentes com mesmo Host e autenticação
+3. **Gerar configuração do conector** - Construir automaticamente definição do conector em formato OpenAPI
+4. **Criar ou atualizar** - Criar novo conector ou adicionar ação a conector existente
+
+---
+
+## Comandos de Gestão de Conectores
+
+### Listar Conectores
+
+```bash
+openyida connector list
+openyida connector list --page 1 --size 20
+```
+
+### Criar Conector
+
+```bash
+openyida connector create "Nome do Conector" "api.example.com" \
+  --operations ./operations.json \
+  --protocol https \
+  --desc "Descrição do conector"
+```
+
+### Ver Detalhes do Conector
+
+```bash
+openyida connector detail <connector-id>
+```
+
+### Excluir Conector
+
+```bash
+openyida connector delete <connector-id> --force
+```
+
+---
+
+## Gestão de Ações
+
+### Adicionar Ação de Execução
+
+```bash
+openyida connector add-action \
+  --connector-id <id> \
+  --operations ./new-action.json \
+  --confirm
+```
+
+### Listar Ações Existentes
+
+```bash
+openyida connector list-actions <connector-id>
+```
+
+### Testar Ação
+
+```bash
+openyida connector test \
+  --connector-id <id> \
+  --action <actionId> \
+  --body '{"key": "value"}'
+```
+
+### Excluir Ação
+
+```bash
+openyida connector delete-action <connector-id> <operation-id> --force
+```
+
+---
+
+## Gestão de Contas de Autenticação
+
+### Listar Contas de Autenticação
+
+```bash
+openyida connector list-connections <connector-id>
+```
+
+### Criar Conta de Autenticação
+
+```bash
+openyida connector create-connection <connector-id> "Conta de Produção" \
+  --token "Bearer xxx" \
+  --type bearer
+```
+
+---
+
+## Ferramentas Auxiliares
+
+### Analisar Informações de API
+
+```bash
+openyida connector parse-api --curl "comando curl" --output ./api-info.json
+```
+
+### Gerar Modelo de Documentação de API
+
+```bash
+openyida connector gen-template ./my-api-template.json
+```
+
+---
+
+## Melhores Práticas
+
+### 1. Usar Variáveis de Ambiente para Informações Sensíveis
+
+```bash
+export API_TOKEN="seu-token-secreto"
+openyida connector smart-create --curl "curl -H 'Authorization: Bearer $API_TOKEN' ..."
+```
+
+### 2. Criar Conectores Complexos por Fases
+
+```bash
+# Passo 1: Criar conector base
+openyida connector create "API do DingTalk" "oapi.dingtalk.com"
+
+# Passo 2: Adicionar ações uma por uma
+openyida connector add-action --connector-id <id> --operations ./action1.json
+openyida connector add-action --connector-id <id> --operations ./action2.json
+```
+
+### 3. Testar Antes de Habilitar
+
+```bash
+# Criar mas não confirmar
+openyida connector add-action --connector-id <id> --operations ./action.json
+
+# Testar ação
+openyida connector test --connector-id <id> --action <actionId>
+
+# Confirmar生效
+# Completar confirmação final no backend do Yida
+```
+
+---
+
+## Perguntas Frequentes
+
+<AccordionGroup>
+  <Accordion title="O que fazer se a análise do comando curl falhar?">
+    Certifique-se de que o comando curl tenha formato correto, inclua URL completa e headers necessários. Se contiver caracteres especiais, use aspas.
+  </Accordion>
+
+  <Accordion title="Como atualizar ações de um conector existente?">
+    Use o comando `connector add-action`, se o ID da ação já existir, o sistema perguntará se deseja atualizar.
+  </Accordion>
+
+  <Accordion title="Quais métodos de autenticação são suportados?">
+    Atualmente suporta Bearer Token, API Key, Basic Auth, OAuth2. As informações de autenticação em comandos curl são reconhecidas automaticamente.
+  </Accordion>
+</AccordionGroup>

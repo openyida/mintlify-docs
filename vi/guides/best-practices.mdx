@@ -1,9 +1,133 @@
 ---
-title: "Thực Hành Tốt Nhất"
-description: "Khuyến nghị để tận dụng tối đa OpenYida."
+title: "Thực hành tốt nhất"
+description: "Khuyến nghị thực hành tốt nhất để sử dụng OpenYida và tạo ứng dụng dựa trên AI."
 icon: "star"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/guides/best-practices) or [Chinese version](/zh/guides/best-practices) for complete content.
-</Tip>
+## 1. Viết prompt chi tiết
+
+Chất lượng ứng dụng được tạo ra tỷ lệ thuận với mức độ chi tiết của prompt. So sánh:
+
+<CodeGroup>
+
+```text Mơ hồ (Tránh)
+Tạo một CRM
+```
+
+```text Chi tiết (Khuyến nghị)
+Tạo một CRM với ba biểu mẫu liên quan:
+1. Biểu mẫu khách hàng tiềm năng — Trường: Tên, Công ty, Điện thoại, Email, Nguồn (Dropdown: Giới thiệu/Website/Sự kiện/Gọi điện lạnh), Trạng thái (Dropdown: Khách hàng mới/Đã liên lạc/Đạt tiêu chuẩn/Không đạt tiêu chuẩn), Phân công cho (Bộ chọn thành viên)
+2. Biểu mẫu khách hàng — Chuyển đổi từ khách hàng tiềm năng, Trường: Tên công ty, Ngành, Doanh thu hàng năm, Liên hệ chính, Quản lý tài khoản
+3. Biểu mẫu cơ hội — Liên kết với khách hàng, Trường: Tên cơ hội, Số tiền, Giai đoạn (Dropdown: Đề xuất/Đàm phán/Thắng/Thua), Ngày dự kiến đóng, Ghi chú
+```
+
+</CodeGroup>
+
+---
+
+## 2. Sử dụng tài liệu yêu cầu
+
+Đối với ứng dụng phức tạp, hãy viết PRD trước, sau đó giao cho AI:
+
+```
+Tạo ứng dụng YiDa dựa trên tài liệu yêu cầu sau:
+
+[Dán PRD — tên trường, loại, quy tắc xác thực, quy trình làm việc, v.v.]
+```
+
+Cách tiếp cận này tạo ra kết quả chính xác hơn so với prompt lặp lại.
+
+---
+
+## 3. Lặp lại tăng dần
+
+Đừng cố xây dựng mọi thứ trong một prompt. Xây dựng cấu trúc cốt lõi trước, sau đó dần dần thêm độ phức tạp:
+
+```
+Bước 1: Tạo biểu mẫu thông tin nhân viên cơ bản
+Bước 2: Thêm biểu mẫu đơn xin nghỉ phép liên kết với nhân viên
+Bước 3: Cấu hình quy trình phê duyệt nghỉ phép
+Bước 4: Thêm bảng điều khiển quản lý hiển thị các phê duyệt đang chờ
+Bước 5: Xuất bản bảng điều khiển dưới dạng trang công khai
+```
+
+---
+
+## 4. Xác minh mỗi bước
+
+Sau khi AI tạo mỗi thành phần, hãy để nó xác minh:
+
+```
+Hiển thị Schema hiện tại của biểu mẫu [Tên biểu mẫu]
+Kiểm tra xem trang [Tên trang] đã được xuất bản và có thể truy cập chưa
+```
+
+Phát hiện vấn đề sớm trước khi chúng tích lũy thành vấn đề lớn hơn.
+
+---
+
+## 5. Tái sử dụng thư mục làm việc dự án
+
+Chỉ chạy `openyida copy` một lần cho mỗi dự án, không chạy mỗi phiên. Tệp `project/config.json` lưu trữ `appId` và `corpId` — AI sử dụng điều này để biết ứng dụng mục tiêu. Đừng xóa tệp này giữa chừng dự án.
+
+---
+
+## 6. Đăng nhập cụ thể theo môi trường
+
+Các công cụ AI khác nhau yêu cầu các phương pháp đăng nhập khác nhau:
+
+| Công cụ AI | Lệnh đăng nhập |
+|---------|----------|
+| Claude Code, Cursor, VSCode | `openyida login` |
+| Wukong | `openyida login --wukong` |
+| OpenCode, Aone Copilot | `openyida login` |
+
+Khi chuyển đổi công cụ, hãy chạy `openyida env` trước để xác nhận môi trường đang hoạt động.
+
+---
+
+## 7. Sử dụng CDN cho hình ảnh trang tùy chỉnh
+
+Khi trang tùy chỉnh chứa hình ảnh, hãy tải chúng lên CDN trước để đảm bảo kết xuất đáng tin cậy:
+
+```bash
+openyida cdn-config   # Cấu hình Alibaba Cloud OSS + CDN (một lần)
+openyida cdn-upload ./my-image.png   # Lấy URL CDN ổn định
+```
+
+Sau đó, tham chiếu URL CDN trong prompt trang của bạn:
+```
+Thêm hình ảnh banner hero vào trang đích bằng URL CDN này: https://cdn.example.com/banner.png
+```
+
+---
+
+## 8. Xử lý cài đặt đa tổ chức
+
+Khi bạn có thể truy cập nhiều tổ chức YiDa:
+
+```bash
+openyida org list          # Xem tất cả các tổ chức có sẵn
+openyida org switch --corp-id <id>   # Chuyển sang tổ chức mục tiêu
+openyida env               # Xác nhận chuyển đổi
+```
+
+Luôn xác minh tổ chức đang hoạt động trước khi tạo ứng dụng để tránh xây dựng trong không gian sai.
+
+---
+
+## 9. Chạy Doctor trước khi gỡ lỗi
+
+Trước khi dành thời gian gỡ lỗi các lệnh thất bại, hãy chạy:
+
+```bash
+openyida doctor --fix
+```
+
+Tự động phát hiện và giải quyết các vấn đề phổ biến nhất: phiên hết hạn, tệp cấu hình bị thiếu, không khớp môi trường.
+
+---
+
+## 10. PR được hỗ trợ bởi AI được chào đón
+
+Khi đóng góp cho chính OpenYida, hãy chấp nhận hoàn toàn mã được tạo bởi AI. Ghi chú công cụ AI được sử dụng trong mô tả PR — điều này giúp người bảo trì hiểu ngữ cảnh tạo và xem xét hiệu quả hơn.

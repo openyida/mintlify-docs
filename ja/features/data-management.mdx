@@ -1,9 +1,236 @@
 ---
 title: "データ管理"
-description: "フォームデータ、プロセス、タスクのクエリと管理。"
+description: "統一データ管理インターフェース、フォーム、プロセス、タスク、サブフォームなどのデータ操作をサポート。"
 icon: "database"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/data-management) or [Chinese version](/zh/features/data-management) for complete content.
-</Tip>
+OpenYidaは統一データ管理CLIを提供し、フォームデータ、プロセスインスタンス、タスク、サブフォームなどの完全なCRUD操作をサポートします。
+
+---
+
+## 機能概要
+
+<CardGroup cols={2}>
+  <Card title="フォームデータ" icon="table">
+    フォームインスタンスデータのクエリ、作成、更新、削除。
+  </Card>
+  <Card title="プロセスデータ" icon="workflow">
+    プロセスインスタンス、承認記録、プロセス状態の管理。
+  </Card>
+  <Card title="タスク管理" icon="check-circle">
+    未処理、完了、自分が開始した、自分にCCされたタスクのクエリ。
+  </Card>
+  <Card title="サブフォーム" icon="list">
+    サブフォームデータの独立したクエリと管理。
+  </Card>
+</CardGroup>
+
+---
+
+## コマンド形式
+
+```bash
+openyida data <action> <resource> [args]
+```
+
+- **action**: `query` | `get` | `create` | `update` | `execute`
+- **resource**: `form` | `process` | `task` | `subform` | `operation-records`
+
+---
+
+## フォームデータ管理
+
+### フォームデータのクエリ
+
+```bash
+# 基本クエリ
+openyida data query form <appType> <formUuid>
+
+# ページネーションクエリ
+openyida data query form <appType> <formUuid> --page 1 --size 50
+
+# 条件クエリ
+openyida data query form <appType> <formUuid> \
+  --search-json '{"field_xxx": "value"}'
+
+# 指定インスタンスのクエリ
+openyida data query form <appType> <formUuid> --inst-id <formInstId>
+```
+
+### 単一データの取得
+
+```bash
+openyida data get form <appType> --inst-id <formInstId>
+```
+
+### データの作成
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
+  --dept-id <departmentId>
+```
+
+### データの更新
+
+```bash
+openyida data update form <appType> \
+  --inst-id <formInstId> \
+  --data-json '{"field_xxx": "new value"}' \
+  --use-latest-version y
+```
+
+---
+
+## プロセスデータ管理
+
+### プロセスインスタンスのクエリ
+
+```bash
+# プロセスリストのクエリ
+openyida data query process <appType> <formUuid> \
+  --page 1 --size 20 \
+  --instance-status RUNNING
+
+# ステータスオプション：RUNNING（進行中）、COMPLETED（完了）、TERMINATED（終了）
+```
+
+### プロセス詳細の取得
+
+```bash
+openyida data get process <appType> --process-inst-id <processInstanceId>
+```
+
+### プロセスインスタンスの作成
+
+```bash
+openyida data create process <appType> <formUuid> \
+  --process-code <processCode> \
+  --data-json '{"field_xxx": "value"}' \
+  --dept-id <departmentId>
+```
+
+### 承認記録のクエリ
+
+```bash
+openyida data query operation-records <appType> \
+  --process-inst-id <processInstanceId>
+```
+
+---
+
+## タスク管理
+
+### タスクリストのクエリ
+
+```bash
+# 未処理タスク
+openyida data query tasks <appType> --type todo
+
+# 完了タスク
+openyida data query tasks <appType> --type done
+
+# 自分が開始した
+openyida data query tasks <appType> --type submitted
+
+# 自分にCCされた
+openyida data query tasks <appType> --type cc
+```
+
+### タスクの実行
+
+```bash
+openyida data execute task <appType> \
+  --task-id <taskId> \
+  --process-inst-id <processInstanceId> \
+  --out-result AGREE \
+  --remark "同意、続けて進めてください" \
+  --data-json '{"comment": "承認済み"}'
+```
+
+**out-resultオプション：**
+- `AGREE` - 同意
+- `DISAGREE` - 不同意
+
+---
+
+## サブフォーム管理
+
+### サブフォームデータのクエリ
+
+```bash
+openyida data query subform <appType> <formUuid> \
+  --inst-id <formInstId> \
+  --table-field-id <fieldId> \
+  --page 1 --size 20
+```
+
+---
+
+## 高度な使用法
+
+### 複雑なクエリ条件
+
+```bash
+# 複数フィールド条件クエリ
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_status": "approved",
+    "field_amount": { "$gte": 1000 },
+    "field_created_at": { "$gte": "2024-01-01" }
+  }'
+```
+
+### バッチ操作スクリプト例
+
+```bash
+#!/bin/bash
+# フォームデータのバッチエクスポート
+
+APP_TYPE="APP_XXXXXXXX"
+FORM_UUID="FORM-XXXX-XXXX"
+PAGE=1
+
+while true; do
+  RESULT=$(openyida data query form $APP_TYPE $FORM_UUID --page $PAGE --size 100)
+  
+  # 現在のページのデータを処理
+  echo "$RESULT" >> ./export.json
+  
+  # 次のページがあるか確認
+  HAS_MORE=$(echo "$RESULT" | jq '.hasMore')
+  if [ "$HAS_MORE" != "true" ]; then
+    break
+  fi
+  
+  PAGE=$((PAGE + 1))
+done
+```
+
+---
+
+## データエクスポート例
+
+```bash
+# 指定期間のデータをエクスポート
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_created_at": {
+      "$gte": "2024-01-01T00:00:00",
+      "$lte": "2024-12-31T23:59:59"
+    }
+  }' \
+  --size 100 > ./data-export.json
+```
+
+---
+
+## 注意事項
+
+<Warning>
+  データ操作は永続的であり、削除と更新操作は取り消せません。バッチ操作を実行する前に、小規模なテストを行うことをお勧めします。
+</Warning>
+
+<Info>
+  ページネーションクエリはデフォルトで1ページあたり20件、最大100件をサポートします。大量のデータをエクスポートする場合は、ループページネーションを使用して取得することをお勧めします。
+</Info>

@@ -1,17 +1,17 @@
 ---
-title: "Estrutura do projeto"
-description: "Estrutura de diretórios do projeto OpenYida e organização do código"
+title: Estrutura do Projeto
+description: Estrutura de diretórios do projeto OpenYida e forma de organização do código
 ---
 
-# Estrutura do projeto
+# Estrutura do Projeto
 
-OpenYida adota um design de arquitetura modular com organização de código clara, facilitando manutenção e extensão.
+OpenYida adota um design arquitetônico modular com uma organização clara do código, facilitando a manutenção e a extensão.
 
-## Visão geral de diretórios
+## Visão Geral do Diretório
 
 ```
 openyida/
-├── src/
+├ src/
 │   ├── commands/          # Implementação de comandos CLI
 │   │   ├── create-app.ts
 │   │   ├── create-form.ts
@@ -22,96 +22,96 @@ openyida/
 │   │   ├── connector.ts
 │   │   ├── report.ts
 │   │   ├── doctor.ts
-│   │   └── login.ts
-│   ├── core/              # Módulos de funcionalidade principal
-│   │   ├── yida-api.ts    # Encapsulamento API Yida
-│   │   ├── ai-service.ts  # Integração de serviços IA
-│   │   ├── config.ts      # Gestão de configuração
-│   │   └── auth.ts        # Tratamento de autenticação
+│   │  └ login.ts
+│   ├── core/              # Módulos funcionais centrais
+│   │   ├── yida-api.ts    # Encapsulamento da API do Yida
+│   │   ├── ai-service.ts  # Integração de serviços de IA
+│   │   ├── config.ts      # Gerenciamento de configuração
+│   │  └ auth.ts        # Processamento de autenticação
 │   ├── utils/             # Funções utilitárias
 │   │   ├── logger.ts
 │   │   ├── file.ts
-│   │   └── validator.ts
-│   └── types/             # Definições de tipos TypeScript
+│   │  └ validator.ts
+│  └ types/             # Definições de tipos TypeScript
 │       ├── yida.ts
 │       ├── ai.ts
-│       └── index.ts
-├── skills/                # Sistema de habilidades
-│   ├── builtin/           # Habilidades integradas
-│   └── custom/            # Habilidades personalizadas
-├── templates/             # Templates de código
+│      └ index.ts
+├ skills/                # Sistema de Skills
+│   ├── builtin/           # Skills integrados
+│  └ custom/            # Skills personalizados
+├ templates/             # Templates de código
 │   ├── app/
 │   ├── form/
-│   └── page/
-├── docs/                  # Documentação
-├── tests/                 # Arquivos de teste
-├── package.json
-├── tsconfig.json
-└── README.md
+│  └ page/
+├ docs/                  # Recursos de documentação
+├ tests/                 # Arquivos de teste
+├ package.json
+├ tsconfig.json
+└ README.md
 ```
 
-## Descrição dos módulos principais
+## Descrição dos Módulos Centrais
 
 ### src/commands/
 
-Contém a implementação de todos os comandos CLI, cada arquivo corresponde a um subcomando:
+Armazena a implementação de todos os comandos CLI, cada arquivo corresponde a um subcomando:
 
 | Arquivo | Função |
 |------|------|
-| `create-app.ts` | Criar aplicativo Yida |
+| `create-app.ts` | Criar aplicativo do Yida |
 | `create-form.ts` | Criar página de formulário |
 | `create-page.ts` | Criar página personalizada |
 | `publish.ts` | Publicar aplicativo |
 | `share.ts` | Compartilhar aplicativo |
-| `data.ts` | Operações de gestão de dados |
-| `connector.ts` | Gestão de conectores |
+| `data.ts` | Operações de gerenciamento de dados |
+| `connector.ts` | Gerenciamento de conectores |
 | `report.ts` | Operações de relatórios |
 | `doctor.ts` | Ferramenta de diagnóstico |
 | `login.ts` | Autenticação de login |
 
 ### src/core/
 
-Módulos de lógica de negócios principal:
+Módulo de lógica de negócios central:
 
-- **yida-api.ts**: Encapsula a API da plataforma aberta Yida, fornece interface de chamada unificada
-- **ai-service.ts**: Integra múltiplos serviços de IA (OpenAI, Claude, Tongyi Qwen, etc.)
+- **yida-api.ts**: Encapsula a API da plataforma aberta do Yida, fornece chamadas de interface unificadas
+- **ai-service.ts**: Integra múltiplos serviços de IA (OpenAI, Claude, Tongyi Qianwen, etc.)
 - **config.ts**: Gerencia arquivos de configuração local (~/.openyida/config.json)
-- **auth.ts**: Trata estado de login, atualização de tokens, troca multi-organização
+- **auth.ts**: Lida com estado de login, atualização de Token, alternância entre múltiplas organizações
 
 ### src/utils/
 
 Funções utilitárias gerais:
 
-- **logger.ts**: Saída de logs, suporte a níveis e cores
-- **file.ts**: Funções auxiliares de operações de arquivos
-- **validator.ts**: Validação e verificação de entradas
+- **logger.ts**: Saída de log, suporta níveis e cores
+- **file.ts**: Funções auxiliares de operação de arquivos
+- **validator.ts**: Validação e verificação de entrada
 
 ### src/types/
 
-Definições de tipos TypeScript, garantindo segurança de tipos do código:
+Definições de tipos TypeScript, garantem segurança de tipos do código:
 
-- **yida.ts**: Tipos relacionados à API Yida
+- **yida.ts**: Tipos relacionados à API do Yida
 - **ai.ts**: Tipos relacionados a serviços de IA
-- **index.ts**: Exportações de tipos gerais
+- **index.ts**: Exportação de tipos gerais
 
-## Sistema de habilidades
+## Sistema de Skills
 
 ```
 skills/
-├── builtin/               # Habilidades integradas
+├ builtin/               # Skills integrados
 │   ├── code-generator/    # Geração de código
 │   ├── form-builder/      # Construção de formulários
 │   ├── page-designer/     # Design de páginas
-│   └── data-analyzer/     # Análise de dados
-└── custom/                # Habilidades personalizadas do usuário
-    └── (extensões do usuário)
+│  └ data-analyzer/     # Análise de dados
+└ custom/                # Skills personalizados por usuários
+   └ (extensão de usuários)
 ```
 
-As habilidades adotam uma arquitetura de plugins, suportando carregamento dinâmico e extensão.
+Skills adotam arquitetura de plugins, suportam carregamento em tempo real e extensão dinâmica.
 
-## Gestão de configuração
+## Gerenciamento de Configuração
 
-### Configuração local
+### Configuração Local
 
 Local de armazenamento: `~/.openyida/config.json`
 
@@ -133,9 +133,9 @@ Local de armazenamento: `~/.openyida/config.json`
 }
 ```
 
-### Configuração de projeto
+### Configuração do Projeto
 
-Pode-se criar `.openyidarc.json` no diretório raiz do projeto:
+Pode criar `.openyidarc.json` no diretório raiz do projeto:
 
 ```json
 {
@@ -148,23 +148,23 @@ Pode-se criar `.openyidarc.json` no diretório raiz do projeto:
 }
 ```
 
-## Mecanismo de extensão
+## Mecanismo de Extensão
 
-### Adicionar novo comando
+### Adicionar Novo Comando
 
 1. Criar novo arquivo em `src/commands/`
-2. Implementar função de tratamento de comando
+2. Implementar função de processamento de comandos
 3. Registrar comando em `src/index.ts`
 
-### Adicionar nova habilidade
+### Adicionar Novo Skill
 
-1. Criar diretório de habilidade em `skills/custom/`
+1. Criar diretório de Skill em `skills/custom/`
 2. Implementar `skill.json` e lógica principal
-3. Carregar com `openyida skill load`
+3. Carregar usando `openyida skill load`
 
-## Normas de desenvolvimento
+## Normas de Desenvolvimento
 
 - Todas as novas funcionalidades devem incluir definições de tipos
-- Implementações de comandos devem incluir documentação `--help`
-- Funcionalidades principais devem ter cobertura de testes unitários
-- Seguir configurações de ESLint e Prettier
+- A implementação de comandos deve incluir documentação `--help`
+- As funções centrais devem ter cobertura de testes unitários
+- Seguir configuração do ESLint e Prettier

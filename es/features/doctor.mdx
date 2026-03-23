@@ -1,9 +1,228 @@
 ---
 title: "Herramienta de Diagnóstico"
-description: "Diagnóstico del entorno y resolución de problemas."
+description: "Verificación de entorno, diagnóstico de aplicación, reparación inteligente, monitoreo de salud."
 icon: "stethoscope"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/doctor) or [Chinese version](/zh/features/doctor) for complete content.
-</Tip>
+OpenYida incluye una potente herramienta de diagnóstico `doctor` que ayuda a los desarrolladores a verificar el entorno, diagnosticar problemas, reparar automáticamente y monitorear continuamente la salud de la aplicación.
+
+---
+
+## Descripción General
+
+<CardGroup cols={2}>
+  <Card title="Verificación de Entorno" icon="laptop-code">
+    Verifica dependencias del entorno como Node.js, Python, Playwright, estado de inicio de sesión, etc.
+  </Card>
+  <Card title="Diagnóstico de Aplicación" icon="magnifying-glass">
+    Verifica PRD, código fuente de páginas, caché de Schema, normas de React Hooks.
+  </Card>
+  <Card title="Reparación Inteligente" icon="wand-magic">
+    Repara automáticamente problemas reparables, proporciona guía de reparación manual.
+  </Card>
+  <Card title="Monitoreo de Salud" icon="heart-pulse">
+    Monitorea continuamente la salud de la aplicación, genera informes de tendencias.
+  </Card>
+</CardGroup>
+
+---
+
+## Uso Básico
+
+### Ejecutar Diagnóstico
+
+```bash
+openyida doctor
+```
+
+### Reparación Automática
+
+```bash
+openyida doctor --fix
+```
+
+### Generar Informe
+
+```bash
+# Formato Markdown
+openyida doctor --report markdown
+
+# Formato JSON
+openyida doctor --report json
+
+# Formato HTML
+openyida doctor --report html
+```
+
+---
+
+## Elementos de Verificación de Entorno
+
+| Elemento | Descripción | Reparación Automática |
+|--------|------|----------|
+| Versión de Node.js | Verifica si ≥ 16 |❌
+| Versión de Python | Verifica si ≥ 3.10 |❌
+| Playwright | Verifica si está instalado | ✅ |
+| Chromium | Verifica si el navegador está instalado | ✅ |
+| gh CLI | Verifica GitHub CLI |❌
+| Inicio de sesión gh | Verifica estado de inicio de sesión de gh CLI | ✅ |
+| config.json | Verifica archivo de configuración | ✅ |
+| Skills | Verifica instalación de paquetes de habilidades |❌
+| Inicio de sesión Yida | Verifica estado de inicio de sesión | ✅ |
+| Conectividad de red | Verifica conectividad de aliwork.com |❌
+
+---
+
+## Elementos de Diagnóstico de Aplicación
+
+| Elemento | Descripción |
+|--------|------|
+| Archivo PRD | Verifica si existe documento de requisitos |
+| Código fuente de páginas | Verifica archivos de código fuente, console.log, archivos vacíos |
+| Caché de Schema | Verifica formato de archivo de caché |
+| React Hooks | Verifica normas de uso de Hooks |
+
+---
+
+## Modo de Monitoreo de Salud
+
+Inicia monitoreo continuo, verifica cada minuto:
+
+```bash
+openyida doctor --monitor
+```
+
+Ejemplo de salida:
+
+```
+[14:32:01] Salud: 95/100  Aprobados: 18/19 | Errores: 0 | Advertencias: 1
+
+[14:33:01] Salud: 100/100➡
+  Aprobados: 19/19 | Errores: 0 | Advertencias: 0
+```
+
+Presiona `Ctrl+C` para detener el monitoreo.
+
+---
+
+## Diagnóstico en Línea
+
+Diagnóstico en línea para aplicaciones ya publicadas:
+
+```bash
+openyida doctor --production --app <appId>
+```
+
+Contenido de verificación:
+- Validez del ID de aplicación
+- Registros de errores en línea
+- Métricas de rendimiento
+
+---
+
+## Tickets y VOC
+
+### Crear Ticket (Bug)
+
+```bash
+openyida doctor --create-ticket
+```
+
+Entrada interactiva de título y descripción, envío automático a GitHub Issues.
+
+### Crear VOC (Requisito)
+
+```bash
+openyida doctor --create-voc
+```
+
+### Envío Inteligente
+
+El sistema juzga automáticamente si es Bug o requisito:
+
+```bash
+openyida doctor --auto-submit
+```
+
+---
+
+## Ejemplo de Informe de Diagnóstico
+
+### Salida de Consola
+
+```
+ificando dependencias del entorno de OpenYida...
+
+✅ Node.js v18.19.0 (requiere ≥ 16)
+✅ Python 3.11.4 (requiere ≥ 3.10)
+✅ Playwright instalado
+✅ Playwright Chromium instalado
+✅ gh version 2.40.1
+✅ gh CLI iniciado sesión
+✅ config.json existe y formato correcto
+  Detección de instalación de Skills
+   Skills no instalados, ejecuta bash install-skills.sh para instalar
+✅ Estado de inicio de sesión de Yida: Iniciado sesión
+✅ Conectividad de red (aliwork.com)
+✅ Archivos PRD (2 archivos)
+✅ Código fuente de páginas (3 archivos)
+✅ Caché de Schema (5 archivos)
+✅ Normas de React Hooks
+
+Se encontraron 1 problema (0 errores, 1 advertencia)
+```
+
+### Informe Markdown
+
+```bash
+openyida doctor --report markdown
+```
+
+Informe guardado en `.cache/reports/doctor-2024-01-15T10-30-00-000Z.md`
+
+---
+
+## Pre-verificación
+
+Ejecuta verificación automáticamente antes de operaciones clave:
+
+### Verificación Antes de Publicar
+
+```bash
+# Ejecuta automáticamente
+openyida publish ejecuta automáticamente pre-verificación
+```
+
+### Verificación Antes de Crear
+
+```bash
+# Ejecuta automáticamente
+openyida create-app ejecuta automáticamente pre-verificación
+```
+
+---
+
+## Tipos de Reparación
+
+| Tipo | Descripción | Ejemplo |
+|------|------|------|
+| `AUTO` | Reparación automática | Crear config.json, eliminar caché dañada |
+| `COMMAND` | Reparación por comando | Ejecutar `pip install playwright` |
+| `MANUAL` | Reparación manual | Instalar gh CLI, escribir PRD |
+
+---
+
+## Cálculo de Salud
+
+Fórmula de cálculo de puntuación de salud (0-100):
+
+```
+Salud = Tasa de aprobación × 100 - Errores × 10 - Advertencias × 3
+```
+
+| Puntuación | Estado |
+|------|------|
+| 90-100 | Excelente
+| 70-89 | Bueno
+| 50-69 | Regular
+| < 50 | Necesita mejora🔴

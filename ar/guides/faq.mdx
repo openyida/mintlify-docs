@@ -1,9 +1,85 @@
 ---
 title: "الأسئلة الشائعة"
-description: "أسئلة وأجوبة شائعة حول OpenYida."
+description: "أسئلة شائعة حول OpenYida."
 icon: "circle-question"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/guides/faq) or [Chinese version](/zh/guides/faq) for complete content.
-</Tip>
+<AccordionGroup>
+
+  <Accordion title="هل أحتاج إلى حساب YiDa لاستخدام OpenYida؟">
+    نعم. ينشئ OpenYida ويدير التطبيقات على منصة low-code [YiDa](https://www.aliwork.com)، مما يتطلب حساب Alibaba/DingTalk مع تمكين YiDa. قم بتشغيل `openyida login` للمصادقة.
+  </Accordion>
+
+  <Accordion title="ما هي أدوات AI المدعومة؟">
+    يتوافق OpenYida مع أي أداة ترميز AI تدعم MCP (Model Context Protocol) أو يمكنها قراءة مستندات مهارات markdown. الدعم المؤكد: **Claude Code, Aone Copilot, OpenCode, Cursor, Visual Studio Code, Qoder, Wukong**. عمليًا، أي أداة يمكنها تنفيذ أوامر shell تعمل.
+  </Accordion>
+
+  <Accordion title="ما إصدار Node.js المطلوب؟">
+    مطلوب Node.js **≥ 18**. تحقق من إصدارك باستخدام `node --version`. قم بتنزيل أحدث LTS من [nodejs.org](https://nodejs.org).
+  </Accordion>
+
+  <Accordion title="ماذا لو لم يظهر رمز QR لتسجيل الدخول؟">
+    حاول تشغيل `openyida login` في طرفية تدعم إطلاق المتصفح. إذا كنت في بيئة headless (مثل خادم بعيد)، استخدم `openyida login --wukong` في بيئات DingTalk/Wukong، أو انسخ URL تسجيل الدخول من مخرجات الطرفية وافتحه في متصفحك المحلي.
+  </Accordion>
+
+  <Accordion title="كيف أحدث جلسة منتهية الصلاحية؟">
+    قم بتشغيل `openyida auth refresh` لتجديد الجلسة دون المرور بتدفق تسجيل الدخول الكامل. إذا فشل، قم بتشغيل `openyida login` لإعادة المصادقة.
+  </Accordion>
+
+  <Accordion title="كيف التبديل بين مؤسسات YiDa المتعددة؟">
+    ```bash
+    openyida org list       # سرد جميع المؤسسات و corpIds
+    openyida org switch --corp-id <corpId>   # التبديل إلى المؤسسة المستهدفة
+    openyida env            # تأكيد التبديل
+    ```
+  </Accordion>
+
+  <Accordion title="كيف أضيف حقولاً مفقودة إلى النماذج المُنشأة بواسطة AI؟">
+    أخبر AI مباشرة:
+    ```
+    أضف حقل [اسم الحقل] إلى [اسم الصفحة]، نوع الحقل: [نص/رقم/تاريخ/قائمة منسدلة/...]، اجعله مطلوبًا
+    ```
+    سيستدعي OpenYida `openyida create-form` مع Schema المحدث، دمج الحقول الجديدة دون الكتابة فوق الموجودة.
+  </Accordion>
+
+  <Accordion title="هل يمكنني تحرير التطبيقات المُنشأة في محرر YiDa المرئي؟">
+    بالتأكيد. المخرجات هي تطبيق YiDa قياسي — يمكنك فتحه في المحرر المرئي لمنصة YiDa في أي وقت وإجراء تعديلات يدوية. ينشئ OpenYida تطبيقات، ليس تكوينات مقفلة.
+  </Accordion>
+
+  <Accordion title="كيف أجعل التطبيق متاحًا للجمهور؟">
+    ```
+    اجعل صفحة [اسم الصفحة] متاحة للجمهور
+    ```
+    أو قم بتشغيل مباشرة:
+    ```bash
+    openyida save-share-config
+    ```
+    قم بتكوين إعدادات مشاركة الصفحة حتى يتمكن أي شخص من الوصول إليها عبر رابط دون تسجيل دخول.
+  </Accordion>
+
+  <Accordion title="هل يمكنني ترحيل تطبيقات YiDa الحالية مع OpenYida؟">
+    نعم. استخدم `openyida export` لإنشاء حزمة ترحيل من تطبيق موجود، و `openyida import` لإعادة بنائه في مؤسسة أو بيئة أخرى.
+  </Accordion>
+
+  <Accordion title="ما الفرق بين `create-form` و `create-page`؟">
+    - **`create-form`**: ينشئ **صفحة نموذج** YiDa — نموذج إدخال بيانات يستخدم تخزين البيانات المدمج في YiDa تحته. يُستخدم لجمع البيانات المنظمة (التسجيلات، الطلبات، السجلات).
+    - **`create-page`**: ينشئ **صفحة عرض مخصصة** — صفحة قائمة على JSX للوحات المعلومات، صفحات الهبوط، واجهة المستخدم التفاعلية. يتم تجميعها ونشرها عبر `openyida publish`.
+  </Accordion>
+
+  <Accordion title="هل يدعم OpenYida سير عمل العمليات/الموافقات؟">
+    نعم. استخدم `openyida create-process` لإنشاء نماذج عمليات مع خطوات موافقة، و `openyida configure-process` لتحديد قواعد سير العمل (الموافقون، الشروط، الإشعارات).
+  </Accordion>
+
+  <Accordion title="حدث خطأ ما، كيف أقوم بالتصحيح؟">
+    1. قم بتشغيل `openyida doctor --fix` — يكتشف ويصلح المشكلات الشائعة تلقائيًا
+    2. قم بتشغيل `openyida env` — تحقق من حالة تسجيل الدخول والبيئة
+    3. قم بتشغيل `openyida auth status` — تحقق من صلاحية الجلسة
+    4. تحقق من [GitHub Issues](https://github.com/openyida/openyida/issues) للمشكلات المعروفة
+    5. إذا كان خطأً جديدًا، قدم issue مع: إصدار Node.js، الأمر المُنفذ، مخرجات الخطأ الكاملة
+  </Accordion>
+
+  <Accordion title="كيف أساهم في OpenYida؟">
+    اقرأ [دليل المساهمة](/ar/contributing) للعملية الكاملة. باختصار: fork المستودع، قم بإجراء تغييرات على فرع ميزة، قم بتشغيل `npm test`، قدم PR. المساهمات المدعومة بـ AI مرحب بها!
+  </Accordion>
+
+</AccordionGroup>

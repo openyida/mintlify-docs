@@ -1,9 +1,234 @@
 ---
-title: "Công Nghệ Sử Dụng"
-description: "Kiến trúc kỹ thuật và phụ thuộc của OpenYida."
+title: "Kiến Trúc Kỹ Thuật"
+description: "Kiến trúc kỹ thuật của OpenYida, các mô-đun cốt lõi và nguyên tắc thiết kế."
 icon: "layer-group"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/tech-stack) or [Chinese version](/zh/architecture/tech-stack) for complete content.
-</Tip>
+## Kiến Trúc Stack Công Nghệ
+
+![Kiến trúc stack công nghệ](/images/architecture-tech-stack.png)
+
+Stack công nghệ của OpenYida được chia thành hai phần: môi trường phát triển và nền tảng đám mây:
+
+### Môi Trường Phát Triển (Development Environment)
+- **Node.js** - Môi trường runtime
+- **Python** - Kiểm thử tự động với Playwright
+- **Git** - Kiểm soát phiên bản
+
+### Kiểm Thử Tự Động (Playwright)
+- Tự động hóa trình duyệt
+- Kiểm thử end-to-end
+- So sánh ảnh chụp màn hình trang
+
+### Nền Tảng Đám Mây Yida (YiDa Cloud Platform)
+- **App** - Quản lý ứng dụng
+- **Form** - Trang biểu mẫu
+- **Custom Page** - Trang tùy chỉnh
+
+## Tổng Quan Kiến Trúc
+
+OpenYida áp dụng thiết kế kiến trúc mô-đun, chia thành ba lớp: đầu vào CLI, mô-đun cốt lõi và mô-đun chức năng.
+
+```
+┌─────────────────────────────────────────────┐                      Lớp Đầu Vào CLI (bin/)                       │
+│                      yida.js - Định tuyến lệnh                       │
+└─────────────────────────────────────────────┘ │
+                              ▼
+┌─────────────────────────────────────────────┐                      Mô-đun Cốt Lõi (lib/core/)                     │
+│┌┐┌┐┌┐┌┐
+│  │   i18n   │ │   env    │ │  utils   │ │  doctor  │       │
+│  │  Quốc tế hóa   │ │ Phát hiện môi trường │ │ Hàm tiện ích │ │ Công cụ chẩn đoán │       │
+│└┘└┘└┘└┘
+│┌┐┌┐┌┐┌┐
+│  │  check   │ │   copy   │ │  babel   │ │  locales │       │
+│  │ Kiểm tra cập nhật │ │Sao chép thư mục  │ │ Trình biên dịch   │ │  Gói ngôn ngữ  │       │
+│└┘└┘└┘└┘
+└─────────────────────────────────────────────┘ │
+                              ▼
+┌─────────────────────────────────────────────┐                      Mô-đun Chức Năng (lib/)                          │
+│┌┐┌┐┌┐┌┐
+│  │   auth   │ │   app    │ │   data   │ │  report  │       │
+│  │ Mô-đun xác thực │ │Quản lý ứng dụng  │ │ Quản lý dữ liệu │ │  Báo cáo    │       │
+│└┘└┘└┘└┘
+│┌┐┌┐┌┐┌┐
+│  │ connector│ │  process │ │permission│ │   cdn    │       │
+│  │ Connector   │ │ Quản lý quy trình │ │  Quyền    │ │ Quản lý CDN  │       │
+│└┘└┘└┘└┘
+└─────────────────────────────────────────────┘ │
+                              ▼
+┌─────────────────────────────────────────────┐                    API Nền Tảng Yida (aliwork.com)                  │
+└─────────────────────────────────────────────┘
+
+---
+
+## Chi Tiết Mô-đun Cốt Lõi
+
+### Quốc Tế Hóa (i18n.js)
+
+Hệ thống quốc tế hóa hỗ trợ 12 ngôn ngữ:
+
+```javascript
+const { t, getLanguage, setLanguage } = require('./i18n');
+
+// Sử dụng dịch
+console.log(t('login.success'));
+console.log(t('create_app.usage', 'appName'));
+
+// Lấy/thiết lập ngôn ngữ
+console.log(getLanguage()); // 'zh'
+setLanguage('en');
+```
+
+**Ưu tiên phát hiện ngôn ngữ:**
+1. Biến môi trường `OPENYIDA_LANG`
+2. Biến môi trường hệ thống `LANG` / `LC_ALL`
+3. Mặc định: Tiếng Trung giản thể
+
+### Phát Hiện Môi Trường (env.js)
+
+Tự động phát hiện môi trường công cụ AI đang chạy:
+
+| Phương pháp phát hiện | Công cụ |
+|----------|------|
+| Phát hiện tồn tại thư mục | Claude Code, Cursor, OpenCode, Aone Copilot, Qoder |
+| Phát hiện tệp đặc biệt | Wukong (悟空) |
+
+### Engine Chẩn Đoán (doctor.js)
+
+Thiết kế kiến trúc ba lớp:
+
+1. **DiagnosticEngine** - Bộ lập lịch chẩn đoán
+2. **EnvironmentChecker** - Trình kiểm tra môi trường
+3. **ApplicationChecker** - Trình kiểm tra ứng dụng
+4. **FixEngine** - Engine sửa chữa thông minh
+
+---
+
+## Chi Tiết Mô-đun Chức Năng
+
+### Mô-đun Xác Thực (auth/)
+
+```
+auth/
+├.js          # Đăng nhập Yida (cache Cookie + quét mã QR)
+├.js           # Quản lý trạng thái đăng nhập
+├.js            # Quản lý tổ chức
+└-login.js       # Đăng nhập mã QR trên terminal
+```
+
+**Quy trình đăng nhập:**
+1. Phát hiện môi trường công cụ AI hiện tại
+2. Chọn phương thức đăng nhập theo môi trường (quét mã QR / CDP / đọc tệp)
+3. Lấy Cookie và lưu vào cache cục bộ mã hóa
+4. Các lệnh sau tự động sử dụng trạng thái đăng nhập đã lưu trong cache
+
+### Mô-đun Connector (connector/)
+
+```
+connector/
+├.js                    # Đóng gói API connector Yida
+├-parser.js            # Trình phân tích lệnh curl
+├-generator.js       # Trình tạo hành động
+├-generator.js         # Trình tạo mô tả
+├-smart-create.js # Đầu vào tạo thông minh
+└
+```
+
+**Quy trình tạo thông minh:**
+```
+Lệnh curl → Trình phân tích → Trích xuất thông tin API → Phát hiện xác thực → Khớp với connector hiện có → Tạo cấu hình → Tạo/cập nhật
+```
+
+### Mô-đun Quản Lý Dữ Liệu (data-management.js)
+
+Giao diện thao tác dữ liệu thống nhất, hỗ trợ:
+
+| Loại tài nguyên | Thao tác |
+|----------|------|
+| form | query, get, create, update |
+| process | query, get, create |
+| task | query, execute |
+| subform | query |
+
+---
+
+## Thư Mục Làm Việc Dự Án
+
+```
+project/
+├.json          # Cấu hình ứng dụng
+│   ├── appType          # ID loại ứng dụng
+│   ├── pageId           # ID trang
+│   ├── corpId           # ID tổ chức
+│ └
+├/
+│   ├── src/             # Mã nguồn trang (React + SDK Yida)
+│ └/            # Sản phẩm biên dịch
+├d/                 # Tài liệu yêu cầu
+└cache/
+    ├── cookies.json     # Cache trạng thái đăng nhập
+    ├── *-schema.json    # Cache Schema biểu mẫu
+  └/         # Báo cáo chẩn đoán
+```
+
+---
+
+## Gọi API Yida
+
+### Cấu Hình Cơ Bản
+
+```javascript
+const BASE_URL = 'https://www.aliwork.com';
+
+// Header yêu cầu
+const headers = {
+  'Content-Type': 'application/json',
+  'X-Csrf-Token': csrfToken,
+  'Cookie': cookies,
+};
+```
+
+### API Cốt Lõi
+
+| Endpoint | Mục đích |
+|------|------|
+| `/dingtalk/web/APP_xxx/xxx` | Giao diện trong ứng dụng |
+| `/dingtalk/web/APP_xxx/form/getFormDataList` | Truy vấn dữ liệu biểu mẫu |
+| `/dingtalk/web/APP_xxx/form/saveFormData` | Lưu dữ liệu biểu mẫu |
+| `/dingtalk/web/APP_xxx/proc/getProcessInstances` | Truy vấn instance quy trình |
+
+---
+
+## Thiết Kế Bảo Mật
+
+1. **Lưu trữ Cookie mã hóa** - Cache cục bộ lưu trữ mã hóa
+2. **Xác minh Token CSRF** - Mỗi yêu cầu mang Token
+3. **Không có thông tin xác thực mã hóa cứng** - Tất cả thông tin xác thực được lấy động
+4. **Cô lập môi trường** - Môi trường của các công cụ AI khác nhau độc lập
+
+---
+
+## Tối Ưu Hiệu Suất
+
+1. **Tải chậm tệp dịch** - Tải gói ngôn ngữ theo nhu cầu
+2. **Cache Schema cục bộ** - Giảm gọi API
+3. **Kiểm soát yêu cầu đồng thời** - Tránh bị giới hạn do quá nhiều yêu cầu
+4. **Cập nhật tăng dần** - Cập nhật biểu mẫu sử dụng hợp nhất thay vì ghi đè
+
+---
+
+## Cơ Chế Mở Rộng
+
+### Thêm Lệnh Mới
+
+1. Tạo `new-feature.js` trong `lib/`
+2. Đăng ký định tuyến lệnh trong `bin/yida.js`
+3. Cập nhật `README.md` và tài liệu
+4. Thêm khóa quốc tế hóa
+
+### Thêm Ngôn Ngữ Mới
+
+1. Tạo `xx.js` trong `lib/core/locales/`
+2. Dịch tất cả các khóa (sử dụng `zh.js` làm cơ sở)
+3. Cập nhật `SUPPORTED_LANGUAGES` trong `i18n.js`
+4. Chạy `npm run validate-i18n` để kiểm tra tính toàn vẹn

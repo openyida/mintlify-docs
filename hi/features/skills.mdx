@@ -1,9 +1,242 @@
 ---
 title: "CLI संदर्भ"
-description: "OpenYida CLI कमांड के लिए पूर्ण संदर्भ।"
+description: "OpenYida के सभी CLI कमांड का पूर्ण संदर्भ।"
 icon: "terminal"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/skills) or [Chinese version](/zh/features/skills) for complete content.
-</Tip>
+OpenYida समृद्ध CLI कमांड प्रदान करता है, जो एप्लिकेशन के पूर्ण जीवनचक्र प्रबंधन का समर्थन करता है।
+
+---
+
+## वातावरण और प्रमाणीकरण
+
+```bash
+# वातावरण जांच
+openyida env
+
+# लॉगिन
+openyida login [--qr]              # --qr टर्मिनल में QR कोड का उपयोग करें
+openyida login --wukong            # Wukong वातावरण के लिए विशेष
+
+# लॉगआउट
+openyida logout
+
+# लॉगिन स्थिति प्रबंधन
+openyida auth status               # लॉगिन स्थिति देखें
+openyida auth login                # लॉगिन करें
+openyida auth refresh              # सत्र रीफ्रेश करें
+openyida auth logout               # लॉगआउट करें
+
+# संगठन प्रबंधन
+openyida org list                  # सुलभ संगठनों की सूची
+openyida org switch --corp-id <id> # संगठन बदलें
+
+# कार्य निर्देशिका आरंभ करें
+openyida copy [--force]            # project निर्देशिका कॉपी करें
+
+# निदान उपकरण
+openyida doctor [--fix]            # वातावरण निदान
+openyida doctor --monitor          # स्वास्थ्य निगरानी
+openyida doctor --report <format>  # रिपोर्ट बनाएं (json|markdown|html)
+```
+
+---
+
+## एप्लिकेशन प्रबंधन
+
+```bash
+# एप्लिकेशन बनाएं
+openyida create-app "<नाम>" [desc] [icon] [color] [themeColor]
+
+# एप्लिकेशन निर्यात करें
+openyida export <appType> [output] # माइग्रेशन पैकेज बनाएं
+
+# एप्लिकेशन आयात करें
+openyida import <file> [name]      # पैकेज से एप्लिकेशन पुनर्निर्माण करें
+```
+
+---
+
+## फॉर्म प्रबंधन
+
+```bash
+# फॉर्म बनाएं
+openyida create-form create <appType> "<नाम>" <फ़ील्डJSON> \
+  [--layout <लेआउट>] \
+  [--theme <थीम>] \
+  [--label-align <संरेखण>]
+
+# फॉर्म अपडेट करें
+openyida create-form update <appType> <formUuid> <संशोधनJSON>
+
+# फॉर्म Schema प्राप्त करें
+openyida get-schema <appType> <formUuid>
+
+# फॉर्म कॉन्फ़िगरेशन अपडेट करें
+openyida update-form-config <appType> <formUuid> <isRenderNav> <शीर्षक>
+```
+
+---
+
+## पेज प्रबंधन
+
+```bash
+# कस्टम पेज बनाएं
+openyida create-page <appType> "<नाम>"
+
+# पेज संकलित और प्रकाशित करें
+openyida publish <स्रोत_फ़ाइल_पथ> <appType> <formUuid>
+
+# पेज शेयर कॉन्फ़िगरेशन
+openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
+openyida get-page-config <appType> <formUuid>
+openyida verify-short-url <appType> <formUuid> <url>
+```
+
+---
+
+## डेटा प्रबंधन
+
+```bash
+# एकीकृत डेटा प्रबंधन
+openyida data <कार्य> <संसाधन> [args]
+
+# फॉर्म डेटा
+openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
+openyida data get form <appType> --inst-id <id>
+openyida data create form <appType> <formUuid> --data-json <JSON>
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
+
+# प्रक्रिया डेटा
+openyida data query process <appType> <formUuid> [--instance-status स्थिति]
+openyida data get process <appType> --process-inst-id <id>
+openyida data create process <appType> <formUuid> --process-code <कोड> --data-json <JSON>
+
+# कार्य प्रबंधन
+openyida data query tasks <appType> --type <todo|done|submitted|cc>
+openyida data execute task <appType> --task-id <id> --process-inst-id <id> --out-result <AGREE|DISAGREE>
+
+# उप-फॉर्म
+openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id <fieldId>
+```
+
+---
+
+## प्रक्रिया प्रबंधन
+
+```bash
+# प्रक्रिया फॉर्म बनाएं
+openyida create-process <appType> "<नाम>" <फ़ील्डJSON> --process-code <कोड>
+
+# प्रक्रिया नियम कॉन्फ़िगर करें
+openyida configure-process <appType> <formUuid> --rules <नियमJSON>
+```
+
+---
+
+## अनुमति प्रबंधन
+
+```bash
+# फॉर्म अनुमति क्वेरी करें
+openyida get-permission <appType> <formUuid>
+
+# फॉर्म अनुमति सहेजें
+openyida save-permission <appType> <formUuid> \
+  [--data-permission <json>] \
+  [--action-permission <json>]
+```
+
+---
+
+## कनेक्टर प्रबंधन
+
+```bash
+# कनेक्टर सूची
+openyida connector list [--page N] [--size N]
+
+# कनेक्टर बनाएं
+openyida connector create "<नाम>" "<डोमेन>" --operations <फ़ाइल> [विकल्प]
+
+# कनेक्टर विवरण देखें
+openyida connector detail <connector-id>
+
+# कनेक्टर हटाएं
+openyida connector delete <connector-id> [--force]
+
+# एक्शन प्रबंधन
+openyida connector add-action --connector-id <id> --operations <फ़ाइल> [--confirm]
+openyida connector list-actions <connector-id>
+openyida connector delete-action <connector-id> <operation-id> [--force]
+openyida connector test --connector-id <id> --action <actionId> [विकल्प]
+
+# प्रमाणीकरण खाता प्रबंधन
+openyida connector list-connections <connector-id>
+openyida connector create-connection <connector-id> "<नाम>" [विकल्प]
+
+# स्मार्ट निर्माण
+openyida connector smart-create --curl "<curl_कमांड>" [--name <नाम>] [--desc <विवरण>]
+
+# सहायक उपकरण
+openyida connector parse-api --curl "<curl_कमांड>" --output <फ़ाइल>
+openyida connector gen-template [आउटपुट_पथ]
+```
+
+---
+
+## रिपोर्ट प्रबंधन
+
+```bash
+# रिपोर्ट बनाएं
+openyida create-report <appType> "<नाम>" <चार्ट_परिभाषा_JSON_या_पथ>
+
+# चार्ट जोड़ें
+openyida append-chart <appType> <reportId> <चार्ट_परिभाषा_JSON_या_पथ>
+```
+
+---
+
+## CDN प्रबंधन
+
+```bash
+# CDN कॉन्फ़िगर करें
+openyida cdn-config
+
+# इमेज अपलोड करें
+openyida cdn-upload <फ़ाइल_पथ>
+
+# कैश रीफ्रेश करें
+openyida cdn-refresh <पथ>
+```
+
+---
+
+## वैश्विक विकल्प
+
+| विकल्प | विवरण |
+|------|------|
+| `--help`, `-h` | सहायता जानकारी दिखाएं |
+| `--version`, `-v` | संस्करण संख्या दिखाएं |
+| `--qr` | लॉगिन के लिए टर्मिनल में QR कोड का उपयोग करें |
+| `--force` | ऑपरेशन फोर्स करें, पुष्टि छोड़ें |
+
+---
+
+## वातावरण चर
+
+| चर | विवरण | उदाहरण |
+|------|------|------|
+| `OPENYIDA_LANG` | भाषा सेट करें | `zh`, `en`, `ja` |
+| `LANG` / `LC_ALL` | सिस्टम भाषा | `zh_CN.UTF-8` |
+
+---
+
+## एक्जिट कोड
+
+| कोड | अर्थ |
+|----|------|
+| 0 | सफल |
+| 1 | सामान्य त्रुटि |
+| 2 | पैरामीटर त्रुटि |
+| 3 | लॉगिन विफल/लॉगिन नहीं |
+| 4 | नेटवर्क त्रुटि |
+| 5 | API त्रुटि |

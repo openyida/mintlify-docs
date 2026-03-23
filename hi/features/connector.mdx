@@ -1,9 +1,199 @@
 ---
-title: "कनेक्टर्स"
-description: "HTTP कनेक्टर्स का निर्माण और प्रबंधन।"
+title: "कनेक्टर्स (HTTP एकीकरण)"
+description: "HTTP कनेक्टर्स के माध्यम से Yida एप्लिकेशन को बाहरी API से एकीकृत करें।"
 icon: "plug"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/connector) or [Chinese version](/zh/features/connector) for complete content.
-</Tip>
+OpenYida शक्तिशाली HTTP कनेक्टर प्रबंधन सुविधाएं प्रदान करता है, curl कमांड से कनेक्टर का स्मार्ट निर्माण का समर्थन करता है, Yida और बाहरी सिस्टम के बीच निर्बाध एकीकरण प्राप्त करता है।
+
+---
+
+## अवलोकन
+
+<CardGroup cols={2}>
+  <Card title="स्मार्ट निर्माण" icon="wand-magic-sparkles">
+    curl कमांड से स्वचालित रूप से विश्लेषण और कनेक्टर बनाएं, प्रमाणीकरण जानकारी निकालने का समर्थन करता है।
+  </Card>
+  <Card title="API प्रबंधन" icon="code">
+    कनेक्टर का पूर्ण जीवनचक्र प्रबंधन: बनाना, अपडेट करना, परीक्षण करना, हटाना।
+  </Card>
+  <Card title="प्रमाणीकरण समर्थन" icon="key">
+    Bearer Token, API Key, OAuth2 और अन्य प्रमाणीकरण विधियों का समर्थन करता है।
+  </Card>
+  <Card title="एक्शन प्रबंधन" icon="play">
+    कनेक्टर के निष्पादन एक्शन जोड़ें, परीक्षण करें, प्रबंधित करें।
+  </Card>
+</CardGroup>
+
+---
+
+## स्मार्ट कनेक्टर निर्माण
+
+केवल एक curl कमांड से कनेक्टर बनाएं:
+
+```bash
+openyida connector smart-create \
+  --curl "curl 'https://api.example.com/v1/users' -H 'Authorization: Bearer xxx'" \
+  --name "उपयोगकर्ता प्रबंधन कनेक्टर" \
+  --desc "उपयोगकर्ता डेटा प्रबंधन के लिए HTTP कनेक्टर"
+```
+
+स्मार्ट निर्माण प्रक्रिया:
+
+1. **API जानकारी विश्लेषण** - प्रोटोकॉल, Host, विधि, पथ, प्रमाणीकरण प्रकार निकालें
+2. **मौजूदा कनेक्टर से मिलान** - समान Host और प्रमाणीकरण वाले मौजूदा कनेक्टर खोजें
+3. **कनेक्टर कॉन्फ़िगरेशन जनरेट करें** - OpenAPI प्रारूप में कनेक्टर परिभाषा स्वचालित रूप से बनाएं
+4. **बनाएं या अपडेट करें** - नया कनेक्टर बनाएं या मौजूदा कनेक्टर में एक्शन जोड़ें
+
+---
+
+## कनेक्टर प्रबंधन कमांड
+
+### कनेक्टर सूची
+
+```bash
+openyida connector list
+openyida connector list --page 1 --size 20
+```
+
+### कनेक्टर बनाएं
+
+```bash
+openyida connector create "कनेक्टर नाम" "api.example.com" \
+  --operations ./operations.json \
+  --protocol https \
+  --desc "कनेक्टर विवरण"
+```
+
+### कनेक्टर विवरण देखें
+
+```bash
+openyida connector detail <connector-id>
+```
+
+### कनेक्टर हटाएं
+
+```bash
+openyida connector delete <connector-id> --force
+```
+
+---
+
+## एक्शन प्रबंधन
+
+### निष्पादन एक्शन जोड़ें
+
+```bash
+openyida connector add-action \
+  --connector-id <id> \
+  --operations ./new-action.json \
+  --confirm
+```
+
+### मौजूदा एक्शन सूची
+
+```bash
+openyida connector list-actions <connector-id>
+```
+
+### एक्शन परीक्षण
+
+```bash
+openyida connector test \
+  --connector-id <id> \
+  --action <actionId> \
+  --body '{"key": "value"}'
+```
+
+### एक्शन हटाएं
+
+```bash
+openyida connector delete-action <connector-id> <operation-id> --force
+```
+
+---
+
+## प्रमाणीकरण खाता प्रबंधन
+
+### प्रमाणीकरण खाते सूची
+
+```bash
+openyida connector list-connections <connector-id>
+```
+
+### प्रमाणीकरण खाता बनाएं
+
+```bash
+openyida connector create-connection <connector-id> "प्रोडक्शन खाता" \
+  --token "Bearer xxx" \
+  --type bearer
+```
+
+---
+
+## सहायक उपकरण
+
+### API जानकारी विश्लेषण
+
+```bash
+openyida connector parse-api --curl "curl कमांड" --output ./api-info.json
+```
+
+### API दस्तावेज़ टेम्पलेट जनरेट करें
+
+```bash
+openyida connector gen-template ./my-api-template.json
+```
+
+---
+
+## सर्वोत्तम अभ्यास
+
+### 1. संवेदनशील जानकारी के लिए पर्यावरण चर का उपयोग करें
+
+```bash
+export API_TOKEN="आपका-गुप्त-टोकन"
+openyida connector smart-create --curl "curl -H 'Authorization: Bearer $API_TOKEN' ..."
+```
+
+### 2. जटिल कनेक्टर चरणबद्ध तरीके से बनाएं
+
+```bash
+# चरण 1: बेस कनेक्टर बनाएं
+openyida connector create "DingTalk API" "oapi.dingtalk.com"
+
+# चरण 2: एक-एक करके एक्शन जोड़ें
+openyida connector add-action --connector-id <id> --operations ./action1.json
+openyida connector add-action --connector-id <id> --operations ./action2.json
+```
+
+### 3. सक्षम करने से पहले परीक्षण करें
+
+```bash
+# बनाएं लेकिन पुष्टि न करें
+openyida connector add-action --connector-id <id> --operations ./action.json
+
+# एक्शन परीक्षण
+openyida connector test --connector-id <id> --action <actionId>
+
+# पुष्टि生效
+# Yida बैकएंड में अंतिम पुष्टि पूरी करें
+```
+
+---
+
+## सामान्य प्रश्न
+
+<AccordionGroup>
+  <Accordion title="curl कमांड विश्लेषण विफल होने पर क्या करें?">
+    सुनिश्चित करें कि curl कमांड का प्रारूप सही है, पूर्ण URL और आवश्यक headers शामिल हैं। यदि विशेष वर्ण हैं, तो उद्धरण चिह्नों का उपयोग करें।
+  </Accordion>
+
+  <Accordion title="मौजूदा कनेक्टर के एक्शन कैसे अपडेट करें?">
+    `connector add-action` कमांड का उपयोग करें, यदि एक्शन ID पहले से मौजूद है, तो सिस्टम पूछेगा कि क्या आप अपडेट करना चाहते हैं।
+  </Accordion>
+
+  <Accordion title="कौन सी प्रमाणीकरण विधियां समर्थित हैं?">
+    वर्तमान में Bearer Token, API Key, Basic Auth, OAuth2 का समर्थन करता है। curl कमांड में प्रमाणीकरण जानकारी स्वचालित रूप से पहचानी जाती है।
+  </Accordion>
+</AccordionGroup>

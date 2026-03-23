@@ -1,9 +1,236 @@
 ---
 title: "إدارة البيانات"
-description: "الاستعلام عن بيانات النماذج والعمليات والمهام وإدارتها."
+description: "واجهة إدارة بيانات موحدة، تدعم عمليات بيانات النماذج والسير والمهام والنماذج الفرعية وما إلى ذلك."
 icon: "database"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/data-management) or [Chinese version](/zh/features/data-management) for complete content.
-</Tip>
+يوفر OpenYida CLI موحد لإدارة البيانات، يدعم عمليات CRUD كاملة لبيانات النماذج وحالات السير والمهام والنماذج الفرعية وما إلى ذلك.
+
+---
+
+## نظرة عامة
+
+<CardGroup cols={2}>
+  <Card title="بيانات النموذج" icon="table">
+    استعلام وإنشاء وتحديث وحذف بيانات حالات النموذج.
+  </Card>
+  <Card title="بيانات السير" icon="workflow">
+    إدارة حالات السير وسجلات الموافقة وحالة السير.
+  </Card>
+  <Card title="إدارة المهام" icon="check-circle">
+    استعلام المهام المعلقة والمكتملة والتي بدأتها أنا والمُنسَخة إليّ.
+  </Card>
+  <Card title="النماذج الفرعية" icon="list">
+    استعلام وإدارة بيانات النماذج الفرعية بشكل مستقل.
+  </Card>
+</CardGroup>
+
+---
+
+## تنسيق الأمر
+
+```bash
+openyida data <action> <resource> [args]
+```
+
+- **action**: `query` | `get` | `create` | `update` | `execute`
+- **resource**: `form` | `process` | `task` | `subform` | `operation-records`
+
+---
+
+## إدارة بيانات النموذج
+
+### استعلام بيانات النموذج
+
+```bash
+# استعلام أساسي
+openyida data query form <appType> <formUuid>
+
+# استعلام مقسم إلى صفحات
+openyida data query form <appType> <formUuid> --page 1 --size 50
+
+# استعلام شرطي
+openyida data query form <appType> <formUuid> \
+  --search-json '{"field_xxx": "value"}'
+
+# استعلام حالة محددة
+openyida data query form <appType> <formUuid> --inst-id <formInstId>
+```
+
+### الحصول على سجل واحد
+
+```bash
+openyida data get form <appType> --inst-id <formInstId>
+```
+
+### إنشاء بيانات
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
+  --dept-id <departmentId>
+```
+
+### تحديث البيانات
+
+```bash
+openyida data update form <appType> \
+  --inst-id <formInstId> \
+  --data-json '{"field_xxx": "new value"}' \
+  --use-latest-version y
+```
+
+---
+
+## إدارة بيانات السير
+
+### استعلام حالات السير
+
+```bash
+# استعلام قائمة السير
+openyida data query process <appType> <formUuid> \
+  --page 1 --size 20 \
+  --instance-status RUNNING
+
+# الحالات المتاحة: RUNNING (قيد التشغيل), COMPLETED (مكتمل), TERMINATED (مُنهى)
+```
+
+### الحصول على تفاصيل السير
+
+```bash
+openyida data get process <appType> --process-inst-id <processInstanceId>
+```
+
+### إنشاء حالة سير
+
+```bash
+openyida data create process <appType> <formUuid> \
+  --process-code <processCode> \
+  --data-json '{"field_xxx": "value"}' \
+  --dept-id <departmentId>
+```
+
+### استعلام سجلات الموافقة
+
+```bash
+openyida data query operation-records <appType> \
+  --process-inst-id <processInstanceId>
+```
+
+---
+
+## إدارة المهام
+
+### استعلام قائمة المهام
+
+```bash
+# المهام المعلقة
+openyida data query tasks <appType> --type todo
+
+# المهام المكتملة
+openyida data query tasks <appType> --type done
+
+# التي بدأتها أنا
+openyida data query tasks <appType> --type submitted
+
+# المُنسَخة إليّ
+openyida data query tasks <appType> --type cc
+```
+
+### تنفيذ المهمة
+
+```bash
+openyida data execute task <appType> \
+  --task-id <taskId> \
+  --process-inst-id <processInstanceId> \
+  --out-result AGREE \
+  --remark "موافق، يرجى المتابعة" \
+  --data-json '{"comment": "تمت الموافقة"}'
+```
+
+**خيارات out-result:**
+- `AGREE` - موافق
+- `DISAGREE` - غير موافق
+
+---
+
+## إدارة النماذج الفرعية
+
+### استعلام بيانات النموذج الفرعي
+
+```bash
+openyida data query subform <appType> <formUuid> \
+  --inst-id <formInstId> \
+  --table-field-id <fieldId> \
+  --page 1 --size 20
+```
+
+---
+
+## الاستخدام المتقدم
+
+### شروط استعلام معقدة
+
+```bash
+# استعلام شرطي متعدد الحقول
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_status": "approved",
+    "field_amount": { "$gte": 1000 },
+    "field_created_at": { "$gte": "2024-01-01" }
+  }'
+```
+
+### مثال سكريبت عملية مجمعة
+
+```bash
+#!/bin/bash
+# تصدير بيانات النموذج مجمعة
+
+APP_TYPE="APP_XXXXXXXX"
+FORM_UUID="FORM-XXXX-XXXX"
+PAGE=1
+
+while true; do
+  RESULT=$(openyida data query form $APP_TYPE $FORM_UUID --page $PAGE --size 100)
+  
+  # معالجة بيانات الصفحة الحالية
+  echo "$RESULT" >> ./export.json
+  
+  # التحقق مما إذا كانت هناك صفحة تالية
+  HAS_MORE=$(echo "$RESULT" | jq '.hasMore')
+  if [ "$HAS_MORE" != "true" ]; then
+    break
+  fi
+  
+  PAGE=$((PAGE + 1))
+done
+```
+
+---
+
+## مثال تصدير البيانات
+
+```bash
+# تصدير البيانات لفترة زمنية محددة
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_created_at": {
+      "$gte": "2024-01-01T00:00:00",
+      "$lte": "2024-12-31T23:59:59"
+    }
+  }' \
+  --size 100 > ./data-export.json
+```
+
+---
+
+## ملاحظات
+
+<Warning>
+  عمليات البيانات دائمة، لا يمكن التراجع عن عمليات الحذف والتحديث. يُنصح بإجراء اختبارات صغيرة النطاق قبل تنفيذ العمليات المجمعة.
+</Warning>
+
+<Info>
+  الاستعلام المقسم إلى صفحات افتراضيًا 20 سجلًا لكل صفحة، الحد الأقصى 100. لتصدير كميات كبيرة من البيانات، يُنصح باستخدام حلقة التقسيم إلى صفحات.
+</Info>

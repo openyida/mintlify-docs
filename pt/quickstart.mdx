@@ -1,10 +1,22 @@
 ---
-title: "Início rápido"
-description: "Instale o OpenYida e crie seu primeiro aplicativo Yida em 5 minutos."
-icon: "play"
+title: "Início Rápido"
+description: "Instale o OpenYida e crie seu primeiro aplicativo Yida em 2 minutos."
+icon: "bolt"
 ---
 
-Este guia mostra como instalar o OpenYida e criar um aplicativo básico.
+## Pré-requisitos
+
+Antes de começar, certifique-se de ter as seguintes dependências instaladas:
+
+| Dependência | Versão | Comando de verificação |
+|------|------|----------|
+| [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
+
+<Tip>
+  Isso é tudo que você precisa. O OpenYida é uma implementação pura em Node.js — sem Python, sem Playwright, sem etapas de build.
+</Tip>
+
+---
 
 ## Passo 1 — Instalação
 
@@ -12,91 +24,129 @@ Este guia mostra como instalar o OpenYida e criar um aplicativo básico.
 npm install -g openyida
 ```
 
-Verifique se a instalação foi bem-sucedida:
+Verifique a instalação:
 
 ```bash
 openyida --version
 ```
 
-## Passo 2 — Login
+---
+
+## Passo 2 — Login no Yida
 
 ```bash
 openyida login
 ```
 
-Isso abrirá uma janela do navegador para autenticação. Após o login bem-sucedido, você pode fechar o navegador e retornar ao terminal.
+O OpenYida abrirá uma janela do navegador (ou exibirá um código QR) para você autenticar com sua conta Yida/Alibaba. As credenciais são armazenadas em cache localmente — você só precisa fazer isso uma vez.
 
-## Passo 3 — Criar um aplicativo
+<Info>
+  Se você estiver usando **Wukong** como ferramenta de IA, use a flag de login especial:
 
-### Opção A: Criar com descrição em linguagem natural
+  ```bash
+  openyida login --wukong
+  ```
+</Info>
 
-```bash
-openyida create-app --prompt "Crie um sistema CRM com gestão de clientes, acompanhamento de vendas e painel de análises"
-```
+---
 
-### Opção B: Criar com arquivo de requisitos
-
-```bash
-openyida create-app --file requirements.md
-```
-
-## Passo 4 — Gerenciar formulários
-
-### Listar formulários
+## Passo 3 — Verificar ambiente
 
 ```bash
-openyida list-forms --app-id YOUR_APP_ID
+openyida env
 ```
 
-### Criar um novo formulário
+Isso detecta a ferramenta de codificação de IA atualmente ativa (Claude Code, Cursor, Wukong, etc.) e exibe seu status de login atual. Execute este comando sempre que alternar ambientes.
+
+---
+
+## Passo 4 — Inicializar espaço de trabalho do projeto
 
 ```bash
-openyida create-form --app-id YOUR_APP_ID --prompt "Formulário de informações do cliente com nome, empresa, telefone, email e observações"
+openyida copy
 ```
 
-### Atualizar um formulário existente
+Isso copia o modelo de espaço de trabalho `project/` para o diretório de trabalho da sua ferramenta de IA atual, permitindo que a IA acesse a configuração do seu aplicativo e os modelos de página.
+
+---
+
+## Passo 5 — Começar a construir
+
+Agora basta conversar com seu assistente de codificação de IA. Aqui estão alguns prompts iniciais:
+
+```
+Construa para mim um sistema IPD no Yida para gerenciar o fluxo de trabalho completo de produção de chips
+```
+
+```
+Ajude-me a construir um sistema CRM com leads, contatos e negócios
+```
+
+```
+Crie um aplicativo de calculadora de salário pessoal
+```
+
+```
+Gere um mini-jogo de felicitações de aniversário no Yida
+```
+
+A IA usará o pacote de habilidades do OpenYida para chamar os comandos CLI corretos em sequência: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
+
+---
+
+## Passo 6 — Publicar o aplicativo
+
+Após a IA gerar o aplicativo, use o seguinte comando para publicar:
 
 ```bash
-openyida update-form --form-id YOUR_FORM_ID --prompt "Adicionar campo de status com opções: Lead, Oportunidade, Cliente"
+openyida publish
 ```
 
-## Passo 5 — Publicar páginas
+Ou pergunte à IA:
+```
+Publique a página [nome da página]
+Torne a página acessível publicamente
+```
 
-### Compilar e publicar uma página personalizada
+---
+
+## Executar diagnósticos
+
+Se algo parecer errado, execute a ferramenta de diagnóstico integrada:
 
 ```bash
-openyida publish-page --app-id YOUR_APP_ID --file custom-page.jsx
+openyida doctor
 ```
 
-### Configurar acesso público
+Ele verifica sua versão do Node.js, status de login e configuração do ambiente, e pode corrigir automaticamente problemas comuns com `--fix`.
+
+---
+
+## Integração OpenClaw
+
+Se você estiver usando OpenClaw, instale diretamente o pacote de habilidades do OpenYida:
 
 ```bash
-openyida set-public --page-id YOUR_PAGE_ID
+npx clawhub@latest install nicky1108/yida-app
 ```
 
-## Passo 6 — Configurar conectores
-
-### Criar um conector HTTP
-
-```bash
-openyida create-connector --app-id YOUR_APP_ID --name "API de Pagamento" --config connector-config.json
-```
-
-### Importar de curl
-
-```bash
-openyida import-curl --app-id YOUR_APP_ID --curl 'curl -X GET "https://api.example.com/data" -H "Authorization: Bearer token"'
-```
+Em seguida, use-o via [yida-app no ClawhHub](https://clawhub.ai/nicky1108/yida-app).
 
 ---
 
 ## Próximos passos
 
 <CardGroup cols={2}>
-  <Card title="Casos de demonstração" icon="images" href="/pt/introduction/demo">
-    Veja aplicativos reais construídos com OpenYida
+  <Card title="Prompts comuns" icon="comments" href="/pt/features/common-prompts">
+    Navegue pela lista completa de prompts em linguagem natural suportados pelo OpenYida.
   </Card>
-  <Card title="Referência de comandos" icon="terminal" href="/pt/features/skills">
-    Explore todos os comandos disponíveis
+  <Card title="Referência CLI" icon="terminal" href="/pt/features/skills">
+    Explore todos os comandos CLI e módulos de habilidades.
+  </Card>
+  <Card title="Casos de demonstração" icon="images" href="/pt/introduction/demo">
+    Veja aplicativos reais construídos com OpenYida.
+  </Card>
+  <Card title="Melhores práticas" icon="star" href="/pt/guides/best-practices">
+    Dicas para aproveitar ao máximo a geração de aplicativos impulsionada por IA.
   </Card>
 </CardGroup>

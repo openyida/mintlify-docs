@@ -1,9 +1,110 @@
 ---
-title: "योगदान गाइड"
-description: "OpenYida परियोजना में योगदान कैसे करें।"
+title: "योगदान"
+description: "OpenYiDA में कैसे योगदान दें — बग रिपोर्ट, फीचर्स, डॉक्स और स्किल्स।"
 icon: "handshake"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/contributing) or [Chinese version](/zh/contributing) for complete content.
-</Tip>
+OpenYiDA में आपका स्वागत है!ें खुशी है कि आप योगदान में रुचि रखते हैं। यह गाइड शुरू करने के लिए आपको चाहिए सब कुछ कवर करता है।
+
+## त्वरित लिंक
+
+- **GitHub:** https://github.com/openyida/openyida
+- **Issues:** https://github.com/openyida/openyida/issues
+- **npm:** https://www.npmjs.com/package/openyida
+
+---
+
+## मेंटेनर्स
+
+| नाम | भूमिका | GitHub |
+|------|------|--------|
+| **九神 (yize)** | कोर आर्किटेक्चर, CLI डिज़ाइन | [@yize](https://github.com/yize) |
+| **alex-mm** | फीचर डेवलपमेंट, टेस्टिंग | [@alex-mm](https://github.com/alex-mm) |
+| **nicky1108** | OpenClaw इंटीग्रेशन, स्किल एक्सटेंशन | [@nicky1108](https://github.com/nicky1108) |
+
+---
+
+## योगदान के तरीके
+
+1. **बग रिपोर्ट करें** → पुनरुत्पादन चरणों और पर्यावरण जानकारी के साथ Issue खोलें
+2. **फीचर सुझाएं** → पहले Discussion या Issue शुरू करें, फिर लागू करें
+3. **डॉक्स सुधारें** → डॉक्यूमेंटेशन के लिए PR हमेशा स्वागत हैं
+4. **स्किल्स जोड़ें** → `yida-skills/` के तहत स्किल पैक का विस्तार करें
+5. **बग ठीक करें / नए फीचर्स** → नीचे दिए गए डेवलपमेंट वर्कफ़्लो का पालन करें
+
+---
+
+## डेवलपमेंट सेटअप
+
+```bash
+# 1. Repo को Fork और clone करें
+git clone git@github.com:your-username/openyida.git
+cd openyida
+
+# 2. Dependencies इंस्टॉल करें
+npm install
+
+# 3. लोकल डिबगिंग के लिए ग्लोबल लिंक करें
+npm link
+
+# 4. Tests चलाएं
+npm test
+```
+
+---
+
+## PR चेकलिस्ट
+
+Pull request सबमिट करने से पहले सत्यापित करें:
+
+- [ ] प्रासंगिक फीचर को वास्तविक Yida खाते के साथ लोकल पर टेस्ट किया
+- [ ] सभी tests पास होते हैं: `npm test`
+- [ ] JS सिंटैक्स चेक पास होता है:
+  ```bash
+  node --check bin/yida.js && for f in lib/*.js lib/locales/*.js; do node --check "$f"; done
+  ```
+- [ ] PR विवरण स्पष्ट रूप से बताता है कि क्या बदला और क्यों
+- [ ] यदि UI/व्यवहार परिवर्तन हैं तो स्क्रीनशॉट या रिकॉर्डिंग संलग्न करें
+
+---
+
+## PR दिशानिर्देश
+
+- **एक PR, एक चीज़** — असंबंधित परिवर्तनों को न मिलाएं
+- **PR शीर्षक प्रारूप:** `feat: add xxx` / `fix: fix xxx` / `docs: update xxx`
+- **विवरण** में शामिल होना चाहिए: क्या, क्यों और कैसे टेस्ट करें
+- यदि PR एक Issue बंद करता है, तो विवरण में `Closes #123` जोड़ें
+
+---
+
+## कमिट सम्मेलन
+
+[Conventional Commits](https://www.conventionalcommits.org/) का पालन करें:
+
+```
+feat: add export-app command
+fix: fix get-page-config path error
+docs: update CLI command reference
+refactor: refactor login module
+test: add utils unit tests
+chore: upgrade dependencies
+```
+
+---
+
+## कोड शैली
+
+- मौजूदा कोड शैली का पालन करें (CommonJS मॉड्यूल, Node.js मूल API को प्राथमिकता दें)
+- चर और फ़ंक्शनों के लिए सार्थक अंग्रेजी नामों का उपयोग करें; संक्षिप्त नामों से बचें
+- त्रुटियों को पूरी तरह से संभालें — अपवादों को चुपचाप न निगलें
+- नया कमांड जोड़ते समय, `README.md` में CLI कमांड तालिका अपडेट करें
+
+---
+
+## AI / Vibe-Coded PR का स्वागत है!Claude Code, Cursor, Aone Copilot या किसी अन्य AI टूल द्वारा सहायता प्राप्त PR पूरी तरह से स्वागत हैं! कृपया PR विवरण में बताएं कि आपने कौन सा AI टूल उपयोग किया — यह मेंटेनर्स को जनरेशन संदर्भ को समझने में मदद करता है।
+
+---
+
+## लाइसेंस
+
+योगदान करके, आप अपने योगदान को [MIT License](https://github.com/openyida/openyida/blob/main/LICENSE) के तहत लाइसेंस करने के लिए सहमत होते हैं।

@@ -1,9 +1,85 @@
 ---
 title: "Câu Hỏi Thường Gặp"
-description: "Các câu hỏi và câu trả lời phổ biến về OpenYida."
+description: "Câu hỏi thường gặp về OpenYida."
 icon: "circle-question"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/guides/faq) or [Chinese version](/zh/guides/faq) for complete content.
-</Tip>
+<AccordionGroup>
+
+  <Accordion title="Tôi có cần tài khoản YiDa để sử dụng OpenYida không?">
+    Có. OpenYida tạo và quản lý ứng dụng trên nền tảng low-code [YiDa](https://www.aliwork.com), yêu cầu tài khoản Alibaba/DingTalk đã bật YiDa. Chạy `openyida login` để xác thực.
+  </Accordion>
+
+  <Accordion title="Những công cụ AI nào được hỗ trợ?">
+    OpenYida tương thích với bất kỳ công cụ mã hóa AI nào hỗ trợ MCP (Model Context Protocol) hoặc có thể đọc tài liệu kỹ năng markdown. Hỗ trợ đã xác nhận: **Claude Code, Aone Copilot, OpenCode, Cursor, Visual Studio Code, Qoder, Wukong**. Trên thực tế, bất kỳ công cụ nào có thể thực thi lệnh shell đều hoạt động.
+  </Accordion>
+
+  <Accordion title="Cần phiên bản Node.js nào?">
+    Cần Node.js **≥ 18**. Kiểm tra phiên bản của bạn bằng `node --version`. Tải xuống bản LTS mới nhất từ [nodejs.org](https://nodejs.org).
+  </Accordion>
+
+  <Accordion title="Nếu mã QR đăng nhập không hiển thị thì sao?">
+    Thử chạy `openyida login` trong terminal hỗ trợ khởi chạy trình duyệt. Nếu ở môi trường headless (ví dụ: máy chủ từ xa), sử dụng `openyida login --wukong` trong môi trường DingTalk/Wukong, hoặc sao chép URL đăng nhập từ đầu ra terminal và mở nó trong trình duyệt cục bộ của bạn.
+  </Accordion>
+
+  <Accordion title="Làm thế nào để làm mới phiên hết hạn?">
+    Chạy `openyida auth refresh` để gia hạn phiên mà không cần trải qua luồng đăng nhập đầy đủ. Nếu thất bại, chạy `openyida login` để xác thực lại.
+  </Accordion>
+
+  <Accordion title="Làm thế nào để chuyển đổi giữa nhiều tổ chức YiDa?">
+    ```bash
+    openyida org list       # Liệt kê tất cả tổ chức và corpIds
+    openyida org switch --corp-id <corpId>   # Chuyển sang tổ chức mục tiêu
+    openyida env            # Xác nhận chuyển đổi
+    ```
+  </Accordion>
+
+  <Accordion title="Làm thế nào để thêm trường thiếu vào biểu mẫu do AI tạo?">
+    Nói trực tiếp với AI:
+    ```
+    Thêm trường [tên trường] vào [tên trang], loại trường: [văn bản/số/ngày/dropdown/...], đặt thành bắt buộc
+    ```
+    OpenYida sẽ gọi `openyida create-form` với Schema đã cập nhật, hợp nhất các trường mới mà không ghi đè lên các trường hiện có.
+  </Accordion>
+
+  <Accordion title="Tôi có thể chỉnh sửa ứng dụng đã tạo trong trình chỉnh sửa trực quan YiDa không?">
+    Chắc chắn rồi. Đầu ra là ứng dụng YiDa tiêu chuẩn — bạn có thể mở nó trong trình chỉnh sửa trực quan của nền tảng YiDa bất cứ lúc nào và thực hiện sửa đổi thủ công. OpenYida tạo ứng dụng, không khóa cấu hình.
+  </Accordion>
+
+  <Accordion title="Làm thế nào để làm cho ứng dụng có thể truy cập công khai?">
+    ```
+    Đặt trang [tên trang] thành có thể truy cập công khai
+    ```
+    Hoặc chạy trực tiếp:
+    ```bash
+    openyida save-share-config
+    ```
+    Cấu hình cài đặt chia sẻ trang để bất kỳ ai cũng có thể truy cập qua liên kết mà không cần đăng nhập.
+  </Accordion>
+
+  <Accordion title="Tôi có thể di chuyển ứng dụng YiDa hiện có với OpenYida không?">
+    Có. Sử dụng `openyida export` để tạo gói di chuyển từ ứng dụng hiện có, và `openyida import` để xây dựng lại nó trong tổ chức hoặc môi trường khác.
+  </Accordion>
+
+  <Accordion title="Sự khác biệt giữa `create-form` và `create-page` là gì?">
+    - **`create-form`**: Tạo **trang biểu mẫu** YiDa — biểu mẫu nhập liệu sử dụng lưu trữ dữ liệu tích hợp của YiDa bên dưới. Dùng cho thu thập dữ liệu có cấu trúc (đăng ký, đơn xin, hồ sơ).
+    - **`create-page`**: Tạo **trang hiển thị tùy chỉnh** — trang dựa trên JSX cho bảng điều khiển, trang đích, UI tương tác. Biên dịch và xuất bản qua `openyida publish`.
+  </Accordion>
+
+  <Accordion title="OpenYida có hỗ trợ quy trình làm việc phê duyệt không?">
+    Có. Sử dụng `openyida create-process` để tạo biểu mẫu quy trình với các bước phê duyệt, và `openyida configure-process` để định nghĩa quy tắc quy trình làm việc (người phê duyệt, điều kiện, thông báo).
+  </Accordion>
+
+  <Accordion title="Có gì đó sai, làm thế nào để gỡ lỗi?">
+    1. Chạy `openyida doctor --fix` — tự động phát hiện và sửa các vấn đề phổ biến
+    2. Chạy `openyida env` — xác minh trạng thái đăng nhập và môi trường
+    3. Chạy `openyida auth status` — kiểm tra tính hợp lệ của phiên
+    4. Kiểm tra [GitHub Issues](https://github.com/openyida/openyida/issues) cho các vấn đề đã biết
+    5. Nếu là lỗi mới, gửi issue kèm: phiên bản Node.js, lệnh đã chạy, đầu ra lỗi đầy đủ
+  </Accordion>
+
+  <Accordion title="Làm thế nào để đóng góp cho OpenYida?">
+    Đọc [Hướng dẫn đóng góp](/vi/contributing) để biết quy trình đầy đủ. Tóm lại: fork repo, thực hiện thay đổi trên nhánh tính năng, chạy `npm test`, gửi PR. Đóng góp hỗ trợ bởi AI được chào đón!
+  </Accordion>
+
+</AccordionGroup>

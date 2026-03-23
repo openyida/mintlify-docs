@@ -1,9 +1,236 @@
 ---
 title: "Quản Lý Dữ Liệu"
-description: "Truy vấn và quản lý dữ liệu biểu mẫu, quy trình và tác vụ."
+description: "Giao diện quản lý dữ liệu thống nhất, hỗ trợ thao tác dữ liệu biểu mẫu, quy trình, tác vụ, biểu mẫu con, v.v."
 icon: "database"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/data-management) or [Chinese version](/zh/features/data-management) for complete content.
-</Tip>
+OpenYida cung cấp CLI quản lý dữ liệu thống nhất, hỗ trợ thao tác CRUD hoàn chỉnh cho dữ liệu biểu mẫu, phiên bản quy trình, tác vụ, biểu mẫu con, v.v.
+
+---
+
+## Tổng Quan
+
+<CardGroup cols={2}>
+  <Card title="Dữ Liệu Biểu Mẫu" icon="table">
+    Truy vấn, tạo, cập nhật, xóa dữ liệu phiên bản biểu mẫu.
+  </Card>
+  <Card title="Dữ Liệu Quy Trình" icon="workflow">
+    Quản lý phiên bản quy trình, bản ghi phê duyệt, trạng thái quy trình.
+  </Card>
+  <Card title="Quản Lý Tác Vụ" icon="check-circle">
+    Truy vấn tác vụ đang chờ, đã hoàn thành, do tôi khởi tạo, CC cho tôi.
+  </Card>
+  <Card title="Biểu Mẫu Con" icon="list">
+    Truy vấn và quản lý dữ liệu biểu mẫu con độc lập.
+  </Card>
+</CardGroup>
+
+---
+
+## Định Dạng Lệnh
+
+```bash
+openyida data <action> <resource> [args]
+```
+
+- **action**: `query` | `get` | `create` | `update` | `execute`
+- **resource**: `form` | `process` | `task` | `subform` | `operation-records`
+
+---
+
+## Quản Lý Dữ Liệu Biểu Mẫu
+
+### Truy Vấn Dữ Liệu Biểu Mẫu
+
+```bash
+# Truy vấn cơ bản
+openyida data query form <appType> <formUuid>
+
+# Truy vấn phân trang
+openyida data query form <appType> <formUuid> --page 1 --size 50
+
+# Truy vấn có điều kiện
+openyida data query form <appType> <formUuid> \
+  --search-json '{"field_xxx": "value"}'
+
+# Truy vấn phiên bản cụ thể
+openyida data query form <appType> <formUuid> --inst-id <formInstId>
+```
+
+### Lấy Một Bản Ghi
+
+```bash
+openyida data get form <appType> --inst-id <formInstId>
+```
+
+### Tạo Dữ Liệu
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
+  --dept-id <departmentId>
+```
+
+### Cập Nhật Dữ Liệu
+
+```bash
+openyida data update form <appType> \
+  --inst-id <formInstId> \
+  --data-json '{"field_xxx": "new value"}' \
+  --use-latest-version y
+```
+
+---
+
+## Quản Lý Dữ Liệu Quy Trình
+
+### Truy Vấn Phiên Bản Quy Trình
+
+```bash
+# Truy vấn danh sách quy trình
+openyida data query process <appType> <formUuid> \
+  --page 1 --size 20 \
+  --instance-status RUNNING
+
+# Trạng thái khả dụng: RUNNING (đang chạy), COMPLETED (đã hoàn thành), TERMINATED (đã chấm dứt)
+```
+
+### Lấy Chi Tiết Quy Trình
+
+```bash
+openyida data get process <appType> --process-inst-id <processInstanceId>
+```
+
+### Tạo Phiên Bản Quy Trình
+
+```bash
+openyida data create process <appType> <formUuid> \
+  --process-code <processCode> \
+  --data-json '{"field_xxx": "value"}' \
+  --dept-id <departmentId>
+```
+
+### Truy Vấn Bản Ghi Phê Duyệt
+
+```bash
+openyida data query operation-records <appType> \
+  --process-inst-id <processInstanceId>
+```
+
+---
+
+## Quản Lý Tác Vụ
+
+### Truy Vấn Danh Sách Tác Vụ
+
+```bash
+# Tác vụ đang chờ
+openyida data query tasks <appType> --type todo
+
+# Tác vụ đã hoàn thành
+openyida data query tasks <appType> --type done
+
+# Do tôi khởi tạo
+openyida data query tasks <appType> --type submitted
+
+# CC cho tôi
+openyida data query tasks <appType> --type cc
+```
+
+### Thực Thi Tác Vụ
+
+```bash
+openyida data execute task <appType> \
+  --task-id <taskId> \
+  --process-inst-id <processInstanceId> \
+  --out-result AGREE \
+  --remark "Đã đồng ý, vui lòng tiếp tục" \
+  --data-json '{"comment": "Phê duyệt đã thông qua"}'
+```
+
+**Tùy chọn out-result:**
+- `AGREE` - Đồng ý
+- `DISAGREE` - Không đồng ý
+
+---
+
+## Quản Lý Biểu Mẫu Con
+
+### Truy Vấn Dữ Liệu Biểu Mẫu Con
+
+```bash
+openyida data query subform <appType> <formUuid> \
+  --inst-id <formInstId> \
+  --table-field-id <fieldId> \
+  --page 1 --size 20
+```
+
+---
+
+## Sử Dụng Nâng Cao
+
+### Điều Kiện Truy Vấn Phức Tạp
+
+```bash
+# Truy vấn có điều kiện nhiều trường
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_status": "approved",
+    "field_amount": { "$gte": 1000 },
+    "field_created_at": { "$gte": "2024-01-01" }
+  }'
+```
+
+### Ví Dụ Script Thao Tác Hàng Loạt
+
+```bash
+#!/bin/bash
+# Xuất dữ liệu biểu mẫu hàng loạt
+
+APP_TYPE="APP_XXXXXXXX"
+FORM_UUID="FORM-XXXX-XXXX"
+PAGE=1
+
+while true; do
+  RESULT=$(openyida data query form $APP_TYPE $FORM_UUID --page $PAGE --size 100)
+  
+  # Xử lý dữ liệu trang hiện tại
+  echo "$RESULT" >> ./export.json
+  
+  # Kiểm tra xem có trang tiếp theo không
+  HAS_MORE=$(echo "$RESULT" | jq '.hasMore')
+  if [ "$HAS_MORE" != "true" ]; then
+    break
+  fi
+  
+  PAGE=$((PAGE + 1))
+done
+```
+
+---
+
+## Ví Dụ Xuất Dữ Liệu
+
+```bash
+# Xuất dữ liệu trong khoảng thời gian cụ thể
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_created_at": {
+      "$gte": "2024-01-01T00:00:00",
+      "$lte": "2024-12-31T23:59:59"
+    }
+  }' \
+  --size 100 > ./data-export.json
+```
+
+---
+
+## Lưu Ý
+
+<Warning>
+  Thao tác dữ liệu là vĩnh viễn, thao tác xóa và cập nhật không thể hoàn tác. Khuyến nghị thực hiện thử nghiệm quy mô nhỏ trước khi thực hiện thao tác hàng loạt.
+</Warning>
+
+<Info>
+  Truy vấn phân trang mặc định 20 bản ghi mỗi trang, tối đa 100. Để xuất lượng lớn dữ liệu, khuyến nghị sử dụng vòng lặp phân trang.
+</Info>

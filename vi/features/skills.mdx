@@ -1,9 +1,242 @@
 ---
-title: "Tài Liệu Tham Khảo CLI"
-description: "Tài liệu tham khảo đầy đủ về các lệnh CLI OpenYida."
+title: "Tham Khảo CLI"
+description: "Tài liệu tham khảo đầy đủ về tất cả lệnh CLI của OpenYida."
 icon: "terminal"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/skills) or [Chinese version](/zh/features/skills) for complete content.
-</Tip>
+OpenYida cung cấp các lệnh CLI phong phú, hỗ trợ quản lý toàn bộ vòng đời ứng dụng.
+
+---
+
+## Môi Trường và Xác Thực
+
+```bash
+# Phát hiện môi trường
+openyida env
+
+# Đăng nhập
+openyida login [--qr]              # --qr sử dụng mã QR trong terminal
+openyida login --wukong            # Dành riêng cho môi trường Wukong
+
+# Đăng xuất
+openyida logout
+
+# Quản lý phiên đăng nhập
+openyida auth status               # Xem trạng thái đăng nhập
+openyida auth login                # Thực hiện đăng nhập
+openyida auth refresh              # Làm mới phiên
+openyida auth logout               # Đăng xuất
+
+# Quản lý tổ chức
+openyida org list                  # Liệt kê các tổ chức có thể truy cập
+openyida org switch --corp-id <id> # Chuyển tổ chức
+
+# Khởi tạo thư mục làm việc
+openyida copy [--force]            # Sao chép thư mục project
+
+# Công cụ chẩn đoán
+openyida doctor [--fix]            # Chẩn đoán môi trường
+openyida doctor --monitor          # Giám sát sức khỏe
+openyida doctor --report <format>  # Tạo báo cáo (json|markdown|html)
+```
+
+---
+
+## Quản Lý Ứng Dụng
+
+```bash
+# Tạo ứng dụng
+openyida create-app "<tên>" [desc] [icon] [color] [themeColor]
+
+# Xuất ứng dụng
+openyida export <appType> [output] # Tạo gói di chuyển
+
+# Nhập ứng dụng
+openyida import <file> [name]      # Tái tạo ứng dụng từ gói
+```
+
+---
+
+## Quản Lý Biểu Mẫu
+
+```bash
+# Tạo biểu mẫu
+openyida create-form create <appType> "<tên>" <trườngJSON> \
+  [--layout <bố_cục>] \
+  [--theme <chủ_đề>] \
+  [--label-align <căn_chỉnh>]
+
+# Cập nhật biểu mẫu
+openyida create-form update <appType> <formUuid> <sửa_đổiJSON>
+
+# Lấy Schema biểu mẫu
+openyida get-schema <appType> <formUuid>
+
+# Cập nhật cấu hình biểu mẫu
+openyida update-form-config <appType> <formUuid> <isRenderNav> <tiêu_đề>
+```
+
+---
+
+## Quản Lý Trang
+
+```bash
+# Tạo trang tùy chỉnh
+openyida create-page <appType> "<tên>"
+
+# Biên dịch và xuất bản trang
+openyida publish <đường_dẫn_tệp_nguồn> <appType> <formUuid>
+
+# Cấu hình chia sẻ trang
+openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
+openyida get-page-config <appType> <formUuid>
+openyida verify-short-url <appType> <formUuid> <url>
+```
+
+---
+
+## Quản Lý Dữ Liệu
+
+```bash
+# Quản lý dữ liệu thống nhất
+openyida data <hành_động> <tài_nguyên> [args]
+
+# Dữ liệu biểu mẫu
+openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
+openyida data get form <appType> --inst-id <id>
+openyida data create form <appType> <formUuid> --data-json <JSON>
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
+
+# Dữ liệu quy trình
+openyida data query process <appType> <formUuid> [--instance-status TRẠNG_THÁI]
+openyida data get process <appType> --process-inst-id <id>
+openyida data create process <appType> <formUuid> --process-code <mã> --data-json <JSON>
+
+# Quản lý tác vụ
+openyida data query tasks <appType> --type <todo|done|submitted|cc>
+openyida data execute task <appType> --task-id <id> --process-inst-id <id> --out-result <AGREE|DISAGREE>
+
+# Biểu mẫu con
+openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id <fieldId>
+```
+
+---
+
+## Quản Lý Quy Trình
+
+```bash
+# Tạo biểu mẫu quy trình
+openyida create-process <appType> "<tên>" <trườngJSON> --process-code <mã>
+
+# Cấu hình quy tắc quy trình
+openyida configure-process <appType> <formUuid> --rules <quy_tắcJSON>
+```
+
+---
+
+## Quản Lý Quyền Hạn
+
+```bash
+# Truy vấn quyền biểu mẫu
+openyida get-permission <appType> <formUuid>
+
+# Lưu quyền biểu mẫu
+openyida save-permission <appType> <formUuid> \
+  [--data-permission <json>] \
+  [--action-permission <json>]
+```
+
+---
+
+## Quản Lý Connector
+
+```bash
+# Liệt kê connector
+openyida connector list [--page N] [--size N]
+
+# Tạo connector
+openyida connector create "<tên>" "<miền>" --operations <tệp> [tùy_chọn]
+
+# Xem chi tiết connector
+openyida connector detail <connector-id>
+
+# Xóa connector
+openyida connector delete <connector-id> [--force]
+
+# Quản lý action
+openyida connector add-action --connector-id <id> --operations <tệp> [--confirm]
+openyida connector list-actions <connector-id>
+openyida connector delete-action <connector-id> <operation-id> [--force]
+openyida connector test --connector-id <id> --action <actionId> [tùy_chọn]
+
+# Quản lý tài khoản xác thực
+openyida connector list-connections <connector-id>
+openyida connector create-connection <connector-id> "<tên>" [tùy_chọn]
+
+# Tạo thông minh
+openyida connector smart-create --curl "<lệnh_curl>" [--name <tên>] [--desc <mô_tả>]
+
+# Công cụ hỗ trợ
+openyida connector parse-api --curl "<lệnh_curl>" --output <tệp>
+openyida connector gen-template [đường_dẫn_xuất]
+```
+
+---
+
+## Quản Lý Báo Cáo
+
+```bash
+# Tạo báo cáo
+openyida create-report <appType> "<tên>" <định_nghĩa_biểu_đồ_JSON_hoặc_đường_dẫn>
+
+# Thêm biểu đồ
+openyida append-chart <appType> <reportId> <định_nghĩa_biểu_đồ_JSON_hoặc_đường_dẫn>
+```
+
+---
+
+## Quản Lý CDN
+
+```bash
+# Cấu hình CDN
+openyida cdn-config
+
+# Tải ảnh lên
+openyida cdn-upload <đường_dẫn_tệp>
+
+# Làm mới bộ nhớ đệm
+openyida cdn-refresh <đường_dẫn>
+```
+
+---
+
+## Tùy Chọn Toàn Cục
+
+| Tùy chọn | Mô tả |
+|------|------|
+| `--help`, `-h` | Hiển thị thông tin trợ giúp |
+| `--version`, `-v` | Hiển thị số phiên bản |
+| `--qr` | Sử dụng mã QR trong terminal để đăng nhập |
+| `--force` | Buộc thực hiện, bỏ qua xác nhận |
+
+---
+
+## Biến Môi Trường
+
+| Biến | Mô tả | Ví dụ |
+|------|------|------|
+| `OPENYIDA_LANG` | Cài đặt ngôn ngữ | `zh`, `en`, `ja` |
+| `LANG` / `LC_ALL` | Ngôn ngữ hệ thống | `zh_CN.UTF-8` |
+
+---
+
+## Mã Thoát
+
+| Mã | Ý nghĩa |
+|----|------|
+| 0 | Thành công |
+| 1 | Lỗi chung |
+| 2 | Lỗi tham số |
+| 3 | Lỗi đăng nhập / Chưa đăng nhập |
+| 4 | Lỗi mạng |
+| 5 | Lỗi API |

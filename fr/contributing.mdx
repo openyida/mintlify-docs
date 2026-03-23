@@ -1,9 +1,112 @@
 ---
-title: "Guide de Contribution"
-description: "Comment contribuer au projet OpenYida."
+title: "Contribuer"
+description: "Comment contribuer à OpenYiDA — rapports de bugs, fonctionnalités, documentation et compétences."
 icon: "handshake"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/contributing) or [Chinese version](/zh/contributing) for complete content.
-</Tip>
+Bienvenue dans OpenYiDA ! 🎉 Nous sommes ravis de votre intérêt pour contribuer. Ce guide couvre tout ce dont vous avez besoin pour commencer.
+
+## Liens rapides
+
+- **GitHub :** https://github.com/openyida/openyida
+- **Issues :** https://github.com/openyida/openyida/issues
+- **npm :** https://www.npmjs.com/package/openyida
+
+---
+
+## Mainteneurs
+
+| Nom | Rôle | GitHub |
+|------|------|--------|
+| **九神 (yize)** | Architecture principale, conception CLI | [@yize](https://github.com/yize) |
+| **alex-mm** | Développement de fonctionnalités, tests | [@alex-mm](https://github.com/alex-mm) |
+| **nicky1108** | Intégration OpenClaw, extensions de compétences | [@nicky1108](https://github.com/nicky1108) |
+
+---
+
+## Façons de contribuer
+
+1. **Signaler un bug** → Ouvrir une Issue avec les étapes de reproduction et les informations sur l'environnement
+2. **Suggérer une fonctionnalité** → Commencer par une Discussion ou une Issue, puis implémenter
+3. **Améliorer la documentation** → Les PRs pour la documentation sont toujours les bienvenus
+4. **Ajouter des compétences** → Étendre le pack de compétences sous `yida-skills/`
+5. **Corriger des bugs / Nouvelles fonctionnalités** → Suivre le flux de développement ci-dessous
+
+---
+
+## Configuration du développement
+
+```bash
+# 1. Forker et cloner le dépôt
+git clone git@github.com:your-username/openyida.git
+cd openyida
+
+# 2. Installer les dépendances
+npm install
+
+# 3. Lier globalement pour le débogage local
+npm link
+
+# 4. Exécuter les tests
+npm test
+```
+
+---
+
+## Liste de vérification PR
+
+Avant de soumettre une pull request, vérifiez :
+
+- [ ] Testé la fonctionnalité pertinente avec un compte Yida réel localement
+- [ ] Tous les tests passent : `npm test`
+- [ ] La vérification de la syntaxe JS passe :
+  ```bash
+  node --check bin/yida.js && for f in lib/*.js lib/locales/*.js; do node --check "$f"; done
+  ```
+- [ ] La description du PR explique clairement ce qui a changé et pourquoi
+- [ ] Captures d'écran ou enregistrements joints s'il y a des changements d'interface/comportement
+
+---
+
+## Directives PR
+
+- **Un PR, une chose** — ne mélangez pas des modifications non liées
+- **Format du titre du PR :** `feat: add xxx` / `fix: fix xxx` / `docs: update xxx`
+- La **description** doit couvrir : quoi, pourquoi et comment tester
+- Si le PR ferme une Issue, ajoutez `Closes #123` dans la description
+
+---
+
+## Convention de commit
+
+Suivez [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat: add export-app command
+fix: fix get-page-config path error
+docs: update CLI command reference
+refactor: refactor login module
+test: add utils unit tests
+chore: upgrade dependencies
+```
+
+---
+
+## Style de code
+
+- Suivez le style de code existant (modules CommonJS, préférez les API natives Node.js)
+- Utilisez des noms anglais significatifs pour les variables et les fonctions ; évitez les abréviations
+- Gérez complètement les erreurs — n'avalez pas silencieusement les exceptions
+- Lors de l'ajout d'une nouvelle commande, mettez à jour le tableau des commandes CLI dans `README.md`
+
+---
+
+## PR assistés par IA / Vibe-Coded bienvenus ! 🤖
+
+Les PRs assistés par Claude Code, Cursor, Aone Copilot ou tout autre outil IA sont entièrement les bienvenus ! Veuillez mentionner quel outil IA vous avez utilisé dans la description du PR — cela aide les mainteneurs à comprendre le contexte de génération.
+
+---
+
+## Licence
+
+En contribuant, vous acceptez de licencier votre contribution sous la [Licence MIT](https://github.com/openyida/openyida/blob/main/LICENSE).

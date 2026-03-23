@@ -1,9 +1,234 @@
 ---
 title: "보고서 및 차트"
-description: "Yida 보고서 및 데이터 시각화 생성."
+description: "Yida 보고서를 만들고 데이터 시각화 차트를 추가합니다."
 icon: "chart-column"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/report) or [Chinese version](/zh/features/report) for complete content.
-</Tip>
+OpenYida는 Yida 보고서 생성 및 다양한 차트 추가를 지원하며 데이터 시각화 표시를 실현합니다.
+
+---
+
+## 기능 개요
+
+<CardGroup cols={2}>
+  <Card title="보고서 생성" icon="file-plus">
+    원클릭으로 Yida 보고서를 생성하고 사용자 정의 설정을 지원합니다.
+  </Card>
+  <Card title="차트 추가" icon="chart-pie">
+    기존 보고서에 다양한 유형의 차트를 추가합니다.
+  </Card>
+  <Card title=" 데이터 바인딩" icon="link">
+    양식 데이터 소스를 자동으로 바인딩하고 데이터를 실시간으로 표시합니다.
+  </Card>
+  <Card title="차트 유형" icon="shapes">
+    막대형, 꺾은선형, 원형, 테이블 등 다양한 차트 유형을 지원합니다.
+  </Card>
+</CardGroup>
+
+---
+
+## 보고서 생성
+
+### 기본 사용법
+
+```bash
+openyida create-report <appType> "보고서 이름" '<차트 정의 JSON>'
+```
+
+### 예：판매 보고서 생성
+
+```bash
+openyida create-report APP_XXXXXX "월간 판매 보고서" '{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "월간 매출",
+      "dataSource": "form_sales",
+      "xField": "month",
+      "yField": "amount"
+    },
+    {
+      "type": "pie",
+      "title": "제품 판매 비율",
+      "dataSource": "form_sales",
+      "categoryField": "product_type",
+      "valueField": "amount"
+    }
+  ]
+}'
+```
+
+### 파일에서 차트 정의 로드
+
+```bash
+openyida create-report APP_XXXXXX "연간 통계 보고서" ./charts-config.json
+```
+
+---
+
+## 차트 정의 형식
+
+### 막대형 차트
+
+```json
+{
+  "type": "bar",
+  "title": "막대형 차트 제목",
+  "dataSource": "form_uuid",
+  "xField": "category_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### 꺾은선형 차트
+
+```json
+{
+  "type": "line",
+  "title": "트렌드 차트 제목",
+  "dataSource": "form_uuid",
+  "xField": "date_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### 원형 차트
+
+```json
+{
+  "type": "pie",
+  "title": "비율 차트 제목",
+  "dataSource": "form_uuid",
+  "categoryField": "category_field",
+  "valueField": "value_field"
+}
+```
+
+### 데이터 테이블
+
+```json
+{
+  "type": "table",
+  "title": "데이터 상세",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "이름" },
+    { "field": "amount", "title": "금액" },
+    { "field": "date", "title": "날짜" }
+  ]
+}
+```
+
+---
+
+## 보고서에 차트 추가
+
+```bash
+openyida append-chart <appType> <reportId> '<차트 정의 JSON>'
+```
+
+### 예
+
+```bash
+openyida append-chart APP_XXXXXX REPORT_XXXXX '{
+  "type": "line",
+  "title": "성장 트렌드",
+  "dataSource": "form_sales",
+  "xField": "month",
+  "yField": "growth_rate"
+}'
+```
+
+---
+
+## 완전한 설정 예
+
+### sales-report-charts.json
+
+```json
+{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "월간 매출 통계",
+      "dataSource": "form_monthly_sales",
+      "xField": "month",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "color": "#0066FF"
+    },
+    {
+      "type": "pie",
+      "title": "제품 카테고리 비율",
+      "dataSource": "form_sales",
+      "categoryField": "product_category",
+      "valueField": "sales_amount",
+      "showLegend": true
+    },
+    {
+      "type": "line",
+      "title": "판매 트렌드",
+      "dataSource": "form_daily_sales",
+      "xField": "date",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "smooth": true
+    },
+    {
+      "type": "table",
+      "title": "판매 상세",
+      "dataSource": "form_sales",
+      "columns": [
+        { "field": "order_no", "title": "주문 번호", "width": 150 },
+        { "field": "customer_name", "title": "고객명", "width": 200 },
+        { "field": "product_name", "title": "제품명", "width": 200 },
+        { "field": "amount", "title": "금액", "width": 120, "align": "right" },
+        { "field": "sales_date", "title": "판매일", "width": 150 }
+      ],
+      "pageSize": 10
+    }
+  ]
+}
+```
+
+보고서 생성：
+
+```bash
+openyida create-report APP_XXXXXX "판매 분석 보고서" ./sales-report-charts.json
+```
+
+---
+
+## 차트 유형 참조
+
+| 유형 | 설명 | 필수 필드 |
+|------|------|----------|
+| `bar` | 막대형 차트 | xField, yField |
+| `line` | 꺾은선형 차트 | xField, yField |
+| `pie` | 원형 차트 | categoryField, valueField |
+| `table` | 데이터 테이블 | columns |
+| `area` | 영역형 차트 | xField, yField |
+| `scatter` | 산점도 | xField, yField |
+
+---
+
+## 집계 함수
+
+| 함수 | 설명 |
+|------|------|
+| `sum` | 합계 |
+| `avg` | 평균 |
+| `count` | 개수 |
+| `max` | 최대값 |
+| `min` | 최소값 |
+
+---
+
+## 모범 사례
+
+1. **적절한 차트 유형 선택** - 트렌드는 꺾은선형, 비교는 막대형, 비율은 원형
+2. **차트 수 제어** - 하나의 보고서는 6개 이하의 차트를 권장
+3. **데이터 테이블 사용** - 차트와 함께 상세 데이터를 표시하여 원본 값을 쉽게 확인
+4. **적절한 페이지네이션 설정** - 데이터 테이블은 페이지당 10-20개를 권장

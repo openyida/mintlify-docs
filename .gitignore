@@ -5,3 +5,6 @@ translations.json
 translate.js
 translation-source.json
 translate-batch.js
+generate-all-translations.js
+translate_remaining.py
+.qoder/

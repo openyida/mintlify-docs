@@ -1,10 +1,22 @@
 ---
 title: "البدء السريع"
-description: "ثبّت OpenYida وأنشئ تطبيق Yida الأول في 5 دقائق."
-icon: "play"
+description: "قم بتثبيت OpenYida وأنشئ تطبيق Yida الأول الخاص بك في دقيقتين."
+icon: "bolt"
 ---
 
-يوضح هذا الدليل كيفية تثبيت OpenYida وإنشاء تطبيق أساسي.
+## المتطلبات الأساسية
+
+قبل البدء، تأكد من تثبيت التبعيات التالية:
+
+| التبعية | الإصدار | أمر التحقق |
+|------|------|----------|
+| [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
+
+<Tip>
+  هذا كل ما تحتاجه. OpenYida هو تطبيق Node.js نقي — لا يحتاج إلى Python، ولا Playwright، ولا خطوات بناء.
+</Tip>
+
+---
 
 ## الخطوة 1 — التثبيت
 
@@ -12,91 +24,129 @@ icon: "play"
 npm install -g openyida
 ```
 
-تحقق من نجاح التثبيت:
+تحقق من التثبيت:
 
 ```bash
 openyida --version
 ```
 
-## الخطوة 2 — تسجيل الدخول
+---
+
+## الخطوة 2 — تسجيل الدخول إلى Yida
 
 ```bash
 openyida login
 ```
 
-سيفتح هذا نافذة متصفح للمصادقة. بعد تسجيل الدخول بنجاح، يمكنك إغلاق المتصفح والعودة إلى الطرفية.
+سيفتح OpenYida نافذة متصفح (أو يعرض رمز QR) لمصادقتك باستخدام حساب Yida/Alibaba الخاص بك. يتم تخزين بيانات الاعتماد محليًا — تحتاج فقط إلى القيام بذلك مرة واحدة.
 
-## الخطوة 3 — إنشاء تطبيق
+<Info>
+  إذا كنت تستخدم **Wukong** كأداة ذكاء اصطناعي، فاستخدم علامة تسجيل الدخول الخاصة:
 
-### الخيار أ: الإنشاء بالوصف باللغة الطبيعية
+  ```bash
+  openyida login --wukong
+  ```
+</Info>
 
-```bash
-openyida create-app --prompt "أنشئ نظام CRM يتضمن إدارة العملاء وتتبع المبيعات ولوحة التحليلات"
-```
+---
 
-### الخيار ب: الإنشاء من ملف المتطلبات
-
-```bash
-openyida create-app --file requirements.md
-```
-
-## الخطوة 4 — إدارة النماذج
-
-### عرض قائمة النماذج
+## الخطوة 3 — التحقق من البيئة
 
 ```bash
-openyida list-forms --app-id YOUR_APP_ID
+openyida env
 ```
 
-### إنشاء نموذج جديد
+يكتشف هذا أداة ترميز الذكاء الاصطناعي النشطة حاليًا (Claude Code، Cursor، Wukong، إلخ) ويعرض حالة تسجيل الدخول الحالية الخاصة بك. قم بتشغيل هذا الأمر في أي وقت تقوم فيه بتبديل البيئات.
+
+---
+
+## الخطوة 4 — تهيئة مساحة عمل المشروع
 
 ```bash
-openyida create-form --app-id YOUR_APP_ID --prompt "نموذج معلومات العميل يتضمن الاسم والشركة والهاتف والبريد الإلكتروني والملاحظات"
+openyida copy
 ```
 
-### تحديث نموذج موجود
+ينسخ هذا قالب مساحة العمل `project/` إلى دليل عمل أداة الذكاء الاصطناعي الحالية الخاصة بك، مما يسمح للذكاء الاصطناعي بالوصول إلى تكوين التطبيق الخاص بك وقوالب الصفحات.
+
+---
+
+## الخطوة 5 — ابدأ البناء
+
+الآن فقط تحدث إلى مساعد ترميز الذكاء الاصطناعي الخاص بك. إليك بعض مطالبات البدء:
+
+```
+ابنِ لي نظام IPD على Yida لإدارة سير عمل إنتاج الرقائق بالكامل
+```
+
+```
+ساعدني في بناء نظام CRM مع leads و contacts و deals
+```
+
+```
+أنشئ تطبيق حاسبة راتب شخصي
+```
+
+```
+أنشئ لعبة مصغرة لتهنئة عيد الميلاد على Yida
+```
+
+سيستخدم الذكاء الاصطناعي حزمة مهارات OpenYida لاستدعاء أوامر CLI الصحيحة بالتسلسل: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
+
+---
+
+## الخطوة 6 — نشر التطبيق
+
+بعد أن يولد الذكاء الاصطناعي التطبيق، استخدم الأمر التالي للنشر:
 
 ```bash
-openyida update-form --form-id YOUR_FORM_ID --prompt "أضف حقل الحالة بالخيارات: عميل محتمل، فرصة، عميل"
+openyida publish
 ```
 
-## الخطوة 5 — نشر الصفحات
+أو اسأل الذكاء الاصطناعي:
+```
+انشر صفحة [اسم الصفحة]
+اجعل الصفحة متاحة للجمهور
+```
 
-### تجميع ونشر صفحة مخصصة
+---
+
+## تشغيل التشخيص
+
+إذا كان هناك شيء غير صحيح، قم بتشغيل أداة التشخيص المدمجة:
 
 ```bash
-openyida publish-page --app-id YOUR_APP_ID --file custom-page.jsx
+openyida doctor
 ```
 
-### إعداد الوصول العام
+يتحقق من إصدار Node.js الخاص بك، وحالة تسجيل الدخول، وتكوين البيئة، ويمكنه إصلاح المشكلات الشائعة تلقائيًا باستخدام `--fix`.
+
+---
+
+## تكامل OpenClaw
+
+إذا كنت تستخدم OpenClaw، قم بتثبيت حزمة مهارات OpenYida مباشرة:
 
 ```bash
-openyida set-public --page-id YOUR_PAGE_ID
+npx clawhub@latest install nicky1108/yida-app
 ```
 
-## الخطوة 6 — تكوين الموصلات
-
-### إنشاء موصل HTTP
-
-```bash
-openyida create-connector --app-id YOUR_APP_ID --name "API الدفع" --config connector-config.json
-```
-
-### الاستيراد من curl
-
-```bash
-openyida import-curl --app-id YOUR_APP_ID --curl 'curl -X GET "https://api.example.com/data" -H "Authorization: Bearer token"'
-```
+ثم استخدمها عبر [yida-app على ClawhHub](https://clawhub.ai/nicky1108/yida-app).
 
 ---
 
 ## الخطوات التالية
 
 <CardGroup cols={2}>
-  <Card title="حالات العرض" icon="images" href="/ar/introduction/demo">
-    شاهد التطبيقات الحقيقية المبنية بـ OpenYida
+  <Card title="المطالبات الشائعة" icon="comments" href="/ar/features/common-prompts">
+    تصفح القائمة الكاملة لمطالبات اللغة الطبيعية المدعومة من OpenYida.
   </Card>
-  <Card title="مرجع الأوامر" icon="terminal" href="/ar/features/skills">
-    استكشف جميع الأوامر المتاحة
+  <Card title="مرجع CLI" icon="terminal" href="/ar/features/skills">
+    استكشف جميع أوامر CLI ووحدات المهارات.
+  </Card>
+  <Card title="حالات العرض التوضيحي" icon="images" href="/ar/introduction/demo">
+    شاهد التطبيقات الحقيقية المبنية باستخدام OpenYida.
+  </Card>
+  <Card title="أفضل الممارسات" icon="star" href="/ar/guides/best-practices">
+    نصائح للاستفادة القصوى من إنشاء التطبيقات المدعوم بالذكاء الاصطناعي.
   </Card>
 </CardGroup>

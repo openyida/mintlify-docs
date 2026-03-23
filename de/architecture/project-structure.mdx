@@ -1,11 +1,11 @@
 ---
-title: "Projektstruktur"
-description: "OpenYida Projektverzeichnisstruktur und Code-Organisation"
+title: Projektstruktur
+description: Verzeichnisstruktur des OpenYida-Projekts und Codeorganisation
 ---
 
 # Projektstruktur
 
-OpenYida verwendet ein modulares Architekturdesign mit klarer Code-Organisation, das Wartung und Erweiterung erleichtert.
+OpenYida verwendet eine modulare Architektur mit klarer Codeorganisation, die einfach zu warten und zu erweitern ist.
 
 ## Verzeichnisübersicht
 
@@ -24,8 +24,8 @@ openyida/
 │   │   ├── doctor.ts
 │   │   └── login.ts
 │   ├── core/              # Kernfunktionsmodule
-│   │   ├── yida-api.ts    # Yida API-Kapselung
-│   │   ├── ai-service.ts  # KI-Service-Integration
+│   │   ├── yida-api.ts    # Yida-API-Encapsulation
+│   │   ├── ai-service.ts  # KI-Dienstintegration
 │   │   ├── config.ts      # Konfigurationsverwaltung
 │   │   └── auth.ts        # Authentifizierungsverarbeitung
 │   ├── utils/             # Hilfsfunktionen
@@ -37,77 +37,77 @@ openyida/
 │       ├── ai.ts
 │       └── index.ts
 ├── skills/                # Skill-System
-│   ├── builtin/           # Eingebaute Skills
+│   ├── builtin/           # Integrierte Skills
 │   └── custom/            # Benutzerdefinierte Skills
-├── templates/             # Code-Vorlagen
+├── templates/             # Codevorlagen
 │   ├── app/
 │   ├── form/
 │   └── page/
-├── docs/                  # Dokumentation
+├── docs/                  # Dokumentationsressourcen
 ├── tests/                 # Testdateien
 ├── package.json
 ├── tsconfig.json
 └── README.md
 ```
 
-## Kernmodul-Beschreibung
+## Beschreibung der Kernmodule
 
 ### src/commands/
 
-Enthält alle CLI-Befehlsimplementierungen, jede Datei entspricht einem Unterbefehl:
+Enthält die Implementierung aller CLI-Befehle, jede Datei entspricht einer Unterbefehl:
 
 | Datei | Funktion |
 |------|------|
-| `create-app.ts` | Yida-App erstellen |
-| `create-form.ts` | Formularseite erstellen |
-| `create-page.ts` | Benutzerdefinierte Seite erstellen |
-| `publish.ts` | App veröffentlichen |
-| `share.ts` | App teilen |
+| `create-app.ts` | Yida-Anwendung erstellen |
+| `create-form.ts` | Formularseiten erstellen |
+| `create-page.ts` | Benutzerdefinierte Seiten erstellen |
+| `publish.ts` | Anwendung veröffentlichen |
+| `share.ts` | Anwendung teilen |
 | `data.ts` | Datenverwaltungsoperationen |
-| `connector.ts` | Connector-Verwaltung |
+| `connector.ts` | Konnektorverwaltung |
 | `report.ts` | Berichtsoperationen |
-| `doctor.ts` | Diagnose-Tool |
-| `login.ts` | Login-Authentifizierung |
+| `doctor.ts` | Diagnosetool |
+| `login.ts` | Anmeldeauthentifizierung |
 
 ### src/core/
 
 Kerngeschäftslogik-Module:
 
-- **yida-api.ts**: Kapselt die Yida Open Platform API, bietet einheitliche Schnittstellenaufrufe
-- **ai-service.ts**: Integriert mehrere KI-Services (OpenAI, Claude, Tongyi Qwen, etc.)
-- **config.ts**: Verwaltet lokale Konfigurationsdateien (~/.openyida/config.json)
-- **auth.ts**: Verarbeitet Login-Status, Token-Aktualisierung, Multi-Organisation-Wechsel
+- **yida-api.ts** : Kapselt die Yida-Open-Plattform-API, stellt einheitliche Schnittstellenaufrufe bereit
+- **ai-service.ts** : Integriert mehrere KI-Dienste (OpenAI, Claude, 通义千问, etc.)
+- **config.ts** : Verwaltet lokale Konfigurationsdateien (~/.openyida/config.json)
+- **auth.ts** : Verarbeitet Anmeldestatus, Token-Aktualisierung, Multi-Organisationswechsel
 
 ### src/utils/
 
 Allgemeine Hilfsfunktionen:
 
-- **logger.ts**: Log-Ausgabe, unterstützt Level und Farben
-- **file.ts**: Dateioperations-Hilfsfunktionen
-- **validator.ts**: Eingabevalidierung und -prüfung
+- **logger.ts** : Protokollausgabe, unterstützt Klassifizierung und Farben
+- **file.ts** : Dateioperationshilfsfunktionen
+- **validator.ts** : Eingabevalidierung und -prüfung
 
 ### src/types/
 
-TypeScript-Typdefinitionen, stellen Code-Typsicherheit sicher:
+TypeScript-Typdefinitionen, stellen Codesicherheit sicher:
 
-- **yida.ts**: Yida API-bezogene Typen
-- **ai.ts**: KI-Service-bezogene Typen
-- **index.ts**: Allgemeine Typ-Exporte
+- **yida.ts** : Yida-API-bezogene Typen
+- **ai.ts** : KI-Dienst-bezogene Typen
+- **index.ts** : Allgemeine Typexporte
 
 ## Skill-System
 
 ```
 skills/
-├── builtin/               # Eingebaute Skills
-│   ├── code-generator/    # Code-Generierung
-│   ├── form-builder/      # Formular-Erstellung
-│   ├── page-designer/     # Seiten-Design
+├── builtin/               # Integrierte Skills
+│   ├── code-generator/    # Codegenerierung
+│   ├── form-builder/      # Formularerstellung
+│   ├── page-designer/     # Seitendesign
 │   └── data-analyzer/     # Datenanalyse
 └── custom/                # Benutzerdefinierte Skills
     └── (Benutzererweiterungen)
 ```
 
-Skills verwenden eine Plugin-Architektur und unterstützen Hot-Loading und dynamische Erweiterung.
+Skills verwenden eine Plugin-Architektur, unterstützen Hot-Loading und dynamische Erweiterung.
 
 ## Konfigurationsverwaltung
 
@@ -135,7 +135,7 @@ Speicherort: `~/.openyida/config.json`
 
 ### Projektkonfiguration
 
-Erstellung von `.openyidarc.json` im Projekt-Stammverzeichnis möglich:
+Projektstammverzeichnis kann `.openyidarc.json` erstellen:
 
 ```json
 {
@@ -162,9 +162,9 @@ Erstellung von `.openyidarc.json` im Projekt-Stammverzeichnis möglich:
 2. `skill.json` und Hauptlogik implementieren
 3. Mit `openyida skill load` laden
 
-## Entwicklungsstandards
+## Entwicklungsnormen
 
 - Alle neuen Funktionen müssen Typdefinitionen enthalten
-| Befehlsimplementierungen müssen `--help`-Dokumentation enthalten
-| Kernfunktionalitäten müssen Unit-Test-Abdeckung haben
-| ESLint- und Prettier-Konfigurationen befolgen
+- Befehlsimplementierung muss `--help`-Dokumentation enthalten
+- Kernfunktionen müssen durch Unit-Tests abgedeckt sein
+- Befolgen Sie ESLint- und Prettier-Konfigurationen

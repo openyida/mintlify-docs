@@ -1,9 +1,133 @@
 ---
-title: "Meilleures Pratiques"
-description: "Recommandations pour tirer le meilleur parti d'OpenYida."
+title: "Meilleures pratiques"
+description: "Recommandations de meilleures pratiques pour utiliser OpenYida et la génération d'applications pilotée par l'IA."
 icon: "star"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/guides/best-practices) or [Chinese version](/zh/guides/best-practices) for complete content.
-</Tip>
+## 1. Rédiger des invites détaillées
+
+La qualité des applications générées est proportionnelle au niveau de détail des invites. Comparaison :
+
+<CodeGroup>
+
+```text Vague (À éviter)
+Créer un CRM
+```
+
+```text Détaillé (Recommandé)
+Créer un CRM avec trois formulaires liés :
+1. Formulaire de prospects — Champs : Nom, Entreprise, Téléphone, Email, Source (Menu déroulant : Recommandation/Site web/Événement/Appel à froid), Statut (Menu déroulant : Nouveau prospect/Contacté/Qualifié/Disqualifié), Assigné à (Sélecteur de membre)
+2. Formulaire client — Converti à partir des prospects, Champs : Nom de l'entreprise, Secteur, Revenu annuel, Contact clé, Gestionnaire de compte
+3. Formulaire d'opportunité — Lié aux clients, Champs : Nom de l'opportunité, Montant, Étape (Menu déroulant : Proposition/Négociation/Gagné/Perdu), Date de clôture prévue, Notes
+```
+
+</CodeGroup>
+
+---
+
+## 2. Utiliser des documents d'exigences
+
+Pour les applications complexes, rédigez d'abord un PRD, puis donnez-le à l'IA :
+
+```
+Générer une application YiDa basée sur le document d'exigences suivant :
+
+[Coller le PRD — noms de champs, types, règles de validation, workflows, etc.]
+```
+
+Cette approche produit des résultats plus précis que les invites itératives.
+
+---
+
+## 3. Itération incrémentale
+
+N'essayez pas de tout construire en une seule invite. Construisez d'abord la structure de base, puis ajoutez progressivement de la complexité :
+
+```
+Étape 1 : Créer un formulaire d'information employé de base
+Étape 2 : Ajouter un formulaire de demande de congé lié aux employés
+Étape 3 : Configurer le workflow d'approbation des congés
+Étape 4 : Ajouter un tableau de bord manager affichant les approbations en attente
+Étape 5 : Publier le tableau de bord en tant que page publique
+```
+
+---
+
+## 4. Vérifier chaque étape
+
+Après que l'IA crée chaque composant, faites-le vérifier :
+
+```
+Afficher le Schema actuel du formulaire [Nom du formulaire]
+Vérifier si la page [Nom de la page] est publiée et accessible
+```
+
+Détectez les problèmes tôt avant qu'ils ne s'accumulent en problèmes plus importants.
+
+---
+
+## 5. Réutiliser le répertoire de travail du projet
+
+Exécutez `openyida copy` une seule fois par projet, pas à chaque session. Le fichier `project/config.json` stocke `appId` et `corpId` — l'IA l'utilise pour connaître l'application cible. Ne supprimez pas ce fichier en cours de projet.
+
+---
+
+## 6. Connexion spécifique à l'environnement
+
+Différents outils IA nécessitent différentes méthodes de connexion :
+
+| Outil IA | Commande de connexion |
+|---------|----------|
+| Claude Code, Cursor, VSCode | `openyida login` |
+| Wukong | `openyida login --wukong` |
+| OpenCode, Aone Copilot | `openyida login` |
+
+Lors du changement d'outil, exécutez d'abord `openyida env` pour confirmer l'environnement actif.
+
+---
+
+## 7. Utiliser CDN pour les images de pages personnalisées
+
+Lorsque les pages personnalisées contiennent des images, téléchargez-les d'abord sur CDN pour garantir un rendu fiable :
+
+```bash
+openyida cdn-config   # Configurer Alibaba Cloud OSS + CDN (une seule fois)
+openyida cdn-upload ./my-image.png   # Obtenir une URL CDN stable
+```
+
+Ensuite, référencez l'URL CDN dans votre invite de page :
+```
+Ajouter une image de bannière héro à la page de destination en utilisant cette URL CDN : https://cdn.example.com/banner.png
+```
+
+---
+
+## 8. Gérer la configuration multi-organisations
+
+Lorsque vous pouvez accéder à plusieurs organisations YiDa :
+
+```bash
+openyida org list          # Voir toutes les organisations disponibles
+openyida org switch --corp-id <id>   # Basculer vers l'organisation cible
+openyida env               # Confirmer le basculement
+```
+
+Vérifiez toujours l'organisation active avant de créer des applications pour éviter de construire dans le mauvais espace.
+
+---
+
+## 9. Exécuter Doctor avant le débogage
+
+Avant de passer du temps à déboguer des commandes échouées, exécutez :
+
+```bash
+openyida doctor --fix
+```
+
+Détecte et résout automatiquement les problèmes les plus courants : sessions expirées, fichiers de configuration manquants, incompatibilités d'environnement.
+
+---
+
+## 10. PR assistées par IA bienvenues
+
+Lors de la contribution à OpenYida lui-même, acceptez entièrement le code généré par l'IA. Notez l'outil IA utilisé dans la description du PR — cela aide les mainteneurs à comprendre le contexte de génération et à examiner plus efficacement.

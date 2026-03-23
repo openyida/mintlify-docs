@@ -1,12 +1,12 @@
 ---
 title: "Best Practices"
-description: "Best practices for using OpenYida and AI-driven app generation."
+description: "Best practice recommendations for using OpenYida and AI-driven app generation."
 icon: "star"
 ---
 
 ## 1. Write Detailed Prompts
 
-The quality of generated applications is proportional to the detail in your prompts. Compare:
+The quality of generated apps is proportional to the detail level of your prompts. Compare:
 
 <CodeGroup>
 
@@ -16,9 +16,9 @@ Create a CRM
 
 ```text Detailed (Recommended)
 Create a CRM with three related forms:
-1. Leads form — fields: name, company, phone, email, source (dropdown: referral/website/event/cold call), status (dropdown: new/contacted/qualified/lost), assigned to (member picker)
-2. Contacts form — converted from leads, fields: company name, industry, annual revenue, key contact, account manager
-3. Opportunities form — linked to contact, fields: opportunity name, amount, stage (dropdown: proposal/negotiation/won/lost), expected close date, notes
+1. Lead Form — Fields: Name, Company, Phone, Email, Source (Dropdown: Referral/Website/Event/Cold Call), Status (Dropdown: New Lead/Contacted/Qualified/Disqualified), Assigned To (Member Selector)
+2. Customer Form — Converted from leads, Fields: Company Name, Industry, Annual Revenue, Key Contact, Account Manager
+3. Opportunity Form — Linked to customers, Fields: Opportunity Name, Amount, Stage (Dropdown: Proposal/Negotiation/Won/Lost), Expected Close Date, Notes
 ```
 
 </CodeGroup>
@@ -27,28 +27,28 @@ Create a CRM with three related forms:
 
 ## 2. Use Requirements Documents
 
-For complex applications, write a PRD first, then hand it to AI:
+For complex apps, write a PRD first, then give it to AI:
 
 ```
-Generate a Yida app based on this requirements document:
+Generate a YiDa app based on the following requirements document:
 
-[paste PRD — field names, types, validation rules, workflows, etc.]
+[Paste PRD — field names, types, validation rules, workflows, etc.]
 ```
 
 This approach produces more accurate results than iterative prompting.
 
 ---
 
-## 3. Iterate Incrementally
+## 3. Incremental Iteration
 
-Don't try to build everything in one prompt. Build the core structure first, then add complexity:
+Don't try to build everything in one prompt. Build the core structure first, then gradually add complexity:
 
 ```
-Step 1: Create basic employee information form
-Step 2: Add leave application form linked to employees
-Step 3: Configure leave approval workflow
-Step 4: Add manager dashboard showing pending approvals
-Step 5: Publish dashboard as a public page
+Step 1: Create a basic employee information form
+Step 2: Add a leave request form linked to employees
+Step 3: Configure the leave approval workflow
+Step 4: Add a manager dashboard showing pending approvals
+Step 5: Publish the dashboard as a public page
 ```
 
 ---
@@ -58,17 +58,17 @@ Step 5: Publish dashboard as a public page
 After AI creates each component, have it verify:
 
 ```
-Show current schema of [form name] form
-Check if [page name] page is published and accessible
+Show the current Schema of the [Form Name] form
+Check if the [Page Name] page is published and accessible
 ```
 
-Catch issues early before they compound.
+Catch issues early before they accumulate into bigger problems.
 
 ---
 
 ## 5. Reuse Project Working Directory
 
-Run `openyida copy` only once per project, not every session. The `project/config.json` file stores `appId` and `corpId` — AI uses this to know the target application. Don't delete this file mid-project.
+Run `openyida copy` only once per project, not every session. The `project/config.json` file stores `appId` and `corpId` — AI uses this to know the target app. Don't delete this file mid-project.
 
 ---
 
@@ -77,7 +77,7 @@ Run `openyida copy` only once per project, not every session. The `project/confi
 Different AI tools require different login methods:
 
 | AI Tool | Login Command |
-|---------|---------------|
+|---------|----------|
 | Claude Code, Cursor, VSCode | `openyida login` |
 | Wukong | `openyida login --wukong` |
 | OpenCode, Aone Copilot | `openyida login` |
@@ -88,7 +88,7 @@ When switching tools, run `openyida env` first to confirm the active environment
 
 ## 7. Use CDN for Custom Page Images
 
-When custom pages include images, upload to CDN first for reliable rendering:
+When custom pages contain images, upload them to CDN first to ensure reliable rendering:
 
 ```bash
 openyida cdn-config   # Configure Alibaba Cloud OSS + CDN (one-time)
@@ -97,14 +97,14 @@ openyida cdn-upload ./my-image.png   # Get stable CDN URL
 
 Then reference the CDN URL in your page prompt:
 ```
-Use this CDN URL to add a hero banner image to the landing page: https://cdn.example.com/banner.png
+Add a hero banner image to the landing page using this CDN URL: https://cdn.example.com/banner.png
 ```
 
 ---
 
 ## 8. Handle Multi-Organization Setup
 
-When you have access to multiple Yida organizations:
+When you can access multiple YiDa organizations:
 
 ```bash
 openyida org list          # View all available organizations
@@ -112,13 +112,13 @@ openyida org switch --corp-id <id>   # Switch to target organization
 openyida env               # Confirm the switch
 ```
 
-Always verify the active organization before creating applications to avoid building in the wrong space.
+Always verify the active organization before creating apps to avoid building in the wrong space.
 
 ---
 
 ## 9. Run Doctor Before Debugging
 
-Before spending time debugging a failing command, run:
+Before spending time debugging failed commands, run:
 
 ```bash
 openyida doctor --fix
@@ -130,4 +130,4 @@ Automatically detects and resolves the most common issues: expired sessions, mis
 
 ## 10. AI-Assisted PRs Welcome
 
-When contributing to OpenYida itself, AI-generated code is fully accepted. Note which AI tool you used in your PR description — this helps maintainers understand the generation context and review more efficiently.
+When contributing to OpenYida itself, fully accept AI-generated code. Note the AI tool used in the PR description — this helps maintainers understand the generation context and review more efficiently.

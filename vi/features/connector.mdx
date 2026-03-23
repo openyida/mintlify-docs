@@ -1,9 +1,199 @@
 ---
-title: "Trình Kết Nối"
-description: "Tạo và quản lý trình kết nối HTTP."
+title: "Trình Kết Nối (Tích Hợp HTTP)"
+description: "Tích hợp ứng dụng Yida với API bên ngoài thông qua trình kết nối HTTP."
 icon: "plug"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/connector) or [Chinese version](/zh/features/connector) for complete content.
-</Tip>
+OpenYida cung cấp chức năng quản lý trình kết nối HTTP mạnh mẽ, hỗ trợ tạo trình kết nối thông minh từ lệnh curl, đạt được tích hợp liền mạch giữa Yida và hệ thống bên ngoài.
+
+---
+
+## Tổng Quan
+
+<CardGroup cols={2}>
+  <Card title="Tạo Thông Minh" icon="wand-magic-sparkles">
+    Tự động phân tích và tạo trình kết nối từ lệnh curl, hỗ trợ trích xuất thông tin xác thực.
+  </Card>
+  <Card title="Quản Lý API" icon="code">
+    Quản lý toàn bộ vòng đời trình kết nối: tạo, cập nhật, kiểm tra, xóa.
+  </Card>
+  <Card title="Hỗ Trợ Xác Thực" icon="key">
+    Hỗ trợ Bearer Token, API Key, OAuth2 và các phương thức xác thực khác.
+  </Card>
+  <Card title="Quản Lý Action" icon="play">
+    Thêm, kiểm tra, quản lý action thực thi của trình kết nối.
+  </Card>
+</CardGroup>
+
+---
+
+## Tạo Trình Kết Nối Thông Minh
+
+Tạo trình kết nối chỉ với một lệnh curl:
+
+```bash
+openyida connector smart-create \
+  --curl "curl 'https://api.example.com/v1/users' -H 'Authorization: Bearer xxx'" \
+  --name "Trình Kết Nối Quản Lý Người Dùng" \
+  --desc "Trình kết nối HTTP để quản lý dữ liệu người dùng"
+```
+
+Quy trình tạo thông minh:
+
+1. **Phân tích thông tin API** - Trích xuất giao thức, Host, phương thức, đường dẫn, loại xác thực
+2. **Khớp với trình kết nối hiện có** - Tìm trình kết nối hiện có cùng Host và xác thực
+3. **Tạo cấu hình trình kết nối** - Tự động xây dựng định nghĩa trình kết nối định dạng OpenAPI
+4. **Tạo hoặc cập nhật** - Tạo trình kết nối mới hoặc thêm action vào trình kết nối hiện có
+
+---
+
+## Lệnh Quản Lý Trình Kết Nối
+
+### Liệt Kê Trình Kết Nối
+
+```bash
+openyida connector list
+openyida connector list --page 1 --size 20
+```
+
+### Tạo Trình Kết Nối
+
+```bash
+openyida connector create "Tên Trình Kết Nối" "api.example.com" \
+  --operations ./operations.json \
+  --protocol https \
+  --desc "Mô tả trình kết nối"
+```
+
+### Xem Chi Tiết Trình Kết Nối
+
+```bash
+openyida connector detail <connector-id>
+```
+
+### Xóa Trình Kết Nối
+
+```bash
+openyida connector delete <connector-id> --force
+```
+
+---
+
+## Quản Lý Action
+
+### Thêm Action Thực Thi
+
+```bash
+openyida connector add-action \
+  --connector-id <id> \
+  --operations ./new-action.json \
+  --confirm
+```
+
+### Liệt Kê Action Hiện Có
+
+```bash
+openyida connector list-actions <connector-id>
+```
+
+### Kiểm Tra Action
+
+```bash
+openyida connector test \
+  --connector-id <id> \
+  --action <actionId> \
+  --body '{"key": "value"}'
+```
+
+### Xóa Action
+
+```bash
+openyida connector delete-action <connector-id> <operation-id> --force
+```
+
+---
+
+## Quản Lý Tài Khoản Xác Thực
+
+### Liệt Kê Tài Khoản Xác Thực
+
+```bash
+openyida connector list-connections <connector-id>
+```
+
+### Tạo Tài Khoản Xác Thực
+
+```bash
+openyida connector create-connection <connector-id> "Tài Khoản Sản Xuất" \
+  --token "Bearer xxx" \
+  --type bearer
+```
+
+---
+
+## Công Cụ Hỗ Trợ
+
+### Phân Tích Thông Tin API
+
+```bash
+openyida connector parse-api --curl "lệnh curl" --output ./api-info.json
+```
+
+### Tạo Mẫu Tài Liệu API
+
+```bash
+openyida connector gen-template ./my-api-template.json
+```
+
+---
+
+## Thực Hành Tốt Nhất
+
+### 1. Sử Dụng Biến Môi Trường Cho Thông Tin Nhạy Cảm
+
+```bash
+export API_TOKEN="token-bi-mat-cua-ban"
+openyida connector smart-create --curl "curl -H 'Authorization: Bearer $API_TOKEN' ..."
+```
+
+### 2. Tạo Trình Kết Nối Phức Tạp Theo Từng Giai Đoạn
+
+```bash
+# Bước 1: Tạo trình kết nối cơ bản
+openyida connector create "API DingTalk" "oapi.dingtalk.com"
+
+# Bước 2: Thêm action từng cái một
+openyida connector add-action --connector-id <id> --operations ./action1.json
+openyida connector add-action --connector-id <id> --operations ./action2.json
+```
+
+### 3. Kiểm Tra Trước Khi Kích Hoạt
+
+```bash
+# Tạo nhưng không xác nhận
+openyida connector add-action --connector-id <id> --operations ./action.json
+
+# Kiểm tra action
+openyida connector test --connector-id <id> --action <actionId>
+
+# Xác nhận生效
+# Hoàn thành xác nhận cuối cùng trong backend Yida
+```
+
+---
+
+## Câu Hỏi Thường Gặp
+
+<AccordionGroup>
+  <Accordion title="Phải làm gì nếu phân tích lệnh curl thất bại?">
+    Đảm bảo lệnh curl có định dạng đúng, bao gồm URL đầy đủ và headers cần thiết. Nếu chứa ký tự đặc biệt, hãy dùng dấu ngoặc kép.
+  </Accordion>
+
+  <Accordion title="Làm thế nào để cập nhật action của trình kết nối hiện có?">
+    Sử dụng lệnh `connector add-action`, nếu ID action đã tồn tại, hệ thống sẽ hỏi bạn có muốn cập nhật không.
+  </Accordion>
+
+  <Accordion title="Hỗ trợ những phương thức xác thực nào?">
+    Hiện tại hỗ trợ Bearer Token, API Key, Basic Auth, OAuth2. Thông tin xác thực trong lệnh curl được nhận diện tự động.
+  </Accordion>
+</AccordionGroup>

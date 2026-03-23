@@ -1,9 +1,236 @@
 ---
 title: "데이터 관리"
-description: "폼 데이터, 프로세스, 작업 쿼리 및 관리."
+description: "통합 데이터 관리 인터페이스, 양식, 프로세스, 작업, 하위 양식 등 데이터 작업 지원."
 icon: "database"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/data-management) or [Chinese version](/zh/features/data-management) for complete content.
-</Tip>
+OpenYida는 통합 데이터 관리 CLI를 제공하며 양식 데이터, 프로세스 인스턴스, 작업, 하위 양식 등의 완전한 CRUD 작업을 지원합니다.
+
+---
+
+## 기능 개요
+
+<CardGroup cols={2}>
+  <Card title="양식 데이터" icon="table">
+    양식 인스턴스 데이터 쿼리, 생성, 업데이트, 삭제.
+  </Card>
+  <Card title="프로세스 데이터" icon="workflow">
+    프로세스 인스턴스, 승인 기록, 프로세스 상태 관리.
+  </Card>
+  <Card title="작업 관리" icon="check-circle">
+    할 일, 완료, 내가 시작한, 나에게 CC된 작업 쿼리.
+  </Card>
+  <Card title="하위 양식" icon="list">
+    하위 양식 데이터의 독립적인 쿼리 및 관리.
+  </Card>
+</CardGroup>
+
+---
+
+## 명령 형식
+
+```bash
+openyida data <action> <resource> [args]
+```
+
+- **action**: `query` | `get` | `create` | `update` | `execute`
+- **resource**: `form` | `process` | `task` | `subform` | `operation-records`
+
+---
+
+## 양식 데이터 관리
+
+### 양식 데이터 쿼리
+
+```bash
+# 기본 쿼리
+openyida data query form <appType> <formUuid>
+
+# 페이지네이션 쿼리
+openyida data query form <appType> <formUuid> --page 1 --size 50
+
+# 조건 쿼리
+openyida data query form <appType> <formUuid> \
+  --search-json '{"field_xxx": "value"}'
+
+# 지정 인스턴스 쿼리
+openyida data query form <appType> <formUuid> --inst-id <formInstId>
+```
+
+### 단일 데이터 가져오기
+
+```bash
+openyida data get form <appType> --inst-id <formInstId>
+```
+
+### 데이터 생성
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
+  --dept-id <departmentId>
+```
+
+### 데이터 업데이트
+
+```bash
+openyida data update form <appType> \
+  --inst-id <formInstId> \
+  --data-json '{"field_xxx": "new value"}' \
+  --use-latest-version y
+```
+
+---
+
+## 프로세스 데이터 관리
+
+### 프로세스 인스턴스 쿼리
+
+```bash
+# 프로세스 목록 쿼리
+openyida data query process <appType> <formUuid> \
+  --page 1 --size 20 \
+  --instance-status RUNNING
+
+# 상태 옵션：RUNNING（진행 중）、COMPLETED（완료）、TERMINATED（종료）
+```
+
+### 프로세스 세부 정보 가져오기
+
+```bash
+openyida data get process <appType> --process-inst-id <processInstanceId>
+```
+
+### 프로세스 인스턴스 생성
+
+```bash
+openyida data create process <appType> <formUuid> \
+  --process-code <processCode> \
+  --data-json '{"field_xxx": "value"}' \
+  --dept-id <departmentId>
+```
+
+### 승인 기록 쿼리
+
+```bash
+openyida data query operation-records <appType> \
+  --process-inst-id <processInstanceId>
+```
+
+---
+
+## 작업 관리
+
+### 작업 목록 쿼리
+
+```bash
+# 할 일 작업
+openyida data query tasks <appType> --type todo
+
+# 완료 작업
+openyida data query tasks <appType> --type done
+
+# 내가 시작한
+openyida data query tasks <appType> --type submitted
+
+# 나에게 CC된
+openyida data query tasks <appType> --type cc
+```
+
+### 작업 실행
+
+```bash
+openyida data execute task <appType> \
+  --task-id <taskId> \
+  --process-inst-id <processInstanceId> \
+  --out-result AGREE \
+  --remark "동의, 계속 진행하세요" \
+  --data-json '{"comment": "승인됨"}'
+```
+
+**out-result 옵션：**
+- `AGREE` - 동의
+- `DISAGREE` - 거부
+
+---
+
+## 하위 양식 관리
+
+### 하위 양식 데이터 쿼리
+
+```bash
+openyida data query subform <appType> <formUuid> \
+  --inst-id <formInstId> \
+  --table-field-id <fieldId> \
+  --page 1 --size 20
+```
+
+---
+
+## 고급 사용법
+
+### 복잡한 쿼리 조건
+
+```bash
+# 다중 필드 조건 쿼리
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_status": "approved",
+    "field_amount": { "$gte": 1000 },
+    "field_created_at": { "$gte": "2024-01-01" }
+  }'
+```
+
+### 배치 작업 스크립트 예
+
+```bash
+#!/bin/bash
+# 양식 데이터 배치 내보내기
+
+APP_TYPE="APP_XXXXXXXX"
+FORM_UUID="FORM-XXXX-XXXX"
+PAGE=1
+
+while true; do
+  RESULT=$(openyida data query form $APP_TYPE $FORM_UUID --page $PAGE --size 100)
+  
+  # 현재 페이지 데이터 처리
+  echo "$RESULT" >> ./export.json
+  
+  # 다음 페이지 확인
+  HAS_MORE=$(echo "$RESULT" | jq '.hasMore')
+  if [ "$HAS_MORE" != "true" ]; then
+    break
+  fi
+  
+  PAGE=$((PAGE + 1))
+done
+```
+
+---
+
+## 데이터 내보내기 예
+
+```bash
+# 지정 기간 데이터 내보내기
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_created_at": {
+      "$gte": "2024-01-01T00:00:00",
+      "$lte": "2024-12-31T23:59:59"
+    }
+  }' \
+  --size 100 > ./data-export.json
+```
+
+---
+
+## 주의사항
+
+<Warning>
+  데이터 작업은 영구적이며 삭제 및 업데이트 작업은 취소할 수 없습니다. 배치 작업을 수행하기 전에 소규모 테스트를 수행하는 것이 좋습니다.
+</Warning>
+
+<Info>
+  페이지네이션 쿼리는 기본적으로 페이지당 20개, 최대 100개를 지원합니다. 대량의 데이터를 내보낼 때는 루프 페이지네이션을 사용하여 가져오는 것이 좋습니다.
+</Info>

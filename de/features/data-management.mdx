@@ -1,9 +1,236 @@
 ---
 title: "Datenverwaltung"
-description: "Abfrage und Verwaltung von Formulardaten, Prozessen und Aufgaben."
+description: "Einheitliche Datenverwaltungsschnittstelle, unterstützt Operationen für Formulare, Prozesse, Aufgaben, Unterformulare usw."
 icon: "database"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/data-management) or [Chinese version](/zh/features/data-management) for complete content.
-</Tip>
+OpenYida bietet ein einheitliches Datenverwaltungs-CLI, das vollständige CRUD-Operationen für Formulardaten, Prozessinstanzen, Aufgaben, Unterformulare usw. unterstützt.
+
+---
+
+## Funktionsübersicht
+
+<CardGroup cols={2}>
+  <Card title="Formulardaten" icon="table">
+    Abfragen, Erstellen, Aktualisieren, Löschen von Formularinstanzdaten.
+  </Card>
+  <Card title="Prozessdaten" icon="workflow">
+    Verwalten von Prozessinstanzen, Genehmigungsdatensätzen, Prozessstatus.
+  </Card>
+  <Card title="Aufgabenverwaltung" icon="check-circle">
+    Abfragen von zu erledigenden, erledigten, von mir initiierten, in Kopie befindlichen Aufgaben.
+  </Card>
+  <Card title="Unterformulare" icon="list">
+    Unabhängiges Abfragen und Verwalten von Unterformulardaten.
+  </Card>
+</CardGroup>
+
+---
+
+## Befehlsformat
+
+```bash
+openyida data <aktion> <ressource> [args]
+```
+
+- **aktion**: `query` | `get` | `create` | `update` | `execute`
+- **ressource**: `form` | `process` | `task` | `subform` | `operation-records`
+
+---
+
+## Formulardatenverwaltung
+
+### Formulardaten abfragen
+
+```bash
+# Basisabfrage
+openyida data query form <appType> <formUuid>
+
+# Paginierte Abfrage
+openyida data query form <appType> <formUuid> --page 1 --size 50
+
+# Bedingte Abfrage
+openyida data query form <appType> <formUuid> \
+  --search-json '{"field_xxx": "value"}'
+
+# Spezifische Instanz abfragen
+openyida data query form <appType> <formUuid> --inst-id <formInstId>
+```
+
+### Einzelne Daten abrufen
+
+```bash
+openyida data get form <appType> --inst-id <formInstId>
+```
+
+### Daten erstellen
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
+  --dept-id <departmentId>
+```
+
+### Daten aktualisieren
+
+```bash
+openyida data update form <appType> \
+  --inst-id <formInstId> \
+  --data-json '{"field_xxx": "new value"}' \
+  --use-latest-version y
+```
+
+---
+
+## Prozessdatenverwaltung
+
+### Prozessinstanzen abfragen
+
+```bash
+# Prozessliste abfragen
+openyida data query process <appType> <formUuid> \
+  --page 1 --size 20 \
+  --instance-status RUNNING
+
+# Verfügbare Status: RUNNING (laufend), COMPLETED (abgeschlossen), TERMINATED (beendet)
+```
+
+### Prozessdetails abrufen
+
+```bash
+openyida data get process <appType> --process-inst-id <processInstanceId>
+```
+
+### Prozessinstanz erstellen
+
+```bash
+openyida data create process <appType> <formUuid> \
+  --process-code <processCode> \
+  --data-json '{"field_xxx": "value"}' \
+  --dept-id <departmentId>
+```
+
+### Genehmigungsdatensätze abfragen
+
+```bash
+openyida data query operation-records <appType> \
+  --process-inst-id <processInstanceId>
+```
+
+---
+
+## Aufgabenverwaltung
+
+### Aufgabenliste abfragen
+
+```bash
+# Zu erledigende Aufgaben
+openyida data query tasks <appType> --type todo
+
+# Erledigte Aufgaben
+openyida data query tasks <appType> --type done
+
+# Von mir initiierte
+openyida data query tasks <appType> --type submitted
+
+# In Kopie
+openyida data query tasks <appType> --type cc
+```
+
+### Aufgabe ausführen
+
+```bash
+openyida data execute task <appType> \
+  --task-id <taskId> \
+  --process-inst-id <processInstanceId> \
+  --out-result AGREE \
+  --remark "Zustimmung, bitte fortfahren" \
+  --data-json '{"comment": "Genehmigung erfolgreich"}'
+```
+
+**out-result-Optionen:**
+- `AGREE` - Zustimmen
+- `DISAGREE` - Nicht zustimmen
+
+---
+
+## Unterformularverwaltung
+
+### Unterformulardaten abfragen
+
+```bash
+openyida data query subform <appType> <formUuid> \
+  --inst-id <formInstId> \
+  --table-field-id <fieldId> \
+  --page 1 --size 20
+```
+
+---
+
+## Erweiterte Verwendung
+
+### Komplexe Abfragebedingungen
+
+```bash
+# Mehrfeld-Abfrage
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_status": "approved",
+    "field_amount": { "$gte": 1000 },
+    "field_created_at": { "$gte": "2024-01-01" }
+  }'
+```
+
+### Batch-Operationsskriptbeispiel
+
+```bash
+#!/bin/bash
+# Batch-Export von Formulardaten
+
+APP_TYPE="APP_XXXXXXXX"
+FORM_UUID="FORM-XXXX-XXXX"
+PAGE=1
+
+while true; do
+  RESULT=$(openyida data query form $APP_TYPE $FORM_UUID --page $PAGE --size 100)
+  
+  # Aktuelle Seitendaten verarbeiten
+  echo "$RESULT" >> ./export.json
+  
+  # Prüfen, ob es eine nächste Seite gibt
+  HAS_MORE=$(echo "$RESULT" | jq '.hasMore')
+  if [ "$HAS_MORE" != "true" ]; then
+    break
+  fi
+  
+  PAGE=$((PAGE + 1))
+done
+```
+
+---
+
+## Datenexportbeispiel
+
+```bash
+# Daten eines bestimmten Zeitraums exportieren
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_created_at": {
+      "$gte": "2024-01-01T00:00:00",
+      "$lte": "2024-12-31T23:59:59"
+    }
+  }' \
+  --size 100 > ./data-export.json
+```
+
+---
+
+## Vorsichtsmaßnahmen
+
+<Warning>
+  Datenoperationen sind dauerhaft, Lösch- und Aktualisierungsvorgänge können nicht rückgängig gemacht werden. Es wird empfohlen, vor der Ausführung von Batch-Operationen kleine Tests durchzuführen.
+</Warning>
+
+<Info>
+  Paginierte Abfragen geben standardmäßig 20 Ergebnisse pro Seite zurück, maximal 100. Für den Export großer Datenmengen wird die Verwendung von Schleifen-Pagination empfohlen.
+</Info>

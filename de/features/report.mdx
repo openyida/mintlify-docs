@@ -1,9 +1,234 @@
 ---
 title: "Berichte und Diagramme"
-description: "Erstellung von Yida-Berichten und Datenvisualisierungen."
+description: "Erstellen Sie Yida-Berichte und fügen Sie Datenvisualisierungsdiagramme hinzu."
 icon: "chart-column"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/report) or [Chinese version](/zh/features/report) for complete content.
-</Tip>
+OpenYida unterstützt die Erstellung von Yida-Berichten und das Hinzufügen verschiedener Diagramme, um die Datenvisualisierung zu realisieren.
+
+---
+
+## Funktionsübersicht
+
+<CardGroup cols={2}>
+  <Card title="Berichtserstellung" icon="file-plus">
+    Erstellen Sie Yida-Berichte mit einem Klick, unterstützen Sie die benutzerdefinierte Konfiguration.
+  </Card>
+  <Card title="Diagramm-Anfügung" icon="chart-pie">
+    Fügen Sie verschiedene Diagrammtypen zu vorhandenen Berichten hinzu.
+  </Card>
+  <Card title="Datenbindung" icon="link">
+    Binden Sie automatisch Formular-Datenquellen, zeigen Sie Daten in Echtzeit an.
+  </Card>
+  <Card title="Diagrammtypen" icon="shapes">
+    Unterstützt Balken-, Linien-, Kreisdiagramme, Tabellen usw.
+  </Card>
+</CardGroup>
+
+---
+
+## Bericht erstellen
+
+### Grundlegende Verwendung
+
+```bash
+openyida create-report <appType> "Berichtsname" '<Diagrammdefinition JSON>'
+```
+
+### Beispiel: Verkaufsbericht erstellen
+
+```bash
+openyida create-report APP_XXXXXX "Monatlicher Verkaufsbericht" '{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "Monatliche Verkäufe",
+      "dataSource": "form_sales",
+      "xField": "month",
+      "yField": "amount"
+    },
+    {
+      "type": "pie",
+      "title": "Produktvertriebsanteil",
+      "dataSource": "form_sales",
+      "categoryField": "product_type",
+      "valueField": "amount"
+    }
+  ]
+}'
+```
+
+### Diagrammdefinition aus Datei laden
+
+```bash
+openyida create-report APP_XXXXXX "Jahresstatistikbericht" ./charts-config.json
+```
+
+---
+
+## Diagrammdefinitionsformat
+
+### Balkendiagramm
+
+```json
+{
+  "type": "bar",
+  "title": "Balkendiagrammtitel",
+  "dataSource": "form_uuid",
+  "xField": "category_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### Liniendiagramm
+
+```json
+{
+  "type": "line",
+  "title": "Trenddiagrammtitel",
+  "dataSource": "form_uuid",
+  "xField": "date_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### Kreisdiagramm
+
+```json
+{
+  "type": "pie",
+  "title": "Anteildiagrammtitel",
+  "dataSource": "form_uuid",
+  "categoryField": "category_field",
+  "valueField": "value_field"
+}
+```
+
+### Datentabelle
+
+```json
+{
+  "type": "table",
+  "title": "Datendetails",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "Name" },
+    { "field": "amount", "title": "Betrag" },
+    { "field": "date", "title": "Datum" }
+  ]
+}
+```
+
+---
+
+## Diagramm zum Bericht hinzufügen
+
+```bash
+openyida append-chart <appType> <reportId> '<Diagrammdefinition JSON>'
+```
+
+### Beispiel
+
+```bash
+openyida append-chart APP_XXXXXX REPORT_XXXXX '{
+  "type": "line",
+  "title": "Wachstumstrend",
+  "dataSource": "form_sales",
+  "xField": "month",
+  "yField": "growth_rate"
+}'
+```
+
+---
+
+## Vollständiges Konfigurationsbeispiel
+
+### sales-report-charts.json
+
+```json
+{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "Monatliche Verkaufsstatistiken",
+      "dataSource": "form_monthly_sales",
+      "xField": "month",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "color": "#0066FF"
+    },
+    {
+      "type": "pie",
+      "title": "Produktkategorieanteil",
+      "dataSource": "form_sales",
+      "categoryField": "product_category",
+      "valueField": "sales_amount",
+      "showLegend": true
+    },
+    {
+      "type": "line",
+      "title": "Verkaufstrend",
+      "dataSource": "form_daily_sales",
+      "xField": "date",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "smooth": true
+    },
+    {
+      "type": "table",
+      "title": "Verkaufsdetails",
+      "dataSource": "form_sales",
+      "columns": [
+        { "field": "order_no", "title": "Bestellnummer", "width": 150 },
+        { "field": "customer_name", "title": "Kundenname", "width": 200 },
+        { "field": "product_name", "title": "Produktname", "width": 200 },
+        { "field": "amount", "title": "Betrag", "width": 120, "align": "right" },
+        { "field": "sales_date", "title": "Verkaufsdatum", "width": 150 }
+      ],
+      "pageSize": 10
+    }
+  ]
+}
+```
+
+Bericht erstellen:
+
+```bash
+openyida create-report APP_XXXXXX "Verkaufsanalysebericht" ./sales-report-charts.json
+```
+
+---
+
+## Diagrammtyp-Referenz
+
+| Typ | Beschreibung | Erforderliche Felder |
+|------|------|----------|
+| `bar` | Balkendiagramm | xField, yField |
+| `line` | Liniendiagramm | xField, yField |
+| `pie` | Kreisdiagramm | categoryField, valueField |
+| `table` | Datentabelle | columns |
+| `area` | Flächendiagramm | xField, yField |
+| `scatter` | Streudiagramm | xField, yField |
+
+---
+
+## Aggregationsfunktionen
+
+| Funktion | Beschreibung |
+|------|------|
+| `sum` | Summe |
+| `avg` | Durchschnitt |
+| `count` | Anzahl |
+| `max` | Maximum |
+| `min` | Minimum |
+
+---
+
+## Best Practices
+
+1. **Wählen Sie den Diagrammtyp vernünftig** - Trend mit Liniendiagramm, Vergleich mit Balkendiagramm, Anteil mit Kreisdiagramm
+2. **Kontrollieren Sie die Anzahl der Diagramme** - Es wird empfohlen, nicht mehr als 6 Diagramme pro Bericht zu haben
+3. **Verwenden Sie Datentabellen** - Ergänzen Sie Diagramme mit Tabellen, um detaillierte Daten anzuzeigen, was die Überprüfung der ursprünglichen Werte erleichtert
+4. **Legen Sie eine angemessene Paginierung fest** - Für Datentabellen wird empfohlen, 10-20 Elemente pro Seite anzuzeigen

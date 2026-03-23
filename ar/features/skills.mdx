@@ -1,9 +1,242 @@
 ---
 title: "مرجع CLI"
-description: "مرجع كامل لأوامر CLI الخاصة بـ OpenYida."
+description: "المرجع الكامل لجميع أوامر CLI الخاصة بـ OpenYida."
 icon: "terminal"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/skills) or [Chinese version](/zh/features/skills) for complete content.
-</Tip>
+يقدم OpenYida أوامر CLI غنية، تدعم إدارة دورة حياة التطبيق الكاملة.
+
+---
+
+## البيئة والمصادقة
+
+```bash
+# فحص البيئة
+openyida env
+
+# تسجيل الدخول
+openyida login [--qr]              # --qr استخدام رمز QR في المحطة
+openyida login --wukong            # خاص ببيئة Wukong
+
+# تسجيل الخروج
+openyida logout
+
+# إدارة حالة تسجيل الدخول
+openyida auth status               # عرض حالة تسجيل الدخول
+openyida auth login                # تنفيذ تسجيل الدخول
+openyida auth refresh              # تحديث حالة تسجيل الدخول
+openyida auth logout               # تسجيل الخروج
+
+# إدارة المنظمات
+openyida org list                  # سرد المنظمات القابلة للوصول
+openyida org switch --corp-id <id> # التبديل إلى المنظمة
+
+# تهيئة دليل العمل
+openyida copy [--force]            # نسخ دليل project
+
+# أدوات التشخيص
+openyida doctor [--fix]            # تشخيص البيئة
+openyida doctor --monitor          # مراقبة الصحة
+openyida doctor --report <format>  # إنشاء تقرير (json|markdown|html)
+```
+
+---
+
+## إدارة التطبيقات
+
+```bash
+# إنشاء تطبيق
+openyida create-app "<الاسم>" [desc] [icon] [color] [themeColor]
+
+# تصدير التطبيق
+openyida export <appType> [output] # إنشاء حزمة الترحيل
+
+# استيراد التطبيق
+openyida import <file> [name]      # إعادة بناء التطبيق من حزمة الترحيل
+```
+
+---
+
+## إدارة النماذج
+
+```bash
+# إنشاء نموذج
+openyida create-form create <appType> "<اسم النموذج>" <JSON الحقول> \
+  [--layout <التخطيط>] \
+  [--theme <الموضوع>] \
+  [--label-align <المحاذاة>]
+
+# تحديث النموذج
+openyida create-form update <appType> <formUuid> <JSON التعديلات>
+
+# الحصول على Schema النموذج
+openyida get-schema <appType> <formUuid>
+
+# تحديث تكوين النموذج
+openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+```
+
+---
+
+## إدارة الصفحات
+
+```bash
+# إنشاء صفحة مخصصة
+openyida create-page <appType> "<اسم الصفحة>"
+
+# تجميع ونشر الصفحة
+openyida publish <مسار الملف المصدر> <appType> <formUuid>
+
+# تكوين مشاركة الصفحة
+openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
+openyida get-page-config <appType> <formUuid>
+openyida verify-short-url <appType> <formUuid> <url>
+```
+
+---
+
+## إدارة البيانات
+
+```bash
+# إدارة البيانات الموحدة
+openyida data <action> <resource> [args]
+
+# بيانات النموذج
+openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
+openyida data get form <appType> --inst-id <id>
+openyida data create form <appType> <formUuid> --data-json <JSON>
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
+
+# بيانات العملية
+openyida data query process <appType> <formUuid> [--instance-status STATUS]
+openyida data get process <appType> --process-inst-id <id>
+openyida data create process <appType> <formUuid> --process-code <code> --data-json <JSON>
+
+# إدارة المهام
+openyida data query tasks <appType> --type <todo|done|submitted|cc>
+openyida data execute task <appType> --task-id <id> --process-inst-id <id> --out-result <AGREE|DISAGREE>
+
+# النماذج الفرعية
+openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id <fieldId>
+```
+
+---
+
+## إدارة العمليات
+
+```bash
+# إنشاء نموذج العملية
+openyida create-process <appType> "<اسم النموذج>" <JSON الحقول> --process-code <code>
+
+# تكوين قواعد العملية
+openyida configure-process <appType> <formUuid> --rules <JSON القواعد>
+```
+
+---
+
+## إدارة الأذونات
+
+```bash
+# الاستعلام عن أذونات النموذج
+openyida get-permission <appType> <formUuid>
+
+# حفظ أذونات النموذج
+openyida save-permission <appType> <formUuid> \
+  [--data-permission <json>] \
+  [--action-permission <json>]
+```
+
+---
+
+## إدارة الموصلات
+
+```bash
+# سرد الموصلات
+openyida connector list [--page N] [--size N]
+
+# إنشاء موصل
+openyida connector create "<الاسم>" "<النطاق>" --operations <file> [خيارات]
+
+# عرض تفاصيل الموصل
+openyida connector detail <connector-id>
+
+# حذف الموصل
+openyida connector delete <connector-id> [--force]
+
+# إدارة الإجراءات
+openyida connector add-action --connector-id <id> --operations <file> [--confirm]
+openyida connector list-actions <connector-id>
+openyida connector delete-action <connector-id> <operation-id> [--force]
+openyida connector test --connector-id <id> --action <actionId> [خيارات]
+
+# إدارة حسابات المصادقة
+openyida connector list-connections <connector-id>
+openyida connector create-connection <connector-id> "<الاسم>" [خيارات]
+
+# الإنشاء الذكي
+openyida connector smart-create --curl "<أمر curl>" [--name <name>] [--desc <desc>]
+
+# أدوات مساعدة
+openyida connector parse-api --curl "<أمر curl>" --output <file>
+openyida connector gen-template [مسار الإخراج]
+```
+
+---
+
+## إدارة التقارير
+
+```bash
+# إنشاء تقرير
+openyida create-report <appType> "<اسم التقرير>" <JSON تعريف المخطط أو مسار الملف>
+
+# إضافة مخطط
+openyida append-chart <appType> <reportId> <JSON تعريف المخطط أو مسار الملف>
+```
+
+---
+
+## إدارة CDN
+
+```bash
+# تكوين CDN
+openyida cdn-config
+
+# رفع صورة
+openyida cdn-upload <مسار الملف>
+
+# تحديث ذاكرة التخزين المؤقت
+openyida cdn-refresh <المسار>
+```
+
+---
+
+## الخيارات العامة
+
+| الخيار | الوصف |
+|------|------|
+| `--help`, `-h` | عرض معلومات المساعدة |
+| `--version`, `-v` | عرض رقم الإصدار |
+| `--qr` | استخدام رمز QR في المحطة لتسجيل الدخول |
+| `--force` | فرض العملية، تخطي التأكيد |
+
+---
+
+## متغيرات البيئة
+
+| المتغير | الوصف | مثال |
+|------|------|------|
+| `OPENYIDA_LANG` | تعيين اللغة | `zh`, `en`, `ja` |
+| `LANG` / `LC_ALL` | لغة النظام | `zh_CN.UTF-8` |
+
+---
+
+## رموز الخروج
+
+| الرمز | المعنى |
+|----|------|
+| 0 | نجح |
+| 1 | خطأ عام |
+| 2 | خطأ في المعلمات |
+| 3 | فشل تسجيل الدخول/غير مسجل الدخول |
+| 4 | خطأ في الشبكة |
+| 5 | خطأ في API |

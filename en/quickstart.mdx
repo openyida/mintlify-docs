@@ -1,26 +1,30 @@
 ---
 title: "Quick Start"
-description: "Get started with OpenYida in minutes."
-icon: "play"
+description: "Install OpenYida and build your first Yida app in 2 minutes."
+icon: "bolt"
 ---
 
 ## Prerequisites
 
-- Node.js ≥ 18
-- A Yida (宜搭) account with organization access
-- An AI coding tool (Claude Code, Cursor, VS Code, etc.)
+Before you begin, ensure you have the following dependencies installed:
+
+| Dependency | Version | Check Command |
+|------|------|----------|
+| [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
+
+<Tip>
+  That's all you need. OpenYida is a pure Node.js implementation — no Python, no Playwright, no build steps.
+</Tip>
 
 ---
 
-## Installation
-
-Install OpenYida globally via npm:
+## Step 1 — Installation
 
 ```bash
 npm install -g openyida
 ```
 
-Verify installation:
+Verify the installation:
 
 ```bash
 openyida --version
@@ -28,88 +32,121 @@ openyida --version
 
 ---
 
-## Login
-
-Authenticate with your Yida account:
+## Step 2 — Login to Yida
 
 ```bash
 openyida login
 ```
 
-This will open a browser for OAuth authentication. For DingTalk/Wukong environments:
+OpenYida will open a browser window (or display a QR code) for you to authenticate with your Yida/Alibaba account. Credentials are cached locally — you only need to do this once.
 
-```bash
-openyida login --wukong
-```
+<Info>
+  If you are using **Wukong** as your AI tool, use the special login flag:
+
+  ```bash
+  openyida login --wukong
+  ```
+</Info>
 
 ---
 
-## Create Your First App
-
-### Step 1: Create Application
+## Step 3 — Check Environment
 
 ```bash
-openyida create-app --name "My First App"
+openyida env
 ```
 
-Note the returned `appId` — you'll need it for subsequent commands.
+This detects the currently active AI coding tool (Claude Code, Cursor, Wukong, etc.) and displays your current login status. Run this command anytime you switch environments.
 
-### Step 2: Create a Form
+---
+
+## Step 4 — Initialize Project Workspace
 
 ```bash
-openyida create-form \
-  --page "Contact Form" \
-  --schema '{
-    "fields": [
-      {"name": "name", "type": "TextField", "label": "Name", "required": true},
-      {"name": "email", "type": "TextField", "label": "Email", "required": true},
-      {"name": "message", "type": "TextareaField", "label": "Message"}
-    ]
-  }'
+openyida copy
 ```
 
-### Step 3: Publish
+This copies the `project/` workspace template to your current AI tool's working directory, allowing the AI to access your app configuration and page templates.
+
+---
+
+## Step 5 — Start Building
+
+Now simply talk to your AI coding assistant. Here are some starter prompts:
+
+```
+Build me an IPD system on Yida to manage the complete chip production workflow
+```
+
+```
+Help me build a CRM system with leads, contacts, and deals
+```
+
+```
+Create a personal salary calculator app
+```
+
+```
+Generate a birthday greeting mini-game on Yida
+```
+
+The AI will use OpenYida's skill pack to call the correct CLI commands in sequence: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
+
+---
+
+## Step 6 — Publish the App
+
+After the AI generates the app, use the following command to publish:
 
 ```bash
 openyida publish
 ```
 
-Your form is now live on Yida!
+Or ask the AI:
+```
+Publish the [page name] page
+Make the page publicly accessible
+```
 
 ---
 
-## Using with AI
+## Run Diagnostics
 
-The real power comes from AI integration. Here's how to use OpenYida with Claude Code:
+If anything feels off, run the built-in diagnostic tool:
 
-1. **Install Claude Code** following [their documentation](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)
+```bash
+openyida doctor
+```
 
-2. **Start a session** in your project directory:
-   ```bash
-   claude
-   ```
+It checks your Node.js version, login status, and environment configuration, and can automatically fix common issues with `--fix`.
 
-3. **Describe what you want**:
-   ```
-   Create a simple CRM with leads, contacts, and deals.
-   Each lead should have: name, company, phone, email, status.
-   Status should be a dropdown: New, Contacted, Qualified, Lost.
-   ```
+---
 
-4. **Claude will use OpenYida** to build the application for you
+## OpenClaw Integration
+
+If you are using OpenClaw, install the OpenYida skill pack directly:
+
+```bash
+npx clawhub@latest install nicky1108/yida-app
+```
+
+Then use it via [yida-app on ClawhHub](https://clawhub.ai/nicky1108/yida-app).
 
 ---
 
 ## Next Steps
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Common Prompts" icon="comments" href="/en/features/common-prompts">
-    See example prompts for different use cases
+    Browse the complete list of natural language prompts supported by OpenYida.
   </Card>
-  <Card title="Use Cases" icon="lightbulb" href="/en/features/use-cases">
-    Explore real-world application examples
+  <Card title="CLI Reference" icon="terminal" href="/en/features/skills">
+    Explore all CLI commands and skill modules.
+  </Card>
+  <Card title="Demo Cases" icon="images" href="/en/introduction/demo">
+    View real applications built with OpenYida.
   </Card>
   <Card title="Best Practices" icon="star" href="/en/guides/best-practices">
-    Tips for effective AI-driven development
+    Tips for getting the most out of AI-driven app generation.
   </Card>
 </CardGroup>

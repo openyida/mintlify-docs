@@ -1,6 +1,6 @@
 ---
-title: "Démarrage rapide"
-description: "Installez OpenYida et construisez votre première application Yida en 2 minutes."
+title: "Démarrage Rapide"
+description: "Installez OpenYida et créez votre première application Yida en 2 minutes."
 icon: "bolt"
 ---
 
@@ -13,7 +13,7 @@ Avant de commencer, assurez-vous d'avoir installé les dépendances suivantes :
 | [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
 
 <Tip>
-  C'est tout ce dont vous avez besoin. OpenYida est une implémentation pure Node.js — pas besoin de Python, Playwright ou d'étapes de build.
+  C'est tout ce dont vous avez besoin. OpenYida est une implémentation pure Node.js — pas de Python, pas de Playwright, pas d'étapes de build.
 </Tip>
 
 ---
@@ -38,10 +38,10 @@ openyida --version
 openyida login
 ```
 
-OpenYida ouvrira une fenêtre de navigateur (ou affichera un code QR) pour vous permettre de vous authentifier avec votre compte Yida/Alibaba. Les identifiants sont mis en cache localement — vous n'avez besoin de le faire qu'une seule fois.
+OpenYida ouvrira une fenêtre de navigateur (ou affichera un code QR) pour vous authentifier avec votre compte Yida/Alibaba. Les identifiants sont mis en cache localement — vous n'avez besoin de le faire qu'une seule fois.
 
 <Info>
-  Si vous utilisez **Wukong** comme outil IA, utilisez le flag de connexion spécial :
+  Si vous utilisez **Wukong** comme outil IA, utilisez le drapeau de connexion spécial :
 
   ```bash
   openyida login --wukong
@@ -56,7 +56,7 @@ OpenYida ouvrira une fenêtre de navigateur (ou affichera un code QR) pour vous 
 openyida env
 ```
 
-Cela détecte l'outil de programmation IA actuellement actif (Claude Code, Cursor, Wukong, etc.) et affiche votre état de connexion actuel. Exécutez cette commande chaque fois que vous changez d'environnement.
+Cela détecte l'outil de codage IA actuellement actif (Claude Code, Cursor, Wukong, etc.) et affiche votre état de connexion actuel. Exécutez cette commande chaque fois que vous changez d'environnement.
 
 ---
 
@@ -66,37 +66,37 @@ Cela détecte l'outil de programmation IA actuellement actif (Claude Code, Curso
 openyida copy
 ```
 
-Cela copie le modèle d'espace de travail `project/` dans le répertoire de travail de votre outil IA actuel, permettant à l'IA d'accéder à votre configuration d'application et aux modèles de page.
+Cela copie le modèle d'espace de travail `project/` dans le répertoire de travail de votre outil IA actuel, permettant à l'IA d'accéder à la configuration de votre application et aux modèles de page.
 
 ---
 
 ## Étape 5 — Commencer à construire
 
-Parlez maintenant à votre assistant de programmation IA. Voici quelques prompts pour commencer :
+Maintenant, parlez simplement à votre assistant de codage IA. Voici quelques invites de démarrage :
 
 ```
-Construis un système IPD sur Yida pour gérer le workflow complet de production de puces
-```
-
-```
-Construis un système CRM avec des leads, des clients et des transactions
+Construisez-moi un système IPD sur Yida pour gérer le flux de travail complet de production de puces
 ```
 
 ```
-Crée une application de calculateur de salaire personnel
+Aidez-moi à construire un système CRM avec des prospects, des contacts et des affaires
 ```
 
 ```
-Génère un mini-jeu de vœux d'anniversaire sur Yida
+Créez une application de calculatrice de salaire personnel
 ```
 
-L'IA utilisera le pack de compétences OpenYida pour appeler les commandes CLI dans le bon ordre : `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
+```
+Générez un mini-jeu de vœux d'anniversaire sur Yida
+```
+
+L'IA utilisera le pack de compétences OpenYida pour appeler les commandes CLI correctes dans l'ordre : `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
 
 ---
 
 ## Étape 6 — Publier l'application
 
-Après que l'IA a créé l'application, publiez-la avec :
+Après que l'IA a généré l'application, utilisez la commande suivante pour publier :
 
 ```bash
 openyida publish
@@ -104,21 +104,21 @@ openyida publish
 
 Ou demandez à l'IA :
 ```
-Publie la page [nom de la page]
-Rends la page accessible publiquement
+Publiez la page [nom de la page]
+Rendez la page accessible publiquement
 ```
 
 ---
 
 ## Exécuter les diagnostics
 
-Si quelque chose semble incorrect, exécutez l'outil de diagnostic intégré :
+Si quelque chose ne va pas, exécutez l'outil de diagnostic intégré :
 
 ```bash
 openyida doctor
 ```
 
-Il vérifie votre version Node.js, l'état de connexion et la configuration de l'environnement, et peut corriger automatiquement les problèmes courants avec `--fix`.
+Il vérifie votre version de Node.js, l'état de connexion et la configuration de l'environnement, et peut corriger automatiquement les problèmes courants avec `--fix`.
 
 ---
 
@@ -130,23 +130,23 @@ Si vous utilisez OpenClaw, installez directement le pack de compétences OpenYid
 npx clawhub@latest install nicky1108/yida-app
 ```
 
-Utilisez-le ensuite via [yida-app sur ClawHub](https://clawhub.ai/nicky1108/yida-app).
+Ensuite, utilisez-le via [yida-app sur ClawhHub](https://clawhub.ai/nicky1108/yida-app).
 
 ---
 
-## Prochaines étapes
+## Étapes suivantes
 
 <CardGroup cols={2}>
-  <Card title="Prompts courants" icon="comments" href="/fr/features/common-prompts">
-    Parcourez la liste complète des prompts en langage naturel supportés par OpenYida.
+  <Card title="Invites courantes" icon="comments" href="/fr/features/common-prompts">
+    Parcourez la liste complète des invites en langage naturel prises en charge par OpenYida.
   </Card>
   <Card title="Référence CLI" icon="terminal" href="/fr/features/skills">
-    Explorez toutes les commandes CLI et les modules de compétences.
+    Explorez toutes les commandes CLI et modules de compétences.
   </Card>
-  <Card title="Cas de démonstration" icon="images" href="/fr/introduction/demo">
-    Découvrez les applications réelles construites avec OpenYida.
+  <Card title="Cas de démo" icon="images" href="/fr/introduction/demo">
+    Consultez les applications réelles construites avec OpenYida.
   </Card>
   <Card title="Meilleures pratiques" icon="star" href="/fr/guides/best-practices">
-    Conseils pour tirer le meilleur parti de la génération d'applications pilotée par IA.
+    Conseils pour tirer le meilleur parti de la génération d'applications pilotée par l'IA.
   </Card>
 </CardGroup>

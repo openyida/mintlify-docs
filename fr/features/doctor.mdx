@@ -1,9 +1,229 @@
 ---
-title: "Outil de Diagnostic"
-description: "Diagnostic de l'environnement et résolution de problèmes."
+title: "Outil de diagnostic"
+description: "Vérification de l'environnement, diagnostic de l'application, réparation intelligente, surveillance de la santé."
 icon: "stethoscope"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/doctor) or [Chinese version](/zh/features/doctor) for complete content.
-</Tip>
+OpenYida intègre un puissant outil de diagnostic `doctor`, aidant les développeurs à vérifier l'environnement, diagnostiquer les problèmes, réparer automatiquement, surveiller en continu la santé des applications.
+
+---
+
+## Vue d'ensemble des fonctionnalités
+
+<CardGroup cols={2}>
+  <Card title="Vérification de l'environnement" icon="laptop-code">
+    Vérifiez les dépendances d'environnement : Node.js, Python, Playwright, état de connexion, etc.
+  </Card>
+  <Card title="Diagnostic d'application" icon="magnifying-glass">
+    Vérifiez le PRD, le code source des pages, le cache Schema, les normes React Hooks.
+  </Card>
+  <Card title="Réparation intelligente" icon="wand-magic">
+    Réparez automatiquement les problèmes réparables, fournissez des conseils de réparation manuelle.
+  </Card>
+  <Card title="Surveillance de la santé" icon="heart-pulse">
+    Surveillez en continu la santé des applications, générez des rapports de tendance.
+  </Card>
+</CardGroup>
+
+---
+
+## Utilisation de base
+
+### Exécuter le diagnostic
+
+```bash
+openyida doctor
+```
+
+### Réparation automatique
+
+```bash
+openyida doctor --fix
+```
+
+### Générer un rapport
+
+```bash
+# Format Markdown
+openyida doctor --report markdown
+
+# Format JSON
+openyida doctor --report json
+
+# Format HTML
+openyida doctor --report html
+```
+
+---
+
+## Éléments de vérification de l'environnement
+
+| Élément de vérification | Description | Réparation automatique |
+|--------|------|----------|
+| Version de Node.js | Vérifiez si ≥ 16 | ❌ |
+| Version de Python | Vérifiez si ≥ 3.10 | ❌ |
+| Playwright | Vérifiez l'installation | ✅ |
+| Chromium | Vérifiez l'installation du navigateur | ✅ |
+| gh CLI | Vérifiez GitHub CLI | ❌ |
+| gh login | Vérifiez l'état de connexion gh CLI | ✅ |
+| config.json | Vérifiez le fichier de configuration | ✅ |
+| Skills | Vérifiez l'installation des packs de compétences | ❌ |
+| Connexion Yida | Vérifiez l'état de connexion | ✅ |
+| Connectivité réseau | Vérifiez la connectivité aliwork.com | ❌ |
+
+---
+
+## Éléments de diagnostic d'application
+
+| Élément de vérification | Description |
+|--------|------|
+| Fichier PRD | Vérifiez l'existence du document de besoins |
+| Code source des pages | Vérifiez les fichiers source, console.log, fichiers vides |
+| Cache Schema | Vérifiez le format des fichiers cache |
+| React Hooks | Vérifiez les normes d'utilisation des Hooks |
+
+---
+
+## Mode de surveillance de la santé
+
+Démarrez la surveillance continue, vérifiez chaque minute :
+
+```bash
+openyida doctor --monitor
+```
+
+Exemple de sortie :
+
+```
+[14:32:01] Santé : 95/100 📈
+  Réussi : 18/19 | Erreurs : 0 | Avertissements : 1
+
+[14:33:01] Santé : 100/100 ➡️
+  Réussi : 19/19 | Erreurs : 0 | Avertissements : 0
+```
+
+Appuyez sur `Ctrl+C` pour arrêter la surveillance.
+
+---
+
+## Diagnostic en ligne
+
+Diagnostic en ligne pour les applications déjà publiées :
+
+```bash
+openyida doctor --production --app <appId>
+```
+
+Contenu de vérification :
+- Validité de l'ID d'application
+- Journaux d'erreurs en ligne
+- Indicateurs de performance
+
+---
+
+## Tickets et VOC
+
+### Créer un ticket (Bug)
+
+```bash
+openyida doctor --create-ticket
+```
+
+Entrez de manière interactive le titre et la description, soumettez automatiquement à GitHub Issues.
+
+### Créer un VOC (besoin)
+
+```bash
+openyida doctor --create-voc
+```
+
+### Soumission intelligente
+
+Le système détermine automatiquement s'il s'agit d'un Bug ou d'un besoin :
+
+```bash
+openyida doctor --auto-submit
+```
+
+---
+
+## Exemple de rapport de diagnostic
+
+### Sortie console
+
+```
+🔍 Vérification des dépendances de l'environnement OpenYida...
+
+✅ Node.js v18.19.0 (requis ≥ 16)
+✅ Python 3.11.4 (requis ≥ 3.10)
+✅ Playwright installé
+✅ Playwright Chromium installé
+✅ gh version 2.40.1
+✅ gh CLI connecté
+✅ config.json existe et le format est correct
+⚠️  Détection d'installation de Skills
+   Skills non installés, exécutez bash install-skills.sh pour installer
+✅ État de connexion Yida : connecté
+✅ Connectivité réseau (aliwork.com)
+✅ Fichier PRD (2)
+✅ Code source des pages (3 fichiers)
+✅ Cache Schema (5)
+✅ Normes React Hooks
+
+1 problème trouvé (0 erreur, 1 avertissement)
+```
+
+### Rapport Markdown
+
+```bash
+openyida doctor --report markdown
+```
+
+Rapport enregistré dans `.cache/reports/doctor-2024-01-15T10-30-00-000Z.md`
+
+---
+
+## Pré-vérification
+
+Exécutez automatiquement la vérification avant les opérations clés :
+
+### Vérification avant publication
+
+```bash
+# Exécuté automatiquement
+openyida publish exécutera automatiquement la pré-vérification
+```
+
+### Vérification avant création
+
+```bash
+# Exécuté automatiquement
+openyida create-app exécutera automatiquement la pré-vérification
+```
+
+---
+
+## Types de réparation
+
+| Type | Description | Exemple |
+|------|------|------|
+| `AUTO` | Réparation automatique | Créer config.json, supprimer le cache corrompu |
+| `COMMAND` | Réparation par commande | Exécuter `pip install playwright` |
+| `MANUAL` | Réparation manuelle | Installer gh CLI, écrire PRD |
+
+---
+
+## Calcul de la santé
+
+Formule de calcul du score de santé (0-100) :
+
+```
+Santé = Taux de réussite × 100 - Nombre d'erreurs × 10 - Nombre d'avertissements × 3
+```
+
+| Score | État |
+|------|------|
+| 90-100 | Excellent 🟢 |
+| 70-89 | Bon 🟡 |
+| 50-69 | Moyen 🟠 |
+| < 50 | À améliorer 🔴 |

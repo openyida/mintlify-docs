@@ -1,9 +1,163 @@
 ---
-title: "Prompts Courants"
-description: "Collection de prompts en langage naturel supportés par OpenYida."
+title: "Prompts courants"
+description: "Collection de prompts en langage naturel pris en charge par OpenYida."
 icon: "comments"
 ---
 
+OpenYida est conçu pour l'interaction en langage naturel. Les prompts suivants ont été testés et peuvent être utilisés dans tous les outils IA pris en charge.
+
+---
+
+## Création d'application
+
+```
+Aidez-moi à créer une application xxx
+```
+```
+Aidez-moi à créer un CRM
+```
+```
+Aidez-moi à créer une application de calculateur de salaire personnel
+```
+```
+Aidez-moi à créer un système IPD avec Yida pour gérer l'ensemble du processus de production de puces
+```
+```
+Générer une application basée sur le document de besoins : [coller PRD]
+```
+```
+Créer un mini-jeu de vœux d'anniversaire sur Yida
+```
+```
+Créer un jeu de devinettes de lanternes pour la fête des lanternes
+```
+
+---
+
+## Opérations sur formulaires et pages
+
+### Créer des pages de formulaire
+
+```
+Aidez-moi à créer une page de formulaire xxx
+```
+```
+Créer un formulaire de demande de congé, incluant : nom de l'employé, département, date de début, date de fin, motif de congé
+```
+
+### Ajouter des champs de formulaire
+
+```
+Ajouter un champ [nom du champ] à la page [nom de la page], type de champ : [texte/numérique/date/liste déroulante/...]
+```
+```
+Ajouter un champ "département" de type liste déroulante au formulaire d'informations des employés, options : département d'ingénierie, département marketing, département des ventes, département des ressources humaines
+```
+
+### Modifier les propriétés des champs
+
+```
+Rendre le champ [nom du champ] de la page [nom de la page] obligatoire
+```
+```
+Rendre le champ [nom du champ] de la page [nom de la page] en lecture seule
+```
+```
+Changer l'étiquette du champ [nom du champ] de la page [nom de la page] pour [nouvelle étiquette]
+```
+
+### Pages d'affichage personnalisées
+
+```
+Créer une page d'affichage personnalisée pour la page [nom de la page]
+```
+```
+Générer une landing page pour un produit de collaboration d'entreprise
+```
+
+---
+
+## Publication et partage
+
+```
+Publier la page [nom de la page]
+```
+```
+Rendre la page [nom de la page] accessible publiquement
+```
+```
+Configurer les permissions d'accès public pour la page [nom de la page] — n'importe qui peut accéder via le lien
+```
+
+---
+
+## Gestion des données
+
+```
+Interroger tous les enregistrements du formulaire [nom du formulaire]
+```
+```
+Exporter les données du formulaire [nom du formulaire] vers Excel
+```
+```
+Supprimer toutes les données de test du formulaire [nom du formulaire]
+```
+
+---
+
+## Connecteurs (intégration HTTP)
+
+```
+Créer un connecteur HTTP pour [nom de l'API], URL de base : [url]
+```
+```
+Ajouter une action POST au connecteur [nom du connecteur] pour créer des enregistrements
+```
+```
+Créer intelligemment un connecteur à partir de cette commande curl : [coller curl]
+```
+
+---
+
+## Rapports et graphiques
+
+```
+Créer un rapport Yida pour [nom de l'application], incluant un graphique à barres des soumissions mensuelles
+```
+```
+Ajouter un graphique circulaire affichant la distribution des statuts au rapport [nom du rapport]
+```
+
+---
+
+## Compte et environnement
+
+```
+Se reconnecter / Se déconnecter
+```
+```
+Basculer vers l'organisation [nom de l'organisation]
+```
+```
+Voir l'état de connexion actuel
+```
+```
+Exécuter un diagnostic de l'environnement
+```
+
+---
+
+## CDN et ressources
+
+```
+Configurer le téléchargement d'images CDN pour [nom de l'application]
+```
+```
+Télécharger [fichier image] vers le CDN
+```
+
+---
+
 <Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/common-prompts) or [Chinese version](/zh/features/common-prompts) for complete content.
+**Astuce :** Plus vous fournissez de contexte, meilleurs seront les résultats. Au lieu de dire "créer un formulaire", dites "créer un formulaire de demande de congé, incluant nom de l'employé, département, type de congé (liste déroulante : congé annuel/maladie/personnel), dates de début et de fin, motif — nom de l'employé et dates obligatoires".
 </Tip>

@@ -1,225 +1,170 @@
 ---
-title: "アーキテクチャ概要"
-description: "OpenYidaの全体アーキテクチャ設計と技術選定の説明"
+title: プロジェクト構造
+description: OpenYidaプロジェクトディレクトリ構造とコード組織
 ---
 
-# アーキテクチャ概要
+# プロジェクト構造
 
-OpenYidaはNode.jsベースのCLIツールで、階層型アーキテクチャ設計を採用し、AI機能、Yidaプラットフォーム統合、開発者体験を有機的に結合しています。
+OpenYidaはモジュールアーキテクチャ設計を採用しており、コード組織が明確で、保守と拡張が容易です。
 
-## 全体ワークフロー
-
-![OpenYidaワークフロー](/images/architecture-workflow.png)
-
-OpenYidaのワークフローは6つの段階で構成されています：
-
-1. **User Requirement** - ユーザーが自然言語で要件を記述
-2. **AI Understanding** - AIがユーザー要件を理解・分析
-3. **PRD Document** - 製品要件ドキュメントを生成
-4. **CLI Execution** - CLIコマンドを実行してアプリケーションを作成
-5. **YiDa Platform** - Yidaプラットフォームでアプリケーションを構築
-6. **Online Access** - アプリケーションがオンラインでアクセス可能に
-
-## システムアーキテクチャ
+## ディレクトリ概要
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                      CLI Interface                          │
-│         (Command Parser + Interactive Prompts)              │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Command Layer                            │
-│   create-app │ create-form │ publish │ data │ doctor ...   │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Core Services                            │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   AI Service │  │  Yida API    │  │   Config     │      │
-│  │  (Multi-LLM) │  │  (Open API)  │  │   Manager    │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │  Auth        │  │  Skill       │  │   Template   │      │
-│  │  (OAuth 2.0) │  │  System      │  │   Engine     │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
-└─────────────────────────────────────────────────────────────┘
-                              │
-              ┌───────────────┴───────────────┐
-              ▼                               ▼
-┌─────────────────────────┐    ┌─────────────────────────────┐
-│    AI Providers         │    │    Yida Platform            │
-│  ┌─────────────────┐    │    │                             │
-│  │ OpenAI (GPT-4)  │    │    │   ┌─────────────────────┐   │
-│  ├─────────────────┤    │    │   │   Application       │   │
-│  │ Claude (3.5)    │    │    │   │   Engine            │   │
-│  ├─────────────────┤    │    │   ├─────────────────────┤   │
-│  │ 通義千問        │    │    │   │   Form Builder      │   │
-│  ├─────────────────┤    │    │   ├─────────────────────┤   │
-│  │ DeepSeek        │    │    │   │   Page Designer     │   │
-│  └─────────────────┘    │    │   ├─────────────────────┤   │
-│                         │    │   │   Data Management   │   │
-│                         │    │   ├─────────────────────┤   │
-│                         │    │   │   Connector Hub     │   │
-│                         │    │   ├─────────────────────┤   │
-│                         │    │   │   Report Center     │   │
-│                         │    │   └─────────────────────┘   │
-└─────────────────────────┘    └─────────────────────────────┘
+openyida/
+├── src/
+│   ├── commands/          # CLIコマンド実装
+│   │   ├── create-app.ts
+│   │   ├── create-form.ts
+│   │   ├── create-page.ts
+│   │   ├── publish.ts
+│   │   ├── share.ts
+│   │   ├── data.ts
+│   │   ├── connector.ts
+│   │   ├── report.ts
+│   │   ├── doctor.ts
+│   │   └── login.ts
+│   ├── core/              # コア機能モジュール
+│   │   ├── yida-api.ts    # Yida APIカプセル化
+│   │   ├── ai-service.ts  # AIサービス統合
+│   │   ├── config.ts      # 設定管理
+│   │   └── auth.ts        # 認証処理
+│   ├── utils/             # ユーティリティ関数
+│   │   ├── logger.ts
+│   │   ├── file.ts
+│   │   └── validator.ts
+│   └── types/             # TypeScriptタイプ定義
+│       ├── yida.ts
+│       ├── ai.ts
+│       └── index.ts
+├── skills/                # Skillシステム
+│   ├── builtin/           # 組み込みSkills
+│   └── custom/            # カスタムSkills
+├── templates/             # コードテンプレート
+│   ├── app/
+│   ├── form/
+│   └── page/
+├── docs/                  # ドキュメントリソース
+├── tests/                 # テストファイル
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
-## 認証フロー
+## コアモジュール説明
 
-![認証フロー](/images/architecture-auth.png)
+### src/commands/
 
-OpenYidaの認証フロー：
+すべてのCLIコマンドの実装を格納し、各ファイルがサブコマンドに対応します：
 
-1. **config.json** - 設定情報を保存
-2. **Login Session** - ログインセッションを確立
-3. **Cookie Cache** - 認証情報をキャッシュ
-4. **API Request** - APIリクエストを送信
-5. **YiDa Backend** - Yidaバックエンド処理
-6. **Page/Form Output** - ページ/フォームを出力
+| ファイル | 機能 |
+|------|------|
+| `create-app.ts` | Yidaアプリを作成 |
+| `create-form.ts` | フォームページを作成 |
+| `create-page.ts` | カスタムページを作成 |
+| `publish.ts` | アプリを公開 |
+| `share.ts` | アプリを共有 |
+| `data.ts` | データ管理操作 |
+| `connector.ts` | コネクタ管理 |
+| `report.ts` | レポート操作 |
+| `doctor.ts` | 診断ツール |
+| `login.ts` | ログイン認証 |
 
-## CLIアーキテクチャ
+### src/core/
 
-![CLIアーキテクチャ](/images/architecture-cli.png)
+コアビジネスロジックモジュール：
 
-OpenYida CLIとYidaプラットフォームの連携：
+- **yida-api.ts**: YidaオープンプラットフォームAPIをカプセル化し、統一インターフェース呼び出しを提供
+- **ai-service.ts**: 複数のAIサービス（OpenAI、Claude、通义千問など）を統合
+- **config.ts**: ローカル設定ファイル（~/.openyida/config.json）を管理
+- **auth.ts**: ログイン状態、Token更新、複数組織の切り替えを処理
 
-- **AI Coding Tool** → **OpenYida CLI**
-  - Login（ログイン）
-  - Create App（アプリ作成）
-  - Create Page（ページ作成）
-  - Publish（公開）
-  - Get Schema（スキーマ取得）
-- **YiDa Low-Code Platform**
-  - App Management（アプリ管理）
-  - Form Pages（フォームページ）
-  - Custom Pages（カスタムページ）
+### src/utils/
 
-## スキル体系
+汎用ユーティリティ関数：
 
-![スキル体系](/images/architecture-skills.png)
+- **logger.ts**: ログ出力、レベル別と色をサポート
+- **file.ts**: ファイル操作補助関数
+- **validator.ts**: 入力検証と検査
 
-OpenYidaのスキルは3つのカテゴリーに分類されます：
+### src/types/
 
-### Login Skills（ログインスキル）
-- `login` - Yidaプラットフォームにログイン
-- `logout` - ログアウト
+TypeScriptタイプ定義、コードタイプセーフティを確保：
 
-### Create Skills（作成スキル）
-- `create-app` - アプリケーション作成
-- `create-page` - ページ作成
-- `create-form` - フォーム作成
-- `get-schema` - データ構造取得
+- **yida.ts**: Yida API関連タイプ
+- **ai.ts**: AIサービス関連タイプ
+- **index.ts**: 汎用タイプエクスポート
 
-### Publish Skills（公開スキル）
-- `publish` - アプリケーション公開
+## Skillシステム
 
-## コア設計原則
+```
+skills/
+├── builtin/               # 組み込みSkills
+│   ├── code-generator/    # コード生成
+│   ├── form-builder/      # フォーム構築
+│   ├── page-designer/     # ページデザイン
+│   └── data-analyzer/     # データ分析
+└── custom/                # ユーザーカスタムSkills
+    └── (ユーザー拡張)
+```
 
-### 1. モジュラー設計
+Skillsはプラグインアーキテクチャを採用し、ホットロードと動的拡張をサポートします。
 
-各機能モジュールは独立してカプセル化され、明確なインターフェースを通じて対話します：
+## 設定管理
 
-- **コマンド層**: CLI入力を処理、コアサービスを呼び出し
-- **サービス層**: ビジネスロジックをカプセル化、統一APIを提供
-- **アダプター層**: 外部システム（AI、Yidaプラットフォーム）と連携
+### ローカル設定
 
-### 2. プラグイン拡張
+保存場所：`~/.openyida/config.json`
 
-スキルシステムは動的ロードと拡張をサポート：
-
-```typescript
-// スキルインターフェース定義
-interface Skill {
-  name: string;
-  version: string;
-  activate(context: SkillContext): void;
-  deactivate(): void;
+```json
+{
+  "defaultOrg": "org-default",
+  "orgs": {
+    "org-default": {
+      "accessToken": "xxx",
+      "refreshToken": "xxx",
+      "expiresAt": 1234567890
+    }
+  },
+  "aiProvider": "openai",
+  "aiConfig": {
+    "apiKey": "sk-xxx",
+    "model": "gpt-4"
+  }
 }
 ```
 
-### 3. 設定駆動
+### プロジェクト設定
 
-マルチ環境設定をサポート、柔軟に切り替え：
+プロジェクトルートディレクトリに`.openyidarc.json`を作成できます：
 
-- ローカルグローバル設定（~/.openyida/）
-- プロジェクトレベル設定（.openyidarc.json）
-- 環境変数オーバーライド
-
-### 4. 型安全性
-
-全チェーンTypeScript型サポート、ランタイムエラーを削減。
-
-## データフロー
-
-### アプリケーション作成フロー
-
-```
-User Input → AI Service → Code Generation → Yida API → Application
-                ↑                              ↓
-           PRD Analysis                  Validation
-                ↑                              ↓
-           Template Selection           Deployment
+```json
+{
+  "appId": "APP-XXX",
+  "defaultEnv": "dev",
+  "environments": {
+    "dev": { "appKey": "xxx", "appSecret": "xxx" },
+    "prod": { "appKey": "xxx", "appSecret": "xxx" }
+  }
+}
 ```
 
-### データ操作フロー
+## 拡張メカニズム
 
-```
-User Command → Config Load → Auth Check → Yida API → Data Response
-                                              ↓
-                                         Cache/Store
-```
+### 新コマンドの追加
 
-## 技術スタック
+1. `src/commands/`で新ファイルを作成
+2. コマンド処理関数を実装
+3. `src/index.ts`でコマンドを登録
 
-| 層 | 技術 |
-|------|------|
-| ランタイム | Node.js 18+ |
-| 言語 | TypeScript 5.x |
-| CLIフレームワーク | Commander.js |
-| HTTPクライアント | Axios |
-| AI SDK | OpenAI SDK, Anthropic SDK |
-| 設定管理 | Cosmiconfig |
-| ログ | Winston |
-| テスト | Jest |
+### 新Skillの追加
 
-## セキュリティ設計
+1. `skills/custom/`でSkillディレクトリを作成
+2. `skill.json`とメインロジックを実装
+3. `openyida skill load`を使用してロード
 
-### 認証セキュリティ
+## 開発規範
 
-- OAuth 2.0標準フロー
-- トークン自動更新メカニズム
-- 機密情報のローカル暗号化保存
-
-### データ転送
-
-- 全チェーンHTTPS
-- API署名検証
-- リクエストリトライとタイムアウト制御
-
-## パフォーマンス最適化
-
-- **接続プール**: HTTP接続の再利用
-- **スマートキャッシュ**: 設定とメタデータのローカルキャッシュ
-- **増分更新**: 変更内容のみ転送
-- **同時実行制御**: 同時API呼び出しを制限
-
-## 拡張ポイント
-
-開発者は以下のレベルで拡張できます：
-
-1. **新規コマンド**: カスタムCLIコマンドを追加
-2. **新規スキル**: AI機能を拡張
-3. **新規テンプレート**: カスタムコード生成テンプレート
-4. **新規AIプロバイダー**: 他のLLMを統合
-
-## バージョン互換性
-
-| OpenYidaバージョン | サポートNode.js | Yida APIバージョン |
-|------------------|-----------------|-------------------|
-| 1.x | >= 18.0.0 | v1 |
-| 2.x | >= 20.0.0 | v2 |
+- すべての新機能にはタイプ定義を含める必要があります
+- コマンド実装には`--help`ドキュメントを含める必要があります
+- コア機能には単体テストカバレッジが必要です
+- ESLintとPrettier設定に従います

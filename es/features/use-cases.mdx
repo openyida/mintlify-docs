@@ -1,9 +1,150 @@
 ---
 title: "Casos de Uso"
-description: "Ejemplos concretos de aplicaciones que se pueden construir con OpenYida."
+description: "Escenarios de aplicación de OpenYida en negocios reales."
 icon: "lightbulb"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/use-cases) or [Chinese version](/zh/features/use-cases) for complete content.
-</Tip>
+OpenYida es aplicable a múltiples escenarios de negocio, a continuación se muestran ejemplos comunes de tipos de aplicación.
+
+---
+
+## Empresariales
+
+Construye plataformas de negocio multimodulares, soportando formularios complejos, flujos de trabajo y asociaciones de datos.
+
+<AccordionGroup>
+  <Accordion title="IPD (Desarrollo Integrado de Productos)">
+    **Prompt:**
+    ```
+    Ayúdame a crear un sistema IPD en Yida para gestionar todo el proceso de producción de chips,
+    incluyendo fases de inicio de proyecto, revisión de diseño, producción de obleas y producción en masa
+    ```
+    **Resultado:** Aplicación multi-formulario con seguimiento de fases, listas de revisión, gestión de hitos y visibilidad inter-equipos.
+  </Accordion>
+
+  <Accordion title="CRM (Gestión de Relaciones con Clientes)">
+    **Prompt:**
+    ```
+    Ayúdame a construir un CRM con módulos de leads, clientes, oportunidades y registros de seguimiento
+    ```
+    **Resultado:** Formularios asociados: Lead → Cliente → Oportunidad → Contrato, con seguimiento de estado y campos de asignación.
+  </Accordion>
+
+  <Accordion title="Gestión de RRHH y Permisos">
+    **Prompt:**
+    ```
+    Crea un sistema de gestión de permisos de RRHH con solicitudes de permiso, flujo de aprobación y estadísticas de saldo de vacaciones
+    ```
+    **Resultado:** Formulario de solicitud de permiso con flujo de aprobación, calculadora de saldo y panel de gerente.
+  </Accordion>
+
+  <Accordion title="Gestión de Proyectos">
+    **Prompt:**
+    ```
+    Construye una aplicación de gestión de proyectos con tareas, hitos, miembros del equipo y seguimiento de progreso
+    ```
+    **Resultado:** Lista de tareas con campos de prioridad/estado/responsable, rastreador de hitos y vista de diagrama de Gantt.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+##💰amientas Prácticas y Calculadoras
+
+Herramientas de cálculo o recopilación de datos de propósito único.
+
+<AccordionGroup>
+  <Accordion title="Calculadora de Salario Personal">
+    **Prompt:**
+    ```
+    Ayúdame a construir una calculadora de salario personal, ingresa el salario bruto, calcula automáticamente el impuesto y el salario neto
+    ```
+    **Resultado:** Formulario con campos de fórmula para deducciones antes de impuestos, cálculo de impuestos y resumen de salario neto.
+  </Accordion>
+
+  <Accordion title="Seguimiento de Presupuesto">
+    **Prompt:**
+    ```
+    Ayúdame a construir un seguimiento de presupuesto personal para registrar ingresos, categorías de gastos y resúmenes mensuales
+    ```
+    **Resultado:** Formulario de entrada de ingresos/gastos con menú desplegable de categorías y saldo mensual calculado automáticamente.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Pages y Portales
+
+Páginas de marketing, presentaciones de productos y portales internos.
+
+<AccordionGroup>
+  <Accordion title="Landing Page de Producto Empresarial">
+    **Prompt:**
+    ```
+    Genera una landing page para el producto de colaboración empresarial Zhilian Xietong, incluyendo pantalla principal, introducción de funciones y formulario de contacto
+    ```
+    **Resultado:** Página de visualización personalizada completa con banner principal, tarjetas de funciones y formulario de contacto integrado.
+  </Accordion>
+
+  <Accordion title="Página de Registro de Eventos">
+    **Prompt:**
+    ```
+    Crea una página de registro para la conferencia técnica anual con formulario de información del asistente y selección de sub-foros
+    ```
+    **Resultado:** Página de registro con marca, validación de formulario y lógica de confirmación.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Interactivas y Mini Juegos
+
+Herramientas interactivas para actividades internas, festivales y marketing.
+
+<AccordionGroup>
+  <Accordion title="Juego de Adivinanzas del Festival de los Faroles">
+    **Prompt:**
+    ```
+    Crea un juego de adivinanzas para el Festival de los Faroles, la IA genera imágenes de adivinanzas, los usuarios envían respuestas, si fallan la IA responde con humor
+    ```
+    **Resultado:** Página de juego con imágenes de adivinanzas generadas por IA, formulario de envío de respuestas y lógica de respuesta condicional.
+  </Accordion>
+
+  <Accordion title="Mini Juego de Felicitaciones de Cumpleaños">
+    **Prompt:**
+    ```
+    Construye un mini juego de felicitaciones de cumpleaños donde los usuarios ingresan su nombre y obtienen una tarjeta de felicitación personalizada de IA
+    ```
+    **Resultado:** Generador de tarjetas interactivas con almacenamiento de datos para seguimiento de respuestas.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+##🔌ación API (Conectores)
+
+Conecta aplicaciones Yida con sistemas externos mediante conectores HTTP.
+
+<AccordionGroup>
+  <Accordion title="Notificaciones Webhook">
+    **Prompt:**
+    ```
+    Crea un conector HTTP para nuestro webhook de DingTalk, agrega una acción POST para enviar notificaciones de envío de formularios
+    ```
+    **Resultado:** Conector configurado con capacidad de prueba, activable en eventos de formulario.
+  </Accordion>
+
+  <Accordion title="Creación Inteligente desde curl">
+    **Prompt:**
+    ```
+    Crea inteligentemente un conector desde este comando curl: curl -X POST https://api.example.com/v1/users -H "Authorization: Bearer TOKEN" -d '{"name":"test"}'
+    ```
+    **Resultado:** Conector configurado automáticamente, extrayendo URL base, encabezados y parámetros de acción.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+Estos son puntos de partida. Dado que el resultado es una aplicación completamente editable en la plataforma Yida (no una configuración de caja negra), siempre puedes optimizar la aplicación generada a través del editor visual de Yida o dando instrucciones posteriores a la IA.
+</Note>

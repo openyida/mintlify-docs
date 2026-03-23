@@ -1,9 +1,110 @@
 ---
-title: "Hướng Dẫn Đóng Góp"
-description: "Cách đóng góp cho dự án OpenYida."
+title: "Đóng Góp"
+description: "Cách đóng góp cho OpenYiDA — báo cáo lỗi, tính năng, tài liệu và kỹ năng."
 icon: "handshake"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/contributing) or [Chinese version](/zh/contributing) for complete content.
-</Tip>
+Chào mừng đến với OpenYiDA! tôi rất vui vì bạn quan tâm đến việc đóng góp. Hướng dẫn này bao gồm mọi thứ bạn cần để bắt đầu.
+
+## Liên Kết Nhanh
+
+- **GitHub:** https://github.com/openyida/openyida
+- **Issues:** https://github.com/openyida/openyida/issues
+- **npm:** https://www.npmjs.com/package/openyida
+
+---
+
+## Người Duy Trì
+
+| Tên | Vai Trò | GitHub |
+|------|------|--------|
+| **九神 (yize)** | Kiến trúc cốt lõi, thiết kế CLI | [@yize](https://github.com/yize) |
+| **alex-mm** | Phát triển tính năng, kiểm thử | [@alex-mm](https://github.com/alex-mm) |
+| **nicky1108** | Tích hợp OpenClaw, mở rộng kỹ năng | [@nicky1108](https://github.com/nicky1108) |
+
+---
+
+## Cách Đóng Góp
+
+1. **Báo Cáo Lỗi** → Mở Issue với các bước tái hiện và thông tin môi trường
+2. **Đề Xuất Tính Năng** → Bắt đầu Discussion hoặc Issue trước, sau đó triển khai
+3. **Cải Thiện Tài Liệu** → PR cho tài liệu luôn được chào đón
+4. **Thêm Kỹ Năng** → Mở rộng gói kỹ năng dưới `yida-skills/`
+5. **Sửa Lỗi / Tính Năng Mới** → Theo dõi quy trình phát triển bên dưới
+
+---
+
+## Thiết Lập Phát Triển
+
+```bash
+# 1. Fork và clone repo
+git clone git@github.com:your-username/openyida.git
+cd openyida
+
+# 2. Cài đặt dependencies
+npm install
+
+# 3. Link toàn cục để debug cục bộ
+npm link
+
+# 4. Chạy tests
+npm test
+```
+
+---
+
+## Checklist PR
+
+Trước khi gửi pull request, xác minh:
+
+- [ ] Đã kiểm tra tính năng liên quan với tài khoản Yida thực tế cục bộ
+- [ ] Tất cả tests đều qua: `npm test`
+- [ ] Kiểm tra cú pháp JS qua:
+  ```bash
+  node --check bin/yida.js && for f in lib/*.js lib/locales/*.js; do node --check "$f"; done
+  ```
+- [ ] Mô tả PR giải thích rõ ràng những gì đã thay đổi và tại sao
+- [ ] Đính kèm ảnh chụp màn hình hoặc bản ghi nếu có thay đổi UI/hành vi
+
+---
+
+## Hướng Dẫn PR
+
+- **Một PR, một việc** — không trộn các thay đổi không liên quan
+- **Định dạng tiêu đề PR:** `feat: add xxx` / `fix: fix xxx` / `docs: update xxx`
+- **Mô tả** nên bao gồm: cái gì, tại sao và cách kiểm tra
+- Nếu PR đóng Issue, thêm `Closes #123` vào mô tả
+
+---
+
+## Quy Ước Commit
+
+Tuân theo [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat: add export-app command
+fix: fix get-page-config path error
+docs: update CLI command reference
+refactor: refactor login module
+test: add utils unit tests
+chore: upgrade dependencies
+```
+
+---
+
+## Phong Cách Code
+
+- Tuân theo phong cách code hiện có (mô-đun CommonJS, ưu tiên API gốc Node.js)
+- Sử dụng tên tiếng Anh có ý nghĩa cho biến và hàm; tránh viết tắt
+- Xử lý lỗi hoàn toàn — không nuốt ngoại lệ thầm lặng
+- Khi thêm lệnh mới, cập nhật bảng lệnh CLI trong `README.md`
+
+---
+
+## Chào Đón PR AI / Vibe-Coded!PR được hỗ trợ bởi Claude Code, Cursor, Aone Copilot hoặc bất kỳ công cụ AI nào đều hoàn toàn được chào đón! Vui lòng đề cập công cụ AI bạn đã sử dụng trong mô tả PR — điều này giúp người duy trì hiểu ngữ cảnh tạo.
+
+---
+
+## Giấy Phép
+
+Bằng cách đóng góp, bạn đồng ý cấp phép đóng góp của mình theo [MIT License](https://github.com/openyida/openyida/blob/main/LICENSE).

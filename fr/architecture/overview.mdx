@@ -1,24 +1,24 @@
 ---
-title: "Aperçu de l'architecture"
-description: "Conception globale de l'architecture OpenYida et explication des choix technologiques"
+title: Vue d'ensemble de l'architecture
+description: Conception de l'architecture globale d'OpenYida et explication des choix technologiques
 ---
 
-# Aperçu de l'architecture
+# Vue d'ensemble de l'architecture
 
-OpenYida est un outil CLI basé sur Node.js avec une architecture en couches qui combine organiquement les capacités IA, l'intégration de la plateforme Yida et l'expérience développeur.
+OpenYida est un outil CLI basé sur Node.js, utilisant une architecture en couches, combinant les capacités IA, l'intégration de la plateforme Yida et l'expérience développeur.
 
 ## Flux de travail global
 
 ![Flux de travail OpenYida](/images/architecture-workflow.png)
 
-Le flux de travail d'OpenYida se compose de 6 étapes :
+Le flux de travail d'OpenYida se divise en 6 étapes :
 
 1. **User Requirement** - L'utilisateur décrit ses besoins en langage naturel
 2. **AI Understanding** - L'IA comprend et analyse les besoins de l'utilisateur
-3. **PRD Document** - Génération du document des exigences produit
+3. **PRD Document** - Génération du document de besoins produit
 4. **CLI Execution** - Exécution des commandes CLI pour créer l'application
 5. **YiDa Platform** - Construction de l'application sur la plateforme Yida
-6. **Online Access** - L'application est mise en ligne
+6. **Online Access** - Application en ligne et accessible
 
 ## Architecture système
 
@@ -56,7 +56,7 @@ Le flux de travail d'OpenYida se compose de 6 étapes :
 │  ├─────────────────┤    │    │   │   Application       │   │
 │  │ Claude (3.5)    │    │    │   │   Engine            │   │
 │  ├─────────────────┤    │    │   ├─────────────────────┤   │
-│  │ Tongyi Qwen     │    │    │   │   Form Builder      │   │
+│  │ 通义千问        │    │    │   │   Form Builder      │   │
 │  ├─────────────────┤    │    │   ├─────────────────────┤   │
 │  │ DeepSeek        │    │    │   │   Page Designer     │   │
 │  └─────────────────┘    │    │   ├─────────────────────┤   │
@@ -78,9 +78,9 @@ Le flux d'authentification d'OpenYida :
 1. **config.json** - Stockage des informations de configuration
 2. **Login Session** - Établissement de la session de connexion
 3. **Cookie Cache** - Mise en cache des informations d'authentification
-4. **API Request** - Envoi des requêtes API
-5. **YiDa Backend** - Traitement backend Yida
-6. **Page/Form Output** - Sortie page/formulaire
+4. **API Request** - Envoi de requêtes API
+5. **YiDa Backend** - Traitement par le backend Yida
+6. **Page/Form Output** - Sortie de page/formulaire
 
 ## Architecture CLI
 
@@ -89,15 +89,15 @@ Le flux d'authentification d'OpenYida :
 Interaction entre OpenYida CLI et la plateforme Yida :
 
 - **AI Coding Tool** → **OpenYida CLI**
-  - Login (Connexion)
-  - Create App (Créer application)
-  - Create Page (Créer page)
-  - Publish (Publier)
-  - Get Schema (Obtenir structure)
+  - Login (connexion)
+  - Create App (créer une application)
+  - Create Page (créer une page)
+  - Publish (publier)
+  - Get Schema (obtenir la structure)
 - **YiDa Low-Code Platform**
-  - App Management (Gestion applications)
-  - Form Pages (Pages de formulaire)
-  - Custom Pages (Pages personnalisées)
+  - App Management (gestion des applications)
+  - Form Pages (pages de formulaire)
+  - Custom Pages (pages personnalisées)
 
 ## Système de compétences
 
@@ -105,32 +105,32 @@ Interaction entre OpenYida CLI et la plateforme Yida :
 
 Les compétences d'OpenYida sont divisées en trois catégories :
 
-### Compétences de connexion
+### Login Skills (compétences de connexion)
 - `login` - Connexion à la plateforme Yida
 - `logout` - Déconnexion
 
-### Compétences de création
+### Create Skills (compétences de création)
 - `create-app` - Créer une application
 - `create-page` - Créer une page
 - `create-form` - Créer un formulaire
-- `get-schema` - Obtenir la structure de données
+- `get-schema` - Obtenir la structure des données
 
-### Compétences de publication
+### Publish Skills (compétences de publication)
 - `publish` - Publier une application
 
 ## Principes de conception fondamentaux
 
 ### 1. Conception modulaire
 
-Chaque module fonctionnel est encapsulé indépendamment et interagit via des interfaces claires :
+Chaque module fonctionnel est encapsulé de manière indépendante, interagissant via des interfaces claires :
 
-- **Couche de commandes** : Gère les entrées CLI, appelle les services principaux
+- **Couche de commandes** : Traite les entrées CLI, appelle les services de base
 - **Couche de services** : Encapsule la logique métier, fournit une API unifiée
-- **Couche d'adaptation** : Interface avec les systèmes externes (IA, plateforme Yida)
+- **Couche d'adaptation** : Connecte les systèmes externes (IA, plateforme Yida)
 
 ### 2. Extension par plugins
 
-Le système de compétences supporte le chargement dynamique et l'extension :
+Le système de compétences prend en charge le chargement dynamique et l'extension :
 
 ```typescript
 // Définition de l'interface Skill
@@ -142,17 +142,17 @@ interface Skill {
 }
 ```
 
-### 3. Piloté par configuration
+### 3. Piloté par la configuration
 
-Support de configurations multi-environnements avec changement flexible :
+Prend en charge la configuration multi-environnement, commutation flexible :
 
 - Configuration globale locale (~/.openyida/)
-- Configuration au niveau projet (.openyidarc.json)
-- Surcharge par variables d'environnement
+- Configuration au niveau du projet (.openyidarc.json)
+- Remplacement par variables d'environnement
 
-### 4. Sécurité de type
+### 4. Sécurité des types
 
-Support de type TypeScript sur toute la chaîne pour réduire les erreurs d'exécution.
+Support TypeScript sur toute la chaîne, réduit les erreurs d'exécution.
 
 ## Flux de données
 
@@ -166,7 +166,7 @@ User Input → AI Service → Code Generation → Yida API → Application
            Template Selection           Deployment
 ```
 
-### Flux d'opérations de données
+### Flux d'opération de données
 
 ```
 User Command → Config Load → Auth Check → Yida API → Data Response
@@ -178,35 +178,35 @@ User Command → Config Load → Auth Check → Yida API → Data Response
 
 | Couche | Technologie |
 |------|------|
-| Runtime | Node.js 18+ |
+| Exécution | Node.js 18+ |
 | Langage | TypeScript 5.x |
 | Framework CLI | Commander.js |
 | Client HTTP | Axios |
 | SDK IA | OpenAI SDK, Anthropic SDK |
-| Gestion configuration | Cosmiconfig |
-| Logging | Winston |
+| Gestion de configuration | Cosmiconfig |
+| Journalisation | Winston |
 | Tests | Jest |
 
-## Conception de sécurité
+## Conception de la sécurité
 
-### Sécurité d'authentification
+### Sécurité de l'authentification
 
 - Flux standard OAuth 2.0
-- Mécanisme de rafraîchissement automatique des tokens
+- Mécanisme de rafraîchissement automatique des jetons
 - Stockage chiffré local des informations sensibles
 
-### Transmission de données
+### Transmission des données
 
 - HTTPS sur toute la chaîne
-- Vérification de signature API
-- Contrôle des retry et timeout des requêtes
+- Vérification de la signature API
+- Reprise et contrôle de délai des requêtes
 
 ## Optimisation des performances
 
 - **Pool de connexions** : Réutilisation des connexions HTTP
-- **Cache intelligent** : Mise en cache locale des configurations et métadonnées
-- **Mises à jour incrémentielles** : Transmission uniquement du contenu modifié
-- **Contrôle de concurrence** : Limitation des appels API simultanés
+- **Cache intelligent** : Cache local de la configuration et des métadonnées
+- **Mises à jour incrémentales** : Transfert uniquement du contenu modifié
+- **Contrôle de concurrence** : Limite des appels API simultanés
 
 ## Points d'extension
 
@@ -214,12 +214,12 @@ Les développeurs peuvent étendre aux niveaux suivants :
 
 1. **Nouvelles commandes** : Ajouter des commandes CLI personnalisées
 2. **Nouvelles compétences** : Étendre les capacités IA
-3. **Nouveaux modèles** : Modèles de génération de code personnalisés
-4. **Nouveaux fournisseurs IA** : Intégrer d'autres LLM
+3. **Nouveaux modèles** : Personnaliser les modèles de génération de code
+4. **Nouveaux fournisseurs IA** : Intégrer d'autres grands modèles
 
 ## Compatibilité des versions
 
 | Version OpenYida | Node.js supporté | Version API Yida |
-|------------------|------------------|------------------|
+|--------------|----------------|--------------|
 | 1.x | >= 18.0.0 | v1 |
 | 2.x | >= 20.0.0 | v2 |

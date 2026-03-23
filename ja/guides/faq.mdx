@@ -1,9 +1,85 @@
 ---
 title: "よくある質問"
-description: "OpenYidaに関する一般的な質問と回答。"
+description: "OpenYida に関するよくある質問。"
 icon: "circle-question"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/guides/faq) or [Chinese version](/zh/guides/faq) for complete content.
-</Tip>
+<AccordionGroup>
+
+  <Accordion title="OpenYida を使用するには宜搭アカウントが必要ですか？">
+    はい。OpenYida は[宜搭](https://www.aliwork.com)ローコードプラットフォームでアプリを作成・管理するため、宜搭が有効な Alibaba/DingTalk アカウントが必要です。`openyida login` を実行して認証してください。
+  </Accordion>
+
+  <Accordion title="どの AI ツールがサポートされていますか？">
+    OpenYida は MCP（モデルコンテキストプロトコル）をサポートするか、markdown スキルドキュメントを読み取れる AI コーディングツールと互換性があります。確認済みサポート：**Claude Code、Aone Copilot、OpenCode、Cursor、Visual Studio Code、Qoder、悟空**。実際には、シェルコマンドを実行できるツールなら何でも使用可能です。
+  </Accordion>
+
+  <Accordion title="必要な Node.js バージョンは？">
+    Node.js **≥ 18** が必要です。`node --version` でバージョンを確認してください。最新 LTS を [nodejs.org](https://nodejs.org) からダウンロードしてください。
+  </Accordion>
+
+  <Accordion title="ログイン QR コードが表示されない場合は？">
+    ブラウザ起動をサポートするターミナルで `openyida login` を実行してみてください。ヘッドレス環境（リモートサーバーなど）の場合、DingTalk/悟空環境では `openyida login --wukong` を使用するか、ターミナル出力のログイン URL をコピーしてローカルブラウザで開いてください。
+  </Accordion>
+
+  <Accordion title="セッションが期限切れになった場合の更新方法は？">
+    `openyida auth refresh` を実行してセッションを更新し、完全なログインフローを回避します。失敗した場合は `openyida login` を実行して再認証してください。
+  </Accordion>
+
+  <Accordion title="複数の宜搭組織にアクセスできる場合、切り替え方法は？">
+    ```bash
+    openyida org list       # すべての組織と corpId を一覧表示
+    openyida org switch --corp-id <corpId>   # 対象組織に切り替え
+    openyida env            # 切り替えを確認
+    ```
+  </Accordion>
+
+  <Accordion title="AI が生成したフォームにフィールドが不足している場合、追加方法は？">
+    AI に直接指示してください：
+    ```
+    [ページ名] に [フィールド名] フィールドを追加、フィールドタイプ：[テキスト/数値/日付/ドロップダウン/...]、必須にする
+    ```
+    OpenYida は更新された Schema で `openyida create-form` を呼び出し、既存のフィールドを上書きせずに新しいフィールドをマージします。
+  </Accordion>
+
+  <Accordion title="生成されたアプリを宜搭ビジュアルエディタで編集できますか？">
+    もちろんです。出力は標準の宜搭アプリです — 宜搭プラットフォームのビジュアルエディタでいつでも開いて手動で変更できます。OpenYida はアプリを生成し、設定をロックしません。
+  </Accordion>
+
+  <Accordion title="アプリを公開アクセス可能にする方法は？">
+    ```
+    [ページ名] ページを公開アクセス可能にする
+    ```
+    または直接実行：
+    ```bash
+    openyida save-share-config
+    ```
+    ページ共有設定を構成し、ログインなしでリンク経由で誰でもアクセスできるようにします。
+  </Accordion>
+
+  <Accordion title="OpenYida で既存の宜搭アプリを移行できますか？">
+    はい。`openyida export` を使用して既存アプリから移行パッケージを生成し、`openyida import` を使用して別の組織や環境で再構築します。
+  </Accordion>
+
+  <Accordion title="`create-form` と `create-page` の違いは？">
+    - **`create-form`**：宜搭**フォームページ**を作成 — データ入力フォーム、底层で宜搭の組み込みデータストレージを使用。構造化データ収集（登録、申請、記録）に使用。
+    - **`create-page`**：**カスタム表示ページ**を作成 — JSX ベースのページ、ダッシュボード、ランディングページ、インタラクティブ UI に使用。`openyida publish` でコンパイル・公開。
+  </Accordion>
+
+  <Accordion title="OpenYida はプロセス/承認ワークフローをサポートしていますか？">
+    はい。`openyida create-process` を使用して承認ステップ付きのプロセスフォームを作成し、`openyida configure-process` でワークフロー規則（承認者、条件、通知）を定義します。
+  </Accordion>
+
+  <Accordion title="問題が発生した場合、デバッグ方法は？">
+    1. `openyida doctor --fix` を実行 — 一般的な問題を自動検出・修正
+    2. `openyida env` を実行 — ログイン状態と環境を検証
+    3. `openyida auth status` を実行 — セッションの有効性を確認
+    4. [GitHub Issues](https://github.com/openyida/openyida/issues) を確認して既知の問題を把握
+    5. 新しいバグの場合は、Node.js バージョン、実行したコマンド、完全なエラー出力を添えて issue を提出
+  </Accordion>
+
+  <Accordion title="OpenYida に貢献するには？">
+    完全なプロセスについては[貢献ガイド](/ja/contributing)をお読みください。簡単に言うと：リポジトリをフォーク、機能ブランチで変更、`npm test` を実行、PR を提出。AI 支援の貢献も歓迎します！
+  </Accordion>
+
+</AccordionGroup>

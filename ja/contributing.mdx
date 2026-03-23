@@ -1,9 +1,110 @@
 ---
 title: "貢献ガイド"
-description: "OpenYidaプロジェクトへの貢献方法。"
+description: "OpenYiDA への貢献方法 — バグ報告、機能、ドキュメント、スキル。"
 icon: "handshake"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/contributing) or [Chinese version](/zh/contributing) for complete content.
-</Tip>
+OpenYiDA へようこそ！貢献に興味を持っていただきありがとうございます。このガイドでは、始めるために必要なすべてをカバーしています。
+
+## クイックリンク
+
+- **GitHub:** https://github.com/openyida/openyida
+- **Issues:** https://github.com/openyida/openyida/issues
+- **npm:** https://www.npmjs.com/package/openyida
+
+---
+
+## メンテナー
+
+| 名前 | 役割 | GitHub |
+|------|------|--------|
+| **九神 (yize)** | コアアーキテクチャ、CLI 設計 | [@yize](https://github.com/yize) |
+| **alex-mm** | 機能開発、テスト | [@alex-mm](https://github.com/alex-mm) |
+| **nicky1108** | OpenClaw 統合、スキル拡張 | [@nicky1108](https://github.com/nicky1108) |
+
+---
+
+## 貢献方法
+
+1. **バグを報告** → 再現手順と環境情報を添えて Issue を開く
+2. **機能を提案** → まず Discussion または Issue を開始し、その後実装
+3. **ドキュメントを改善** → ドキュメントの PR は常に歓迎
+4. **スキルを追加** → `yida-skills/` 配下でスキルパックを拡張
+5. **バグ修正 / 新機能** → 以下の開発ワークフローに従う
+
+---
+
+## 開発環境セットアップ
+
+```bash
+# 1. リポジトリを Fork してクローン
+git clone git@github.com:your-username/openyida.git
+cd openyida
+
+# 2. 依存関係をインストール
+npm install
+
+# 3. ローカルデバッグ用にグローバルリンク
+npm link
+
+# 4. テストを実行
+npm test
+```
+
+---
+
+## PR チェックリスト
+
+プルリクエストを送信する前に確認：
+
+- [ ] 実際の Yida アカウントでローカルで関連機能をテスト済み
+- [ ] すべてのテストが通過：`npm test`
+- [ ] JS 構文チェックが通過：
+  ```bash
+  node --check bin/yida.js && for f in lib/*.js lib/locales/*.js; do node --check "$f"; done
+  ```
+- [ ] PR 説明に変更内容と理由が明確に記載されている
+- [ ] UI/動作変更がある場合はスクリーンショットまたは録画を添付
+
+---
+
+## PR ガイドライン
+
+- **1 PR 1 つのこと** — 無関係な変更を混ぜない
+- **PR タイトル形式：** `feat: add xxx` / `fix: fix xxx` / `docs: update xxx`
+- **説明** には以下を記載：何、なぜ、テスト方法
+- PR が Issue を閉じる場合は、説明に `Closes #123` を追加
+
+---
+
+## コミット規約
+
+[Conventional Commits](https://www.conventionalcommits.org/) に従う：
+
+```
+feat: add export-app command
+fix: fix get-page-config path error
+docs: update CLI command reference
+refactor: refactor login module
+test: add utils unit tests
+chore: upgrade dependencies
+```
+
+---
+
+## コードスタイル
+
+- 既存のコードスタイルに従う（CommonJS モジュール、Node.js ネイティブ API を優先）
+- 変数と関数には意味のある英語名を使用；略語を避ける
+- エラーを完全に処理 — 例外を静かに飲み込まない
+- 新しいコマンドを追加する場合は、`README.md` の CLI コマンドテーブルを更新
+
+---
+
+## AI / Vibe-Coded PR 歓迎！Claude Code、Cursor、Aone Copilot、またはその他の AI ツールによる PR を完全に歓迎します！PR 説明に使用した AI ツールを記載してください — メンテナーが生成コンテキストを理解するのに役立ちます。
+
+---
+
+## ライセンス
+
+貢献することで、あなたの貢献を [MIT License](https://github.com/openyida/openyida/blob/main/LICENSE) の下でライセンスすることに同意したことになります。

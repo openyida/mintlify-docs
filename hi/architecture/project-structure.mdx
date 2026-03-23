@@ -1,9 +1,170 @@
 ---
-title: "प्रोजेक्ट संरचना"
-description: "OpenYida की निर्देशिका लेआउट और फ़ाइल संरचना।"
-icon: "folder-tree"
+title: प्रोजेक्ट संरचना
+description: OpenYida प्रोजेक्ट डायरेक्टरी संरचना और कोड संगठन विधि
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/project-structure) or [Chinese version](/zh/architecture/project-structure) for complete content.
-</Tip>
+# प्रोजेक्ट संरचना
+
+OpenYida मॉड्यूलर आर्किटेक्चर डिज़ाइन अपनाता है, कोड संगठन स्पष्ट है, रखरखाव और विस्तार में सुविधाजनक है।
+
+## डायरेक्टरी अवलोकन
+
+```
+openyida/
+├ src/
+│   ├── commands/          # CLI कमांड कार्यान्वयन
+│   │   ├── create-app.ts
+│   │   ├── create-form.ts
+│   │   ├── create-page.ts
+│   │   ├── publish.ts
+│   │   ├── share.ts
+│   │   ├── data.ts
+│   │   ├── connector.ts
+│   │   ├── report.ts
+│   │   ├── doctor.ts
+│   │  └ login.ts
+│   ├── core/              # कोर फंक्शनल मॉड्यूल
+│   │   ├── yida-api.ts    # Yida API एनकैप्सुलेशन
+│   │   ├── ai-service.ts  # AI सेवा एकीकरण
+│   │   ├── config.ts      # कॉन्फ़िगरेशन प्रबंधन
+│   │  └ auth.ts        # प्रमाणीकरण प्रसंस्करण
+│   ├── utils/             # यूटिलिटी फंक्शन
+│   │   ├── logger.ts
+│   │   ├── file.ts
+│   │  └ validator.ts
+│  └ types/             # TypeScript प्रकार परिभाषाएँ
+│       ├── yida.ts
+│       ├── ai.ts
+│      └ index.ts
+├ skills/                # Skill सिस्टम
+│   ├── builtin/           # बिल्ट-इन Skills
+│  └ custom/            # कस्टम Skills
+├ templates/             # कोड टेम्पलेट
+│   ├── app/
+│   ├── form/
+│  └ page/
+├ docs/                  # दस्तावेज़ संसाधन
+├ tests/                 # टेस्ट फ़ाइलें
+├ package.json
+├ tsconfig.json
+└ README.md
+```
+
+## कोर मॉड्यूल विवरण
+
+### src/commands/
+
+सभी CLI कमांड कार्यान्वयन संग्रहीत करता है, प्रत्येक फ़ाइल एक सबकमांड से मेल खाती है:
+
+| फ़ाइल | फ़ंक्शन |
+|------|------|
+| `create-app.ts` | Yida एप्लिकेशन बनाएं |
+| `create-form.ts` | फ़ॉर्म पेज बनाएं |
+| `create-page.ts` | कस्टम पेज बनाएं |
+| `publish.ts` | एप्लिकेशन प्रकाशित करें |
+| `share.ts` | एप्लिकेशन साझा करें |
+| `data.ts` | डेटा प्रबंधन संचालन |
+| `connector.ts` | कनेक्टर प्रबंधन |
+| `report.ts` | रिपोर्ट संचालन |
+| `doctor.ts` | निदान उपकरण |
+| `login.ts` | लॉगिन प्रमाणीकरण |
+
+### src/core/
+
+कोर बिज़नेस लॉजिक मॉड्यूल:
+
+- **yida-api.ts**: Yida ओपन प्लेटफ़ॉर्म API एनकैप्सुलेट करता है, एकीकृत इंटरफ़ेस कॉल प्रदान करता है
+- **ai-service.ts**: कई AI सेवाओं को एकीकृत करता है (OpenAI, Claude, Tongyi Qianwen, आदि)
+- **config.ts**: स्थानीय कॉन्फ़िगरेशन फ़ाइल प्रबंधित करता है (~/.openyida/config.json)
+- **auth.ts**: लॉगिन स्थिति, Token रीफ्रेश, बहु-संगठन स्विचिंग संभालता है
+
+### src/utils/
+
+सामान्य यूटिलिटी फंक्शन:
+
+- **logger.ts**: लॉग आउटपुट, स्तर और रंग समर्थन
+- **file.ts**: फ़ाइल संचालन सहायक फंक्शन
+- **validator.ts**: इनपुट सत्यापन और जाँच
+
+### src/types/
+
+TypeScript प्रकार परिभाषाएँ, कोड प्रकार सुरक्षा सुनिश्चित करती हैं:
+
+- **yida.ts**: Yida API संबंधित प्रकार
+- **ai.ts**: AI सेवा संबंधित प्रकार
+- **index.ts**: सामान्य प्रकार निर्यात
+
+## Skill सिस्टम
+
+```
+skills/
+├ builtin/               # बिल्ट-इन Skills
+│   ├── code-generator/    # कोड जनरेशन
+│   ├── form-builder/      # फ़ॉर्म बिल्डर
+│   ├── page-designer/     # पेज डिज़ाइन
+│  └ data-analyzer/     # डेटा विश्लेषण
+└ custom/                # उपयोगकर्ता कस्टम Skills
+   └ (उपयोगकर्ता विस्तार)
+```
+
+Skills प्लगइन आर्किटेक्चर अपनाते हैं, हॉट लोडिंग और गतिशील विस्तार समर्थन करते हैं।
+
+## कॉन्फ़िगरेशन प्रबंधन
+
+### स्थानीय कॉन्फ़िगरेशन
+
+भंडारण स्थान: `~/.openyida/config.json`
+
+```json
+{
+  "defaultOrg": "org-default",
+  "orgs": {
+    "org-default": {
+      "accessToken": "xxx",
+      "refreshToken": "xxx",
+      "expiresAt": 1234567890
+    }
+  },
+  "aiProvider": "openai",
+  "aiConfig": {
+    "apiKey": "sk-xxx",
+    "model": "gpt-4"
+  }
+}
+```
+
+### प्रोजेक्ट कॉन्फ़िगरेशन
+
+प्रोजेक्ट रूट डायरेक्टरी में `.openyidarc.json` बनाया जा सकता है:
+
+```json
+{
+  "appId": "APP-XXX",
+  "defaultEnv": "dev",
+  "environments": {
+    "dev": { "appKey": "xxx", "appSecret": "xxx" },
+    "prod": { "appKey": "xxx", "appSecret": "xxx" }
+  }
+}
+```
+
+## विस्तार तंत्र
+
+### नया कमांड जोड़ें
+
+1. `src/commands/` में नई फ़ाइल बनाएं
+2. कमांड प्रोसेसिंग फंक्शन कार्यान्वित करें
+3. `src/index.ts` में कमांड पंजीकृत करें
+
+### नया Skill जोड़ें
+
+1. `skills/custom/` में Skill डायरेक्टरी बनाएं
+2. `skill.json` और मुख्य लॉजिक कार्यान्वित करें
+3. `openyida skill load` का उपयोग करके लोड करें
+
+## विकास मानक
+
+- सभी नई सुविधाओं में प्रकार परिभाषाएँ शामिल होनी चाहिए
+- कमांड कार्यान्वयन में `--help` दस्तावेज़ शामिल होना चाहिए
+- कोर फंक्शन्स में यूनिट टेस्ट कवरेज होना चाहिए
+- ESLint और Prettier कॉन्फ़िगरेशन का पालन करें

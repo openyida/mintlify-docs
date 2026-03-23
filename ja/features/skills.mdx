@@ -1,9 +1,242 @@
 ---
 title: "CLIリファレンス"
-description: "OpenYida CLIコマンドの完全なリファレンス。"
+description: "OpenYidaのすべてのCLIコマンドの完全なリファレンス。"
 icon: "terminal"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/skills) or [Chinese version](/zh/features/skills) for complete content.
-</Tip>
+OpenYidaは豊富なCLIコマンドを提供し、アプリの全ライフサイクル管理をサポートします。
+
+---
+
+## 環境と認証
+
+```bash
+# 環境検出
+openyida env
+
+# ログイン
+openyida login [--qr]              # --qr はターミナルQRコードを使用
+openyida login --wukong            # 悟空環境専用
+
+# ログアウト
+openyida logout
+
+# ログイン状態管理
+openyida auth status               # ログイン状態を確認
+openyida auth login                # ログインを実行
+openyida auth refresh              # ログイン状態を更新
+openyida auth logout               # ログアウト
+
+# 組織管理
+openyida org list                  # アクセス可能な組織を一覧表示
+openyida org switch --corp-id <id> # 組織を切り替え
+
+# 作業ディレクトリの初期化
+openyida copy [--force]            # projectディレクトリをコピー
+
+# 診断ツール
+openyida doctor [--fix]            # 環境診断
+openyida doctor --monitor          # ヘルスモニタリング
+openyida doctor --report <format>  # レポート生成 (json|markdown|html)
+```
+
+---
+
+## アプリ管理
+
+```bash
+# アプリ作成
+openyida create-app "<名称>" [desc] [icon] [color] [themeColor]
+
+# アプリエクスポート
+openyida export <appType> [output] # 移行パッケージを生成
+
+# アプリインポート
+openyida import <file> [name]      # 移行パッケージからアプリを再構築
+```
+
+---
+
+## フォーム管理
+
+```bash
+# フォーム作成
+openyida create-form create <appType> "<表单名>" <字段JSON> \
+  [--layout <布局>] \
+  [--theme <主题>] \
+  [--label-align <对齐>]
+
+# フォーム更新
+openyida create-form update <appType> <formUuid> <修改JSON>
+
+# フォームSchema取得
+openyida get-schema <appType> <formUuid>
+
+# フォーム設定更新
+openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+```
+
+---
+
+## ページ管理
+
+```bash
+# カスタムページ作成
+openyida create-page <appType> "<页面名>"
+
+# ページのコンパイルと公開
+openyida publish <源文件路径> <appType> <formUuid>
+
+# ページ共有設定
+openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
+openyida get-page-config <appType> <formUuid>
+openyida verify-short-url <appType> <formUuid> <url>
+```
+
+---
+
+## データ管理
+
+```bash
+# 統一データ管理
+openyida data <action> <resource> [args]
+
+# フォームデータ
+openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
+openyida data get form <appType> --inst-id <id>
+openyida data create form <appType> <formUuid> --data-json <JSON>
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
+
+# プロセスデータ
+openyida data query process <appType> <formUuid> [--instance-status STATUS]
+openyida data get process <appType> --process-inst-id <id>
+openyida data create process <appType> <formUuid> --process-code <code> --data-json <JSON>
+
+# タスク管理
+openyida data query tasks <appType> --type <todo|done|submitted|cc>
+openyida data execute task <appType> --task-id <id> --process-inst-id <id> --out-result <AGREE|DISAGREE>
+
+# サブフォーム
+openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id <fieldId>
+```
+
+---
+
+## プロセス管理
+
+```bash
+# プロセスフォーム作成
+openyida create-process <appType> "<表单名>" <字段JSON> --process-code <code>
+
+# プロセスルール設定
+openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+```
+
+---
+
+## 権限管理
+
+```bash
+# フォーム権限クエリ
+openyida get-permission <appType> <formUuid>
+
+# フォーム権限保存
+openyida save-permission <appType> <formUuid> \
+  [--data-permission <json>] \
+  [--action-permission <json>]
+```
+
+---
+
+## コネクタ管理
+
+```bash
+# コネクタ一覧
+openyida connector list [--page N] [--size N]
+
+# コネクタ作成
+openyida connector create "<名称>" "<域名>" --operations <file> [选项]
+
+# コネクタ詳細
+openyida connector detail <connector-id>
+
+# コネクタ削除
+openyida connector delete <connector-id> [--force]
+
+# アクション管理
+openyida connector add-action --connector-id <id> --operations <file> [--confirm]
+openyida connector list-actions <connector-id>
+openyida connector delete-action <connector-id> <operation-id> [--force]
+openyida connector test --connector-id <id> --action <actionId> [选项]
+
+# 認証アカウント管理
+openyida connector list-connections <connector-id>
+openyida connector create-connection <connector-id> "<名称>" [选项]
+
+# スマート作成
+openyida connector smart-create --curl "<curl命令>" [--name <name>] [--desc <desc>]
+
+# 補助ツール
+openyida connector parse-api --curl "<curl命令>" --output <file>
+openyida connector gen-template [输出路径]
+```
+
+---
+
+## レポート管理
+
+```bash
+# レポート作成
+openyida create-report <appType> "<报表名称>" <图表定义JSON或文件路径>
+
+# チャート追加
+openyida append-chart <appType> <reportId> <图表定义JSON或文件路径>
+```
+
+---
+
+## CDN管理
+
+```bash
+# CDN設定
+openyida cdn-config
+
+# 画像アップロード
+openyida cdn-upload <文件路径>
+
+# キャッシュ更新
+openyida cdn-refresh <路径>
+```
+
+---
+
+## グローバルオプション
+
+| オプション | 説明 |
+|------|------|
+| `--help`, `-h` | ヘルプ情報を表示 |
+| `--version`, `-v` | バージョンを表示 |
+| `--qr` | ターミナルQRコードでログイン |
+| `--force` | 強制実行、確認をスキップ |
+
+---
+
+## 環境変数
+
+| 変数 | 説明 | 例 |
+|------|------|------|
+| `OPENYIDA_LANG` | 言語を設定 | `zh`, `en`, `ja` |
+| `LANG` / `LC_ALL` | システム言語 | `zh_CN.UTF-8` |
+
+---
+
+## 終了コード
+
+| コード | 意味 |
+|----|------|
+| 0 | 成功 |
+| 1 | 一般エラー |
+| 2 | パラメータエラー |
+| 3 | ログイン失敗/未ログイン |
+| 4 | ネットワークエラー |
+| 5 | APIエラー |

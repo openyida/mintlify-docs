@@ -1,9 +1,198 @@
 ---
-title: "コネクタ"
-description: "HTTPコネクタの作成と管理。"
+title: "コネクタ（HTTP統合）"
+description: "HTTPコネクタを通じてYidaアプリと外部APIを統合します。"
 icon: "plug"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/connector) or [Chinese version](/zh/features/connector) for complete content.
-</Tip>
+OpenYidaは強力なHTTPコネクタ管理機能を提供し、curlコマンドからのスマートコネクタ作成をサポートし、Yidaと外部システムのシームレスな統合を実現します。
+
+---
+
+## 機能概要
+
+<CardGroup cols={2}>
+  <Card title="スマート作成" icon="wand-magic-sparkles">
+    curlコマンドから自動的に解析してコネクタを作成し、認証情報の抽出をサポートします。
+  </Card>
+  <Card title="API管理" icon="code">
+    コネクタの完全なライフサイクル管理：作成、更新、テスト、削除。
+  </Card>
+  <Card title="認証サポート" icon="key">
+    Bearer Token、API Key、OAuth2など、複数の認証方式をサポートします。
+  </Card>
+  <Card title="アクション管理" icon="play">
+    コネクタの実行アクションの追加、テスト、管理。
+  </Card>
+</CardGroup>
+
+---
+
+## スマートコネクタ作成
+
+curlコマンドからワンクリックでコネクタを作成：
+
+```bash
+openyida connector smart-create \
+  --curl "curl 'https://api.example.com/v1/users' -H 'Authorization: Bearer xxx'" \
+  --name "ユーザー管理コネクタ" \
+  --desc "ユーザーデータを管理するためのHTTPコネクタ"
+```
+
+スマート作成フロー：
+
+1. **インターフェース情報の解析** - プロトコル、Host、メソッド、パス、認証タイプを抽出
+2. **既存コネクタとの照合** - 同じHostと認証の既存コネクタを検索
+3. **コネクタ設定の生成** - OpenAPI形式のコネクタ定義を自動構築
+4. **作成または更新** - 新しいコネクタを作成または既存コネクタにアクションを追加
+
+---
+
+## コネクタ管理コマンド
+
+### コネクタ一覧
+
+```bash
+openyida connector list
+openyida connector list --page 1 --size 20
+```
+
+### コネクタ作成
+
+```bash
+openyida connector create "コネクタ名" "api.example.com" \
+  --operations ./operations.json \
+  --protocol https \
+  --desc "コネクタ説明"
+```
+
+### コネクタ詳細
+
+```bash
+openyida connector detail <connector-id>
+```
+
+### コネクタ削除
+
+```bash
+openyida connector delete <connector-id> --force
+```
+
+---
+
+## アクション管理
+
+### 実行アクションの追加
+
+```bash
+openyida connector add-action \
+  --connector-id <id> \
+  --operations ./new-action.json \
+  --confirm
+```
+
+### 既存アクションの一覧
+
+```bash
+openyida connector list-actions <connector-id>
+```
+
+### アクションのテスト
+
+```bash
+openyida connector test \
+  --connector-id <id> \
+  --action <actionId> \
+  --body '{"key": "value"}'
+```
+
+### アクションの削除
+
+```bash
+openyida connector delete-action <connector-id> <operation-id> --force
+```
+
+---
+
+## 認証アカウント管理
+
+### 認証アカウント一覧
+
+```bash
+openyida connector list-connections <connector-id>
+```
+
+### 認証アカウント作成
+
+```bash
+openyida connector create-connection <connector-id> "本番環境アカウント" \
+  --token "Bearer xxx" \
+  --type bearer
+```
+
+---
+
+## 補助ツール
+
+### API情報の解析
+
+```bash
+openyida connector parse-api --curl "curl命令" --output ./api-info.json
+```
+
+### インターフェースドキュメントテンプレートの生成
+
+```bash
+openyida connector gen-template ./my-api-template.json
+```
+
+---
+
+## ベストプラクティス
+
+### 1. 環境変数を使用して機密情報を管理
+
+```bash
+export API_TOKEN="your-secret-token"
+openyida connector smart-create --curl "curl -H 'Authorization: Bearer $API_TOKEN' ..."
+```
+
+### 2. 複雑なコネクタを段階的に作成
+
+```bash
+# ステップ1：ベースコネクタを作成
+openyida connector create "DingTalk API" "oapi.dingtalk.com"
+
+# ステップ2：アクションを順次追加
+openyida connector add-action --connector-id <id> --operations ./action1.json
+openyida connector add-action --connector-id <id> --operations ./action2.json
+```
+
+### 3. テスト後に有効化
+
+```bash
+# 作成のみで確認
+openyida connector add-action --connector-id <id> --operations ./action.json
+
+# アクションをテスト
+openyida connector test --connector-id <id> --action <actionId>
+
+# Yidaバックエンドで最終確認
+```
+
+---
+
+## よくある質問
+
+<AccordionGroup>
+  <Accordion title="curlコマンドの解析に失敗した場合は？">
+    curlコマンドの形式が正しく、完全なURLと必要なheadersが含まれていることを確認してください。特殊文字が含まれている場合は、引用符で囲むことをお勧めします。
+  </Accordion>
+
+  <Accordion title="既存コネクタのアクションを更新するには？">
+    `connector add-action`コマンドを使用します。アクションIDが既に存在する場合、システムは更新するかどうかを確認します。
+  </Accordion>
+
+  <Accordion title="どの認証方式がサポートされていますか？">
+    現在、Bearer Token、API Key、Basic Auth、OAuth2をサポートしています。curlコマンド内の認証情報は自動的に認識されます。
+  </Accordion>
+</AccordionGroup>

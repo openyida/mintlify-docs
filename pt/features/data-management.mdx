@@ -1,9 +1,236 @@
 ---
 title: "Gerenciamento de Dados"
-description: "Consulta e gerenciamento de dados de formulários, processos e tarefas."
+description: "Interface unificada de gerenciamento de dados, suporta operações de dados de formulários, fluxos, tarefas, subformulários, etc."
 icon: "database"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/data-management) or [Chinese version](/zh/features/data-management) for complete content.
-</Tip>
+O OpenYida fornece uma CLI unificada de gerenciamento de dados, suporta operações CRUD completas para dados de formulários, instâncias de fluxo, tarefas, subformulários, etc.
+
+---
+
+## Visão Geral
+
+<CardGroup cols={2}>
+  <Card title="Dados do Formulário" icon="table">
+    Consultar, criar, atualizar, excluir dados de instâncias de formulário.
+  </Card>
+  <Card title="Dados do Fluxo" icon="workflow">
+    Gerenciar instâncias de fluxo, registros de aprovação, status do fluxo.
+  </Card>
+  <Card title="Gestão de Tarefas" icon="check-circle">
+    Consultar tarefas pendentes, concluídas, iniciadas por mim, CC para mim.
+  </Card>
+  <Card title="Subformulários" icon="list">
+    Consultar e gerenciar dados de subformulários de forma independente.
+  </Card>
+</CardGroup>
+
+---
+
+## Formato do Comando
+
+```bash
+openyida data <action> <resource> [args]
+```
+
+- **action**: `query` | `get` | `create` | `update` | `execute`
+- **resource**: `form` | `process` | `task` | `subform` | `operation-records`
+
+---
+
+## Gerenciamento de Dados do Formulário
+
+### Consultar Dados do Formulário
+
+```bash
+# Consulta básica
+openyida data query form <appType> <formUuid>
+
+# Consulta paginada
+openyida data query form <appType> <formUuid> --page 1 --size 50
+
+# Consulta condicional
+openyida data query form <appType> <formUuid> \
+  --search-json '{"field_xxx": "value"}'
+
+# Consultar instância específica
+openyida data query form <appType> <formUuid> --inst-id <formInstId>
+```
+
+### Obter Um Único Registro
+
+```bash
+openyida data get form <appType> --inst-id <formInstId>
+```
+
+### Criar Dados
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
+  --dept-id <departmentId>
+```
+
+### Atualizar Dados
+
+```bash
+openyida data update form <appType> \
+  --inst-id <formInstId> \
+  --data-json '{"field_xxx": "new value"}' \
+  --use-latest-version y
+```
+
+---
+
+## Gerenciamento de Dados do Fluxo
+
+### Consultar Instâncias de Fluxo
+
+```bash
+# Consultar lista de fluxos
+openyida data query process <appType> <formUuid> \
+  --page 1 --size 20 \
+  --instance-status RUNNING
+
+# Status disponíveis: RUNNING (em andamento), COMPLETED (concluído), TERMINATED (encerrado)
+```
+
+### Obter Detalhes do Fluxo
+
+```bash
+openyida data get process <appType> --process-inst-id <processInstanceId>
+```
+
+### Criar Instância de Fluxo
+
+```bash
+openyida data create process <appType> <formUuid> \
+  --process-code <processCode> \
+  --data-json '{"field_xxx": "value"}' \
+  --dept-id <departmentId>
+```
+
+### Consultar Registros de Aprovação
+
+```bash
+openyida data query operation-records <appType> \
+  --process-inst-id <processInstanceId>
+```
+
+---
+
+## Gestão de Tarefas
+
+### Consultar Lista de Tarefas
+
+```bash
+# Tarefas pendentes
+openyida data query tasks <appType> --type todo
+
+# Tarefas concluídas
+openyida data query tasks <appType> --type done
+
+# Iniciadas por mim
+openyida data query tasks <appType> --type submitted
+
+# CC para mim
+openyida data query tasks <appType> --type cc
+```
+
+### Executar Tarefa
+
+```bash
+openyida data execute task <appType> \
+  --task-id <taskId> \
+  --process-inst-id <processInstanceId> \
+  --out-result AGREE \
+  --remark "Aprovado, por favor continuar" \
+  --data-json '{"comment": "Aprovação aprovada"}'
+```
+
+**Opções de out-result:**
+- `AGREE` - Aprovar
+- `DISAGREE` - Não aprovar
+
+---
+
+## Gerenciamento de Subformulários
+
+### Consultar Dados do Subformulário
+
+```bash
+openyida data query subform <appType> <formUuid> \
+  --inst-id <formInstId> \
+  --table-field-id <fieldId> \
+  --page 1 --size 20
+```
+
+---
+
+## Uso Avançado
+
+### Condições de Consulta Complexas
+
+```bash
+# Consulta condicional de múltiplos campos
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_status": "approved",
+    "field_amount": { "$gte": 1000 },
+    "field_created_at": { "$gte": "2024-01-01" }
+  }'
+```
+
+### Exemplo de Script de Operação em Lote
+
+```bash
+#!/bin/bash
+# Exportar dados de formulário em lote
+
+APP_TYPE="APP_XXXXXXXX"
+FORM_UUID="FORM-XXXX-XXXX"
+PAGE=1
+
+while true; do
+  RESULT=$(openyida data query form $APP_TYPE $FORM_UUID --page $PAGE --size 100)
+  
+  # Processar dados da página atual
+  echo "$RESULT" >> ./export.json
+  
+  # Verificar se há próxima página
+  HAS_MORE=$(echo "$RESULT" | jq '.hasMore')
+  if [ "$HAS_MORE" != "true" ]; then
+    break
+  fi
+  
+  PAGE=$((PAGE + 1))
+done
+```
+
+---
+
+## Exemplo de Exportação de Dados
+
+```bash
+# Exportar dados de um período específico
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_created_at": {
+      "$gte": "2024-01-01T00:00:00",
+      "$lte": "2024-12-31T23:59:59"
+    }
+  }' \
+  --size 100 > ./data-export.json
+```
+
+---
+
+## Notas
+
+<Warning>
+  As operações de dados são permanentes, as operações de exclusão e atualização não podem ser desfeitas. Recomenda-se realizar testes em pequena escala antes de executar operações em lote.
+</Warning>
+
+<Info>
+  A consulta paginada tem um valor padrão de 20 registros por página, máximo 100. Para exportar grandes quantidades de dados, recomenda-se usar loop de paginação.
+</Info>

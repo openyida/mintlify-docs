@@ -1,9 +1,199 @@
 ---
-title: "الموصلات"
-description: "إنشاء وإدارة موصلات HTTP."
+title: "الموصلات (تكامل HTTP)"
+description: "ادمج تطبيقات Yida مع واجهات API الخارجية من خلال موصلات HTTP."
 icon: "plug"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/connector) or [Chinese version](/zh/features/connector) for complete content.
-</Tip>
+يوفر OpenYida وظائف قوية لإدارة موصلات HTTP، يدعم الإنشاء الذكي للموصلات من أوامر curl، محققًا تكاملًا سلسًا بين Yida والأنظمة الخارجية.
+
+---
+
+## نظرة عامة
+
+<CardGroup cols={2}>
+  <Card title="إنشاء ذكي" icon="wand-magic-sparkles">
+    يحلل وينشئ الموصلات تلقائيًا من أوامر curl، يدعم استخراج معلومات المصادقة.
+  </Card>
+  <Card title="إدارة API" icon="code">
+    إدارة كاملة لدورة حياة الموصل: إنشاء، تحديث، اختبار، حذف.
+  </Card>
+  <Card title="دعم المصادقة" icon="key">
+    يدعم Bearer Token و API Key و OAuth2 وطرق مصادقة أخرى.
+  </Card>
+  <Card title="إدارة الإجراءات" icon="play">
+    إضافة واختبار وإدارة إجراءات تنفيذ الموصل.
+  </Card>
+</CardGroup>
+
+---
+
+## الإنشاء الذكي للموصلات
+
+أنشئ الموصلات بأمر curl واحد فقط:
+
+```bash
+openyida connector smart-create \
+  --curl "curl 'https://api.example.com/v1/users' -H 'Authorization: Bearer xxx'" \
+  --name "موصل إدارة المستخدمين" \
+  --desc "موصل HTTP لإدارة بيانات المستخدمين"
+```
+
+عملية الإنشاء الذكي:
+
+1. **تحليل معلومات API** - استخراج البروتوكول و Host والطريقة والمسار ونوع المصادقة
+2. **مطابقة مع الموصلات الموجودة** - البحث عن الموصلات الموجودة بنفس Host والمصادقة
+3. **إنشاء تكوين الموصل** - بناء تعريف الموصل بتنسيق OpenAPI تلقائيًا
+4. **إنشاء أو تحديث** - إنشاء موصل جديد أو إضافة إجراء إلى موصل موجود
+
+---
+
+## أوامر إدارة الموصلات
+
+### سرد الموصلات
+
+```bash
+openyida connector list
+openyida connector list --page 1 --size 20
+```
+
+### إنشاء موصل
+
+```bash
+openyida connector create "اسم الموصل" "api.example.com" \
+  --operations ./operations.json \
+  --protocol https \
+  --desc "وصف الموصل"
+```
+
+### عرض تفاصيل الموصل
+
+```bash
+openyida connector detail <connector-id>
+```
+
+### حذف الموصل
+
+```bash
+openyida connector delete <connector-id> --force
+```
+
+---
+
+## إدارة الإجراءات
+
+### إضافة إجراء تنفيذ
+
+```bash
+openyida connector add-action \
+  --connector-id <id> \
+  --operations ./new-action.json \
+  --confirm
+```
+
+### سرد الإجراءات الموجودة
+
+```bash
+openyida connector list-actions <connector-id>
+```
+
+### اختبار الإجراء
+
+```bash
+openyida connector test \
+  --connector-id <id> \
+  --action <actionId> \
+  --body '{"key": "value"}'
+```
+
+### حذف الإجراء
+
+```bash
+openyida connector delete-action <connector-id> <operation-id> --force
+```
+
+---
+
+## إدارة حسابات المصادقة
+
+### سرد حسابات المصادقة
+
+```bash
+openyida connector list-connections <connector-id>
+```
+
+### إنشاء حساب مصادقة
+
+```bash
+openyida connector create-connection <connector-id> "حساب الإنتاج" \
+  --token "Bearer xxx" \
+  --type bearer
+```
+
+---
+
+## الأدوات المساعدة
+
+### تحليل معلومات API
+
+```bash
+openyida connector parse-api --curl "أمر curl" --output ./api-info.json
+```
+
+### إنشاء قالب وثائق API
+
+```bash
+openyida connector gen-template ./my-api-template.json
+```
+
+---
+
+## أفضل الممارسات
+
+### 1. استخدام متغيرات البيئة للمعلومات الحساسة
+
+```bash
+export API_TOKEN="رمزك-السري"
+openyida connector smart-create --curl "curl -H 'Authorization: Bearer $API_TOKEN' ..."
+```
+
+### 2. إنشاء الموصلات المعقدة على مراحل
+
+```bash
+# الخطوة 1: إنشاء الموصل الأساسي
+openyida connector create "API DingTalk" "oapi.dingtalk.com"
+
+# الخطوة 2: إضافة الإجراءات واحدًا تلو الآخر
+openyida connector add-action --connector-id <id> --operations ./action1.json
+openyida connector add-action --connector-id <id> --operations ./action2.json
+```
+
+### 3. الاختبار قبل التفعيل
+
+```bash
+# إنشاء ولكن لا تؤكد
+openyida connector add-action --connector-id <id> --operations ./action.json
+
+# اختبار الإجراء
+openyida connector test --connector-id <id> --action <actionId>
+
+# تأكيد生效
+# إكمال التأكيد النهائي في خلفية Yida
+```
+
+---
+
+## الأسئلة الشائعة
+
+<AccordionGroup>
+  <Accordion title="ماذا أفعل إذا فشل تحليل أمر curl؟">
+    تأكد من أن أمر curl بتنسيق صحيح، يتضمن URL كامل و headers ضرورية. إذا كان يحتوي على أحرف خاصة، استخدم علامات الاقتباس.
+  </Accordion>
+
+  <Accordion title="كيف أحدث إجراءات موصل موجود؟">
+    استخدم الأمر `connector add-action`، إذا كان معرف الإجراء موجودًا بالفعل، سيسألك النظام عما إذا كنت تريد التحديث.
+  </Accordion>
+
+  <Accordion title="ما طرق المصادقة المدعومة؟">
+    يدعم حاليًا Bearer Token و API Key و Basic Auth و OAuth2. يتم التعرف على معلومات المصادقة في أوامر curl تلقائيًا.
+  </Accordion>
+</AccordionGroup>

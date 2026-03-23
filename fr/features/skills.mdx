@@ -1,9 +1,242 @@
 ---
 title: "Référence CLI"
-description: "Référence complète des commandes CLI OpenYida."
+description: "Référence complète de toutes les commandes CLI OpenYida."
 icon: "terminal"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/skills) or [Chinese version](/zh/features/skills) for complete content.
-</Tip>
+OpenYida fournit de riches commandes CLI, prenant en charge la gestion du cycle de vie complet des applications.
+
+---
+
+## Environnement et authentification
+
+```bash
+# Détection de l'environnement
+openyida env
+
+# Connexion
+openyida login [--qr]              # --qr utilise le code QR du terminal
+openyida login --wukong            # Spécifique à l'environnement Wukong
+
+# Déconnexion
+openyida logout
+
+# Gestion de l'état de connexion
+openyida auth status               # Voir l'état de connexion
+openyida auth login                # Exécuter la connexion
+openyida auth refresh              # Actualiser l'état de connexion
+openyida auth logout               # Se déconnecter
+
+# Gestion des organisations
+openyida org list                  # Lister les organisations accessibles
+openyida org switch --corp-id <id> # Basculer vers une organisation
+
+# Initialiser le répertoire de travail
+openyida copy [--force]            # Copier le répertoire project
+
+# Outil de diagnostic
+openyida doctor [--fix]            # Diagnostic de l'environnement
+openyida doctor --monitor          # Surveillance de la santé
+openyida doctor --report <format>  # Générer un rapport (json|markdown|html)
+```
+
+---
+
+## Gestion des applications
+
+```bash
+# Créer une application
+openyida create-app "<nom>" [desc] [icon] [color] [themeColor]
+
+# Exporter une application
+openyida export <appType> [output] # Générer un package de migration
+
+# Importer une application
+openyida import <file> [name]      # Reconstruire l'application à partir du package de migration
+```
+
+---
+
+## Gestion des formulaires
+
+```bash
+# Créer un formulaire
+openyida create-form create <appType> "<nom du formulaire>" <champsJSON> \
+  [--layout <mise en page>] \
+  [--theme <thème>] \
+  [--label-align <alignement>]
+
+# Mettre à jour un formulaire
+openyida create-form update <appType> <formUuid> <modificationsJSON>
+
+# Obtenir le Schema du formulaire
+openyida get-schema <appType> <formUuid>
+
+# Mettre à jour la configuration du formulaire
+openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+```
+
+---
+
+## Gestion des pages
+
+```bash
+# Créer une page personnalisée
+openyida create-page <appType> "<nom de la page>"
+
+# Compiler et publier une page
+openyida publish <chemin du fichier source> <appType> <formUuid>
+
+# Configuration du partage de page
+openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
+openyida get-page-config <appType> <formUuid>
+openyida verify-short-url <appType> <formUuid> <url>
+```
+
+---
+
+## Gestion des données
+
+```bash
+# Gestion unifiée des données
+openyida data <action> <ressource> [args]
+
+# Données de formulaire
+openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
+openyida data get form <appType> --inst-id <id>
+openyida data create form <appType> <formUuid> --data-json <JSON>
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
+
+# Données de processus
+openyida data query process <appType> <formUuid> [--instance-status STATUS]
+openyida data get process <appType> --process-inst-id <id>
+openyida data create process <appType> <formUuid> --process-code <code> --data-json <JSON>
+
+# Gestion des tâches
+openyida data query tasks <appType> --type <todo|done|submitted|cc>
+openyida data execute task <appType> --task-id <id> --process-inst-id <id> --out-result <AGREE|DISAGREE>
+
+# Sous-formulaires
+openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id <fieldId>
+```
+
+---
+
+## Gestion des processus
+
+```bash
+# Créer un formulaire de processus
+openyida create-process <appType> "<nom du formulaire>" <champsJSON> --process-code <code>
+
+# Configurer les règles de processus
+openyida configure-process <appType> <formUuid> --rules <règlesJSON>
+```
+
+---
+
+## Gestion des permissions
+
+```bash
+# Interroger les permissions du formulaire
+openyida get-permission <appType> <formUuid>
+
+# Enregistrer les permissions du formulaire
+openyida save-permission <appType> <formUuid> \
+  [--data-permission <json>] \
+  [--action-permission <json>]
+```
+
+---
+
+## Gestion des connecteurs
+
+```bash
+# Lister les connecteurs
+openyida connector list [--page N] [--size N]
+
+# Créer un connecteur
+openyida connector create "<nom>" "<domaine>" --operations <fichier> [options]
+
+# Voir les détails du connecteur
+openyida connector detail <connector-id>
+
+# Supprimer un connecteur
+openyida connector delete <connector-id> [--force]
+
+# Gestion des actions
+openyida connector add-action --connector-id <id> --operations <fichier> [--confirm]
+openyida connector list-actions <connector-id>
+openyida connector delete-action <connector-id> <operation-id> [--force]
+openyida connector test --connector-id <id> --action <actionId> [options]
+
+# Gestion des comptes d'authentification
+openyida connector list-connections <connector-id>
+openyida connector create-connection <connector-id> "<nom>" [options]
+
+# Création intelligente
+openyida connector smart-create --curl "<commande curl>" [--name <nom>] [--desc <desc>]
+
+# Outils auxiliaires
+openyida connector parse-api --curl "<commande curl>" --output <fichier>
+openyida connector gen-template [chemin de sortie]
+```
+
+---
+
+## Gestion des rapports
+
+```bash
+# Créer un rapport
+openyida create-report <appType> "<nom du rapport>" <définition du graphique JSON ou chemin de fichier>
+
+# Ajouter un graphique
+openyida append-chart <appType> <reportId> <définition du graphique JSON ou chemin de fichier>
+```
+
+---
+
+## Gestion CDN
+
+```bash
+# Configurer le CDN
+openyida cdn-config
+
+# Télécharger une image
+openyida cdn-upload <chemin du fichier>
+
+# Actualiser le cache
+openyida cdn-refresh <chemin>
+```
+
+---
+
+## Options globales
+
+| Option | Description |
+|------|------|
+| `--help`, `-h` | Afficher les informations d'aide |
+| `--version`, `-v` | Afficher le numéro de version |
+| `--qr` | Utiliser le code QR du terminal pour la connexion |
+| `--force` | Forcer l'opération, ignorer la confirmation |
+
+---
+
+## Variables d'environnement
+
+| Variable | Description | Exemple |
+|------|------|------|
+| `OPENYIDA_LANG` | Définir la langue | `zh`, `en`, `ja` |
+| `LANG` / `LC_ALL` | Langue du système | `zh_CN.UTF-8` |
+
+---
+
+## Codes de sortie
+
+| Code | Signification |
+|----|------|
+| 0 | Succès |
+| 1 | Erreur générale |
+| 2 | Erreur de paramètre |
+| 3 | Échec de la connexion/non connecté |
+| 4 | Erreur réseau |
+| 5 | Erreur API |

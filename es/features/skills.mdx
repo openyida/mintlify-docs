@@ -1,9 +1,242 @@
 ---
 title: "Referencia CLI"
-description: "Referencia completa de comandos CLI de OpenYida."
+description: "Referencia completa de todos los comandos CLI de OpenYida."
 icon: "terminal"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/skills) or [Chinese version](/zh/features/skills) for complete content.
-</Tip>
+OpenYida proporciona comandos CLI completos que soportan la gestión del ciclo de vida completo de aplicaciones.
+
+---
+
+## Entorno y Autenticación
+
+```bash
+# Detección de entorno
+openyida env
+
+# Iniciar sesión
+openyida login [--qr]              # --qr usa código QR en terminal
+openyida login --wukong            # Exclusivo para entorno Wukong
+
+# Cerrar sesión
+openyida logout
+
+# Gestión de sesión
+openyida auth status               # Ver estado de inicio de sesión
+openyida auth login                # Ejecutar inicio de sesión
+openyida auth refresh              # Actualizar sesión
+openyida auth logout               # Cerrar sesión
+
+# Gestión de organizaciones
+openyida org list                  # Listar organizaciones accesibles
+openyida org switch --corp-id <id> # Cambiar organización
+
+# Inicializar directorio de trabajo
+openyida copy [--force]            # Copiar directorio project
+
+# Herramienta de diagnóstico
+openyida doctor [--fix]            # Diagnóstico de entorno
+openyida doctor --monitor          # Monitoreo de salud
+openyida doctor --report <format>  # Generar informe (json|markdown|html)
+```
+
+---
+
+## Gestión de Aplicaciones
+
+```bash
+# Crear aplicación
+openyida create-app "<nombre>" [desc] [icon] [color] [themeColor]
+
+# Exportar aplicación
+openyida export <appType> [output] # Generar paquete de migración
+
+# Importar aplicación
+openyida import <file> [name]      # Reconstruir aplicación desde paquete
+```
+
+---
+
+## Gestión de Formularios
+
+```bash
+# Crear formulario
+openyida create-form create <appType> "<nombre>" <camposJSON> \
+  [--layout <diseño>] \
+  [--theme <tema>] \
+  [--label-align <alineación>]
+
+# Actualizar formulario
+openyida create-form update <appType> <formUuid> <modificacionesJSON>
+
+# Obtener Schema del formulario
+openyida get-schema <appType> <formUuid>
+
+# Actualizar configuración del formulario
+openyida update-form-config <appType> <formUuid> <isRenderNav> <título>
+```
+
+---
+
+## Gestión de Páginas
+
+```bash
+# Crear página personalizada
+openyida create-page <appType> "<nombre>"
+
+# Compilar y publicar página
+openyida publish <ruta_archivo_fuente> <appType> <formUuid>
+
+# Configuración de compartir página
+openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
+openyida get-page-config <appType> <formUuid>
+openyida verify-short-url <appType> <formUuid> <url>
+```
+
+---
+
+## Gestión de Datos
+
+```bash
+# Gestión unificada de datos
+openyida data <acción> <recurso> [args]
+
+# Datos de formulario
+openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
+openyida data get form <appType> --inst-id <id>
+openyida data create form <appType> <formUuid> --data-json <JSON>
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
+
+# Datos de proceso
+openyida data query process <appType> <formUuid> [--instance-status ESTADO]
+openyida data get process <appType> --process-inst-id <id>
+openyida data create process <appType> <formUuid> --process-code <código> --data-json <JSON>
+
+# Gestión de tareas
+openyida data query tasks <appType> --type <todo|done|submitted|cc>
+openyida data execute task <appType> --task-id <id> --process-inst-id <id> --out-result <AGREE|DISAGREE>
+
+# Subformularios
+openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id <fieldId>
+```
+
+---
+
+## Gestión de Procesos
+
+```bash
+# Crear formulario de proceso
+openyida create-process <appType> "<nombre>" <camposJSON> --process-code <código>
+
+# Configurar reglas de proceso
+openyida configure-process <appType> <formUuid> --rules <reglasJSON>
+```
+
+---
+
+## Gestión de Permisos
+
+```bash
+# Consultar permisos de formulario
+openyida get-permission <appType> <formUuid>
+
+# Guardar permisos de formulario
+openyida save-permission <appType> <formUuid> \
+  [--data-permission <json>] \
+  [--action-permission <json>]
+```
+
+---
+
+## Gestión de Conectores
+
+```bash
+# Listar conectores
+openyida connector list [--page N] [--size N]
+
+# Crear conector
+openyida connector create "<nombre>" "<dominio>" --operations <archivo> [opciones]
+
+# Ver detalles del conector
+openyida connector detail <connector-id>
+
+# Eliminar conector
+openyida connector delete <connector-id> [--force]
+
+# Gestión de acciones
+openyida connector add-action --connector-id <id> --operations <archivo> [--confirm]
+openyida connector list-actions <connector-id>
+openyida connector delete-action <connector-id> <operation-id> [--force]
+openyida connector test --connector-id <id> --action <actionId> [opciones]
+
+# Gestión de cuentas de autenticación
+openyida connector list-connections <connector-id>
+openyida connector create-connection <connector-id> "<nombre>" [opciones]
+
+# Creación inteligente
+openyida connector smart-create --curl "<comando_curl>" [--name <nombre>] [--desc <desc>]
+
+# Herramientas auxiliares
+openyida connector parse-api --curl "<comando_curl>" --output <archivo>
+openyida connector gen-template [ruta_salida]
+```
+
+---
+
+## Gestión de Reportes
+
+```bash
+# Crear reporte
+openyida create-report <appType> "<nombre>" <definición_gráfico_JSON_o_ruta>
+
+# Agregar gráfico
+openyida append-chart <appType> <reportId> <definición_gráfico_JSON_o_ruta>
+```
+
+---
+
+## Gestión de CDN
+
+```bash
+# Configurar CDN
+openyida cdn-config
+
+# Subir imagen
+openyida cdn-upload <ruta_archivo>
+
+# Actualizar caché
+openyida cdn-refresh <ruta>
+```
+
+---
+
+## Opciones Globales
+
+| Opción | Descripción |
+|------|------|
+| `--help`, `-h` | Mostrar información de ayuda |
+| `--version`, `-v` | Mostrar número de versión |
+| `--qr` | Usar código QR en terminal para iniciar sesión |
+| `--force` | Forzar operación, omitir confirmación |
+
+---
+
+## Variables de Entorno
+
+| Variable | Descripción | Ejemplo |
+|------|------|------|
+| `OPENYIDA_LANG` | Configurar idioma | `zh`, `en`, `ja` |
+| `LANG` / `LC_ALL` | Idioma del sistema | `zh_CN.UTF-8` |
+
+---
+
+## Códigos de Salida
+
+| Código | Significado |
+|----|------|
+| 0 | Éxito |
+| 1 | Error general |
+| 2 | Error de parámetros |
+| 3 | Error de inicio de sesión / No autenticado |
+| 4 | Error de red |
+| 5 | Error de API |

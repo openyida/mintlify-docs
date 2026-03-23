@@ -1,24 +1,24 @@
 ---
 title: "빠른 시작"
-description: "OpenYida를 설치하고 2분 만에 첫 번째 Yida 애플리케이션을 구축하세요."
+description: "OpenYida 를 설치하고 2 분 만에 첫 번째 Yida 앱을 구축하세요."
 icon: "bolt"
 ---
 
-## 환경 요구사항
+## 필수 조건
 
-시작하기 전에 다음 의존성이 설치되어 있는지 확인하세요:
+시작하기 전에 다음 종속성이 설치되어 있는지 확인하세요:
 
-| 의존성 | 버전 | 확인 명령어 |
+| 종속성 | 버전 | 확인 명령 |
 |------|------|----------|
 | [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
 
 <Tip>
-  이것이 전부입니다. OpenYida는 순수 Node.js 구현입니다 — Python, Playwright, 빌드 단계가 필요 없습니다.
+  이것이 전부입니다. OpenYida 는 순수 Node.js 구현입니다 — Python, Playwright, 빌드 단계가 필요 없습니다.
 </Tip>
 
 ---
 
-## 1단계 — 설치
+## 1 단계 — 설치
 
 ```bash
 npm install -g openyida
@@ -32,16 +32,16 @@ openyida --version
 
 ---
 
-## 2단계 — Yida 로그인
+## 2 단계 — Yida 에 로그인
 
 ```bash
 openyida login
 ```
 
-OpenYida는 브라우저 창을 열거나(또는 QR 코드를 표시하여) Yida/알리바바 계정으로 인증할 수 있도록 합니다. 자격 증명은 로컬에 캐시됩니다 — 한 번만 실행하면 됩니다.
+OpenYida 는 브라우저 창을 열거나 (또는 QR 코드를 표시) Yida/Alibaba 계정으로 인증합니다. 자격 증명은 로컬에 캐시됩니다 — 한 번만 수행하면 됩니다.
 
 <Info>
-  **悟空**를 AI 도구로 사용하는 경우 특수 로그인 플래그를 사용하세요:
+  AI 도구로 **悟空** 를 사용하는 경우 특별한 로그인 플래그를 사용하세요:
 
   ```bash
   openyida login --wukong
@@ -50,103 +50,101 @@ OpenYida는 브라우저 창을 열거나(또는 QR 코드를 표시하여) Yida
 
 ---
 
-## 3단계 — 환경 확인
+## 3 단계 — 환경 확인
 
 ```bash
 openyida env
 ```
 
-이는 현재 활성화된 AI 프로그래밍 도구(Claude Code, Cursor, 悟空 등)를 감지하고 현재 로그인 상태를 표시합니다. 환경을 전환할 때마다 이 명령을 실행하세요.
+이것은 현재 활성화된 AI 코딩 도구 (Claude Code, Cursor, 悟空 등) 를 감지하고 현재 로그인 상태를 표시합니다. 환경을 전환할 때마다 이 명령을.
 
 ---
 
-## 4단계 — 프로젝트 작업 공간 초기화
+## 4 단계 — 프로젝트 작업 공간 초기화
 
 ```bash
 openyida copy
 ```
 
-이는 `project/` 작업 공간 템플릿을 현재 AI 도구의 작업 디렉토리에 복사하여 AI가 애플리케이션 구성 및 페이지 템플릿에 액세스할 수 있도록 합니다.
+이것은 `project/` 작업 공간 템플릿을 현재 AI 도구의 작업 디렉토리에 복사하여 AI 가 앱 구성 및 페이지 템플릿에 액세스할 수 있도록 합니다.
 
 ---
 
-## 5단계 — 구축 시작
+## 5 단계 — 구축 시작
 
-이제 AI 프로그래밍 도우미와 대화하세요. 다음은 시작을 위한 몇 가지 프롬프트입니다:
-
-```
-Yida에서 칩 생산 워크플로우를 관리하는 IPD 시스템을 구축해줘
-```
+이제 AI 코딩 어시스턴트와 대화하기만 하면 됩니다. 다음은 시작 프롬프트입니다:
 
 ```
-리드, 고객 및 거래가 포함된 CRM 시스템을 구축해줘
+Yida 에서 IPD 시스템을 구축하여 완전한칩 워크플로우를 관리해 주세요
 ```
 
 ```
-개인 급여 계산기 애플리케이션을 만들어줘
+리드, 연락처, 거래가 포함된 CRM 시스템을 구축해 주세요
 ```
 
 ```
-Yida에서 생일 축하 미니 게임을 생성해줘
+개인 급여 계산기 앱을 만들어 주세요
 ```
 
-AI는 OpenYida의 스킬 팩을 사용하여 올바른 CLI 명령을 순차적으로 호출합니다: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
+```
+Yida 에서 생일 축하 미니 게임을 생성해 주세요
+```
+
+AI 는 OpenYida 의을 사용하여 올바른 CLI 명령을 순서대로 호출합니다: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
 
 ---
 
-## 6단계 — 애플리케이션 게시
+## 6 단계 — 앱 게시
 
-AI가 애플리케이션을 생성한 후 다음 명령으로 게시하세요:
+AI 가 앱을 생성한 후 다음 명령을 사용하여 게시합니다:
 
 ```bash
 openyida publish
 ```
 
-또는 AI에게 물어보세요:
+또는 AI 에게 물어보세요:
 ```
-[페이지 이름] 페이지를 게시해줘
-페이지를 공개적으로 접근 가능하게 만들어줘
+[페이지 이름] 페이지를 게시해 주세요
+페이지를 공개적으로 액세스할 수 있게 해주세요
 ```
 
 ---
 
-## 진단 실행
-
-문제가 있는 것 같으면 내장 진단 도구를 실행하세요:
+## 진단문제가 있다고 느껴지면 내장 진단 도구를:
 
 ```bash
 openyida doctor
 ```
 
-Node.js 버전, 로그인 상태 및 환경 구성을 확인하고 `--fix`를 사용하여 일반적인 문제를 자동으로 해결할 수 있습니다.
+Node.js 버전, 로그인 상태 및 환경 구성을 확인하고 `--fix` 로 일반적인 문제를 자동으로 수정할 수 있습니다.
 
 ---
 
 ## OpenClaw 통합
 
-OpenClaw를 사용하는 경우 OpenYida 스킬 팩을 직접 설치하세요:
+OpenClaw 를 사용하는 경우 OpenYida을 직접 설치하세요:
 
 ```bash
 npx clawhub@latest install nicky1108/yida-app
 ```
 
-그런 다음 [ClawhHub의 yida-app](https://clawhub.ai/nicky1108/yida-app)을 통해 사용하세요.
+그런 다음 [ClawhHub 의 yida-app](https://clawhub.ai/nicky1108/yida-app) 을 통해 사용하세요.
 
 ---
 
 ## 다음 단계
 
 <CardGroup cols={2}>
-  <Card title="일반적인 프롬프트" icon="comments" href="/ko/features/common-prompts">
-    OpenYida가 지원하는 자연어 프롬프트의 전체 목록을 찾아보세요.
+  <Card title="일반 프롬프트" icon="comments" href="/ko/features/common-prompts">
+    OpenYida 가 지원하는 자연어 프롬프트의 전체 목록을 참조하세요.
   </Card>
   <Card title="CLI 참조" icon="terminal" href="/ko/features/skills">
-    모든 CLI 명령 및 스킬 모듈을 탐색하세요.
+    모든 CLI 명령 및을 탐색하세요.
   </Card>
-  <Card title="데모 케이스" icon="images" href="/ko/introduction/demo">
-    OpenYida로 구축된 실제 애플리케이션을 확인하세요.
+  <Card title="데모 사례" icon="images" href="/ko/introduction/demo">
+    OpenYida 로 구축된 실제을 참조하세요.
   </Card>
   <Card title="모범 사례" icon="star" href="/ko/guides/best-practices">
-    AI 기반 애플리케이션 생성을 최대한 활용하는 팁.
+    AI 기반 앱 생성을 최대한 활용하기 위한 팁.
   </Card>
 </CardGroup>

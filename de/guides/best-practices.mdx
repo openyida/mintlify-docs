@@ -1,9 +1,133 @@
 ---
 title: "Best Practices"
-description: "Empfehlungen für die optimale Nutzung von OpenYida."
+description: "Best-Practice-Empfehlungen für die Verwendung von OpenYida und KI-gesteuerter App-Generierung."
 icon: "star"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/guides/best-practices) or [Chinese version](/zh/guides/best-practices) for complete content.
-</Tip>
+## 1. Detaillierte Prompts schreiben
+
+Die Qualität der generierten Apps ist proportional zum Detaillierungsgrad der Prompts. Vergleich:
+
+<CodeGroup>
+
+```text Vage (Vermeiden)
+Erstelle ein CRM
+```
+
+```text Detailliert (Empfohlen)
+Erstelle ein CRM mit drei verknüpften Formularen:
+1. Lead-Formular — Felder: Name, Firma, Telefon, E-Mail, Quelle (Dropdown: Empfehlung/Website/Veranstaltung/Kaltakquise), Status (Dropdown: Neuer Lead/Kontaktiert/Qualifiziert/Disqualifiziert), Zugewiesen an (Mitgliederauswahl)
+2. Kundenformular — Aus Leads konvertiert, Felder: Firmenname, Branche, Jahresumsatz, Hauptkontakt, Account Manager
+3. Opportunity-Formular — Mit Kunden verknüpft, Felder: Opportunity-Name, Betrag, Phase (Dropdown: Vorschlag/Verhandlung/Gewonnen/Verloren), Erwartetes Abschlussdatum, Notizen
+```
+
+</CodeGroup>
+
+---
+
+## 2. Anforderungsdokumente verwenden
+
+Für komplexe Apps schreiben Sie zuerst ein PRD und geben es dann an die KI:
+
+```
+Generiere eine YiDa-App basierend auf dem folgenden Anforderungsdokument:
+
+[PRD einfügen — Feldnamen, Typen, Validierungsregeln, Workflows usw.]
+```
+
+Dieser Ansatz liefert genauere Ergebnisse als iteratives Prompting.
+
+---
+
+## 3. Inkrementelle Iteration
+
+Versuchen Sie nicht, alles in einem Prompt zu erstellen. Erstellen Sie zuerst die Kernstruktur und fügen Sie dann schrittweise Komplexität hinzu:
+
+```
+Schritt 1: Erstelle ein grundlegendes Mitarbeiterinformationsformular
+Schritt 2: Füge ein mit Mitarbeitern verknüpftes Urlaubsantragsformular hinzu
+Schritt 3: Konfiguriere den Urlaubsgenehmigungs-Workflow
+Schritt 4: Füge ein Manager-Dashboard hinzu, das ausstehende Genehmigungen anzeigt
+Schritt 5: Veröffentliche das Dashboard als öffentliche Seite
+```
+
+---
+
+## 4. Jeden Schritt überprüfen
+
+Nachdem die KI jede Komponente erstellt hat, lassen Sie sie überprüfen:
+
+```
+Zeige das aktuelle Schema des [Formularname]-Formulars
+Überprüfe, ob die [Seitenname]-Seite veröffentlicht und zugänglich ist
+```
+
+Erkennen Sie Probleme frühzeitig, bevor sie sich zu größeren Problemen ansammeln.
+
+---
+
+## 5. Projektarbeitsverzeichnis wiederverwenden
+
+Führen Sie `openyida copy` nur einmal pro Projekt aus, nicht bei jeder Sitzung. Die Datei `project/config.json` speichert `appId` und `corpId` — die KI verwendet dies, um die Ziel-App zu kennen. Löschen Sie diese Datei nicht mitten im Projekt.
+
+---
+
+## 6. Umgebungsspezifische Anmeldung
+
+Verschiedene KI-Tools erfordern unterschiedliche Anmeldeverfahren:
+
+| KI-Tool | Anmeldebefehl |
+|---------|----------|
+| Claude Code, Cursor, VSCode | `openyida login` |
+| Wukong | `openyida login --wukong` |
+| OpenCode, Aone Copilot | `openyida login` |
+
+Beim Wechsel des Tools führen Sie zuerst `openyida env` aus, um die aktive Umgebung zu bestätigen.
+
+---
+
+## 7. CDN für benutzerdefinierte Seitenbilder verwenden
+
+Wenn benutzerdefinierte Seiten Bilder enthalten, laden Sie sie zuerst auf CDN hoch, um zuverlässiges Rendering zu gewährleisten:
+
+```bash
+openyida cdn-config   # Alibaba Cloud OSS + CDN konfigurieren (einmalig)
+openyida cdn-upload ./my-image.png   # Stabile CDN-URL abrufen
+```
+
+Verweisen Sie dann in Ihrem Seiten-Prompt auf die CDN-URL:
+```
+Füge ein Hero-Banner-Bild zur Landingpage mit dieser CDN-URL hinzu: https://cdn.example.com/banner.png
+```
+
+---
+
+## 8. Multi-Organisations-Setup verarbeiten
+
+Wenn Sie auf mehrere YiDa-Organisationen zugreifen können:
+
+```bash
+openyida org list          # Alle verfügbaren Organisationen anzeigen
+openyida org switch --corp-id <id>   # Zur Zielorganisation wechseln
+openyida env               # Wechsel bestätigen
+```
+
+Überprüfen Sie immer die aktive Organisation, bevor Sie Apps erstellen, um das Erstellen im falschen Bereich zu vermeiden.
+
+---
+
+## 9. Doctor vor dem Debugging ausführen
+
+Bevor Sie Zeit mit dem Debugging fehlgeschlagener Befehle verbringen, führen Sie aus:
+
+```bash
+openyida doctor --fix
+```
+
+Erkennt und löst automatisch die häufigsten Probleme: abgelaufene Sitzungen, fehlende Konfigurationsdateien, Umgebungskonflikte.
+
+---
+
+## 10. KI-unterstützte PRs willkommen
+
+Bei Beiträgen zu OpenYida selbst akzeptieren Sie vollständig KI-generierten Code. Geben Sie das verwendete KI-Tool in der PR-Beschreibung an — dies hilft Maintainern, den Generierungskontext zu verstehen und effizienter zu überprüfen.
