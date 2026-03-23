@@ -104,6 +104,476 @@
             ]
           }
         ]
+      },
+      {
+        "language": "ja",
+        "groups": [
+          {
+            "group": "はじめに",
+            "pages": [
+              "ja/introduction/overview",
+              "ja/introduction/demo",
+              "ja/quickstart"
+            ]
+          },
+          {
+            "group": "機能",
+            "pages": [
+              "ja/features/common-prompts",
+              "ja/features/skills",
+              "ja/features/use-cases",
+              "ja/features/connector",
+              "ja/features/data-management",
+              "ja/features/report",
+              "ja/features/doctor"
+            ]
+          },
+          {
+            "group": "アーキテクチャ",
+            "pages": [
+              "ja/architecture/overview",
+              "ja/architecture/project-structure",
+              "ja/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "ガイド",
+            "pages": [
+              "ja/guides/best-practices",
+              "ja/guides/faq"
+            ]
+          },
+          {
+            "group": "コミュニティ",
+            "pages": [
+              "ja/contributing",
+              "ja/license"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "ko",
+        "groups": [
+          {
+            "group": "시작하기",
+            "pages": [
+              "ko/introduction/overview",
+              "ko/introduction/demo",
+              "ko/quickstart"
+            ]
+          },
+          {
+            "group": "기능",
+            "pages": [
+              "ko/features/common-prompts",
+              "ko/features/skills",
+              "ko/features/use-cases",
+              "ko/features/connector",
+              "ko/features/data-management",
+              "ko/features/report",
+              "ko/features/doctor"
+            ]
+          },
+          {
+            "group": "아키텍처",
+            "pages": [
+              "ko/architecture/overview",
+              "ko/architecture/project-structure",
+              "ko/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "가이드",
+            "pages": [
+              "ko/guides/best-practices",
+              "ko/guides/faq"
+            ]
+          },
+          {
+            "group": "커뮤니티",
+            "pages": [
+              "ko/contributing",
+              "ko/license"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "fr",
+        "groups": [
+          {
+            "group": "Commencer",
+            "pages": [
+              "fr/introduction/overview",
+              "fr/introduction/demo",
+              "fr/quickstart"
+            ]
+          },
+          {
+            "group": "Fonctionnalités",
+            "pages": [
+              "fr/features/common-prompts",
+              "fr/features/skills",
+              "fr/features/use-cases",
+              "fr/features/connector",
+              "fr/features/data-management",
+              "fr/features/report",
+              "fr/features/doctor"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "fr/architecture/overview",
+              "fr/architecture/project-structure",
+              "fr/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "fr/guides/best-practices",
+              "fr/guides/faq"
+            ]
+          },
+          {
+            "group": "Communauté",
+            "pages": [
+              "fr/contributing",
+              "fr/license"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "de",
+        "groups": [
+          {
+            "group": "Erste Schritte",
+            "pages": [
+              "de/introduction/overview",
+              "de/introduction/demo",
+              "de/quickstart"
+            ]
+          },
+          {
+            "group": "Funktionen",
+            "pages": [
+              "de/features/common-prompts",
+              "de/features/skills",
+              "de/features/use-cases",
+              "de/features/connector",
+              "de/features/data-management",
+              "de/features/report",
+              "de/features/doctor"
+            ]
+          },
+          {
+            "group": "Architektur",
+            "pages": [
+              "de/architecture/overview",
+              "de/architecture/project-structure",
+              "de/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "Anleitungen",
+            "pages": [
+              "de/guides/best-practices",
+              "de/guides/faq"
+            ]
+          },
+          {
+            "group": "Community",
+            "pages": [
+              "de/contributing",
+              "de/license"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "es",
+        "groups": [
+          {
+            "group": "Empezar",
+            "pages": [
+              "es/introduction/overview",
+              "es/introduction/demo",
+              "es/quickstart"
+            ]
+          },
+          {
+            "group": "Características",
+            "pages": [
+              "es/features/common-prompts",
+              "es/features/skills",
+              "es/features/use-cases",
+              "es/features/connector",
+              "es/features/data-management",
+              "es/features/report",
+              "es/features/doctor"
+            ]
+          },
+          {
+            "group": "Arquitectura",
+            "pages": [
+              "es/architecture/overview",
+              "es/architecture/project-structure",
+              "es/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "Guías",
+            "pages": [
+              "es/guides/best-practices",
+              "es/guides/faq"
+            ]
+          },
+          {
+            "group": "Comunidad",
+            "pages": [
+              "es/contributing",
+              "es/license"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "pt",
+        "groups": [
+          {
+            "group": "Começar",
+            "pages": [
+              "pt/introduction/overview",
+              "pt/introduction/demo",
+              "pt/quickstart"
+            ]
+          },
+          {
+            "group": "Recursos",
+            "pages": [
+              "pt/features/common-prompts",
+              "pt/features/skills",
+              "pt/features/use-cases",
+              "pt/features/connector",
+              "pt/features/data-management",
+              "pt/features/report",
+              "pt/features/doctor"
+            ]
+          },
+          {
+            "group": "Arquitetura",
+            "pages": [
+              "pt/architecture/overview",
+              "pt/architecture/project-structure",
+              "pt/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "Guias",
+            "pages": [
+              "pt/guides/best-practices",
+              "pt/guides/faq"
+            ]
+          },
+          {
+            "group": "Comunidade",
+            "pages": [
+              "pt/contributing",
+              "pt/license"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "vi",
+        "groups": [
+          {
+            "group": "Bắt đầu",
+            "pages": [
+              "vi/introduction/overview",
+              "vi/introduction/demo",
+              "vi/quickstart"
+            ]
+          },
+          {
+            "group": "Tính năng",
+            "pages": [
+              "vi/features/common-prompts",
+              "vi/features/skills",
+              "vi/features/use-cases",
+              "vi/features/connector",
+              "vi/features/data-management",
+              "vi/features/report",
+              "vi/features/doctor"
+            ]
+          },
+          {
+            "group": "Kiến trúc",
+            "pages": [
+              "vi/architecture/overview",
+              "vi/architecture/project-structure",
+              "vi/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "Hướng dẫn",
+            "pages": [
+              "vi/guides/best-practices",
+              "vi/guides/faq"
+            ]
+          },
+          {
+            "group": "Cộng đồng",
+            "pages": [
+              "vi/contributing",
+              "vi/license"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "hi",
+        "groups": [
+          {
+            "group": "शुरुआत",
+            "pages": [
+              "hi/introduction/overview",
+              "hi/introduction/demo",
+              "hi/quickstart"
+            ]
+          },
+          {
+            "group": "सुविधाएं",
+            "pages": [
+              "hi/features/common-prompts",
+              "hi/features/skills",
+              "hi/features/use-cases",
+              "hi/features/connector",
+              "hi/features/data-management",
+              "hi/features/report",
+              "hi/features/doctor"
+            ]
+          },
+          {
+            "group": "वास्तुकला",
+            "pages": [
+              "hi/architecture/overview",
+              "hi/architecture/project-structure",
+              "hi/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "गाइड",
+            "pages": [
+              "hi/guides/best-practices",
+              "hi/guides/faq"
+            ]
+          },
+          {
+            "group": "समुदाय",
+            "pages": [
+              "hi/contributing",
+              "hi/license"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "ar",
+        "groups": [
+          {
+            "group": "البدء",
+            "pages": [
+              "ar/introduction/overview",
+              "ar/introduction/demo",
+              "ar/quickstart"
+            ]
+          },
+          {
+            "group": "الميزات",
+            "pages": [
+              "ar/features/common-prompts",
+              "ar/features/skills",
+              "ar/features/use-cases",
+              "ar/features/connector",
+              "ar/features/data-management",
+              "ar/features/report",
+              "ar/features/doctor"
+            ]
+          },
+          {
+            "group": "البنية",
+            "pages": [
+              "ar/architecture/overview",
+              "ar/architecture/project-structure",
+              "ar/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "الأدلة",
+            "pages": [
+              "ar/guides/best-practices",
+              "ar/guides/faq"
+            ]
+          },
+          {
+            "group": "المجتمع",
+            "pages": [
+              "ar/contributing",
+              "ar/license"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "zh-TW",
+        "groups": [
+          {
+            "group": "開始使用",
+            "pages": [
+              "zh-TW/introduction/overview",
+              "zh-TW/introduction/demo",
+              "zh-TW/quickstart"
+            ]
+          },
+          {
+            "group": "功能特性",
+            "pages": [
+              "zh-TW/features/common-prompts",
+              "zh-TW/features/skills",
+              "zh-TW/features/use-cases",
+              "zh-TW/features/connector",
+              "zh-TW/features/data-management",
+              "zh-TW/features/report",
+              "zh-TW/features/doctor"
+            ]
+          },
+          {
+            "group": "架構設計",
+            "pages": [
+              "zh-TW/architecture/overview",
+              "zh-TW/architecture/project-structure",
+              "zh-TW/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "使用指南",
+            "pages": [
+              "zh-TW/guides/best-practices",
+              "zh-TW/guides/faq"
+            ]
+          },
+          {
+            "group": "社區",
+            "pages": [
+              "zh-TW/contributing",
+              "zh-TW/license"
+            ]
+          }
+        ]
       }
     ],
     "global": {
