@@ -106,48 +106,48 @@
         ]
       },
       {
-        "language": "zh-HK",
+        "language": "zh-Hant",
         "groups": [
           {
             "group": "開始使用",
             "pages": [
-              "zh-HK/introduction/overview",
-              "zh-HK/introduction/demo",
-              "zh-HK/quickstart"
+              "zh-Hant/introduction/overview",
+              "zh-Hant/introduction/demo",
+              "zh-Hant/quickstart"
             ]
           },
           {
             "group": "功能特性",
             "pages": [
-              "zh-HK/features/common-prompts",
-              "zh-HK/features/skills",
-              "zh-HK/features/use-cases",
-              "zh-HK/features/connector",
-              "zh-HK/features/data-management",
-              "zh-HK/features/report",
-              "zh-HK/features/doctor"
+              "zh-Hant/features/common-prompts",
+              "zh-Hant/features/skills",
+              "zh-Hant/features/use-cases",
+              "zh-Hant/features/connector",
+              "zh-Hant/features/data-management",
+              "zh-Hant/features/report",
+              "zh-Hant/features/doctor"
             ]
           },
           {
             "group": "架構設計",
             "pages": [
-              "zh-HK/architecture/overview",
-              "zh-HK/architecture/project-structure",
-              "zh-HK/architecture/tech-stack"
+              "zh-Hant/architecture/overview",
+              "zh-Hant/architecture/project-structure",
+              "zh-Hant/architecture/tech-stack"
             ]
           },
           {
             "group": "使用指南",
             "pages": [
-              "zh-HK/guides/best-practices",
-              "zh-HK/guides/faq"
+              "zh-Hant/guides/best-practices",
+              "zh-Hant/guides/faq"
             ]
           },
           {
             "group": "社區",
             "pages": [
-              "zh-HK/contributing",
-              "zh-HK/license"
+              "zh-Hant/contributing",
+              "zh-Hant/license"
             ]
           }
         ]
