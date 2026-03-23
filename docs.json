@@ -111,43 +111,43 @@
           {
             "group": "開始使用",
             "pages": [
-              "zh-TW/introduction/overview",
-              "zh-TW/introduction/demo",
-              "zh-TW/quickstart"
+              "zh-HK/introduction/overview",
+              "zh-HK/introduction/demo",
+              "zh-HK/quickstart"
             ]
           },
           {
             "group": "功能特性",
             "pages": [
-              "zh-TW/features/common-prompts",
-              "zh-TW/features/skills",
-              "zh-TW/features/use-cases",
-              "zh-TW/features/connector",
-              "zh-TW/features/data-management",
-              "zh-TW/features/report",
-              "zh-TW/features/doctor"
+              "zh-HK/features/common-prompts",
+              "zh-HK/features/skills",
+              "zh-HK/features/use-cases",
+              "zh-HK/features/connector",
+              "zh-HK/features/data-management",
+              "zh-HK/features/report",
+              "zh-HK/features/doctor"
             ]
           },
           {
             "group": "架構設計",
             "pages": [
-              "zh-TW/architecture/overview",
-              "zh-TW/architecture/project-structure",
-              "zh-TW/architecture/tech-stack"
+              "zh-HK/architecture/overview",
+              "zh-HK/architecture/project-structure",
+              "zh-HK/architecture/tech-stack"
             ]
           },
           {
             "group": "使用指南",
             "pages": [
-              "zh-TW/guides/best-practices",
-              "zh-TW/guides/faq"
+              "zh-HK/guides/best-practices",
+              "zh-HK/guides/faq"
             ]
           },
           {
             "group": "社區",
             "pages": [
-              "zh-TW/contributing",
-              "zh-TW/license"
+              "zh-HK/contributing",
+              "zh-HK/license"
             ]
           }
         ]
