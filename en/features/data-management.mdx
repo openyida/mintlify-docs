@@ -1,0 +1,218 @@
+---
+title: "Data Management"
+description: "Unified data management interface supporting forms, processes, tasks, and subform operations."
+icon: "database"
+---
+
+OpenYida provides a unified data management CLI supporting complete CRUD operations on form data, process instances, tasks, and subforms.
+
+---
+
+## Feature Overview
+
+<CardGroup cols={2}>
+  <Card title="Form Data" icon="table">
+    Query, create, update, and delete form instance data.
+  </Card>
+  <Card title="Process Data" icon="workflow">
+    Manage process instances, approval records, and process status.
+  </Card>
+  <Card title="Task Management" icon="check-circle">
+    Query todo, done, initiated, and CC'd tasks.
+  </Card>
+  <Card title="Subforms" icon="list">
+    Independently query and manage subform data.
+  </Card>
+</CardGroup>
+
+---
+
+## Command Format
+
+```bash
+openyida data <action> <resource> [args]
+```
+
+- **action**: `query` | `get` | `create` | `update` | `execute`
+- **resource**: `form` | `process` | `task` | `subform` | `operation-records`
+
+---
+
+## Form Data Operations
+
+### Query Data
+
+```bash
+# Query all data
+openyida data query form --form <formUuid>
+
+# With conditions
+openyida data query form --form <formUuid> --where '{"status": "active"}'
+
+# Pagination
+openyida data query form --form <formUuid> --page 1 --size 50
+
+# Sort
+openyida data query form --form <formUuid> --sort '{"createdAt": "desc"}'
+```
+
+### Get Single Record
+
+```bash
+openyida data get form --form <formUuid> --id <instanceId>
+```
+
+### Create Record
+
+```bash
+openyida data create form \
+  --form <formUuid> \
+  --data '{"name": "John", "email": "john@example.com"}'
+```
+
+### Update Record
+
+```bash
+openyida data update form \
+  --form <formUuid> \
+  --id <instanceId> \
+  --data '{"status": "completed"}'
+```
+
+### Delete Record
+
+```bash
+openyida data delete form --form <formUuid> --id <instanceId>
+```
+
+---
+
+## Process Data Operations
+
+### Query Process Instances
+
+```bash
+# All instances
+openyida data query process --process <processCode>
+
+# By status
+openyida data query process --process <processCode> --status RUNNING
+```
+
+### Get Process Detail
+
+```bash
+openyida data get process --process <processCode> --id <instanceId>
+```
+
+### Execute Process Action
+
+```bash
+# Approve
+openyida data execute process \
+  --process <processCode> \
+  --id <instanceId> \
+  --action AGREE \
+  --comment "Approved"
+
+# Reject
+openyida data execute process \
+  --process <processCode> \
+  --id <instanceId> \
+  --action REJECT \
+  --comment "Need more info"
+```
+
+---
+
+## Task Management
+
+### Query Tasks
+
+```bash
+# Todo tasks
+openyida data query task --type todo
+
+# Done tasks
+openyida data query task --type done
+
+# Initiated by me
+openyida data query task --type initiated
+
+# CC'd to me
+openyida data query task --type cc
+```
+
+### Get Task Detail
+
+```bash
+openyida data get task --id <taskId>
+```
+
+---
+
+## Subform Operations
+
+### Query Subform Data
+
+```bash
+openyida data query subform \
+  --form <formUuid> \
+  --subform <subformId> \
+  --parent <parentInstanceId>
+```
+
+### Create Subform Record
+
+```bash
+openyida data create subform \
+  --form <formUuid> \
+  --subform <subformId> \
+  --parent <parentInstanceId> \
+  --data '{"item": "Product A", "quantity": 10}'
+```
+
+---
+
+## Operation Records
+
+### Query Operation History
+
+```bash
+# Form operations
+openyida data query operation-records --form <formUuid> --instance <instanceId>
+
+# Process operations
+openyida data query operation-records --process <processCode> --instance <instanceId>
+```
+
+---
+
+## Data Export
+
+### Export to File
+
+```bash
+# CSV format
+openyida data export form --form <formUuid> --format csv --output data.csv
+
+# Excel format
+openyida data export form --form <formUuid> --format excel --output data.xlsx
+
+# JSON format
+openyida data export form --form <formUuid> --format json --output data.json
+```
+
+---
+
+## Common Options
+
+| Option | Description |
+|--------|-------------|
+| `--form <uuid>` | Target form UUID |
+| `--process <code>` | Target process code |
+| `--where <json>` | Filter conditions |
+| `--page <n>` | Page number |
+| `--size <n>` | Page size |
+| `--sort <json>` | Sort configuration |
+| `--format <type>` | Export format |

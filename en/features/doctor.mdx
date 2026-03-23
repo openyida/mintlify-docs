@@ -1,0 +1,268 @@
+---
+title: "Diagnostic Tools"
+description: "Environment checks, app diagnostics, auto-fix, and health monitoring."
+icon: "stethoscope"
+---
+
+OpenYida includes a powerful diagnostic tool `doctor` to help developers check environments, diagnose issues, auto-fix problems, and continuously monitor application health.
+
+---
+
+## Feature Overview
+
+<CardGroup cols={2}>
+  <Card title="Environment Check" icon="laptop-code">
+    Check Node.js, Python, Playwright, login status, and other dependencies.
+  </Card>
+  <Card title="App Diagnostics" icon="magnifying-glass">
+    Check PRD, page source, schema cache, React Hooks compliance.
+  </Card>
+  <Card title="Smart Fix" icon="wand-magic">
+    Auto-fix repairable issues with manual fix guidance.
+  </Card>
+  <Card title="Health Monitor" icon="heart-pulse">
+    Continuous health monitoring with trend reports.
+  </Card>
+</CardGroup>
+
+---
+
+## Basic Usage
+
+### Run Diagnostics
+
+```bash
+openyida doctor
+```
+
+### Auto Fix
+
+```bash
+openyida doctor --fix
+```
+
+### Generate Report
+
+```bash
+openyida doctor --report markdown
+openyida doctor --report json
+openyida doctor --report html
+```
+
+### Health Monitoring
+
+```bash
+openyida doctor --monitor
+```
+
+---
+
+## Environment Checks
+
+### Check All
+
+```bash
+openyida doctor env
+```
+
+### Check Specific Items
+
+```bash
+# Node.js version
+openyida doctor env --check node
+
+# Python installation
+openyida doctor env --check python
+
+# Playwright browsers
+openyida doctor env --check playwright
+
+# Login status
+openyida doctor env --check auth
+
+# Network connectivity
+openyida doctor env --check network
+```
+
+### Environment Requirements
+
+| Component | Minimum Version | Required |
+|-----------|-----------------|----------|
+| Node.js | 18.x | Yes |
+| Python | 3.8+ | Optional |
+| Playwright | Latest | Optional |
+
+---
+
+## Application Diagnostics
+
+### Full App Check
+
+```bash
+openyida doctor app --app <appId>
+```
+
+### Check Specific Areas
+
+```bash
+# Check PRD files
+openyida doctor app --check prd
+
+# Check page source
+openyida doctor app --check pages
+
+# Check schema cache
+openyida doctor app --check schema
+
+# Check React Hooks
+openyida doctor app --check hooks
+```
+
+### Common Issues Detected
+
+| Issue | Severity | Auto-fixable |
+|-------|----------|--------------|
+| Missing dependencies | High | Yes |
+| Outdated CLI version | Medium | Yes |
+| Invalid page config | High | No |
+| Schema cache stale | Medium | Yes |
+| React Hooks errors | High | No |
+| Missing environment vars | High | No |
+
+---
+
+## Smart Fix
+
+### Auto-fix All
+
+```bash
+openyida doctor --fix
+```
+
+### Fix Specific Issues
+
+```bash
+# Fix dependencies
+openyida doctor --fix --category deps
+
+# Fix cache
+openyida doctor --fix --category cache
+
+# Fix config
+openyida doctor --fix --category config
+```
+
+### Fix with Confirmation
+
+```bash
+openyida doctor --fix --interactive
+```
+
+---
+
+## Health Monitoring
+
+### Start Monitoring
+
+```bash
+openyida doctor --monitor --interval 60
+```
+
+### Monitor Specific Metrics
+
+```bash
+# Monitor auth status
+openyida doctor --monitor --metric auth
+
+# Monitor API latency
+openyida doctor --monitor --metric api
+
+# Monitor page build
+openyida doctor --monitor --metric build
+```
+
+### Generate Health Report
+
+```bash
+openyida doctor --monitor --report --duration 24h
+```
+
+---
+
+## Report Formats
+
+### Markdown Report
+
+```bash
+openyida doctor --report markdown --output diagnosis.md
+```
+
+### JSON Report
+
+```bash
+openyida doctor --report json --output diagnosis.json
+```
+
+### HTML Report
+
+```bash
+openyida doctor --report html --output diagnosis.html
+```
+
+---
+
+## CI/CD Integration
+
+### GitHub Actions
+
+```yaml
+- name: Run OpenYida Diagnostics
+  run: |
+    npx openyida doctor --report json
+    
+- name: Check for Critical Issues
+  run: |
+    if npx openyida doctor --check critical | grep -q "FAILED"; then
+      exit 1
+    fi
+```
+
+### Pre-commit Hook
+
+```bash
+#!/bin/bash
+# .git/hooks/pre-commit
+
+openyida doctor --check critical || exit 1
+```
+
+---
+
+## Troubleshooting Guide
+
+### Login Issues
+
+```bash
+# Check auth status
+openyida doctor env --check auth
+
+# Refresh token if needed
+openyida auth refresh
+```
+
+### Build Failures
+
+```bash
+# Check environment
+openyida doctor env
+
+# Fix dependencies
+openyida doctor --fix --category deps
+```
+
+### Page Errors
+
+```bash
+# Diagnose page issues
+openyida doctor app --check pages --verbose
+```

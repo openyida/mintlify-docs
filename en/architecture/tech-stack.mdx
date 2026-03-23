@@ -1,0 +1,252 @@
+---
+title: "Technology Stack"
+description: "OpenYida technology architecture, core modules, and design principles."
+icon: "layer-group"
+---
+
+## Architecture Overview
+
+OpenYida adopts a modular architecture with three core layers: CLI entry, core modules, and functional modules.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    CLI Entry Layer (bin/)                   │
+│                    yida.js - Command Routing                │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Modules (lib/core/)                 │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │   i18n   │ │   env    │ │  utils   │ │  doctor  │       │
+│  │  i18n    │ │env check │ │ utilities│ │diagnostic│       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │  check   │ │   copy   │ │  babel   │ │  locales │       │
+│  │update chk│ │dir copy  │ │ compiler │ │ locales  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Functional Modules (lib/)                │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │   auth   │ │   app    │ │   data   │ │  report  │       │
+│  │   auth   │ │  app mgmt│ │data mgmt │ │ reports  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │ connector│ │  process │ │permission│ │   cdn    │       │
+│  │connector │ │ process  │ │permission│ │  cdn     │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 Yida Platform API (aliwork.com)             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Technology Stack
+
+### Runtime Environment
+
+| Component | Version | Purpose |
+|-----------|---------|---------|
+| Node.js | >= 18.0.0 | Runtime environment |
+| TypeScript | >= 5.0 | Type-safe development |
+| npm | >= 9.0 | Package management |
+
+### Core Dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| commander | ^11.x | CLI framework |
+| axios | ^1.x | HTTP client |
+| chalk | ^5.x | Terminal colors |
+| inquirer | ^9.x | Interactive prompts |
+| ora | ^7.x | Loading spinners |
+| fs-extra | ^11.x | File operations |
+| glob | ^10.x | File globbing |
+| babel | ^7.x | Code compilation |
+
+### AI Integration
+
+| Provider | SDK | Models |
+|----------|-----|--------|
+| OpenAI | openai | GPT-4, GPT-3.5 |
+| Anthropic | @anthropic-ai/sdk | Claude 3.5 |
+| Alibaba | @alicloud/dingtalk | Tongyi Qianwen |
+| DeepSeek | deepseek-sdk | DeepSeek-V2 |
+
+### Development Tools
+
+| Tool | Purpose |
+|------|---------|
+| ESLint | Code linting |
+| Prettier | Code formatting |
+| Jest | Unit testing |
+| TypeScript | Type checking |
+| Husky | Git hooks |
+
+---
+
+## Core Module Design
+
+### CLI Entry (bin/yida.js)
+
+```javascript
+#!/usr/bin/env node
+import { program } from 'commander';
+import { createApp } from '../lib/app.js';
+
+program
+  .name('openyida')
+  .description('AI-powered Yida CLI')
+  .version('1.0.0');
+
+program
+  .command('create-app <name>')
+  .description('Create a new Yida app')
+  .action(createApp);
+
+program.parse();
+```
+
+### Core Utilities (lib/core/)
+
+| Module | Responsibility |
+|--------|----------------|
+| i18n | Internationalization support |
+| env | Environment detection |
+| utils | Common utilities |
+| doctor | Diagnostic tools |
+| check | Update checking |
+| copy | Directory operations |
+| babel | Code compilation |
+| locales | Language packs |
+
+### Functional Modules (lib/)
+
+| Module | Responsibility |
+|--------|----------------|
+| auth | Authentication & authorization |
+| app | Application management |
+| data | Data operations |
+| report | Report generation |
+| connector | HTTP connectors |
+| process | Workflow management |
+| permission | Permission control |
+| cdn | CDN operations |
+
+---
+
+## Data Flow
+
+### Command Execution Flow
+
+```
+User Input
+    ↓
+CLI Parser (commander)
+    ↓
+Parameter Validation
+    ↓
+Auth Check
+    ↓
+Business Logic
+    ↓
+Yida API Call
+    ↓
+Result Processing
+    ↓
+Output Display
+```
+
+### Error Handling Flow
+
+```
+Error Occurs
+    ↓
+Catch at Boundary
+    ↓
+Error Classification
+    ↓
+User-Friendly Message
+    ↓
+Suggested Solution
+    ↓
+Exit with Code
+```
+
+---
+
+## Design Principles
+
+### 1. Single Responsibility
+
+Each module has a clear, single responsibility:
+
+- CLI layer: Parse input, display output
+- Core layer: Provide shared utilities
+- Feature layer: Implement business logic
+
+### 2. Dependency Injection
+
+Services are injected rather than hard-coded:
+
+```typescript
+class AppService {
+  constructor(
+    private api: YidaAPI,
+    private config: ConfigService
+  ) {}
+}
+```
+
+### 3. Error Boundaries
+
+Errors are caught and handled at appropriate levels:
+
+- CLI level: User-facing messages
+- Service level: Business logic errors
+- API level: Network/HTTP errors
+
+### 4. Async Patterns
+
+Consistent use of async/await:
+
+```typescript
+async function createApp(name: string): Promise<void> {
+  const config = await loadConfig();
+  await validateName(name);
+  await api.createApp({ name, config });
+}
+```
+
+---
+
+## Extension Points
+
+### Adding New Commands
+
+1. Create command file in `lib/commands/`
+2. Implement command logic
+3. Register in CLI entry
+4. Add tests
+
+### Adding New AI Providers
+
+1. Implement provider interface
+2. Add configuration schema
+3. Register in AI service
+4. Update documentation
+
+### Adding New Features
+
+1. Design feature module
+2. Implement core logic
+3. Add CLI commands
+4. Write tests
+5. Update docs

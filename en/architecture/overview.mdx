@@ -1,0 +1,162 @@
+---
+title: Architecture Overview
+description: OpenYida overall architecture design and technology selection
+---
+
+# Architecture Overview
+
+OpenYida is a Node.js-based CLI tool with a layered architecture that organically combines AI capabilities, Yida platform integration, and developer experience.
+
+## Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI Interface                          │
+│         (Command Parser + Interactive Prompts)              │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Command Layer                            │
+│   create-app │ create-form │ publish │ data │ doctor ...   │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Services                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   AI Service │  │  Yida API    │  │   Config     │      │
+│  │  (Multi-LLM) │  │  (Open API)  │  │   Manager    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Auth        │  │  Skill       │  │   Template   │      │
+│  │  (OAuth 2.0) │  │  System      │  │   Engine     │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+┌─────────────────────────┐    ┌─────────────────────────────┐
+│    AI Providers         │    │    Yida Platform            │
+│  ┌─────────────────┐    │    │                             │
+│  │ OpenAI (GPT-4)  │    │    │   ┌─────────────────────┐   │
+│  ├─────────────────┤    │    │   │   Application       │   │
+│  │ Claude (3.5)    │    │    │   │   Engine            │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ Tongyi Qianwen  │    │    │   │   Form Builder      │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ DeepSeek        │    │    │   │   Page Designer     │   │
+│  └─────────────────┘    │    │   ├─────────────────────┤   │
+│                         │    │   │   Data Management   │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Connector Hub     │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Report Center     │   │
+│                         │    │   └─────────────────────┘   │
+└─────────────────────────┘    └─────────────────────────────┘
+```
+
+## Core Design Principles
+
+### 1. Modular Design
+
+Each functional module is independently encapsulated with clear interfaces:
+
+- **Command Layer**: Handles CLI input and calls core services
+- **Service Layer**: Encapsulates business logic with unified APIs
+- **Adapter Layer**: Interfaces with external systems (AI, Yida platform)
+
+### 2. Plugin Extension
+
+Skill system supports dynamic loading and extension:
+
+```typescript
+interface Skill {
+  name: string;
+  version: string;
+  activate(context: SkillContext): void;
+  deactivate(): void;
+}
+```
+
+### 3. Configuration-Driven
+
+Supports multi-environment configuration with flexible switching:
+
+- Local global config (~/.openyida/)
+- Project-level config (.openyidarc.json)
+- Environment variable overrides
+
+### 4. Type Safety
+
+Full TypeScript type support throughout to reduce runtime errors.
+
+## Data Flow
+
+### App Creation Flow
+
+```
+User Input → AI Service → Code Generation → Yida API → Application
+                ↑                              ↓
+           PRD Analysis                  Validation
+                ↑                              ↓
+           Template Selection           Deployment
+```
+
+### Data Operation Flow
+
+```
+User Command → Config Load → Auth Check → Yida API → Data Response
+                                              ↓
+                                         Cache/Store
+```
+
+## Technology Stack
+
+| Layer | Technology |
+|-------|------------|
+| Runtime | Node.js 18+ |
+| Language | TypeScript 5.x |
+| CLI Framework | Commander.js |
+| HTTP Client | Axios |
+| AI SDK | OpenAI SDK, Anthropic SDK |
+| Config | Cosmiconfig |
+| Logging | Winston |
+| Testing | Jest |
+
+## Security Design
+
+### Authentication Security
+
+- OAuth 2.0 standard flow
+- Automatic token refresh
+- Encrypted local storage for sensitive data
+
+### Data Transmission
+
+- Full HTTPS throughout
+- API signature verification
+- Request retry and timeout control
+
+## Performance Optimization
+
+- **Connection Pooling**: Reuse HTTP connections
+- **Smart Caching**: Local cache for config and metadata
+- **Incremental Updates**: Only transmit changed content
+- **Concurrency Control**: Limit simultaneous API calls
+
+## Extension Points
+
+Developers can extend at the following levels:
+
+1. **New Commands**: Add custom CLI commands
+2. **New Skills**: Extend AI capabilities
+3. **New Templates**: Custom code generation templates
+4. **New AI Providers**: Integrate other LLMs
+
+## Version Compatibility
+
+| OpenYida Version | Node.js Support | Yida API Version |
+|------------------|-----------------|------------------|
+| 1.x | >= 18.0.0 | v1 |
+| 2.x | >= 20.0.0 | v2 |

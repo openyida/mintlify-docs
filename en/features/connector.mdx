@@ -1,0 +1,168 @@
+---
+title: "Connectors (HTTP Integration)"
+description: "Integrate Yida applications with external APIs through HTTP connectors."
+icon: "plug"
+---
+
+OpenYida provides powerful HTTP connector management, supporting intelligent connector creation from curl commands for seamless integration between Yida and external systems.
+
+---
+
+## Feature Overview
+
+<CardGroup cols={2}>
+  <Card title="Smart Creation" icon="wand-magic-sparkles">
+    Automatically parse and create connectors from curl commands, with auth extraction.
+  </Card>
+  <Card title="API Management" icon="code">
+    Full connector lifecycle: create, update, test, delete.
+  </Card>
+  <Card title="Auth Support" icon="key">
+    Supports Bearer Token, API Key, OAuth2, and more.
+  </Card>
+  <Card title="Action Management" icon="play">
+    Add, test, and manage connector execution actions.
+  </Card>
+</CardGroup>
+
+---
+
+## Smart Connector Creation
+
+Create connectors from curl commands with one click:
+
+```bash
+openyida connector smart-create \
+  --curl "curl 'https://api.example.com/v1/users' -H 'Authorization: Bearer xxx'" \
+  --name "User Management Connector" \
+  --desc "HTTP connector for managing user data"
+```
+
+Smart creation process:
+
+1. **Parse API Info** - Extract protocol, host, method, path, auth type
+2. **Match Existing** - Find existing connectors with same host and auth
+3. **Generate Config** - Auto-build OpenAPI format connector definition
+4. **Create or Update** - Create new connector or add actions to existing
+
+---
+
+## Connector Management Commands
+
+### List Connectors
+
+```bash
+# List all connectors
+openyida connector list
+
+# List with pagination
+openyida connector list --page 1 --size 20
+
+# Filter by app
+openyida connector list --app <appId>
+```
+
+### Get Connector Details
+
+```bash
+openyida connector get --id <connectorId>
+```
+
+### Update Connector
+
+```bash
+openyida connector update \
+  --id <connectorId> \
+  --name "New Name" \
+  --desc "Updated description"
+```
+
+### Delete Connector
+
+```bash
+openyida connector delete --id <connectorId> [--force]
+```
+
+---
+
+## Action Management
+
+### Add Action
+
+```bash
+openyida connector action add \
+  --connector <connectorId> \
+  --name "Get Users" \
+  --method GET \
+  --path "/v1/users" \
+  --params '[{"name":"page","type":"number"}]'
+```
+
+### Test Action
+
+```bash
+openyida connector action test \
+  --connector <connectorId> \
+  --action <actionId> \
+  --data '{"page": 1}'
+```
+
+### List Actions
+
+```bash
+openyida connector action list --connector <connectorId>
+```
+
+---
+
+## Authentication Types
+
+| Type | Description | Use Case |
+|------|-------------|----------|
+| **None** | No authentication | Public APIs |
+| **Bearer Token** | Token in Authorization header | JWT-based APIs |
+| **API Key** | Key in header or query param | Simple API access |
+| **OAuth2** | OAuth2 flow | Third-party integrations |
+| **Basic Auth** | Username/password | Legacy systems |
+
+---
+
+## Common Use Cases
+
+### REST API Integration
+
+```bash
+# Create connector for REST API
+openyida connector smart-create \
+  --curl "curl https://api.example.com/items -H 'Authorization: Bearer token'" \
+  --name "Item Service"
+```
+
+### Webhook Handler
+
+```bash
+# Create webhook connector
+openyida connector create \
+  --name "Webhook Handler" \
+  --type webhook \
+  --url "https://hooks.example.com/webhook"
+```
+
+### Database Proxy
+
+```bash
+# Create database connector via HTTP proxy
+openyida connector smart-create \
+  --curl "curl -X POST https://db-proxy.example.com/query" \
+  --name "Database Proxy"
+```
+
+---
+
+## Best Practices
+
+1. **Reuse Connectors** - Use same connector for same host/auth combination
+2. **Naming Convention** - Use descriptive names: `{Service}-{Purpose}`
+3. **Documentation** - Add clear descriptions for each action
+4. **Testing** - Always test connectors before production use
+5. **Security** - Never commit credentials; use environment variables

@@ -1,0 +1,225 @@
+---
+title: "Reports & Charts"
+description: "Create Yida reports and add data visualization charts."
+icon: "chart-column"
+---
+
+OpenYida supports creating Yida reports and adding various charts for data visualization.
+
+---
+
+## Feature Overview
+
+<CardGroup cols={2}>
+  <Card title="Report Creation" icon="file-plus">
+    One-click creation of Yida reports with custom configuration.
+  </Card>
+  <Card title="Chart Append" icon="chart-pie">
+    Add various chart types to existing reports.
+  </Card>
+  <Card title="Data Binding" icon="link">
+    Auto-bind form data sources for real-time display.
+  </Card>
+  <Card title="Chart Types" icon="shapes">
+    Supports bar, line, pie, table, and more chart types.
+  </Card>
+</CardGroup>
+
+---
+
+## Creating Reports
+
+### Basic Usage
+
+```bash
+openyida create-report <appType> "Report Name" '<chart-definition-JSON>'
+```
+
+### Example: Create Sales Report
+
+```bash
+openyida create-report APP "Sales Dashboard" '{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "Monthly Sales",
+      "dataSource": "sales_form",
+      "xField": "month",
+      "yField": "amount"
+    }
+  ]
+}'
+```
+
+---
+
+## Report Management
+
+### List Reports
+
+```bash
+openyida report list [--app <appId>]
+```
+
+### Get Report Details
+
+```bash
+openyida report get --id <reportId>
+```
+
+### Delete Report
+
+```bash
+openyida report delete --id <reportId> [--force]
+```
+
+---
+
+## Adding Charts
+
+### Chart Types
+
+| Type | Description | Best For |
+|------|-------------|----------|
+| **bar** | Bar chart | Comparing categories |
+| **line** | Line chart | Trends over time |
+| **pie** | Pie chart | Part-to-whole relationships |
+| **table** | Data table | Detailed data view |
+| **metric** | Single metric | KPI display |
+| **area** | Area chart | Cumulative trends |
+
+### Add Chart to Report
+
+```bash
+openyida report chart add \
+  --report <reportId> \
+  --type bar \
+  --title "Quarterly Revenue" \
+  --config '{
+    "dataSource": "orders",
+    "xField": "quarter",
+    "yField": "revenue",
+    "aggregation": "sum"
+  }'
+```
+
+---
+
+## Chart Configuration
+
+### Bar Chart
+
+```json
+{
+  "type": "bar",
+  "title": "Sales by Region",
+  "dataSource": "sales_form",
+  "xField": "region",
+  "yField": "amount",
+  "aggregation": "sum",
+  "orientation": "vertical"
+}
+```
+
+### Line Chart
+
+```json
+{
+  "type": "line",
+  "title": "Traffic Trend",
+  "dataSource": "visits",
+  "xField": "date",
+  "yField": "visitors",
+  "groupBy": "channel"
+}
+```
+
+### Pie Chart
+
+```json
+{
+  "type": "pie",
+  "title": "Market Share",
+  "dataSource": "sales",
+  "labelField": "product",
+  "valueField": "share"
+}
+```
+
+---
+
+## Data Source Configuration
+
+### Form Data Source
+
+```json
+{
+  "dataSource": {
+    "type": "form",
+    "formUuid": "FORM-XXX",
+    "conditions": {
+      "status": "completed"
+    }
+  }
+}
+```
+
+### Process Data Source
+
+```json
+{
+  "dataSource": {
+    "type": "process",
+    "processCode": "PROC-XXX",
+    "status": "finished"
+  }
+}
+```
+
+---
+
+## Filtering & Aggregation
+
+### Filter Conditions
+
+```bash
+openyida report chart add \
+  --report <id> \
+  --type bar \
+  --config '{
+    "dataSource": "orders",
+    "filter": {
+      "status": "completed",
+      "createdAt": {
+        "$gte": "2024-01-01",
+        "$lte": "2024-12-31"
+      }
+    }
+  }'
+```
+
+### Aggregation Functions
+
+| Function | Description |
+|----------|-------------|
+| **sum** | Sum of values |
+| **avg** | Average value |
+| **count** | Count of records |
+| **max** | Maximum value |
+| **min** | Minimum value |
+
+---
+
+## Export Reports
+
+### Export to PDF
+
+```bash
+openyida report export --id <reportId> --format pdf --output report.pdf
+```
+
+### Export to Image
+
+```bash
+openyida report export --id <reportId> --format png --output report.png
+```

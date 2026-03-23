@@ -1,0 +1,185 @@
+---
+title: "CLI Reference"
+description: "Complete reference for all OpenYida CLI commands."
+icon: "terminal"
+---
+
+OpenYida provides rich CLI commands for full application lifecycle management.
+
+---
+
+## Environment & Authentication
+
+```bash
+# Environment check
+openyida env
+
+# Login
+openyida login [--qr]              # --qr for terminal QR code
+openyida login --wukong            # Wukong environment
+
+# Logout
+openyida logout
+
+# Auth management
+openyida auth status               # Check login status
+openyida auth login                # Perform login
+openyida auth refresh              # Refresh session
+openyida auth logout               # Logout
+
+# Organization management
+openyida org list                  # List accessible organizations
+openyida org switch --corp-id <id> # Switch organization
+
+# Initialize workspace
+openyida copy [--force]            # Copy project directory
+
+# Diagnostic tools
+openyida doctor [--fix]            # Environment diagnosis
+openyida doctor --monitor          # Health monitoring
+openyida doctor --report <format>  # Generate report (json|markdown|html)
+```
+
+---
+
+## Application Management
+
+```bash
+# Create application
+openyida create-app "<name>" [desc] [icon] [color] [themeColor]
+
+# List applications
+openyida list-apps
+
+# Import/Export
+openyida import --file <path>      # Import from JSON
+openyida export --app <id>         # Export to JSON
+
+# Deploy
+openyida deploy --env <env>        # Deploy to environment
+```
+
+---
+
+## Form Management
+
+```bash
+# Create form
+openyida create-form "<name>" [--app <appId>] [--folder <folder>]
+
+# Create process form
+openyida create-form "<name>" --process [--app <appId>]
+
+# Get form schema
+openyida get-form-schema --form <formUuid>
+
+# Update form
+openyida update-form --form <formUuid> --schema <file>
+```
+
+---
+
+## Page Management
+
+```bash
+# Create custom page
+openyida create-page "<name>" [--app <appId>] [--folder <folder>]
+
+# Publish page
+openyida publish --page <id> [--env <env>]
+
+# Share page
+openyida share --page <id> [--public] [--password <pwd>]
+```
+
+---
+
+## Data Management
+
+```bash
+# Query form data
+openyida data query --form <formUuid> [--where <conditions>] [--limit <n>]
+
+# Create data entry
+openyida data create --form <formUuid> --data '<json>'
+
+# Update data
+openyida data update --form <formUuid> --id <id> --data '<json>'
+
+# Delete data
+openyida data delete --form <formUuid> --id <id>
+
+# Export data
+openyida data export --form <formUuid> --format <csv|json|excel>
+```
+
+---
+
+## Connector Management
+
+```bash
+# Create HTTP connector
+openyida create-connector "<name>" --url <url> [--method <method>]
+
+# Import from curl
+openyida create-connector --curl '<curl-command>'
+
+# Test connector
+openyida test-connector --id <connectorId>
+
+# List connectors
+openyida list-connectors [--app <appId>]
+```
+
+---
+
+## Report & Charts
+
+```bash
+# Create report
+openyida create-report "<name>" [--app <appId>] [--type <type>]
+
+# Add chart
+openyida add-chart --report <id> --chart '<config>'
+
+# Export report
+openyida export-report --id <id> --format <pdf|png>
+```
+
+---
+
+## CDN & Assets
+
+```bash
+# Upload image
+openyida upload-image --file <path> [--app <appId>]
+
+# Refresh cache
+openyida cdn refresh --urls <urls>
+
+# List assets
+openyida list-assets [--app <appId>] [--type <type>]
+```
+
+---
+
+## Global Options
+
+| Option | Description |
+|--------|-------------|
+| `--app <appId>` | Specify target application |
+| `--env <env>` | Target environment (dev/prod) |
+| `--format <format>` | Output format (json/table) |
+| `--verbose` | Show detailed logs |
+| `--dry-run` | Preview changes without executing |
+
+---
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `OPENYIDA_APP_KEY` | App key for API authentication |
+| `OPENYIDA_APP_SECRET` | App secret for API authentication |
+| `OPENYIDA_ACCESS_TOKEN` | Access token (optional) |
+| `OPENYIDA_DEFAULT_ORG` | Default organization ID |
