@@ -1,0 +1,170 @@
+---
+title: 项目结构
+description: OpenYida 项目目录结构和代码组织方式
+---
+
+# 项目结构
+
+OpenYida 采用模块化架构设计，代码组织清晰，便于维护和扩展。
+
+## 目录概览
+
+```
+openyida/
+├── src/
+│   ├── commands/          # CLI 命令实现
+│   │   ├── create-app.ts
+│   │   ├── create-form.ts
+│   │   ├── create-page.ts
+│   │   ├── publish.ts
+│   │   ├── share.ts
+│   │   ├── data.ts
+│   │   ├── connector.ts
+│   │   ├── report.ts
+│   │   ├── doctor.ts
+│   │   └── login.ts
+│   ├── core/              # 核心功能模块
+│   │   ├── yida-api.ts    # 宜搭 API 封装
+│   │   ├── ai-service.ts  # AI 服务集成
+│   │   ├── config.ts      # 配置管理
+│   │   └── auth.ts        # 认证处理
+│   ├── utils/             # 工具函数
+│   │   ├── logger.ts
+│   │   ├── file.ts
+│   │   └── validator.ts
+│   └── types/             # TypeScript 类型定义
+│       ├── yida.ts
+│       ├── ai.ts
+│       └── index.ts
+├── skills/                # Skill 系统
+│   ├── builtin/           # 内置 Skills
+│   └── custom/            # 自定义 Skills
+├── templates/             # 代码模板
+│   ├── app/
+│   ├── form/
+│   └── page/
+├── docs/                  # 文档资源
+├── tests/                 # 测试文件
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+## 核心模块说明
+
+### src/commands/
+
+存放所有 CLI 命令的实现，每个文件对应一个子命令：
+
+| 文件 | 功能 |
+|------|------|
+| `create-app.ts` | 创建宜搭应用 |
+| `create-form.ts` | 创建表单页面 |
+| `create-page.ts` | 创建自定义页面 |
+| `publish.ts` | 发布应用 |
+| `share.ts` | 分享应用 |
+| `data.ts` | 数据管理操作 |
+| `connector.ts` | 连接器管理 |
+| `report.ts` | 报表操作 |
+| `doctor.ts` | 诊断工具 |
+| `login.ts` | 登录认证 |
+
+### src/core/
+
+核心业务逻辑模块：
+
+- **yida-api.ts**: 封装宜搭开放平台 API，提供统一的接口调用
+- **ai-service.ts**: 集成多种 AI 服务（OpenAI、Claude、通义千问等）
+- **config.ts**: 管理本地配置文件（~/.openyida/config.json）
+- **auth.ts**: 处理登录态、Token 刷新、多组织切换
+
+### src/utils/
+
+通用工具函数：
+
+- **logger.ts**: 日志输出，支持分级和颜色
+- **file.ts**: 文件操作辅助函数
+- **validator.ts**: 输入验证和校验
+
+### src/types/
+
+TypeScript 类型定义，确保代码类型安全：
+
+- **yida.ts**: 宜搭 API 相关类型
+- **ai.ts**: AI 服务相关类型
+- **index.ts**: 通用类型导出
+
+## Skill 系统
+
+```
+skills/
+├── builtin/               # 内置 Skills
+│   ├── code-generator/    # 代码生成
+│   ├── form-builder/      # 表单构建
+│   ├── page-designer/     # 页面设计
+│   └── data-analyzer/     # 数据分析
+└── custom/                # 用户自定义 Skills
+    └── (用户扩展)
+```
+
+Skills 采用插件化架构，支持热加载和动态扩展。
+
+## 配置管理
+
+### 本地配置
+
+存储位置：`~/.openyida/config.json`
+
+```json
+{
+  "defaultOrg": "org-default",
+  "orgs": {
+    "org-default": {
+      "accessToken": "xxx",
+      "refreshToken": "xxx",
+      "expiresAt": 1234567890
+    }
+  },
+  "aiProvider": "openai",
+  "aiConfig": {
+    "apiKey": "sk-xxx",
+    "model": "gpt-4"
+  }
+}
+```
+
+### 项目配置
+
+项目根目录可创建 `.openyidarc.json`：
+
+```json
+{
+  "appId": "APP-XXX",
+  "defaultEnv": "dev",
+  "environments": {
+    "dev": { "appKey": "xxx", "appSecret": "xxx" },
+    "prod": { "appKey": "xxx", "appSecret": "xxx" }
+  }
+}
+```
+
+## 扩展机制
+
+### 添加新命令
+
+1. 在 `src/commands/` 创建新文件
+2. 实现命令处理函数
+3. 在 `src/index.ts` 注册命令
+
+### 添加新 Skill
+
+1. 在 `skills/custom/` 创建 Skill 目录
+2. 实现 `skill.json` 和主逻辑
+3. 使用 `openyida skill load` 加载
+
+## 开发规范
+
+- 所有新功能需包含类型定义
+- 命令实现需包含 `--help` 文档
+- 核心功能需有单元测试覆盖
+- 遵循 ESLint 和 Prettier 配置
