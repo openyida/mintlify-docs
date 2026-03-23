@@ -7,7 +7,7 @@
     "light": "#33AAFF",
     "dark": "#0044CC"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "localization": {
     "defaultLanguage": "zh",
     "languages": [
