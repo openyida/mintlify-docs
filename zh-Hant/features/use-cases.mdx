@@ -1,9 +1,150 @@
 ---
-title: "使用案例"
-description: "可以使用 OpenYida 構建的應用程式的實際範例。"
+title: "使用場景"
+description: "OpenYida 在實際業務中的應用場景。"
 icon: "lightbulb"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/use-cases) or [Chinese version](/zh/features/use-cases) for complete content.
-</Tip>
+OpenYida 適用於多種業務場景，以下是常見的應用類型示例。
+
+---
+
+## 🏢 企業業務系統
+
+構建多模塊業務平臺，支持複雜表單、工作流和數據關聯。
+
+<AccordionGroup>
+  <Accordion title="IPD（集成產品開發）">
+    **提示詞：**
+    ```
+    幫我用宜搭創建一個 IPD 系統，管理芯片生產全流程，
+    包括項目立項、設計評審、流片、量產等階段
+    ```
+    **產出：** 多表單應用，包含階段跟蹤、評審清單、里程碑管理、跨團隊可見性。
+  </Accordion>
+
+  <Accordion title="CRM（客戶關係管理）">
+    **提示詞：**
+    ```
+    幫我搭建一個 CRM，包含線索、客戶、商機、跟進記錄等模塊
+    ```
+    **產出：** 關聯表單：線索 → 客戶 → 商機 → 合同，含狀態跟蹤和分配字段。
+  </Accordion>
+
+  <Accordion title="人事與請假管理">
+    **提示詞：**
+    ```
+    創建一個人事請假管理系統，包含請假申請、審批流程、假期餘額統計
+    ```
+    **產出：** 請假申請表單含審批流程、餘額計算器、經理看板。
+  </Accordion>
+
+  <Accordion title="項目管理">
+    **提示詞：**
+    ```
+    搭建一個項目管理應用，包含任務、里程碑、團隊成員、進度跟蹤
+    ```
+    **產出：** 任務列表含優先級/狀態/負責人字段、里程碑跟蹤器、甘特圖視圖。
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 💰 實用工具與計算器
+
+單一用途的計算或數據收集工具。
+
+<AccordionGroup>
+  <Accordion title="個人薪資計算器">
+    **提示詞：**
+    ```
+    幫我搭建個人薪資計算器應用，輸入稅前工資，自動計算個稅和實發工資
+    ```
+    **產出：** 含稅前扣除、個稅計算、實發彙總的公式字段表單。
+  </Accordion>
+
+  <Accordion title="預算跟蹤器">
+    **提示詞：**
+    ```
+    幫我搭建個人預算跟蹤器，記錄收入、支出分類和月度彙總
+    ```
+    **產出：** 收入/支出錄入表單含分類下拉框和自動計算的月度餘額。
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🌐 落地頁與門戶
+
+營銷頁面、產品介紹和內部門戶。
+
+<AccordionGroup>
+  <Accordion title="企業產品落地頁">
+    **提示詞：**
+    ```
+    生成一個智聯協同企業協作產品的落地頁，包含首屏、功能介紹、聯繫表單
+    ```
+    **產出：** 完整自定義展示頁面，含首屏橫幅、功能卡片、嵌入式聯繫表單。
+  </Accordion>
+
+  <Accordion title="活動報名頁">
+    **提示詞：**
+    ```
+    創建一個年度技術大會的活動報名頁，包含參會人信息表單和分論壇選擇
+    ```
+    **產出：** 品牌化報名頁，含表單驗證和確認邏輯。
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🎮 互動活動與小遊戲
+
+內部活動、節日和營銷活動的互動工具。
+
+<AccordionGroup>
+  <Accordion title="元宵節猜燈謎">
+    **提示詞：**
+    ```
+    創建一個元宵節猜燈謎遊戲，AI 生成燈謎圖片，用戶提交答案，猜錯了有 AI 幽默回覆
+    ```
+    **產出：** 遊戲頁面含 AI 生成燈謎圖片、答案提交表單、條件響應邏輯。
+  </Accordion>
+
+  <Accordion title="生日祝福小遊戲">
+    **提示詞：**
+    ```
+    搭建一個生日祝福小遊戲，用戶輸入姓名獲得個性化 AI 賀卡
+    ```
+    **產出：** 互動賀卡生成器，含響應跟蹤的數據存儲。
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🔌 API 集成（連接器）
+
+通過 HTTP 連接器將宜搭應用與外部系統連接。
+
+<AccordionGroup>
+  <Accordion title="Webhook 通知">
+    **提示詞：**
+    ```
+    爲我們的釘釘 webhook 創建一個 HTTP 連接器，添加 POST 動作發送表單提交通知
+    ```
+    **產出：** 配置好的連接器含測試能力，可在表單事件時觸發。
+  </Accordion>
+
+  <Accordion title="從 curl 智能創建">
+    **提示詞：**
+    ```
+    從這個 curl 命令智能創建連接器：curl -X POST https://api.example.com/v1/users -H "Authorization: Bearer TOKEN" -d '{"name":"test"}'
+    ```
+    **產出：** 自動配置的連接器，提取基礎 URL、請求頭、動作參數。
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+這些是起點。由於產出是可在宜搭平臺完全編輯的應用（非黑盒配置），你隨時可以通過宜搭可視化編輯器或給 AI 後續指令來優化生成的應用。
+</Note>

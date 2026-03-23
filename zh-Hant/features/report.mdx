@@ -1,9 +1,234 @@
 ---
 title: "報表與圖表"
-description: "建立宜搭報表和資料視覺化。"
+description: "創建宜搭報表，添加數據可視化圖表。"
 icon: "chart-column"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/report) or [Chinese version](/zh/features/report) for complete content.
-</Tip>
+OpenYida 支持創建宜搭報表並添加各種圖表，實現數據的可視化展示。
+
+---
+
+## 功能概述
+
+<CardGroup cols={2}>
+  <Card title="報表創建" icon="file-plus">
+    一鍵創建宜搭報表，支持自定義配置。
+  </Card>
+  <Card title="圖表追加" icon="chart-pie">
+    向現有報表追加多種類型的圖表。
+  </Card>
+  <Card title="數據綁定" icon="link">
+    自動綁定表單數據源，實時展示數據。
+  </Card>
+  <Card title="圖表類型" icon="shapes">
+    支持柱狀圖、折線圖、餅圖、表格等多種圖表。
+  </Card>
+</CardGroup>
+
+---
+
+## 創建報表
+
+### 基本用法
+
+```bash
+openyida create-report <appType> "報表名稱" '<圖表定義JSON>'
+```
+
+### 示例：創建銷售報表
+
+```bash
+openyida create-report APP_XXXXXX "月度銷售報表" '{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "月度銷售額",
+      "dataSource": "form_sales",
+      "xField": "month",
+      "yField": "amount"
+    },
+    {
+      "type": "pie",
+      "title": "產品銷售佔比",
+      "dataSource": "form_sales",
+      "categoryField": "product_type",
+      "valueField": "amount"
+    }
+  ]
+}'
+```
+
+### 從文件加載圖表定義
+
+```bash
+openyida create-report APP_XXXXXX "年度統計報表" ./charts-config.json
+```
+
+---
+
+## 圖表定義格式
+
+### 柱狀圖
+
+```json
+{
+  "type": "bar",
+  "title": "柱狀圖標題",
+  "dataSource": "form_uuid",
+  "xField": "category_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### 折線圖
+
+```json
+{
+  "type": "line",
+  "title": "趨勢圖標題",
+  "dataSource": "form_uuid",
+  "xField": "date_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### 餅圖
+
+```json
+{
+  "type": "pie",
+  "title": "佔比圖標題",
+  "dataSource": "form_uuid",
+  "categoryField": "category_field",
+  "valueField": "value_field"
+}
+```
+
+### 數據表格
+
+```json
+{
+  "type": "table",
+  "title": "數據明細",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "名稱" },
+    { "field": "amount", "title": "金額" },
+    { "field": "date", "title": "日期" }
+  ]
+}
+```
+
+---
+
+## 向報表追加圖表
+
+```bash
+openyida append-chart <appType> <reportId> '<圖表定義JSON>'
+```
+
+### 示例
+
+```bash
+openyida append-chart APP_XXXXXX REPORT_XXXXX '{
+  "type": "line",
+  "title": "增長趨勢",
+  "dataSource": "form_sales",
+  "xField": "month",
+  "yField": "growth_rate"
+}'
+```
+
+---
+
+## 完整配置示例
+
+### sales-report-charts.json
+
+```json
+{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "月度銷售額統計",
+      "dataSource": "form_monthly_sales",
+      "xField": "month",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "color": "#0066FF"
+    },
+    {
+      "type": "pie",
+      "title": "產品類別佔比",
+      "dataSource": "form_sales",
+      "categoryField": "product_category",
+      "valueField": "sales_amount",
+      "showLegend": true
+    },
+    {
+      "type": "line",
+      "title": "銷售趨勢",
+      "dataSource": "form_daily_sales",
+      "xField": "date",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "smooth": true
+    },
+    {
+      "type": "table",
+      "title": "銷售明細",
+      "dataSource": "form_sales",
+      "columns": [
+        { "field": "order_no", "title": "訂單號", "width": 150 },
+        { "field": "customer_name", "title": "客戶名稱", "width": 200 },
+        { "field": "product_name", "title": "產品名稱", "width": 200 },
+        { "field": "amount", "title": "金額", "width": 120, "align": "right" },
+        { "field": "sales_date", "title": "銷售日期", "width": 150 }
+      ],
+      "pageSize": 10
+    }
+  ]
+}
+```
+
+創建報表：
+
+```bash
+openyida create-report APP_XXXXXX "銷售分析報表" ./sales-report-charts.json
+```
+
+---
+
+## 圖表類型參考
+
+| 類型 | 說明 | 必需字段 |
+|------|------|----------|
+| `bar` | 柱狀圖 | xField, yField |
+| `line` | 折線圖 | xField, yField |
+| `pie` | 餅圖 | categoryField, valueField |
+| `table` | 數據表格 | columns |
+| `area` | 面積圖 | xField, yField |
+| `scatter` | 散點圖 | xField, yField |
+
+---
+
+## 聚合函數
+
+| 函數 | 說明 |
+|------|------|
+| `sum` | 求和 |
+| `avg` | 平均值 |
+| `count` | 計數 |
+| `max` | 最大值 |
+| `min` | 最小值 |
+
+---
+
+## 最佳實踐
+
+1. **合理選擇圖表類型** - 趨勢用折線圖、對比用柱狀圖、佔比用餅圖
+2. **控制圖表數量** - 單個報表建議不超過 6 個圖表
+3. **使用數據表格** - 配合圖表展示詳細數據，方便查看原始值
+4. **設置合適的分頁** - 數據表格建議每頁 10-20 條

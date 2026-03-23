@@ -1,10 +1,2 @@
 wrangler.toml
-translations.json
-.gitignore
-.gitignore
-translate.js
-translation-source.json
-translate-batch.js
-generate-all-translations.js
-translate_remaining.py
 .qoder/

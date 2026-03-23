@@ -1,9 +1,242 @@
 ---
-title: "技術堆疊"
-description: "OpenYida 的技術架構與依賴項。"
+title: "技術架構"
+description: "OpenYida 的技術架構、核心模塊和設計原理。"
 icon: "layer-group"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/tech-stack) or [Chinese version](/zh/architecture/tech-stack) for complete content.
-</Tip>
+## 技術棧架構
+
+![技術棧架構](/images/architecture-tech-stack.png)
+
+OpenYida 的技術棧分爲開發環境和雲平臺兩部分：
+
+### 開發環境 (Development Environment)
+- **Node.js** - 運行時環境
+- **Python** - Playwright 自動化測試
+- **Git** - 版本控制
+
+### 自動化測試 (Playwright)
+- 瀏覽器自動化
+- 端到端測試
+- 頁面截圖對比
+
+### 宜搭雲平臺 (YiDa Cloud Platform)
+- **App** - 應用管理
+- **Form** - 表單頁面
+- **Custom Page** - 自定義頁面
+
+## 架構概覽
+
+OpenYida 採用模塊化架構設計，核心分爲 CLI 入口、核心模塊、功能模塊三層。
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI 入口層 (bin/)                       │
+│                      yida.js - 命令路由                       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      核心模塊 (lib/core/)                     │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │   i18n   │ │   env    │ │  utils   │ │  doctor  │       │
+│  │  國際化   │ │ 環境檢測 │ │ 工具函數 │ │ 診斷工具 │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │  check   │ │   copy   │ │  babel   │ │  locales │       │
+│  │ 更新檢查 │ │目錄複製  │ │ 編譯器   │ │  語言包  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      功能模塊 (lib/)                          │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │   auth   │ │   app    │ │   data   │ │  report  │       │
+│  │ 認證模塊 │ │應用管理  │ │ 數據管理 │ │  報表    │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │ connector│ │  process │ │permission│ │   cdn    │       │
+│  │ 連接器   │ │ 流程管理 │ │  權限    │ │ CDN管理  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    宜搭平臺 API (aliwork.com)                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 核心模塊詳解
+
+### 國際化 (i18n.js)
+
+支持 12 種語言的國際化系統：
+
+```javascript
+const { t, getLanguage, setLanguage } = require('./i18n');
+
+// 使用翻譯
+console.log(t('login.success'));
+console.log(t('create_app.usage', 'appName'));
+
+// 獲取/設置語言
+console.log(getLanguage()); // 'zh'
+setLanguage('en');
+```
+
+**語言檢測優先級：**
+1. `OPENYIDA_LANG` 環境變量
+2. `LANG` / `LC_ALL` 系統環境變量
+3. 默認：簡體中文
+
+### 環境檢測 (env.js)
+
+自動檢測當前運行的 AI 工具環境：
+
+| 檢測方式 | 工具 |
+|----------|------|
+| 目錄存在檢測 | Claude Code、Cursor、OpenCode、Aone Copilot、Qoder |
+| 特殊文件檢測 | 悟空 (Wukong) |
+
+### 診斷引擎 (doctor.js)
+
+三層架構設計：
+
+1. **DiagnosticEngine** - 診斷調度器
+2. **EnvironmentChecker** - 環境檢查器
+3. **ApplicationChecker** - 應用檢查器
+4. **FixEngine** - 智能修復引擎
+
+---
+
+## 功能模塊詳解
+
+### 認證模塊 (auth/)
+
+```
+auth/
+├── login.js          # 宜搭登錄（Cookie 緩存 + 掃碼）
+├── auth.js           # 登錄態管理
+├── org.js            # 組織管理
+└── qr-login.js       # 終端二維碼登錄
+```
+
+**登錄流程：**
+1. 檢測當前 AI 工具環境
+2. 根據環境選擇登錄方式（掃碼 / CDP / 文件讀取）
+3. 獲取 Cookie 並本地加密緩存
+4. 後續命令自動使用緩存的登錄態
+
+### 連接器模塊 (connector/)
+
+```
+connector/
+├── api.js                    # 宜搭連接器 API 封裝
+├── curl-parser.js            # curl 命令解析器
+├── action-generator.js       # 動作生成器
+├── desc-generator.js         # 描述生成器
+├── connector-smart-create.js # 智能創建入口
+└── ...
+```
+
+**智能創建流程：**
+```
+curl 命令 → 解析器 → API 信息提取 → 鑑權檢測 → 匹配已有連接器 → 生成配置 → 創建/更新
+```
+
+### 數據管理模塊 (data-management.js)
+
+統一的數據操作接口，支持：
+
+| 資源類型 | 操作 |
+|----------|------|
+| form | query, get, create, update |
+| process | query, get, create |
+| task | query, execute |
+| subform | query |
+
+---
+
+## 項目工作目錄
+
+```
+project/
+├── config.json          # 應用配置
+│   ├── appType          # 應用類型 ID
+│   ├── pageId           # 頁面 ID
+│   ├── corpId           # 組織 ID
+│   └── ...
+├── pages/
+│   ├── src/             # 頁面源碼（React + 宜搭 SDK）
+│   └── dist/            # 編譯產物
+├── prd/                 # 需求文檔
+└── .cache/
+    ├── cookies.json     # 登錄態緩存
+    ├── *-schema.json    # 表單 Schema 緩存
+    └── reports/         # 診斷報告
+```
+
+---
+
+## 宜搭 API 調用
+
+### 基礎配置
+
+```javascript
+const BASE_URL = 'https://www.aliwork.com';
+
+// 請求頭
+const headers = {
+  'Content-Type': 'application/json',
+  'X-Csrf-Token': csrfToken,
+  'Cookie': cookies,
+};
+```
+
+### 核心 API
+
+| 端點 | 用途 |
+|------|------|
+| `/dingtalk/web/APP_xxx/xxx` | 應用內接口 |
+| `/dingtalk/web/APP_xxx/form/getFormDataList` | 表單數據查詢 |
+| `/dingtalk/web/APP_xxx/form/saveFormData` | 保存表單數據 |
+| `/dingtalk/web/APP_xxx/proc/getProcessInstances` | 流程實例查詢 |
+
+---
+
+## 安全設計
+
+1. **Cookie 加密存儲** - 本地緩存加密保存
+2. **CSRF Token 驗證** - 每次請求攜帶 Token
+3. **無硬編碼憑證** - 所有憑證動態獲取
+4. **環境隔離** - 不同 AI 工具環境獨立
+
+---
+
+## 性能優化
+
+1. **懶加載翻譯文件** - 按需加載語言包
+2. **Schema 本地緩存** - 減少 API 調用
+3. **併發請求控制** - 避免請求過多被限流
+4. **增量更新** - 表單更新採用合併而非覆蓋
+
+---
+
+## 擴展機制
+
+### 添加新命令
+
+1. 在 `lib/` 下創建 `new-feature.js`
+2. 在 `bin/yida.js` 註冊命令路由
+3. 更新 `README.md` 和文檔
+4. 添加國際化 key
+
+### 添加新語言
+
+1. 在 `lib/core/locales/` 創建 `xx.js`
+2. 翻譯所有 key（以 `zh.js` 爲基準）
+3. 更新 `i18n.js` 的 `SUPPORTED_LANGUAGES`
+4. 運行 `npm run validate-i18n` 檢查完整性

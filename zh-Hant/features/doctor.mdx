@@ -1,9 +1,229 @@
 ---
 title: "診斷工具"
-description: "環境診斷與問題解決。"
+description: "環境檢查、應用診斷、智能修復、健康監控。"
 icon: "stethoscope"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/doctor) or [Chinese version](/zh/features/doctor) for complete content.
-</Tip>
+OpenYida 內置強大的診斷工具 `doctor`，幫助開發者檢查環境、診斷問題、自動修復、持續監控應用健康度。
+
+---
+
+## 功能概述
+
+<CardGroup cols={2}>
+  <Card title="環境檢查" icon="laptop-code">
+    檢查 Node.js、Python、Playwright、登錄態等環境依賴。
+  </Card>
+  <Card title="應用診斷" icon="magnifying-glass">
+    檢查 PRD、頁面源碼、Schema 緩存、React Hooks 規範。
+  </Card>
+  <Card title="智能修復" icon="wand-magic">
+    自動修復可修復的問題，提供手動修復指導。
+  </Card>
+  <Card title="健康監控" icon="heart-pulse">
+    持續監控應用健康度，生成趨勢報告。
+  </Card>
+</CardGroup>
+
+---
+
+## 基本用法
+
+### 運行診斷
+
+```bash
+openyida doctor
+```
+
+### 自動修復
+
+```bash
+openyida doctor --fix
+```
+
+### 生成報告
+
+```bash
+# Markdown 格式
+openyida doctor --report markdown
+
+# JSON 格式
+openyida doctor --report json
+
+# HTML 格式
+openyida doctor --report html
+```
+
+---
+
+## 環境檢查項
+
+| 檢查項 | 說明 | 自動修復 |
+|--------|------|----------|
+| Node.js 版本 | 檢查是否 ≥ 16 | ❌ |
+| Python 版本 | 檢查是否 ≥ 3.10 | ❌ |
+| Playwright | 檢查是否安裝 | ✅ |
+| Chromium | 檢查瀏覽器是否安裝 | ✅ |
+| gh CLI | 檢查 GitHub CLI | ❌ |
+| gh 登錄 | 檢查 gh CLI 登錄態 | ✅ |
+| config.json | 檢查配置文件 | ✅ |
+| Skills | 檢查技能包安裝 | ❌ |
+| 宜搭登錄 | 檢查登錄態 | ✅ |
+| 網絡連通 | 檢查 aliwork.com 連通性 | ❌ |
+
+---
+
+## 應用診斷項
+
+| 檢查項 | 說明 |
+|--------|------|
+| PRD 文件 | 檢查是否存在需求文檔 |
+| 頁面源碼 | 檢查源碼文件、console.log、空文件 |
+| Schema 緩存 | 檢查緩存文件格式 |
+| React Hooks | 檢查 Hooks 使用規範 |
+
+---
+
+## 健康監控模式
+
+啓動持續監控，每分鐘檢查一次：
+
+```bash
+openyida doctor --monitor
+```
+
+輸出示例：
+
+```
+[14:32:01] 健康度: 95/100 📈
+  通過: 18/19 | 錯誤: 0 | 警告: 1
+
+[14:33:01] 健康度: 100/100 ➡️
+  通過: 19/19 | 錯誤: 0 | 警告: 0
+```
+
+按 `Ctrl+C` 停止監控。
+
+---
+
+## 線上診斷
+
+針對已發佈應用的線上診斷：
+
+```bash
+openyida doctor --production --app <appId>
+```
+
+檢查內容：
+- 應用 ID 有效性
+- 線上錯誤日誌
+- 性能指標
+
+---
+
+## 工單與 VOC
+
+### 創建工單（Bug）
+
+```bash
+openyida doctor --create-ticket
+```
+
+交互式輸入標題和描述，自動提交到 GitHub Issues。
+
+### 創建 VOC（需求）
+
+```bash
+openyida doctor --create-voc
+```
+
+### 智能提交
+
+系統自動判斷是 Bug 還是需求：
+
+```bash
+openyida doctor --auto-submit
+```
+
+---
+
+## 診斷報告示例
+
+### 控制檯輸出
+
+```
+🔍 檢查 OpenYida 環境依賴...
+
+✅ Node.js v18.19.0（要求 ≥ 16）
+✅ Python 3.11.4（要求 ≥ 3.10）
+✅ Playwright 已安裝
+✅ Playwright Chromium 已安裝
+✅ gh version 2.40.1
+✅ gh CLI 已登錄
+✅ config.json 存在且格式正確
+⚠️  Skills 安裝檢測
+   Skills 未安裝，運行 bash install-skills.sh 安裝
+✅ 宜搭登錄態：已登錄
+✅ 網絡連通性（aliwork.com）
+✅ PRD 文件（2 個）
+✅ 頁面源碼（3 個文件）
+✅ Schema 緩存（5 個）
+✅ React Hooks 規範
+
+發現 1 個問題（0 個錯誤，1 個警告）
+```
+
+### Markdown 報告
+
+```bash
+openyida doctor --report markdown
+```
+
+報告保存到 `.cache/reports/doctor-2024-01-15T10-30-00-000Z.md`
+
+---
+
+## 預檢查
+
+在關鍵操作前自動執行檢查：
+
+### 發佈前檢查
+
+```bash
+# 自動執行
+openyida publish 前會自動運行預檢查
+```
+
+### 創建前檢查
+
+```bash
+# 自動執行
+openyida create-app 前會自動運行預檢查
+```
+
+---
+
+## 修復類型
+
+| 類型 | 說明 | 示例 |
+|------|------|------|
+| `AUTO` | 自動修復 | 創建 config.json、刪除損壞緩存 |
+| `COMMAND` | 命令修復 | 運行 `pip install playwright` |
+| `MANUAL` | 手動修復 | 安裝 gh CLI、編寫 PRD |
+
+---
+
+## 健康度計算
+
+健康度分數（0-100）計算公式：
+
+```
+健康度 = 通過率 × 100 - 錯誤數 × 10 - 警告數 × 3
+```
+
+| 分數 | 狀態 |
+|------|------|
+| 90-100 | 優秀 🟢 |
+| 70-89 | 良好 🟡 |
+| 50-69 | 一般 🟠 |
+| < 50 | 需改進 🔴 |

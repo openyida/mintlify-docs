@@ -1,9 +1,199 @@
 ---
-title: "連接器"
-description: "HTTP 連接器的建立與管理。"
+title: "連接器（HTTP 集成）"
+description: "通過 HTTP 連接器將宜搭應用與外部 API 集成。"
 icon: "plug"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/connector) or [Chinese version](/zh/features/connector) for complete content.
-</Tip>
+OpenYida 提供強大的 HTTP 連接器管理功能，支持從 curl 命令智能創建連接器，實現宜搭與外部系統的無縫對接。
+
+---
+
+## 功能概述
+
+<CardGroup cols={2}>
+  <Card title="智能創建" icon="wand-magic-sparkles">
+    從 curl 命令自動解析並創建連接器，支持鑑權信息提取。
+  </Card>
+  <Card title="API 管理" icon="code">
+    完整的連接器生命週期管理：創建、更新、測試、刪除。
+  </Card>
+  <Card title="鑑權支持" icon="key">
+    支持 Bearer Token、API Key、OAuth2 等多種鑑權方式。
+  </Card>
+  <Card title="動作管理" icon="play">
+    添加、測試、管理連接器的執行動作。
+  </Card>
+</CardGroup>
+
+---
+
+## 智能創建連接器
+
+通過 curl 命令一鍵創建連接器：
+
+```bash
+openyida connector smart-create \
+  --curl "curl 'https://api.example.com/v1/users' -H 'Authorization: Bearer xxx'" \
+  --name "用戶管理連接器" \
+  --desc "用於管理用戶數據的 HTTP 連接器"
+```
+
+智能創建流程：
+
+1. **解析接口信息** - 提取協議、Host、方法、路徑、鑑權類型
+2. **匹配已有連接器** - 查找相同 Host 和鑑權的現有連接器
+3. **生成連接器配置** - 自動構建 OpenAPI 格式的連接器定義
+4. **創建或更新** - 創建新連接器或向現有連接器添加動作
+
+---
+
+## 連接器管理命令
+
+### 列出連接器
+
+```bash
+openyida connector list
+openyida connector list --page 1 --size 20
+```
+
+### 創建連接器
+
+```bash
+openyida connector create "連接器名稱" "api.example.com" \
+  --operations ./operations.json \
+  --protocol https \
+  --desc "連接器描述"
+```
+
+### 查看連接器詳情
+
+```bash
+openyida connector detail <connector-id>
+```
+
+### 刪除連接器
+
+```bash
+openyida connector delete <connector-id> --force
+```
+
+---
+
+## 動作管理
+
+### 添加執行動作
+
+```bash
+openyida connector add-action \
+  --connector-id <id> \
+  --operations ./new-action.json \
+  --confirm
+```
+
+### 列出現有動作
+
+```bash
+openyida connector list-actions <connector-id>
+```
+
+### 測試動作
+
+```bash
+openyida connector test \
+  --connector-id <id> \
+  --action <actionId> \
+  --body '{"key": "value"}'
+```
+
+### 刪除動作
+
+```bash
+openyida connector delete-action <connector-id> <operation-id> --force
+```
+
+---
+
+## 鑑權賬號管理
+
+### 列出鑑權賬號
+
+```bash
+openyida connector list-connections <connector-id>
+```
+
+### 創建鑑權賬號
+
+```bash
+openyida connector create-connection <connector-id> "生產環境賬號" \
+  --token "Bearer xxx" \
+  --type bearer
+```
+
+---
+
+## 輔助工具
+
+### 解析 API 信息
+
+```bash
+openyida connector parse-api --curl "curl命令" --output ./api-info.json
+```
+
+### 生成接口文檔模板
+
+```bash
+openyida connector gen-template ./my-api-template.json
+```
+
+---
+
+## 最佳實踐
+
+### 1. 使用環境變量管理敏感信息
+
+```bash
+export API_TOKEN="your-secret-token"
+openyida connector smart-create --curl "curl -H 'Authorization: Bearer $API_TOKEN' ..."
+```
+
+### 2. 分階段創建複雜連接器
+
+```bash
+# 第一步：創建基礎連接器
+openyida connector create "釘釘 API" "oapi.dingtalk.com"
+
+# 第二步：逐個添加動作
+openyida connector add-action --connector-id <id> --operations ./action1.json
+openyida connector add-action --connector-id <id> --operations ./action2.json
+```
+
+### 3. 測試後再啓用
+
+```bash
+# 創建但不確認
+openyida connector add-action --connector-id <id> --operations ./action.json
+
+# 測試動作
+openyida connector test --connector-id <id> --action <actionId>
+
+# 確認生效
+# 在宜搭後臺完成最終確認
+```
+
+---
+
+## 常見問題
+
+<AccordionGroup>
+  <Accordion title="curl 命令解析失敗怎麼辦？">
+    確保 curl 命令格式正確，包含完整的 URL 和必要的 headers。如果包含特殊字符，建議使用引號包裹。
+  </Accordion>
+
+  <Accordion title="如何更新已有連接器的動作？">
+    使用 `connector add-action` 命令，如果動作 ID 已存在，系統會提示是否更新。
+  </Accordion>
+
+  <Accordion title="支持哪些鑑權方式？">
+    目前支持 Bearer Token、API Key、Basic Auth、OAuth2。curl 命令中的鑑權信息會被自動識別。
+  </Accordion>
+</AccordionGroup>

@@ -1,9 +1,170 @@
 ---
-title: "專案結構"
-description: "OpenYida 的目錄佈局和檔案結構。"
-icon: "folder-tree"
+title: 項目結構
+description: OpenYida 項目目錄結構和代碼組織方式
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/project-structure) or [Chinese version](/zh/architecture/project-structure) for complete content.
-</Tip>
+# 項目結構
+
+OpenYida 採用模塊化架構設計，代碼組織清晰，便於維護和擴展。
+
+## 目錄概覽
+
+```
+openyida/
+├── src/
+│   ├── commands/          # CLI 命令實現
+│   │   ├── create-app.ts
+│   │   ├── create-form.ts
+│   │   ├── create-page.ts
+│   │   ├── publish.ts
+│   │   ├── share.ts
+│   │   ├── data.ts
+│   │   ├── connector.ts
+│   │   ├── report.ts
+│   │   ├── doctor.ts
+│   │   └── login.ts
+│   ├── core/              # 核心功能模塊
+│   │   ├── yida-api.ts    # 宜搭 API 封裝
+│   │   ├── ai-service.ts  # AI 服務集成
+│   │   ├── config.ts      # 配置管理
+│   │   └── auth.ts        # 認證處理
+│   ├── utils/             # 工具函數
+│   │   ├── logger.ts
+│   │   ├── file.ts
+│   │   └── validator.ts
+│   └── types/             # TypeScript 類型定義
+│       ├── yida.ts
+│       ├── ai.ts
+│       └── index.ts
+├── skills/                # Skill 系統
+│   ├── builtin/           # 內置 Skills
+│   └── custom/            # 自定義 Skills
+├── templates/             # 代碼模板
+│   ├── app/
+│   ├── form/
+│   └── page/
+├── docs/                  # 文檔資源
+├── tests/                 # 測試文件
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+## 核心模塊說明
+
+### src/commands/
+
+存放所有 CLI 命令的實現，每個文件對應一個子命令：
+
+| 文件 | 功能 |
+|------|------|
+| `create-app.ts` | 創建宜搭應用 |
+| `create-form.ts` | 創建表單頁面 |
+| `create-page.ts` | 創建自定義頁面 |
+| `publish.ts` | 發佈應用 |
+| `share.ts` | 分享應用 |
+| `data.ts` | 數據管理操作 |
+| `connector.ts` | 連接器管理 |
+| `report.ts` | 報表操作 |
+| `doctor.ts` | 診斷工具 |
+| `login.ts` | 登錄認證 |
+
+### src/core/
+
+核心業務邏輯模塊：
+
+- **yida-api.ts**: 封裝宜搭開放平臺 API，提供統一的接口調用
+- **ai-service.ts**: 集成多種 AI 服務（OpenAI、Claude、通義千問等）
+- **config.ts**: 管理本地配置文件（~/.openyida/config.json）
+- **auth.ts**: 處理登錄態、Token 刷新、多組織切換
+
+### src/utils/
+
+通用工具函數：
+
+- **logger.ts**: 日誌輸出，支持分級和顏色
+- **file.ts**: 文件操作輔助函數
+- **validator.ts**: 輸入驗證和校驗
+
+### src/types/
+
+TypeScript 類型定義，確保代碼類型安全：
+
+- **yida.ts**: 宜搭 API 相關類型
+- **ai.ts**: AI 服務相關類型
+- **index.ts**: 通用類型導出
+
+## Skill 系統
+
+```
+skills/
+├── builtin/               # 內置 Skills
+│   ├── code-generator/    # 代碼生成
+│   ├── form-builder/      # 表單構建
+│   ├── page-designer/     # 頁面設計
+│   └── data-analyzer/     # 數據分析
+└── custom/                # 用戶自定義 Skills
+    └── (用戶擴展)
+```
+
+Skills 採用插件化架構，支持熱加載和動態擴展。
+
+## 配置管理
+
+### 本地配置
+
+存儲位置：`~/.openyida/config.json`
+
+```json
+{
+  "defaultOrg": "org-default",
+  "orgs": {
+    "org-default": {
+      "accessToken": "xxx",
+      "refreshToken": "xxx",
+      "expiresAt": 1234567890
+    }
+  },
+  "aiProvider": "openai",
+  "aiConfig": {
+    "apiKey": "sk-xxx",
+    "model": "gpt-4"
+  }
+}
+```
+
+### 項目配置
+
+項目根目錄可創建 `.openyidarc.json`：
+
+```json
+{
+  "appId": "APP-XXX",
+  "defaultEnv": "dev",
+  "environments": {
+    "dev": { "appKey": "xxx", "appSecret": "xxx" },
+    "prod": { "appKey": "xxx", "appSecret": "xxx" }
+  }
+}
+```
+
+## 擴展機制
+
+### 添加新命令
+
+1. 在 `src/commands/` 創建新文件
+2. 實現命令處理函數
+3. 在 `src/index.ts` 註冊命令
+
+### 添加新 Skill
+
+1. 在 `skills/custom/` 創建 Skill 目錄
+2. 實現 `skill.json` 和主邏輯
+3. 使用 `openyida skill load` 加載
+
+## 開發規範
+
+- 所有新功能需包含類型定義
+- 命令實現需包含 `--help` 文檔
+- 核心功能需有單元測試覆蓋
+- 遵循 ESLint 和 Prettier 配置
