@@ -1,30 +1,30 @@
 ---
-title: "Quick Start"
-description: "Install OpenYiDA and build your first Yida app in under 2 minutes."
+title: "快速开始"
+description: "安装 OpenYida，在 2 分钟内构建您的第一个宜搭应用。"
 icon: "bolt"
 ---
 
-## Prerequisites
+## 环境要求
 
-Before you begin, ensure you have the following installed:
+在开始之前，请确保已安装以下依赖：
 
-| Dependency | Version | Check Command |
-|------------|---------|---------------|
+| 依赖 | 版本 | 检查命令 |
+|------|------|----------|
 | [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
 
 <Tip>
-  That's all you need. OpenYiDA is pure Node.js — no Python, no Playwright, no build step required.
+  这就是全部所需。OpenYida 是纯 Node.js 实现 — 无需 Python、无需 Playwright、无需构建步骤。
 </Tip>
 
 ---
 
-## Step 1 — Install
+## 第 1 步 — 安装
 
 ```bash
 npm install -g openyida
 ```
 
-Verify the installation:
+验证安装：
 
 ```bash
 openyida --version
@@ -32,16 +32,16 @@ openyida --version
 
 ---
 
-## Step 2 — Log in to Yida
+## 第 2 步 — 登录宜搭
 
 ```bash
 openyida login
 ```
 
-OpenYiDA will open a browser window (or display a QR code) for you to authenticate with your Yida / Alibaba account. Credentials are cached locally — you only need to do this once.
+OpenYida 将打开浏览器窗口（或显示二维码）供您使用宜搭/阿里巴巴账号进行身份验证。凭证会缓存在本地 — 只需执行一次。
 
 <Info>
-  If you're using **Wukong (悟空)** as your AI tool, use the special login flag:
+  如果您使用 **悟空** 作为 AI 工具，请使用特殊登录标志：
 
   ```bash
   openyida login --wukong
@@ -50,103 +50,103 @@ OpenYiDA will open a browser window (or display a QR code) for you to authentica
 
 ---
 
-## Step 3 — Check Your Environment
+## 第 3 步 — 检查环境
 
 ```bash
 openyida env
 ```
 
-This detects which AI coding tool is currently active (Claude Code, Cursor, Wukong, etc.) and shows your current login status. Run this whenever you switch environments.
+这将检测当前激活的 AI 编程工具（Claude Code、Cursor、悟空等）并显示您的当前登录状态。切换环境时随时运行此命令。
 
 ---
 
-## Step 4 — Initialize the Project Workspace
+## 第 4 步 — 初始化项目工作区
 
 ```bash
 openyida copy
 ```
 
-This copies the `project/` workspace template into your current AI tool's working directory, giving the AI access to your app configuration and page templates.
+这将把 `project/` 工作区模板复制到您当前 AI 工具的工作目录中，让 AI 能够访问您的应用配置和页面模板。
 
 ---
 
-## Step 5 — Start Building
+## 第 5 步 — 开始构建
 
-Now just talk to your AI coding assistant. Here are some starter prompts:
-
-```
-Build me an IPD system on Yida to manage the full chip production workflow
-```
+现在只需与您的 AI 编程助手对话。以下是一些入门提示词：
 
 ```
-Help me set up a CRM with leads, customers, and deals
+在宜搭上为我构建一个 IPD 系统，管理完整的芯片生产工作流程
 ```
 
 ```
-Create a personal salary calculator app
+帮我搭建一个包含线索、客户和交易的 CRM 系统
 ```
 
 ```
-Generate a birthday greeting mini-game on Yida
+创建一个个人工资计算器应用
 ```
 
-The AI will use OpenYiDA's skill pack to call the right CLI commands in sequence: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
+```
+在宜搭上生成一个生日祝福小游戏
+```
+
+AI 将使用 OpenYida 的技能包按顺序调用正确的 CLI 命令：`create-app` → `create-form` / `create-page` → `publish` → `save-share-config`。
 
 ---
 
-## Step 6 — Publish Your App
+## 第 6 步 — 发布应用
 
-Once the AI has generated your app, publish it with:
+AI 生成应用后，使用以下命令发布：
 
 ```bash
 openyida publish
 ```
 
-Or ask the AI:
+或者询问 AI：
 ```
-Publish the [page name] page
-Make the page publicly accessible
+发布 [页面名称] 页面
+让页面可以公开访问
 ```
 
 ---
 
-## Run Diagnostics
+## 运行诊断
 
-If anything feels off, run the built-in doctor:
+如果感觉有任何问题，运行内置的诊断工具：
 
 ```bash
 openyida doctor
 ```
 
-It checks your Node.js version, login status, and environment configuration, and can auto-fix common issues with `--fix`.
+它会检查您的 Node.js 版本、登录状态和环境配置，并可以使用 `--fix` 自动修复常见问题。
 
 ---
 
-## OpenClaw Integration
+## OpenClaw 集成
 
-If you use OpenClaw, install the OpenYiDA skill pack directly:
+如果您使用 OpenClaw，直接安装 OpenYida 技能包：
 
 ```bash
 npx clawhub@latest install nicky1108/yida-app
 ```
 
-Then use it via [yida-app on ClawhHub](https://clawhub.ai/nicky1108/yida-app).
+然后通过 [ClawhHub 上的 yida-app](https://clawhub.ai/nicky1108/yida-app) 使用它。
 
 ---
 
-## Next Steps
+## 下一步
 
 <CardGroup cols={2}>
-  <Card title="Common Prompts" icon="comments" href="/zh/features/common-prompts">
-    Browse the full list of natural language prompts OpenYiDA understands.
+  <Card title="常用提示词" icon="comments" href="/zh/features/common-prompts">
+    浏览 OpenYida 支持的自然语言提示词完整列表。
   </Card>
-  <Card title="CLI Reference" icon="terminal" href="/zh/features/skills">
-    Explore all CLI commands and skill modules.
+  <Card title="CLI 参考" icon="terminal" href="/zh/features/skills">
+    探索所有 CLI 命令和技能模块。
   </Card>
-  <Card title="Demo Gallery" icon="images" href="/zh/introduction/demo">
-    See real apps built with OpenYiDA.
+  <Card title="演示案例" icon="images" href="/zh/introduction/demo">
+    查看使用 OpenYida 构建的真实应用。
   </Card>
-  <Card title="Best Practices" icon="star" href="/zh/guides/best-practices">
-    Tips for getting the most out of AI-powered app generation.
+  <Card title="最佳实践" icon="star" href="/zh/guides/best-practices">
+    充分利用 AI 驱动应用生成的技巧。
   </Card>
 </CardGroup>
