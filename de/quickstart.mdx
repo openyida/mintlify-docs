@@ -1,19 +1,19 @@
 ---
 title: "Schnellstart"
-description: "Installieren Sie OpenYida und erstellen Sie Ihre erste Yida-App in 2 Minuten."
+description: "Installieren Sie OpenYida und erstellen Sie Ihre erste Yida-Anwendung in 2 Minuten."
 icon: "bolt"
 ---
 
-## Voraussetzungen
+## Systemanforderungen
 
 Bevor Sie beginnen, stellen Sie sicher, dass die folgenden Abhängigkeiten installiert sind:
 
 | Abhängigkeit | Version | Überprüfungsbefehl |
-|--------------|---------|-------------------|
+|------|------|----------|
 | [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
 
 <Tip>
-  Nur Node.js wird benötigt. Kein Python, kein Playwright, keine Build-Schritte — reine Node.js-Implementierung.
+  Das ist alles, was Sie brauchen. OpenYida ist eine reine Node.js-Implementierung — kein Python, kein Playwright, keine Build-Schritte erforderlich.
 </Tip>
 
 ---
@@ -38,10 +38,10 @@ openyida --version
 openyida login
 ```
 
-OpenYida öffnet ein Browserfenster (oder zeigt einen QR-Code) zur Authentifizierung mit Ihrem Yida/Alibaba-Konto. Die Anmeldedaten werden lokal zwischengespeichert — nur einmal anmelden.
+OpenYida öffnet ein Browserfenster (oder zeigt einen QR-Code) an, damit Sie sich mit Ihrem Yida/Alibaba-Konto authentifizieren können. Die Anmeldedaten werden lokal zwischengespeichert — Sie müssen dies nur einmal tun.
 
 <Info>
-  Wenn Sie **Wukong** als KI-Tool verwenden, verwenden Sie das spezielle Anmelde-Flag:
+  Wenn Sie **Wukong** als KI-Tool verwenden, verwenden Sie das spezielle Login-Flag:
 
   ```bash
   openyida login --wukong
@@ -50,53 +50,53 @@ OpenYida öffnet ein Browserfenster (oder zeigt einen QR-Code) zur Authentifizie
 
 ---
 
-## Schritt 3 — Umgebung prüfen
+## Schritt 3 — Umgebung überprüfen
 
 ```bash
 openyida env
 ```
 
-Erkennt das aktuell aktive KI-Codierungstool (Claude Code, Cursor, Wukong usw.) und zeigt Ihren Anmeldestatus an. Führen Sie diesen Befehl jederzeit aus, wenn Sie die Umgebung wechseln.
+Dies erkennt das aktuell aktive KI-Programmierwerkzeug (Claude Code, Cursor, Wukong usw.) und zeigt Ihren aktuellen Anmeldestatus an. Führen Sie diesen Befehl jedes Mal aus, wenn Sie die Umgebung wechseln.
 
 ---
 
-## Schritt 4 — Projektarbeitsbereich initialisieren
+## Schritt 4 — Projekt-Arbeitsbereich initialisieren
 
 ```bash
 openyida copy
 ```
 
-Kopiert die `project/`-Arbeitsbereichsvorlage in das aktuelle Arbeitsverzeichnis Ihres KI-Tools, sodass die KI auf Ihre App-Konfiguration und Seitenvorlagen zugreifen kann.
+Dies kopiert die `project/`-Arbeitsbereichsvorlage in das Arbeitsverzeichnis Ihres aktuellen KI-Tools, sodass die KI auf Ihre Anwendungskonfiguration und Seitenvorlagen zugreifen kann.
 
 ---
 
 ## Schritt 5 — Mit dem Bauen beginnen
 
-Sprechen Sie direkt mit Ihrem KI-Codierungsassistenten. Hier sind einige Beispiel-Prompts zum Starten:
+Sprechen Sie jetzt mit Ihrem KI-Programmierassistenten. Hier sind einige Prompts zum Starten:
 
 ```
-Bauen Sie mir ein IPD-System auf Yida, um den gesamten Chip-Produktions-Workflow zu verwalten
-```
-
-```
-Helfen Sie mir, ein CRM mit Leads, Kunden und Geschäften aufzubauen
+Baue ein IPD-System auf Yida, das den gesamten Chip-Produktions-Workflow verwaltet
 ```
 
 ```
-Erstellen Sie eine persönliche Gehaltsrechner-App
+Baue ein CRM-System mit Leads, Kunden und Transaktionen
 ```
 
 ```
-Generieren Sie ein Mini-Geburtstagsgruß-Spiel auf Yida
+Erstelle eine Gehaltsrechner-Anwendung
 ```
 
-Die KI verwendet das OpenYida-Skill-Paket, um CLI-Befehle in der richtigen Reihenfolge aufzurufen: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
+```
+Generiere ein Mini-Geburtstagsgruß-Spiel auf Yida
+```
+
+Die KI verwendet das OpenYida-Skill-Paket, um die CLI-Befehle in der richtigen Reihenfolge aufzurufen: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
 
 ---
 
-## Schritt 6 — App veröffentlichen
+## Schritt 6 — Anwendung veröffentlichen
 
-Sobald die KI die App generiert hat, führen Sie den Veröffentlichungsbefehl aus:
+Nachdem die KI die Anwendung erstellt hat, veröffentlichen Sie sie mit:
 
 ```bash
 openyida publish
@@ -104,21 +104,21 @@ openyida publish
 
 Oder fragen Sie die KI:
 ```
-Veröffentlichen Sie die Seite [Seitenname]
-Machen Sie die Seite öffentlich zugänglich
+Veröffentliche die Seite [Seitenname]
+Mache die Seite öffentlich zugänglich
 ```
 
 ---
 
 ## Diagnose ausführen
 
-Wenn Probleme auftreten, führen Sie das integrierte Diagnosetool aus:
+Wenn etwas nicht stimmt, führen Sie das integrierte Diagnose-Tool aus:
 
 ```bash
 openyida doctor
 ```
 
-Es überprüft Ihre Node.js-Version, den Anmeldestatus und die Umgebungskonfiguration und kann mit `--fix` häufige Probleme automatisch beheben.
+Es überprüft Ihre Node.js-Version, den Anmeldestatus und die Umgebungskonfiguration und kann häufige Probleme mit `--fix` automatisch beheben.
 
 ---
 
@@ -138,15 +138,15 @@ Verwenden Sie es dann über [yida-app auf ClawHub](https://clawhub.ai/nicky1108/
 
 <CardGroup cols={2}>
   <Card title="Häufige Prompts" icon="comments" href="/de/features/common-prompts">
-    Sehen Sie sich die vollständige Liste der von OpenYida unterstützten natürlichen Sprach-Prompts an.
+    Durchsuchen Sie die vollständige Liste der natürlichen Sprach-Prompts, die OpenYida unterstützt.
   </Card>
   <Card title="CLI-Referenz" icon="terminal" href="/de/features/skills">
     Erkunden Sie alle CLI-Befehle und Skill-Module.
   </Card>
   <Card title="Demo-Fälle" icon="images" href="/de/introduction/demo">
-    Sehen Sie sich echte Apps an, die mit OpenYida erstellt wurden.
+    Sehen Sie sich echte Anwendungen an, die mit OpenYida erstellt wurden.
   </Card>
   <Card title="Best Practices" icon="star" href="/de/guides/best-practices">
-    Erhalten Sie Tipps, um das Beste aus der KI-gesteuerten App-Generierung herauszuholen.
+    Tipps, um das Beste aus der KI-gesteuerten Anwendungsgenerierung herauszuholen.
   </Card>
 </CardGroup>

@@ -1,48 +1,101 @@
 ---
-title: "Visão geral"
-description: "OpenYida é uma ferramenta CLI para criar aplicativos Yida usando linguagem natural."
+title: "O que é o OpenYida?"
+description: "Ferramenta CLI de plataforma low-code Yida impulsionada por IA, configuração zero, pronta para usar."
 icon: "rocket"
 ---
 
-## O que é OpenYida?
+<img
+  className="block dark:hidden"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
+<img
+  className="hidden dark:block"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
 
-OpenYida é uma interface de linha de comando que conecta agentes de IA à plataforma low-code [Yida](https://www.aliwork.com). Permite criar, gerenciar e implantar aplicativos empresariais usando prompts em linguagem natural.
+> *"We are on the verge of the Singularity"* — Vernor Vinge
 
-## Principais recursos
+<p align="center">
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/v/openyida?color=brightgreen&label=npm" alt="npm version"/></a>
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/dm/openyida?color=blue" alt="npm downloads"/></a>
+  <a href="https://github.com/openyida/openyida/actions/workflows/ci.yml"><img src="https://github.com/openyida/openyida/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+  <a href="https://github.com/openyida/openyida/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"/></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen" alt="Node.js ≥18"/></a>
+</p>
+
+## Visão geral
+
+**OpenYida** é uma ferramenta CLI sem configuração que conecta assistentes de codificação IA à plataforma low-code [Yida](https://www.aliwork.com). Instale uma vez, depois descreva seus requisitos em linguagem natural — o OpenYida lida automaticamente com: criação de aplicativos, gerenciamento de formulários, publicação de páginas, configuração de conectores, geração de relatórios e implantação no Yida em segundos.
+
+🌐 **Site oficial**: [https://openyida.ai](https://openyida.ai)
 
 <CardGroup cols={2}>
-  <Card title="Criação de apps em linguagem natural" icon="message">
-    Descreva seu aplicativo em português. A IA traduz seus requisitos para formulários, páginas e fluxos de trabalho do Yida.
+  <Card title="Geração de apps em uma frase" icon="wand-magic-sparkles">
+    Descreva seus requisitos em uma frase, a IA gera automaticamente um sistema de negócios completo com múltiplos formulários.
   </Card>
-  <Card title="Suporte multi-ferramentas de IA" icon="robot">
-    Funciona com Claude Code, Cursor, VS Code, Wukong e qualquer assistente de IA compatível com MCP.
+  <Card title="Documento de requisitos para app" icon="file-lines">
+    Cole seu documento de requisitos para obter um aplicativo Yida totalmente funcional com todos os campos e a lógica especificados.
   </Card>
-  <Card title="Integração completa com Yida" icon="plug">
-    Cria aplicativos Yida reais — não maquetes.
+  <Card title="Operações de formulários e páginas" icon="table-columns">
+    Crie, modifique e configure formulários e páginas de exibição personalizadas por meio de comandos em linguagem natural.
   </Card>
-  <Card title="Compilação de páginas personalizadas" icon="code">
-    Páginas personalizadas baseadas em JSX são compiladas com Babel e publicadas automaticamente no Yida.
-  </Card>
-</CardGroup>
-
-## Início rápido
-
-```bash
-# Instalação
-npm install -g openyida
-
-# Login
-openyida login
-
-# Criar app
-openyida create-app --name "Meu CRM"
-```
-
-<CardGroup>
-  <Card title="Início rápido" icon="play" href="/pt/quickstart">
-    Crie seu primeiro app em 5 minutos
-  </Card>
-  <Card title="Casos de demonstração" icon="images" href="/pt/introduction/demo">
-    Ver aplicativos reais construídos com OpenYida
+  <Card title="Publicação e compartilhamento" icon="share-nodes">
+    Compile, publique e configure o acesso público com um único comando.
   </Card>
 </CardGroup>
+
+---
+
+## Funcionalidades principais
+
+| Módulo de funcionalidade | Descrição |
+|---------|------|
+| **Gerenciamento de aplicativos** | Criação de aplicativos, importação/exportação, migração e implantação |
+| **Gerenciamento de formulários** | Criação/atualização de formulários, obtenção de esquema, configuração de permissões |
+| **Publicação de páginas** | Desenvolvimento de páginas personalizadas, compilação Babel, publicação com um clique |
+| **Configuração de fluxos** | Criação de formulários de fluxo, configuração de regras de aprovação |
+| **Gerenciamento de dados** | Consulta de dados de formulários, instâncias de fluxo, gerenciamento de tarefas |
+| **Conectores** | Criação de conectores HTTP, integração de API, importação inteligente curl |
+| **Relatórios e gráficos** | Criação de relatórios Yida, adição de gráficos, visualização de dados |
+| **Gerenciamento CDN** | Upload de imagens, atualização de cache, configuração OSS |
+
+---
+
+## Diferenças de outras plataformas de construção IA
+
+| Dimensão | OpenYida | Outras plataformas de construção IA |
+|------|----------|------------------|
+| **Usuários-alvo** | Desenvolvedores (pessoas que entendem código) | Usuários de negócios (não desenvolvedores) |
+| **Modo de interação** | Linguagem natural + diálogo IA | Arrastar e soltar visual + painéis de configuração |
+| **Entregáveis** | Aplicativo Yida (editável posteriormente, suporte completo de low-code) | Configuração (execução de caixa preta) |
+| **Modo de implantação** | Plataforma Yida | Vinculação de plataforma SaaS |
+| **Modelo IA** | Seleção conforme necessidade, escolher o melhor modelo | Especificado pela plataforma, não modificável |
+| **Segurança e conformidade** | Yida possui capacidades completas de segurança e conformidade | Dependente de capacidades da plataforma |
+
+---
+
+## Ferramentas de codificação IA suportadas
+
+O OpenYida, como pacote de habilidades compatível com MCP, integra-se nativamente com todos os principais ambientes de codificação IA:
+
+| Ferramenta | Status |
+|------|------|
+| [Claude Code](https://claude.ai/code) | ✅ Suporte completo |
+| [Aone Copilot](https://copilot.code.alibaba-inc.com) | ✅ Suporte completo |
+| [OpenCode](https://opencode.ai) | ✅ Suporte completo |
+| [Cursor](https://cursor.com/) | ✅ Suporte completo |
+| [Visual Studio Code](https://code.visualstudio.com/) | ✅ Suporte completo |
+| [Qoder](https://qoder.com) | ✅ Suporte completo |
+| [悟空](https://dingtalk.com/wukong) | ✅ Suporte completo |
+
+---
+
+## Requisitos do ambiente
+
+| Dependência | Versão | Uso |
+|------|------|------|
+| Node.js | ≥ 18 | Execução CLI, publicação de páginas |
+
+Não é necessário Python, Playwright, etapas de build — implementação pura em Node.js.

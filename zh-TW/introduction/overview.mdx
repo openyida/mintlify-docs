@@ -1,48 +1,101 @@
 ---
-title: "概述"
-description: "OpenYida 是一款 CLI 工具，可使用自然語言建立 Yida 應用程式。"
+title: "什麼是 OpenYida？"
+description: "AI 驅動的宜搭低代碼平台 CLI 工具，零配置，即裝即用。"
 icon: "rocket"
 ---
 
-## 什麼是 OpenYida？
+<img
+  className="block dark:hidden"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
+<img
+  className="hidden dark:block"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
 
-OpenYida 是一個命令列介面，可將 AI 代理與 [Yida](https://www.aliwork.com) 低程式碼平台連接。它允許您使用自然語言提示來建立、管理和部署企業應用程式。
+> *"We are on the verge of the Singularity"* — Vernor Vinge
 
-## 主要功能
+<p align="center">
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/v/openyida?color=brightgreen&label=npm" alt="npm version"/></a>
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/dm/openyida?color=blue" alt="npm downloads"/></a>
+  <a href="https://github.com/openyida/openyida/actions/workflows/ci.yml"><img src="https://github.com/openyida/openyida/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+  <a href="https://github.com/openyida/openyida/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"/></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen" alt="Node.js ≥18"/></a>
+</p>
+
+## 概述
+
+**OpenYida** 是一個零配置 CLI 工具，連接 AI 編程助手與[宜搭 (Yida)](https://www.aliwork.com) 低代碼平台。安裝一次，然後用自然語言描述需求 — OpenYida 會自動處理：創建應用、管理表單、發布頁面、配置連接器、生成報表，秒級部署到宜搭。
+
+🌐 **官方網站**: [https://openyida.ai](https://openyida.ai)
 
 <CardGroup cols={2}>
-  <Card title="自然語言應用程式建立" icon="message">
-    用繁體中文描述您的應用程式。AI 會將您的需求轉換為 Yida 表單、頁面和工作流程。
+  <Card title="一句話生成應用" icon="wand-magic-sparkles">
+    用一句話描述需求，AI 自動生成完整的多表單業務系統。
   </Card>
-  <Card title="多 AI 工具支援" icon="robot">
-    與 Claude Code、Cursor、VS Code、Wukong 以及任何支援 MCP 的 AI 助理搭配使用。
+  <Card title="需求文檔轉應用" icon="file-lines">
+    貼上需求文檔，獲得功能完整的宜搭應用，包含所有指定欄位和邏輯。
   </Card>
-  <Card title="完整的 Yida 整合" icon="plug">
-    建立真正的 Yida 應用程式 — 而非模型。
+  <Card title="表單與頁面操作" icon="table-columns">
+    通過自然語言命令創建、修改、配置表單和自定義展示頁面。
   </Card>
-  <Card title="自訂頁面編譯" icon="code">
-    基於 JSX 的自訂頁面會使用 Babel 編譯並自動發佈到 Yida。
-  </Card>
-</CardGroup>
-
-## 快速開始
-
-```bash
-# 安裝
-npm install -g openyida
-
-# 登入
-openyida login
-
-# 建立應用程式
-openyida create-app --name "我的 CRM"
-```
-
-<CardGroup>
-  <Card title="快速開始" icon="play" href="/zh-TW/quickstart">
-    5 分鐘內建立您的第一個應用程式
-  </Card>
-  <Card title="展示案例" icon="images" href="/zh-TW/introduction/demo">
-    查看使用 OpenYida 建立的實際應用程式
+  <Card title="發布與分享" icon="share-nodes">
+    一條指令完成頁面編譯、發布和公開訪問配置。
   </Card>
 </CardGroup>
+
+---
+
+## 核心功能
+
+| 功能模組 | 說明 |
+|---------|------|
+| **應用管理** | 創建應用、匯入匯出、遷移部署 |
+| **表單管理** | 創建/更新表單、獲取 Schema、配置權限 |
+| **頁面發布** | 自定義頁面開發、Babel 編譯、一鍵發布 |
+| **流程配置** | 流程表單創建、審批規則配置 |
+| **數據管理** | 表單數據查詢、流程實例、任務管理 |
+| **連接器** | HTTP 連接器創建、API 整合、curl 智能匯入 |
+| **報表圖表** | 宜搭報表創建、圖表追加、數據可視化 |
+| **CDN 管理** | 圖片上傳、緩存刷新、OSS 配置 |
+
+---
+
+## 與其他 AI 搭建平台的區別
+
+| 維度 | OpenYida | 其他 AI 搭建平台 |
+|------|----------|------------------|
+| **目標用戶** | 開發者（懂代碼的人） | 業務人員（非開發者） |
+| **交互方式** | 自然語言 + AI 對話 | 可視化拖拽 + 配置面板 |
+| **產出物** | 宜搭應用（可二次編輯，支援完備低代碼能力） | 配置（黑盒運行） |
+| **部署方式** | 宜搭平台 | SaaS 平台綁定 |
+| **AI 模型** | 按需選擇，選擇最適合的模型 | 平台指定，無法更換 |
+| **安全合規** | 宜搭具備完善的安全和合規能力 | 依賴平台能力 |
+
+---
+
+## 支援的 AI 編程工具
+
+OpenYida 作為 MCP 相容的技能包，原生整合所有主流 AI 編程環境：
+
+| 工具 | 狀態 |
+|------|------|
+| [Claude Code](https://claude.ai/code) | ✅ 完整支援 |
+| [Aone Copilot](https://copilot.code.alibaba-inc.com) | ✅ 完整支援 |
+| [OpenCode](https://opencode.ai) | ✅ 完整支援 |
+| [Cursor](https://cursor.com/) | ✅ 完整支援 |
+| [Visual Studio Code](https://code.visualstudio.com/) | ✅ 完整支援 |
+| [Qoder](https://qoder.com) | ✅ 完整支援 |
+| [悟空](https://dingtalk.com/wukong) | ✅ 完整支援 |
+
+---
+
+## 環境要求
+
+| 依賴 | 版本 | 用途 |
+|------|------|------|
+| Node.js | ≥ 18 | CLI 運行、頁面發布 |
+
+無需 Python、Playwright、構建步驟 — 純 Node.js 實現。

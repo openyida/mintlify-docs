@@ -1,9 +1,225 @@
 ---
 title: "아키텍처 개요"
-description: "OpenYida의 아키텍처 및 설계 원칙."
-icon: "sitemap"
+description: "OpenYida 전체 아키텍처 설계 및 기술 선택 설명"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/overview) or [Chinese version](/zh/architecture/overview) for complete content.
-</Tip>
+# 아키텍처 개요
+
+OpenYida는 Node.js 기반 CLI 도구로, 계층형 아키텍처 설계를 채택하여 AI 기능, Yida 플랫폼 통합, 개발자 경험을 유기적으로 결합합니다.
+
+## 전체 워크플로우
+
+![OpenYida 워크플로우](/images/architecture-workflow.png)
+
+OpenYida의 워크플로우는 6단계로 구성됩니다:
+
+1. **User Requirement** - 사용자가 자연어로 요구사항 설명
+2. **AI Understanding** - AI가 사용자 요구사항 이해 및 분석
+3. **PRD Document** - 제품 요구사항 문서 생성
+4. **CLI Execution** - CLI 명령 실행으로 애플리케이션 생성
+5. **YiDa Platform** - Yida 플랫폼에서 애플리케이션 구축
+6. **Online Access** - 애플리케이션 온라인 접속
+
+## 시스템 아키텍처
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI Interface                          │
+│         (Command Parser + Interactive Prompts)              │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Command Layer                            │
+│   create-app │ create-form │ publish │ data │ doctor ...   │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Services                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   AI Service │  │  Yida API    │  │   Config     │      │
+│  │  (Multi-LLM) │  │  (Open API)  │  │   Manager    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Auth        │  │  Skill       │  │   Template   │      │
+│  │  (OAuth 2.0) │  │  System      │  │   Engine     │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+┌─────────────────────────┐    ┌─────────────────────────────┐
+│    AI Providers         │    │    Yida Platform            │
+│  ┌─────────────────┐    │    │                             │
+│  │ OpenAI (GPT-4)  │    │    │   ┌─────────────────────┐   │
+│  ├─────────────────┤    │    │   │   Application       │   │
+│  │ Claude (3.5)    │    │    │   │   Engine            │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ 통의천문        │    │    │   │   Form Builder      │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ DeepSeek        │    │    │   │   Page Designer     │   │
+│  └─────────────────┘    │    │   ├─────────────────────┤   │
+│                         │    │   │   Data Management   │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Connector Hub     │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Report Center     │   │
+│                         │    │   └─────────────────────┘   │
+└─────────────────────────┘    └─────────────────────────────┘
+```
+
+## 인증 흐름
+
+![인증 흐름](/images/architecture-auth.png)
+
+OpenYida의 인증 흐름:
+
+1. **config.json** - 설정 정보 저장
+2. **Login Session** - 로그인 세션 수립
+3. **Cookie Cache** - 인증 정보 캐시
+4. **API Request** - API 요청 전송
+5. **YiDa Backend** - Yida 백엔드 처리
+6. **Page/Form Output** - 페이지/폼 출력
+
+## CLI 아키텍처
+
+![CLI 아키텍처](/images/architecture-cli.png)
+
+OpenYida CLI와 Yida 플랫폼의 상호작용:
+
+- **AI Coding Tool** → **OpenYida CLI**
+  - Login (로그인)
+  - Create App (앱 생성)
+  - Create Page (페이지 생성)
+  - Publish (게시)
+  - Get Schema (스키마 조회)
+- **YiDa Low-Code Platform**
+  - App Management (앱 관리)
+  - Form Pages (폼 페이지)
+  - Custom Pages (커스텀 페이지)
+
+## 스킬 체계
+
+![스킬 체계](/images/architecture-skills.png)
+
+OpenYida의 스킬은 세 가지 카테고리로 분류됩니다:
+
+### Login Skills (로그인 스킬)
+- `login` - Yida 플랫폼 로그인
+- `logout` - 로그아웃
+
+### Create Skills (생성 스킬)
+- `create-app` - 애플리케이션 생성
+- `create-page` - 페이지 생성
+- `create-form` - 폼 생성
+- `get-schema` - 데이터 구조 조회
+
+### Publish Skills (게시 스킬)
+- `publish` - 애플리케이션 게시
+
+## 핵심 설계 원칙
+
+### 1. 모듈형 설계
+
+각 기능 모듈은 독립적으로 캡슐화되고 명확한 인터페이스를 통해 상호작용합니다:
+
+- **명령 계층**: CLI 입력 처리, 코어 서비스 호출
+- **서비스 계층**: 비즈니스 로직 캡슐화, 통합 API 제공
+- **어댑터 계층**: 외부 시스템(AI, Yida 플랫폼) 연동
+
+### 2. 플러그인 확장
+
+스킬 시스템은 동적 로딩과 확장을 지원합니다:
+
+```typescript
+// 스킬 인터페이스 정의
+interface Skill {
+  name: string;
+  version: string;
+  activate(context: SkillContext): void;
+  deactivate(): void;
+}
+```
+
+### 3. 설정 기반
+
+멀티 환경 설정을 지원하며 유연한 전환이 가능합니다:
+
+- 로컬 글로벌 설정 (~/.openyida/)
+- 프로젝트 레벨 설정 (.openyidarc.json)
+- 환경 변수 오버라이드
+
+### 4. 타입 안전성
+
+전체 체인 TypeScript 타입 지원으로 런타임 오류 감소.
+
+## 데이터 흐름
+
+### 애플리케이션 생성 흐름
+
+```
+User Input → AI Service → Code Generation → Yida API → Application
+                ↑                              ↓
+           PRD Analysis                  Validation
+                ↑                              ↓
+           Template Selection           Deployment
+```
+
+### 데이터 조작 흐름
+
+```
+User Command → Config Load → Auth Check → Yida API → Data Response
+                                              ↓
+                                         Cache/Store
+```
+
+## 기술 스택
+
+| 계층 | 기술 |
+|------|------|
+| 런타임 | Node.js 18+ |
+| 언어 | TypeScript 5.x |
+| CLI 프레임워크 | Commander.js |
+| HTTP 클라이언트 | Axios |
+| AI SDK | OpenAI SDK, Anthropic SDK |
+| 설정 관리 | Cosmiconfig |
+| 로깅 | Winston |
+| 테스트 | Jest |
+
+## 보안 설계
+
+### 인증 보안
+
+- OAuth 2.0 표준 흐름
+- 토큰 자동 갱신 메커니즘
+- 민감 정보 로컬 암호화 저장
+
+### 데이터 전송
+
+- 전체 체인 HTTPS
+- API 서명 검증
+- 요청 재시도 및 타임아웃 제어
+
+## 성능 최적화
+
+- **연결 풀**: HTTP 연결 재사용
+- **스마트 캐싱**: 설정 및 메타데이터 로컬 캐싱
+- **증분 업데이트**: 변경된 내용만 전송
+- **동시성 제어**: 동시 API 호출 제한
+
+## 확장 포인트
+
+개발자는 다음 수준에서 확장할 수 있습니다:
+
+1. **새 명령**: 커스텀 CLI 명령 추가
+2. **새 스킬**: AI 기능 확장
+3. **새 템플릿**: 커스텀 코드 생성 템플릿
+4. **새 AI 제공자**: 다른 LLM 통합
+
+## 버전 호환성
+
+| OpenYida 버전 | 지원 Node.js | Yida API 버전 |
+|---------------|--------------|---------------|
+| 1.x | >= 18.0.0 | v1 |
+| 2.x | >= 20.0.0 | v2 |

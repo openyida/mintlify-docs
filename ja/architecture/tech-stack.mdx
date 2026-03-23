@@ -1,9 +1,170 @@
 ---
-title: "技術スタック"
-description: "OpenYidaの技術アーキテクチャと依存関係。"
-icon: "layer-group"
+title: "プロジェクト構成"
+description: "OpenYidaのプロジェクトディレクトリ構成とコード組織方法"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/tech-stack) or [Chinese version](/zh/architecture/tech-stack) for complete content.
-</Tip>
+# プロジェクト構成
+
+OpenYidaはモジュラーアーキテクチャ設計を採用し、コード組織が明確で、メンテナンスと拡張が容易です。
+
+## ディレクトリ概要
+
+```
+openyida/
+├── src/
+│   ├── commands/          # CLIコマンド実装
+│   │   ├── create-app.ts
+│   │   ├── create-form.ts
+│   │   ├── create-page.ts
+│   │   ├── publish.ts
+│   │   ├── share.ts
+│   │   ├── data.ts
+│   │   ├── connector.ts
+│   │   ├── report.ts
+│   │   ├── doctor.ts
+│   │   └── login.ts
+│   ├── core/              # コア機能モジュール
+│   │   ├── yida-api.ts    # Yida APIカプセル化
+│   │   ├── ai-service.ts  # AIサービス統合
+│   │   ├── config.ts      # 設定管理
+│   │   └── auth.ts        # 認証処理
+│   ├── utils/             # ユーティリティ関数
+│   │   ├── logger.ts
+│   │   ├── file.ts
+│   │   └── validator.ts
+│   └── types/             # TypeScript型定義
+│       ├── yida.ts
+│       ├── ai.ts
+│       └── index.ts
+├── skills/                # スキルシステム
+│   ├── builtin/           # 組み込みスキル
+│   └── custom/            # カスタムスキル
+├── templates/             # コードテンプレート
+│   ├── app/
+│   ├── form/
+│   └── page/
+├── docs/                  # ドキュメント
+├── tests/                 # テストファイル
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+## コアモジュール説明
+
+### src/commands/
+
+全CLIコマンドの実装を格納、各ファイルがサブコマンドに対応：
+
+| ファイル | 機能 |
+|------|------|
+| `create-app.ts` | Yidaアプリ作成 |
+| `create-form.ts` | フォームページ作成 |
+| `create-page.ts` | カスタムページ作成 |
+| `publish.ts` | アプリ公開 |
+| `share.ts` | アプリ共有 |
+| `data.ts` | データ管理操作 |
+| `connector.ts` | コネクタ管理 |
+| `report.ts` | レポート操作 |
+| `doctor.ts` | 診断ツール |
+| `login.ts` | ログイン認証 |
+
+### src/core/
+
+コアビジネスロジックモジュール：
+
+- **yida-api.ts**: YidaオープンプラットフォームAPIをカプセル化、統一インターフェース呼び出しを提供
+- **ai-service.ts**: 複数のAIサービス（OpenAI、Claude、通義千問など）を統合
+- **config.ts**: ローカル設定ファイル（~/.openyida/config.json）を管理
+- **auth.ts**: ログイン状態、トークン更新、マルチ組織切り替えを処理
+
+### src/utils/
+
+汎用ユーティリティ関数：
+
+- **logger.ts**: ログ出力、レベル分けとカラー対応
+- **file.ts**: ファイル操作ヘルパー関数
+- **validator.ts**: 入力検証とチェック
+
+### src/types/
+
+TypeScript型定義、コードの型安全性を確保：
+
+- **yida.ts**: Yida API関連型
+- **ai.ts**: AIサービス関連型
+- **index.ts**: 汎用型エクスポート
+
+## スキルシステム
+
+```
+skills/
+├── builtin/               # 組み込みスキル
+│   ├── code-generator/    # コード生成
+│   ├── form-builder/      # フォーム構築
+│   ├── page-designer/     # ページデザイン
+│   └── data-analyzer/     # データ分析
+└── custom/                # ユーザーカスタムスキル
+    └── (ユーザー拡張)
+```
+
+スキルはプラグインアーキテクチャを採用、ホットロードと動的拡張をサポート。
+
+## 設定管理
+
+### ローカル設定
+
+保存場所：`~/.openyida/config.json`
+
+```json
+{
+  "defaultOrg": "org-default",
+  "orgs": {
+    "org-default": {
+      "accessToken": "xxx",
+      "refreshToken": "xxx",
+      "expiresAt": 1234567890
+    }
+  },
+  "aiProvider": "openai",
+  "aiConfig": {
+    "apiKey": "sk-xxx",
+    "model": "gpt-4"
+  }
+}
+```
+
+### プロジェクト設定
+
+プロジェクトルートディレクトリに`.openyidarc.json`を作成可能：
+
+```json
+{
+  "appId": "APP-XXX",
+  "defaultEnv": "dev",
+  "environments": {
+    "dev": { "appKey": "xxx", "appSecret": "xxx" },
+    "prod": { "appKey": "xxx", "appSecret": "xxx" }
+  }
+}
+```
+
+## 拡張メカニズム
+
+### 新規コマンド追加
+
+1. `src/commands/`に新規ファイル作成
+2. コマンド処理関数を実装
+3. `src/index.ts`でコマンドを登録
+
+### 新規スキル追加
+
+1. `skills/custom/`にスキルディレクトリ作成
+2. `skill.json`とメインロジックを実装
+3. `openyida skill load`でロード
+
+## 開発規範
+
+- 全新機能に型定義を含める
+- コマンド実装に`--help`ドキュメントを含める
+- コア機能にユニットテストカバレッジが必要
+- ESLintとPrettier設定に従う

@@ -1,48 +1,101 @@
 ---
-title: "نظرة عامة"
-description: "OpenYida هو أداة CLI لإنشاء تطبيقات Yida باستخدام اللغة الطبيعية."
+title: "ما هو OpenYida؟"
+description: "أداة CLI لمنصة Yida منخفضة الكود مدعومة بالذكاء الاصطناعي، بدون تكوين، جاهزة للاستخدام فوراً."
 icon: "rocket"
 ---
 
-## ما هو OpenYida؟
+<img
+  className="block dark:hidden"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
+<img
+  className="hidden dark:block"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
 
-OpenYida هو واجهة سطر أوامر تربط وكلاء الذكاء الاصطناعي بمنصة [Yida](https://www.aliwork.com) منخفضة الكود. يسمح بإنشاء تطبيقات المؤسسات وإدارتها ونشرها باستخدام أوامر اللغة الطبيعية.
+> *"We are on the verge of the Singularity"* — Vernor Vinge
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/v/openyida?color=brightgreen&label=npm" alt="npm version"/></a>
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/dm/openyida?color=blue" alt="npm downloads"/></a>
+  <a href="https://github.com/openyida/openyida/actions/workflows/ci.yml"><img src="https://github.com/openyida/openyida/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+  <a href="https://github.com/openyida/openyida/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"/></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen" alt="Node.js ≥18"/></a>
+</p>
+
+## نظرة عامة
+
+**OpenYida** هي أداة CLI بدون تكوين تربط مساعدي البرمجة بالذكاء الاصطناعي بمنصة [Yida](https://www.aliwork.com) منخفضة الكود. ثبّت مرة واحدة، ثم صف متطلباتك باللغة الطبيعية — يتولى OpenYida تلقائياً: إنشاء التطبيقات، إدارة النماذج، نشر الصفحات، تكوين الموصلات، إنشاء التقارير، والنشر على Yida في ثوانٍ.
+
+🌐 **الموقع الرسمي**: [https://openyida.ai](https://openyida.ai)
+
+<CardGroup cols={2}>
+  <Card title="إنشاء تطبيق بجملة واحدة" icon="wand-magic-sparkles">
+    صِف متطلباتك في جملة واحدة، يُنشئ الذكاء الاصطناعي تلقائياً نظام أعمال كامل متعدد النماذج.
+  </Card>
+  <Card title="مستند المتطلبات إلى تطبيق" icon="file-lines">
+    الصق مستند متطلباتك للحصول على تطبيق Yida كامل الوظائف مع جميع الحقول والمنطق المحدد.
+  </Card>
+  <Card title="عمليات النماذج والصفحات" icon="table-columns">
+    أنشئ وعدّل واضبط النماذج وصفحات العرض المخصصة عبر أوامر اللغة الطبيعية.
+  </Card>
+  <Card title="النشر والمشاركة" icon="share-nodes">
+    أكمل تجميع الصفحة والنشر وإعداد الوصول العام بأمر واحد.
+  </Card>
+</CardGroup>
+
+---
 
 ## الميزات الرئيسية
 
-<CardGroup cols={2}>
-  <Card title="إنشاء التطبيقات باللغة الطبيعية" icon="message">
-    صف تطبيقك باللغة العربية. يترجم الذكاء الاصطناعي متطلباتك إلى نماذج وصفحات وسير عمل Yida.
-  </Card>
-  <Card title="دعم أدوات الذكاء الاصطناعي المتعددة" icon="robot">
-    يعمل مع Claude Code و Cursor و VS Code و Wukong وأي مساعد ذكاء اصطناعي متوافق مع MCP.
-  </Card>
-  <Card title="تكامل كامل مع Yida" icon="plug">
-    ينشئ تطبيقات Yida حقيقية — ليس نماذج أولية.
-  </Card>
-  <Card title="تجميع الصفحات المخصصة" icon="code">
-    الصفحات المخصصة القائمة على JSX يتم تجميعها باستخدام Babel ونشرها تلقائيًا على Yida.
-  </Card>
-</CardGroup>
+| وحدة الميزة | الوصف |
+|---------|------|
+| **إدارة التطبيقات** | إنشاء التطبيقات، الاستيراد/التصدير، الترحيل والنشر |
+| **إدارة النماذج** | إنشاء/تحديث النماذج، الحصول على Schema، إعداد الأذونات |
+| **نشر الصفحات** | تطوير الصفحات المخصصة، تجميع Babel، النشر بنقرة واحدة |
+| **تكوين سير العمل** | إنشاء نماذج العمليات، إعداد قواعد الموافقة |
+| **إدارة البيانات** | استعلام بيانات النماذج، نسخ العمليات، إدارة المهام |
+| **الموصلات** | إنشاء موصلات HTTP، تكامل API، استيراد curl ذكي |
+| **التقارير والرسوم البيانية** | إنشاء تقارير Yida، إضافة الرسوم البيانية، تصور البيانات |
+| **إدارة CDN** | رفع الصور، تحديث التخزين المؤقت، إعداد OSS |
 
-## البدء السريع
+---
 
-```bash
-# التثبيت
-npm install -g openyida
+## الاختلاف عن منصات البناء بالذكاء الاصطناعي الأخرى
 
-# تسجيل الدخول
-openyida login
+| البُعد | OpenYida | منصات البناء بالذكاء الاصطناعي الأخرى |
+|------|----------|------------------|
+| **المستخدمون المستهدفون** | المطورون (الأشخاص الذين يفهمون الكود) | مستخدمو الأعمال (غير المطورين) |
+| **وضع التفاعل** | اللغة الطبيعية + حوار الذكاء الاصطناعي | السحب والإفلات المرئي + لوحات التكوين |
+| **المُخرجات** | تطبيق Yida (قابل للتعديل لاحقاً، دعم كامل للكود المنخفض) | تكوين (تنفيذ الصندوق الأسود) |
+| **وضع النشر** | منصة Yida | ربط منصة SaaS |
+| **نموذج الذكاء الاصطناعي** | اختيار حسب الحاجة، اختر الأنسب | محدد من المنصة، لا يمكن تغييره |
+| **الأمان والامتثال** | Yida لديها قدرات أمان وامتثال كاملة | يعتمد على قدرات المنصة |
 
-# إنشاء تطبيق
-openyida create-app --name "CRM الخاص بي"
-```
+---
 
-<CardGroup>
-  <Card title="البدء السريع" icon="play" href="/ar/quickstart">
-    أنشئ تطبيقك الأول في 5 دقائق
-  </Card>
-  <Card title="حالات العرض التوضيحي" icon="images" href="/ar/introduction/demo">
-    شاهد التطبيقات الحقيقية المبنية باستخدام OpenYida
-  </Card>
-</CardGroup>
+## أدوات البرمجة بالذكاء الاصطناعي المدعومة
+
+OpenYida، كحزمة مهارات متوافقة مع MCP، تتكامل أصلاً مع جميع بيئات البرمجة بالذكاء الاصطناعي الرئيسية:
+
+| الأداة | الحالة |
+|------|------|
+| [Claude Code](https://claude.ai/code) | ✅ دعم كامل |
+| [Aone Copilot](https://copilot.code.alibaba-inc.com) | ✅ دعم كامل |
+| [OpenCode](https://opencode.ai) | ✅ دعم كامل |
+| [Cursor](https://cursor.com/) | ✅ دعم كامل |
+| [Visual Studio Code](https://code.visualstudio.com/) | ✅ دعم كامل |
+| [Qoder](https://qoder.com) | ✅ دعم كامل |
+| [悟空](https://dingtalk.com/wukong) | ✅ دعم كامل |
+
+---
+
+## متطلبات البيئة
+
+| التبعية | الإصدار | الاستخدام |
+|------|------|------|
+| Node.js | ≥ 18 | تشغيل CLI، نشر الصفحات |
+
+لا حاجة لـ Python أو Playwright أو خطوات البناء — تنفيذ Node.js نقي.

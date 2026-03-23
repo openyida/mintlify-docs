@@ -1,48 +1,101 @@
 ---
-title: "概要"
-description: "OpenYidaは、自然言語を使用して宜搭アプリケーションを構築するためのCLIツールです。"
+title: "OpenYida とは？"
+description: "AI 駆動の宜搭ローコードプラットフォーム CLI ツール。ゼロ設定、インストールしてすぐに使用可能。"
 icon: "rocket"
 ---
 
-## OpenYidaとは？
+<img
+  className="block dark:hidden"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
+<img
+  className="hidden dark:block"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
 
-OpenYidaは、AIエージェントと[宜搭](https://www.aliwork.com)ローコードプラットフォームを橋渡しするコマンドラインインターフェースです。自然言語のプロンプトを使用して、エンタープライズアプリケーションを作成、管理、デプロイできます。
+> *"We are on the verge of the Singularity"* — Vernor Vinge
 
-## 主な機能
+<p align="center">
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/v/openyida?color=brightgreen&label=npm" alt="npm version"/></a>
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/dm/openyida?color=blue" alt="npm downloads"/></a>
+  <a href="https://github.com/openyida/openyida/actions/workflows/ci.yml"><img src="https://github.com/openyida/openyida/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+  <a href="https://github.com/openyida/openyida/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"/></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen" alt="Node.js ≥18"/></a>
+</p>
+
+## 概要
+
+**OpenYida** はゼロ設定の CLI ツールで、AI コーディングアシスタントと[宜搭 (Yida)](https://www.aliwork.com) ローコードプラットフォームを接続します。一度インストールすれば、自然言語で要件を記述するだけ — OpenYida が自動的に処理します：アプリ作成、フォーム管理、ページ公開、コネクター設定、レポート生成、そして秒単位で宜搭にデプロイします。
+
+🌐 **公式サイト**: [https://openyida.ai](https://openyida.ai)
 
 <CardGroup cols={2}>
-  <Card title="自然言語アプリ作成" icon="message">
-    日本語でアプリケーションを説明するだけ。AIが宜搭のフォーム、ページ、ワークフローに変換します。
+  <Card title="一言でアプリ生成" icon="wand-magic-sparkles">
+    一言で要件を記述するだけで、AI が完全なマルチフォームビジネスシステムを自動生成します。
   </Card>
-  <Card title="多言語AIツール対応" icon="robot">
-    Claude Code、Cursor、VS Code、Wukong、およびMCP互換のAIアシスタントと連携します。
+  <Card title="要件ドキュメントからアプリへ" icon="file-lines">
+    要件ドキュメントを貼り付けるだけで、指定されたフィールドとロジックを含む完全な機能の宜搭アプリが得られます。
   </Card>
-  <Card title="完全な宜搭統合" icon="plug">
-    実際の宜搭アプリケーションを作成 — モックアップではありません。
+  <Card title="フォームとページ操作" icon="table-columns">
+    自然言語コマンドでフォームとカスタム表示ページの作成、変更、設定を行います。
   </Card>
-  <Card title="カスタムページコンパイル" icon="code">
-    JSXベースのカスタムページをBabelで自動コンパイルして宜搭に公開します。
-  </Card>
-</CardGroup>
-
-## クイックスタート
-
-```bash
-# インストール
-npm install -g openyida
-
-# ログイン
-openyida login
-
-# アプリ作成
-openyida create-app --name "私のCRM"
-```
-
-<CardGroup>
-  <Card title="クイックスタート" icon="play" href="/ja/quickstart">
-    5分で最初のアプリを作成
-  </Card>
-  <Card title="デモケース" icon="images" href="/ja/introduction/demo">
-    OpenYidaで構築された実際のアプリケーションを見る
+  <Card title="公開と共有" icon="share-nodes">
+    1つのコマンドでページのコンパイル、公開、公開アクセス設定を完了します。
   </Card>
 </CardGroup>
+
+---
+
+## コア機能
+
+| 機能モジュール | 説明 |
+|---------|------|
+| **アプリ管理** | アプリ作成、インポート/エクスポート、移行デプロイ |
+| **フォーム管理** | フォームの作成/更新、Schema の取得、権限設定 |
+| **ページ公開** | カスタムページ開発、Babel コンパイル、ワンクリック公開 |
+| **フロー設定** | フローフォーム作成、承認ルール設定 |
+| **データ管理** | フォームデータクエリ、フローインスタンス、タスク管理 |
+| **コネクター** | HTTP コネクター作成、API 統合、curl スマートインポート |
+| **レポートチャート** | 宜搭レポート作成、チャート追加、データ可視化 |
+| **CDN 管理** | 画像アップロード、キャッシュ更新、OSS 設定 |
+
+---
+
+## 他の AI 構築プラットフォームとの違い
+
+| 次元 | OpenYida | 他の AI 構築プラットフォーム |
+|------|----------|------------------|
+| **対象ユーザー** | 開発者（コードを理解する人） | ビジネスユーザー（非開発者） |
+| **インタラクション方式** | 自然言語 + AI 対話 | ビジュアルドラッグ + 設定パネル |
+| **産出物** | 宜搭アプリ（二次編集可能、完全なローコード機能をサポート） | 設定（ブラックボックス実行） |
+| **デプロイ方式** | 宜搭プラットフォーム | SaaS プラットフォームバインディング |
+| **AI モデル** | 必要に応じて選択、最適なモデルを選択 | プラットフォーム指定、変更不可 |
+| **セキュリティとコンプライアンス** | 宜搭は完全なセキュリティとコンプライアンス機能を備える | プラットフォーム機能に依存 |
+
+---
+
+## サポートする AI コーディングツール
+
+OpenYida は MCP 互換のスキルパックとして、すべての主要な AI コーディング環境とネイティブに統合されます：
+
+| ツール | ステータス |
+|------|------|
+| [Claude Code](https://claude.ai/code) | ✅ 完全サポート |
+| [Aone Copilot](https://copilot.code.alibaba-inc.com) | ✅ 完全サポート |
+| [OpenCode](https://opencode.ai) | ✅ 完全サポート |
+| [Cursor](https://cursor.com/) | ✅ 完全サポート |
+| [Visual Studio Code](https://code.visualstudio.com/) | ✅ 完全サポート |
+| [Qoder](https://qoder.com) | ✅ 完全サポート |
+| [悟空](https://dingtalk.com/wukong) | ✅ 完全サポート |
+
+---
+
+## 環境要件
+
+| 依存関係 | バージョン | 用途 |
+|------|------|------|
+| Node.js | ≥ 18 | CLI 実行、ページ公開 |
+
+Python、Playwright、ビルドステップは不要 — 純粋な Node.js 実装です。

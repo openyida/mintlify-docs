@@ -1,9 +1,225 @@
 ---
 title: "架構概覽"
-description: "OpenYida 的架構與設計原則。"
-icon: "sitemap"
+description: "OpenYida 整體架構設計和技術選型說明"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/overview) or [Chinese version](/zh/architecture/overview) for complete content.
-</Tip>
+# 架構概覽
+
+OpenYida 是一個基於 Node.js 的 CLI 工具，採用分層架構設計，將 AI 能力、宜搭平台整合和開發者體驗有機結合。
+
+## 整體工作流程
+
+![OpenYida 工作流程](/images/architecture-workflow.png)
+
+OpenYida 的工作流程分為 6 個階段：
+
+1. **User Requirement** - 用戶通過自然語言描述需求
+2. **AI Understanding** - AI 理解並分析用戶需求
+3. **PRD Document** - 生成產品需求文檔
+4. **CLI Execution** - 執行 CLI 命令創建應用
+5. **YiDa Platform** - 在宜搭平台構建應用
+6. **Online Access** - 應用上線訪問
+
+## 系統架構
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI Interface                          │
+│         (Command Parser + Interactive Prompts)              │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Command Layer                            │
+│   create-app │ create-form │ publish │ data │ doctor ...   │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Services                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   AI Service │  │  Yida API    │  │   Config     │      │
+│  │  (Multi-LLM) │  │  (Open API)  │  │   Manager    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Auth        │  │  Skill       │  │   Template   │      │
+│  │  (OAuth 2.0) │  │  System      │  │   Engine     │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+┌─────────────────────────┐    ┌─────────────────────────────┐
+│    AI Providers         │    │    Yida Platform            │
+│  ┌─────────────────┐    │    │                             │
+│  │ OpenAI (GPT-4)  │    │    │   ┌─────────────────────┐   │
+│  ├─────────────────┤    │    │   │   Application       │   │
+│  │ Claude (3.5)    │    │    │   │   Engine            │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ 通義千問        │    │    │   │   Form Builder      │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ DeepSeek        │    │    │   │   Page Designer     │   │
+│  └─────────────────┘    │    │   ├─────────────────────┤   │
+│                         │    │   │   Data Management   │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Connector Hub     │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Report Center     │   │
+│                         │    │   └─────────────────────┘   │
+└─────────────────────────┘    └─────────────────────────────┘
+```
+
+## 認證流程
+
+![認證流程](/images/architecture-auth.png)
+
+OpenYida 的認證流程：
+
+1. **config.json** - 存儲配置信息
+2. **Login Session** - 建立登錄會話
+3. **Cookie Cache** - 緩存认證信息
+4. **API Request** - 發送 API 請求
+5. **YiDa Backend** - 宜搭後端處理
+6. **Page/Form Output** - 輸出頁面/表單
+
+## CLI 架構
+
+![CLI 架構](/images/architecture-cli.png)
+
+OpenYida CLI 與宜搭平台的交互：
+
+- **AI Coding Tool** → **OpenYida CLI**
+  - Login（登錄）
+  - Create App（創建應用）
+  - Create Page（創建頁面）
+  - Publish（發布）
+  - Get Schema（獲取結構）
+- **YiDa Low-Code Platform**
+  - App Management（應用管理）
+  - Form Pages（表單頁面）
+  - Custom Pages（自定義頁面）
+
+## 技能體系
+
+![技能體系](/images/architecture-skills.png)
+
+OpenYida 的技能分為三大類：
+
+### Login Skills（登錄技能）
+- `login` - 登錄宜搭平台
+- `logout` - 退出登錄
+
+### Create Skills（創建技能）
+- `create-app` - 創建應用
+- `create-page` - 創建頁面
+- `create-form` - 創建表單
+- `get-schema` - 獲取數據結構
+
+### Publish Skills（發布技能）
+- `publish` - 發布應用
+
+## 核心設計原則
+
+### 1. 模組化設計
+
+每個功能模組獨立封裝，通過清晰的接口進行交互：
+
+- **命令層**: 處理 CLI 輸入，調用核心服務
+- **服務層**: 封裝業務邏輯，對外提供統一 API
+- **適配層**: 對接外部系統（AI、宜搭平台）
+
+### 2. 插件化擴展
+
+Skill 系統支持動態加載和擴展：
+
+```typescript
+// Skill 接口定義
+interface Skill {
+  name: string;
+  version: string;
+  activate(context: SkillContext): void;
+  deactivate(): void;
+}
+```
+
+### 3. 配置驅動
+
+支持多環境配置，靈活切換：
+
+- 本地全局配置（~/.openyida/）
+- 項目級配置（.openyidarc.json）
+- 環境變量覆蓋
+
+### 4. 類型安全
+
+全鏈路 TypeScript 類型支持，減少運行時錯誤。
+
+## 數據流
+
+### 應用創建流程
+
+```
+User Input → AI Service → Code Generation → Yida API → Application
+                ↑                              ↓
+           PRD Analysis                  Validation
+                ↑                              ↓
+           Template Selection           Deployment
+```
+
+### 數據操作流程
+
+```
+User Command → Config Load → Auth Check → Yida API → Data Response
+                                              ↓
+                                         Cache/Store
+```
+
+## 技術棧
+
+| 層級 | 技術 |
+|------|------|
+| 運行時 | Node.js 18+ |
+| 語言 | TypeScript 5.x |
+| CLI 框架 | Commander.js |
+| HTTP 客戶端 | Axios |
+| AI SDK | OpenAI SDK, Anthropic SDK |
+| 配置管理 | Cosmiconfig |
+| 日誌 | Winston |
+| 測試 | Jest |
+
+## 安全設計
+
+### 認證安全
+
+- OAuth 2.0 標準流程
+- Token 自動刷新機制
+- 敏感信息本地加密存儲
+
+### 數據傳輸
+
+- 全鏈路 HTTPS
+- API 簽名驗證
+- 請求重試和超時控制
+
+## 性能優化
+
+- **連接池**: 複用 HTTP 連接
+- **智能緩存**: 配置和元數據本地緩存
+- **增量更新**: 只傳輸變更內容
+- **並發控制**: 限制同時進行的 API 調用
+
+## 擴展點
+
+開發者可以在以下層面進行擴展：
+
+1. **新命令**: 添加自定義 CLI 命令
+2. **新 Skill**: 擴展 AI 能力
+3. **新模板**: 自定義代碼生成模板
+4. **新 AI Provider**: 接入其他大模型
+
+## 版本兼容性
+
+| OpenYida 版本 | 支持的 Node.js | 宜搭 API 版本 |
+|--------------|----------------|--------------|
+| 1.x | >= 18.0.0 | v1 |
+| 2.x | >= 20.0.0 | v2 |

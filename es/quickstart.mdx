@@ -1,19 +1,19 @@
 ---
 title: "Inicio rápido"
-description: "Instale OpenYida y cree su primera aplicación Yida en 2 minutos."
+description: "Instala OpenYida y construye tu primera aplicación Yida en 2 minutos."
 icon: "bolt"
 ---
 
-## Requisitos previos
+## Requisitos del entorno
 
-Antes de comenzar, asegúrese de tener instaladas las siguientes dependencias:
+Antes de comenzar, asegúrate de tener instaladas las siguientes dependencias:
 
 | Dependencia | Versión | Comando de verificación |
-|-------------|---------|------------------------|
+|------|------|----------|
 | [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
 
 <Tip>
-  Solo se necesita Node.js. No se requiere Python, Playwright ni pasos de compilación — implementación pura de Node.js.
+  Esto es todo lo que necesitas. OpenYida es una implementación pura de Node.js — no se necesita Python, Playwright ni pasos de compilación.
 </Tip>
 
 ---
@@ -24,7 +24,7 @@ Antes de comenzar, asegúrese de tener instaladas las siguientes dependencias:
 npm install -g openyida
 ```
 
-Verifique la instalación:
+Verifica la instalación:
 
 ```bash
 openyida --version
@@ -38,10 +38,10 @@ openyida --version
 openyida login
 ```
 
-OpenYida abrirá una ventana del navegador (o mostrará un código QR) para que se autentique con su cuenta de Yida/Alibaba. Las credenciales se almacenan en caché localmente — solo una vez.
+OpenYida abrirá una ventana del navegador (o mostrará un código QR) para permitirte autenticarte con tu cuenta de Yida/Alibaba. Las credenciales se almacenan en caché localmente — solo necesitas hacerlo una vez.
 
 <Info>
-  Si utiliza **Wukong** como herramienta de IA, use la bandera de inicio de sesión especial:
+  Si usas **Wukong** como herramienta de IA, usa la bandera de inicio de sesión especial:
 
   ```bash
   openyida login --wukong
@@ -56,7 +56,7 @@ OpenYida abrirá una ventana del navegador (o mostrará un código QR) para que 
 openyida env
 ```
 
-Detecta la herramienta de codificación con IA actualmente activa (Claude Code, Cursor, Wukong, etc.) y muestra su estado de inicio de sesión. Ejecute este comando en cualquier momento cuando cambie de entorno.
+Esto detecta la herramienta de programación de IA actualmente activa (Claude Code, Cursor, Wukong, etc.) y muestra tu estado de inicio de sesión actual. Ejecuta este comando cada vez que cambies de entorno.
 
 ---
 
@@ -66,20 +66,20 @@ Detecta la herramienta de codificación con IA actualmente activa (Claude Code, 
 openyida copy
 ```
 
-Copia la plantilla de espacio de trabajo `project/` al directorio de trabajo actual de su herramienta de IA, permitiendo que la IA acceda a su configuración de aplicación y plantillas de página.
+Esto copia la plantilla de espacio de trabajo `project/` al directorio de trabajo de tu herramienta de IA actual, permitiendo que la IA acceda a tu configuración de aplicación y plantillas de página.
 
 ---
 
 ## Paso 5 — Comenzar a construir
 
-Hable directamente con su asistente de codificación con IA. Aquí hay algunos ejemplos de prompts para comenzar:
+Ahora habla con tu asistente de programación de IA. Aquí hay algunos prompts para comenzar:
 
 ```
-Constrúyame un sistema IPD en Yida para gestionar todo el flujo de trabajo de producción de chips
+Construye un sistema IPD en Yida para gestionar el flujo de trabajo completo de producción de chips
 ```
 
 ```
-Ayúdame a construir un CRM con leads, clientes y transacciones
+Construye un sistema CRM con leads, clientes y transacciones
 ```
 
 ```
@@ -96,57 +96,57 @@ La IA utilizará el paquete de habilidades de OpenYida para llamar a los comando
 
 ## Paso 6 — Publicar la aplicación
 
-Una vez que la IA haya generado la aplicación, ejecute el comando de publicación:
+Después de que la IA haya creado la aplicación, publícala con:
 
 ```bash
 openyida publish
 ```
 
-O pregúntele a la IA:
+O pregúntale a la IA:
 ```
 Publica la página [nombre de la página]
-Haz que la página sea de acceso público
+Haz que la página sea accesible públicamente
 ```
 
 ---
 
-## Ejecutar diagnóstico
+## Ejecutar diagnósticos
 
-Si tiene problemas, ejecute la herramienta de diagnóstico integrada:
+Si algo parece incorrecto, ejecuta la herramienta de diagnóstico integrada:
 
 ```bash
 openyida doctor
 ```
 
-Verifica su versión de Node.js, estado de inicio de sesión y configuración del entorno, y puede usar `--fix` para reparar automáticamente problemas comunes.
+Verifica tu versión de Node.js, el estado de inicio de sesión y la configuración del entorno, y puede solucionar automáticamente problemas comunes con `--fix`.
 
 ---
 
 ## Integración con OpenClaw
 
-Si utiliza OpenClaw, instale directamente el paquete de habilidades de OpenYida:
+Si usas OpenClaw, instala directamente el paquete de habilidades de OpenYida:
 
 ```bash
 npx clawhub@latest install nicky1108/yida-app
 ```
 
-Luego úselo desde [yida-app en ClawHub](https://clawhub.ai/nicky1108/yida-app).
+Úsalo luego a través de [yida-app en ClawHub](https://clawhub.ai/nicky1108/yida-app).
 
 ---
 
-## Próximos pasos
+## Siguientes pasos
 
 <CardGroup cols={2}>
   <Card title="Prompts comunes" icon="comments" href="/es/features/common-prompts">
-    Consulte la lista completa de prompts en lenguaje natural compatibles con OpenYida.
+    Explora la lista completa de prompts en lenguaje natural compatibles con OpenYida.
   </Card>
   <Card title="Referencia CLI" icon="terminal" href="/es/features/skills">
-    Explore todos los comandos CLI y módulos de habilidades.
+    Explora todos los comandos CLI y módulos de habilidades.
   </Card>
   <Card title="Casos de demostración" icon="images" href="/es/introduction/demo">
-    Vea aplicaciones reales construidas con OpenYida.
+    Ver aplicaciones reales construidas con OpenYida.
   </Card>
   <Card title="Mejores prácticas" icon="star" href="/es/guides/best-practices">
-    Obtenga consejos para aprovechar al máximo la generación de aplicaciones impulsada por IA.
+    Consejos para aprovechar al máximo la generación de aplicaciones impulsada por IA.
   </Card>
 </CardGroup>

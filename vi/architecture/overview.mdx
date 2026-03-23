@@ -1,9 +1,225 @@
 ---
-title: "Tổng Quan Kiến Trúc"
-description: "Kiến trúc và nguyên tắc thiết kế của OpenYida."
-icon: "sitemap"
+title: "Tổng quan kiến trúc"
+description: "Thiết kế kiến trúc tổng thể OpenYida và giải thích lựa chọn công nghệ"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/overview) or [Chinese version](/zh/architecture/overview) for complete content.
-</Tip>
+# Tổng quan kiến trúc
+
+OpenYida là công cụ CLI dựa trên Node.js với thiết kế kiến trúc phân tầng, kết hợp hữu cơ khả năng AI, tích hợp nền tảng Yida và trải nghiệm nhà phát triển.
+
+## Quy trình làm việc tổng thể
+
+![Quy trình làm việc OpenYida](/images/architecture-workflow.png)
+
+Quy trình làm việc của OpenYida bao gồm 6 giai đoạn:
+
+1. **User Requirement** - Người dùng mô tả yêu cầu bằng ngôn ngữ tự nhiên
+2. **AI Understanding** - AI hiểu và phân tích yêu cầu người dùng
+3. **PRD Document** - Tạo tài liệu yêu cầu sản phẩm
+4. **CLI Execution** - Thực thi lệnh CLI để tạo ứng dụng
+5. **YiDa Platform** - Xây dựng ứng dụng trên nền tảng Yida
+6. **Online Access** - Ứng dụng trực tuyến
+
+## Kiến trúc hệ thống
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI Interface                          │
+│         (Command Parser + Interactive Prompts)              │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Command Layer                            │
+│   create-app │ create-form │ publish │ data │ doctor ...   │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Services                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   AI Service │  │  Yida API    │  │   Config     │      │
+│  │  (Multi-LLM) │  │  (Open API)  │  │   Manager    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Auth        │  │  Skill       │  │   Template   │      │
+│  │  (OAuth 2.0) │  │  System      │  │   Engine     │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+┌─────────────────────────┐    ┌─────────────────────────────┐
+│    AI Providers         │    │    Yida Platform            │
+│  ┌─────────────────┐    │    │                             │
+│  │ OpenAI (GPT-4)  │    │    │   ┌─────────────────────┐   │
+│  ├─────────────────┤    │    │   │   Application       │   │
+│  │ Claude (3.5)    │    │    │   │   Engine            │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ Tongyi Qwen     │    │    │   │   Form Builder      │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ DeepSeek        │    │    │   │   Page Designer     │   │
+│  └─────────────────┘    │    │   ├─────────────────────┤   │
+│                         │    │   │   Data Management   │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Connector Hub     │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Report Center     │   │
+│                         │    │   └─────────────────────┘   │
+└─────────────────────────┘    └─────────────────────────────┘
+```
+
+## Quy trình xác thực
+
+![Quy trình xác thực](/images/architecture-auth.png)
+
+Quy trình xác thực của OpenYida:
+
+1. **config.json** - Lưu trữ thông tin cấu hình
+2. **Login Session** - Thiết lập phiên đăng nhập
+3. **Cookie Cache** - Bộ đệm thông tin xác thực
+4. **API Request** - Gửi yêu cầu API
+5. **YiDa Backend** - Xử lý backend Yida
+6. **Page/Form Output** - Xuất trang/biểu mẫu
+
+## Kiến trúc CLI
+
+![Kiến trúc CLI](/images/architecture-cli.png)
+
+Tương tác giữa OpenYida CLI và nền tảng Yida:
+
+- **AI Coding Tool** → **OpenYida CLI**
+  - Login (Đăng nhập)
+  - Create App (Tạo ứng dụng)
+  - Create Page (Tạo trang)
+  - Publish (Xuất bản)
+  - Get Schema (Lấy cấu trúc)
+- **YiDa Low-Code Platform**
+  - App Management (Quản lý ứng dụng)
+  - Form Pages (Trang biểu mẫu)
+  - Custom Pages (Trang tùy chỉnh)
+
+## Hệ thống kỹ năng
+
+![Hệ thống kỹ năng](/images/architecture-skills.png)
+
+Các kỹ năng của OpenYida được chia thành ba danh mục:
+
+### Kỹ năng đăng nhập
+- `login` - Đăng nhập nền tảng Yida
+- `logout` - Đăng xuất
+
+### Kỹ năng tạo
+- `create-app` - Tạo ứng dụng
+- `create-page` - Tạo trang
+- `create-form` - Tạo biểu mẫu
+- `get-schema` - Lấy cấu trúc dữ liệu
+
+### Kỹ năng xuất bản
+- `publish` - Xuất bản ứng dụng
+
+## Nguyên tắc thiết kế cốt lõi
+
+### 1. Thiết kế mô-đun
+
+Mỗi mô-đun chức năng được đóng gói độc lập và tương tác qua các giao diện rõ ràng:
+
+- **Lớp lệnh**: Xử lý đầu vào CLI, gọi dịch vụ cốt lõi
+- **Lớp dịch vụ**: Đóng gói logic kinh doanh, cung cấp API thống nhất
+- **Lớp thích ứng**: Giao tiếp với hệ thống bên ngoài (AI, nền tảng Yida)
+
+### 2. Mở rộng plugin
+
+Hệ thống kỹ năng hỗ trợ tải động và mở rộng:
+
+```typescript
+// Định nghĩa giao diện Skill
+interface Skill {
+  name: string;
+  version: string;
+  activate(context: SkillContext): void;
+  deactivate(): void;
+}
+```
+
+### 3. Điều khiển bởi cấu hình
+
+Hỗ trợ cấu hình đa môi trường với chuyển đổi linh hoạt:
+
+- Cấu hình toàn cục cục bộ (~/.openyida/)
+- Cấu hình cấp dự án (.openyidarc.json)
+- Ghi đè biến môi trường
+
+### 4. An toàn kiểu
+
+Hỗ trợ kiểu TypeScript toàn chuỗi để giảm lỗi runtime.
+
+## Luồng dữ liệu
+
+### Luồng tạo ứng dụng
+
+```
+User Input → AI Service → Code Generation → Yida API → Application
+                ↑                              ↓
+           PRD Analysis                  Validation
+                ↑                              ↓
+           Template Selection           Deployment
+```
+
+### Luồng thao tác dữ liệu
+
+```
+User Command → Config Load → Auth Check → Yida API → Data Response
+                                              ↓
+                                         Cache/Store
+```
+
+## Stack công nghệ
+
+| Lớp | Công nghệ |
+|------|------|
+| Runtime | Node.js 18+ |
+| Ngôn ngữ | TypeScript 5.x |
+| Framework CLI | Commander.js |
+| Client HTTP | Axios |
+| SDK AI | OpenAI SDK, Anthropic SDK |
+| Quản lý cấu hình | Cosmiconfig |
+| Logging | Winston |
+| Kiểm thử | Jest |
+
+## Thiết kế bảo mật
+
+### Bảo mật xác thực
+
+- Quy trình chuẩn OAuth 2.0
+- Cơ chế tự động làm mới token
+- Lưu trữ mã hóa cục bộ thông tin nhạy cảm
+
+### Truyền dữ liệu
+
+- HTTPS toàn chuỗi
+- Xác minh chữ ký API
+- Kiểm soát retry và timeout yêu cầu
+
+## Tối ưu hiệu suất
+
+- **Pool kết nối**: Tái sử dụng kết nối HTTP
+- **Cache thông minh**: Cache cục bộ cấu hình và metadata
+- **Cập nhật gia tăng**: Chỉ truyền nội dung thay đổi
+- **Kiểm soát đồng thời**: Giới hạn gọi API đồng thời
+
+## Điểm mở rộng
+
+Nhà phát triển có thể mở rộng ở các cấp độ sau:
+
+1. **Lệnh mới**: Thêm lệnh CLI tùy chỉnh
+2. **Kỹ năng mới**: Mở rộng khả năng AI
+3. **Mẫu mới**: Mẫu tạo mã tùy chỉnh
+4. **Nhà cung cấp AI mới**: Tích hợp LLM khác
+
+## Khả năng tương thích phiên bản
+
+| Phiên bản OpenYida | Node.js hỗ trợ | Phiên bản API Yida |
+|-------------------|----------------|-------------------|
+| 1.x | >= 18.0.0 | v1 |
+| 2.x | >= 20.0.0 | v2 |

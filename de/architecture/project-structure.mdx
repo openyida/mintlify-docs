@@ -1,9 +1,170 @@
 ---
 title: "Projektstruktur"
-description: "Verzeichnislayout und Dateistruktur von OpenYida."
-icon: "folder-tree"
+description: "OpenYida Projektverzeichnisstruktur und Code-Organisation"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/project-structure) or [Chinese version](/zh/architecture/project-structure) for complete content.
-</Tip>
+# Projektstruktur
+
+OpenYida verwendet ein modulares Architekturdesign mit klarer Code-Organisation, das Wartung und Erweiterung erleichtert.
+
+## Verzeichnisübersicht
+
+```
+openyida/
+├── src/
+│   ├── commands/          # CLI-Befehlsimplementierung
+│   │   ├── create-app.ts
+│   │   ├── create-form.ts
+│   │   ├── create-page.ts
+│   │   ├── publish.ts
+│   │   ├── share.ts
+│   │   ├── data.ts
+│   │   ├── connector.ts
+│   │   ├── report.ts
+│   │   ├── doctor.ts
+│   │   └── login.ts
+│   ├── core/              # Kernfunktionsmodule
+│   │   ├── yida-api.ts    # Yida API-Kapselung
+│   │   ├── ai-service.ts  # KI-Service-Integration
+│   │   ├── config.ts      # Konfigurationsverwaltung
+│   │   └── auth.ts        # Authentifizierungsverarbeitung
+│   ├── utils/             # Hilfsfunktionen
+│   │   ├── logger.ts
+│   │   ├── file.ts
+│   │   └── validator.ts
+│   └── types/             # TypeScript-Typdefinitionen
+│       ├── yida.ts
+│       ├── ai.ts
+│       └── index.ts
+├── skills/                # Skill-System
+│   ├── builtin/           # Eingebaute Skills
+│   └── custom/            # Benutzerdefinierte Skills
+├── templates/             # Code-Vorlagen
+│   ├── app/
+│   ├── form/
+│   └── page/
+├── docs/                  # Dokumentation
+├── tests/                 # Testdateien
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+## Kernmodul-Beschreibung
+
+### src/commands/
+
+Enthält alle CLI-Befehlsimplementierungen, jede Datei entspricht einem Unterbefehl:
+
+| Datei | Funktion |
+|------|------|
+| `create-app.ts` | Yida-App erstellen |
+| `create-form.ts` | Formularseite erstellen |
+| `create-page.ts` | Benutzerdefinierte Seite erstellen |
+| `publish.ts` | App veröffentlichen |
+| `share.ts` | App teilen |
+| `data.ts` | Datenverwaltungsoperationen |
+| `connector.ts` | Connector-Verwaltung |
+| `report.ts` | Berichtsoperationen |
+| `doctor.ts` | Diagnose-Tool |
+| `login.ts` | Login-Authentifizierung |
+
+### src/core/
+
+Kerngeschäftslogik-Module:
+
+- **yida-api.ts**: Kapselt die Yida Open Platform API, bietet einheitliche Schnittstellenaufrufe
+- **ai-service.ts**: Integriert mehrere KI-Services (OpenAI, Claude, Tongyi Qwen, etc.)
+- **config.ts**: Verwaltet lokale Konfigurationsdateien (~/.openyida/config.json)
+- **auth.ts**: Verarbeitet Login-Status, Token-Aktualisierung, Multi-Organisation-Wechsel
+
+### src/utils/
+
+Allgemeine Hilfsfunktionen:
+
+- **logger.ts**: Log-Ausgabe, unterstützt Level und Farben
+- **file.ts**: Dateioperations-Hilfsfunktionen
+- **validator.ts**: Eingabevalidierung und -prüfung
+
+### src/types/
+
+TypeScript-Typdefinitionen, stellen Code-Typsicherheit sicher:
+
+- **yida.ts**: Yida API-bezogene Typen
+- **ai.ts**: KI-Service-bezogene Typen
+- **index.ts**: Allgemeine Typ-Exporte
+
+## Skill-System
+
+```
+skills/
+├── builtin/               # Eingebaute Skills
+│   ├── code-generator/    # Code-Generierung
+│   ├── form-builder/      # Formular-Erstellung
+│   ├── page-designer/     # Seiten-Design
+│   └── data-analyzer/     # Datenanalyse
+└── custom/                # Benutzerdefinierte Skills
+    └── (Benutzererweiterungen)
+```
+
+Skills verwenden eine Plugin-Architektur und unterstützen Hot-Loading und dynamische Erweiterung.
+
+## Konfigurationsverwaltung
+
+### Lokale Konfiguration
+
+Speicherort: `~/.openyida/config.json`
+
+```json
+{
+  "defaultOrg": "org-default",
+  "orgs": {
+    "org-default": {
+      "accessToken": "xxx",
+      "refreshToken": "xxx",
+      "expiresAt": 1234567890
+    }
+  },
+  "aiProvider": "openai",
+  "aiConfig": {
+    "apiKey": "sk-xxx",
+    "model": "gpt-4"
+  }
+}
+```
+
+### Projektkonfiguration
+
+Erstellung von `.openyidarc.json` im Projekt-Stammverzeichnis möglich:
+
+```json
+{
+  "appId": "APP-XXX",
+  "defaultEnv": "dev",
+  "environments": {
+    "dev": { "appKey": "xxx", "appSecret": "xxx" },
+    "prod": { "appKey": "xxx", "appSecret": "xxx" }
+  }
+}
+```
+
+## Erweiterungsmechanismus
+
+### Neuen Befehl hinzufügen
+
+1. Neue Datei in `src/commands/` erstellen
+2. Befehlsverarbeitungsfunktion implementieren
+3. Befehl in `src/index.ts` registrieren
+
+### Neuen Skill hinzufügen
+
+1. Skill-Verzeichnis in `skills/custom/` erstellen
+2. `skill.json` und Hauptlogik implementieren
+3. Mit `openyida skill load` laden
+
+## Entwicklungsstandards
+
+- Alle neuen Funktionen müssen Typdefinitionen enthalten
+| Befehlsimplementierungen müssen `--help`-Dokumentation enthalten
+| Kernfunktionalitäten müssen Unit-Test-Abdeckung haben
+| ESLint- und Prettier-Konfigurationen befolgen

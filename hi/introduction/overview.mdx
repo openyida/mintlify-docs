@@ -1,48 +1,101 @@
 ---
-title: "अवलोकन"
-description: "OpenYida प्राकृतिक भाषा का उपयोग करके Yida एप्लिकेशन बनाने के लिए एक CLI टूल है।"
+title: "OpenYida क्या है?"
+description: "AI-संचालित Yida लो-कोड प्लेटफॉर्म CLI टूल, शून्य कॉन्फ़िगरेशन, तुरंत उपयोग के लिए तैयार।"
 icon: "rocket"
 ---
 
-## OpenYida क्या है?
+<img
+  className="block dark:hidden"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
+<img
+  className="hidden dark:block"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
 
-OpenYida एक कमांड-लाइन इंटरफ़ेस है जो AI एजेंटों को [Yida](https://www.aliwork.com) लो-कोड प्लेटफॉर्म से जोड़ता है। यह प्राकृतिक भाषा प्रॉम्प्ट का उपयोग करके एंटरप्राइज़ एप्लिकेशन बनाने, प्रबंधित करने और तैनात करने की अनुमति देता है।
+> *"We are on the verge of the Singularity"* — Vernor Vinge
 
-## मुख्य विशेषताएं
+<p align="center">
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/v/openyida?color=brightgreen&label=npm" alt="npm version"/></a>
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/dm/openyida?color=blue" alt="npm downloads"/></a>
+  <a href="https://github.com/openyida/openyida/actions/workflows/ci.yml"><img src="https://github.com/openyida/openyida/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+  <a href="https://github.com/openyida/openyida/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"/></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen" alt="Node.js ≥18"/></a>
+</p>
+
+## अवलोकन
+
+**OpenYida** एक शून्य-कॉन्फ़िगरेशन CLI टूल है जो AI कोडिंग सहायकों को [Yida](https://www.aliwork.com) लो-कोड प्लेटफॉर्म से जोड़ता है। एक बार इंस्टॉल करें, फिर प्राकृतिक भाषा में अपनी आवश्यकताओं का वर्णन करें — OpenYida स्वचालित रूप से संभालता है: ऐप निर्माण, फॉर्म प्रबंधन, पेज प्रकाशन, कनेक्टर कॉन्फ़िगरेशन, रिपोर्ट जनरेशन, और सेकंडों में Yida पर डिप्लॉयमेंट।
+
+🌐 **आधिकारिक वेबसाइट**: [https://openyida.ai](https://openyida.ai)
 
 <CardGroup cols={2}>
-  <Card title="प्राकृतिक भाषा में ऐप निर्माण" icon="message">
-    अपने एप्लिकेशन का हिंदी में वर्णन करें। AI आपकी आवश्यकताओं को Yida फॉर्म, पेज और वर्कफ़्लो में अनुवादित करता है।
+  <Card title="एक वाक्य में ऐप जनरेशन" icon="wand-magic-sparkles">
+    एक वाक्य में अपनी आवश्यकताओं का वर्णन करें, AI स्वचालित रूप से बहु-फॉर्म वाला पूर्ण व्यावसायिक सिस्टम जनरेट करता है।
   </Card>
-  <Card title="बहु-AI टूल समर्थन" icon="robot">
-    Claude Code, Cursor, VS Code, Wukong और किसी भी MCP-संगत AI सहायक के साथ काम करता है।
+  <Card title="आवश्यकता दस्तावेज़ से ऐप" icon="file-lines">
+    अपना आवश्यकता दस्तावेज़ पेस्ट करें और सभी निर्दिष्ट फ़ील्ड और लॉजिक के साथ पूर्ण कार्यात्मक Yida ऐप प्राप्त करें।
   </Card>
-  <Card title="पूर्ण Yida एकीकरण" icon="plug">
-    वास्तविक Yida एप्लिकेशन बनाता है — मॉकअप नहीं।
+  <Card title="फॉर्म और पेज संचालन" icon="table-columns">
+    प्राकृतिक भाषा कमांड के माध्यम से फॉर्म और कस्टम डिस्प्ले पेज बनाएं, संशोधित करें और कॉन्फ़िगर करें।
   </Card>
-  <Card title="कस्टम पेज संकलन" icon="code">
-    JSX-आधारित कस्टम पेज Babel के साथ संकलित होते हैं और स्वचालित रूप से Yida पर प्रकाशित होते हैं।
-  </Card>
-</CardGroup>
-
-## त्वरित प्रारंभ
-
-```bash
-# इंस्टॉलेशन
-npm install -g openyida
-
-# लॉगिन
-openyida login
-
-# ऐप बनाएं
-openyida create-app --name "मेरा CRM"
-```
-
-<CardGroup>
-  <Card title="त्वरित प्रारंभ" icon="play" href="/hi/quickstart">
-    5 मिनट में अपना पहला ऐप बनाएं
-  </Card>
-  <Card title="डेमो केस" icon="images" href="/hi/introduction/demo">
-    OpenYida के साथ बनाए गए वास्तविक एप्लिकेशन देखें
+  <Card title="प्रकाशन और साझाकरण" icon="share-nodes">
+    एक ही कमांड से पेज संकलन, प्रकाशन और सार्वजनिक पहुंच कॉन्फ़िगरेशन पूरा करें।
   </Card>
 </CardGroup>
+
+---
+
+## मुख्य सुविधाएँ
+
+| सुविधा मॉड्यूल | विवरण |
+|---------|------|
+| **ऐप प्रबंधन** | ऐप निर्माण, आयात/निर्यात, माइग्रेशन और डिप्लॉयमेंट |
+| **फॉर्म प्रबंधन** | फॉर्म निर्माण/अपडेट, Schema प्राप्ति, अनुमति कॉन्फ़िगरेशन |
+| **पेज प्रकाशन** | कस्टम पेज डेवलपमेंट, Babel संकलन, वन-क्लिक प्रकाशन |
+| **वर्कफ्लो कॉन्फ़िगरेशन** | प्रोसेस फॉर्म निर्माण, अनुमोदन नियम कॉन्फ़िगरेशन |
+| **डेटा प्रबंधन** | फॉर्म डेटा क्वेरी, प्रोसेस इंस्टेंस, टास्क प्रबंधन |
+| **कनेक्टर** | HTTP कनेक्टर निर्माण, API एकीकरण, स्मार्ट curl आयात |
+| **रिपोर्ट और चार्ट** | Yida रिपोर्ट निर्माण, चार्ट जोड़ना, डेटा विज़ुअलाइज़ेशन |
+| **CDN प्रबंधन** | छवि अपलोड, कैश रिफ्रेश, OSS कॉन्फ़िगरेशन |
+
+---
+
+## अन्य AI बिल्डिंग प्लेटफॉर्म से अंतर
+
+| आयाम | OpenYida | अन्य AI बिल्डिंग प्लेटफॉर्म |
+|------|----------|------------------|
+| **लक्षित उपयोगकर्ता** | डेवलपर्स (कोड समझने वाले लोग) | व्यावसायिक उपयोगकर्ता (गैर-डेवलपर्स) |
+| **इंटरैक्शन मोड** | प्राकृतिक भाषा + AI संवाद | विज़ुअल ड्रैग-एंड-ड्रॉप + कॉन्फ़िगरेशन पैनल |
+| **आउटपुट** | Yida ऐप (बाद में संपादन योग्य, पूर्ण लो-कोड समर्थन) | कॉन्फ़िगरेशन (ब्लैक-बॉक्स निष्पादन) |
+| **डिप्लॉयमेंट मोड** | Yida प्लेटफॉर्म | SaaS प्लेटफॉर्म बाइंडिंग |
+| **AI मॉडल** | आवश्यकतानुसार चयन, सबसे उपयुक्त मॉडल चुनें | प्लेटफॉर्म द्वारा निर्दिष्ट, बदला नहीं जा सकता |
+| **सुरक्षा और अनुपालन** | Yida में पूर्ण सुरक्षा और अनुपालन क्षमताएं | प्लेटफॉर्म क्षमताओं पर निर्भर |
+
+---
+
+## समर्थित AI कोडिंग टूल्स
+
+OpenYida, MCP-संगत स्किल पैकेज के रूप में, सभी प्रमुख AI कोडिंग वातावरणों के साथ नेटिवली एकीकृत होता है:
+
+| टूल | स्थिति |
+|------|------|
+| [Claude Code](https://claude.ai/code) | ✅ पूर्ण समर्थन |
+| [Aone Copilot](https://copilot.code.alibaba-inc.com) | ✅ पूर्ण समर्थन |
+| [OpenCode](https://opencode.ai) | ✅ पूर्ण समर्थन |
+| [Cursor](https://cursor.com/) | ✅ पूर्ण समर्थन |
+| [Visual Studio Code](https://code.visualstudio.com/) | ✅ पूर्ण समर्थन |
+| [Qoder](https://qoder.com) | ✅ पूर्ण समर्थन |
+| [悟空](https://dingtalk.com/wukong) | ✅ पूर्ण समर्थन |
+
+---
+
+## पर्यावरण आवश्यकताएँ
+
+| निर्भरता | संस्करण | उपयोग |
+|------|------|------|
+| Node.js | ≥ 18 | CLI निष्पादन, पेज प्रकाशन |
+
+Python, Playwright, बिल्ड स्टेप्स की आवश्यकता नहीं — शुद्ध Node.js कार्यान्वयन।

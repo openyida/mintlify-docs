@@ -1,48 +1,101 @@
 ---
-title: "개요"
-description: "OpenYida는 자연어를 사용하여 Yida 애플리케이션을 구축하는 CLI 도구입니다."
+title: "OpenYida란?"
+description: "AI 기반의 Yida 로우코드 플랫폼 CLI 도구. 제로 설정, 설치 후 바로 사용 가능."
 icon: "rocket"
 ---
 
-## OpenYida란?
+<img
+  className="block dark:hidden"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
+<img
+  className="hidden dark:block"
+  src="https://img.alicdn.com/imgextra/i4/O1CN017uyK3q1UUfbv7Z8oh_!!6000000002521-2-tps-2648-1382.png"
+  alt="OpenYida Banner"
+/>
 
-OpenYida는 AI 에이전트와 [Yida](https://www.aliwork.com) 로우코드 플랫폼을 연결하는 명령줄 인터페이스입니다. 자연어 프롬프트를 사용하여 엔터프라이즈 애플리케이션을 생성, 관리 및 배포할 수 있습니다.
+> *"We are on the verge of the Singularity"* — Vernor Vinge
 
-## 주요 기능
+<p align="center">
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/v/openyida?color=brightgreen&label=npm" alt="npm version"/></a>
+  <a href="https://www.npmjs.com/package/openyida"><img src="https://img.shields.io/npm/dm/openyida?color=blue" alt="npm downloads"/></a>
+  <a href="https://github.com/openyida/openyida/actions/workflows/ci.yml"><img src="https://github.com/openyida/openyida/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+  <a href="https://github.com/openyida/openyida/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"/></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen" alt="Node.js ≥18"/></a>
+</p>
+
+## 개요
+
+**OpenYida**는 제로 설정 CLI 도구로, AI 코딩 어시스턴트와 [Yida](https://www.aliwork.com) 로우코드 플랫폼을 연결합니다. 한 번 설치하면 자연어로 요구사항을 설명하기만 하면 됩니다 — OpenYida가 자동으로 처리합니다: 앱 생성, 양식 관리, 페이지 게시, 커넥터 설정, 보고서 생성, 그리고 Yida에 초 단위로 배포합니다.
+
+🌐 **공식 웹사이트**: [https://openyida.ai](https://openyida.ai)
 
 <CardGroup cols={2}>
-  <Card title="자연어 앱 생성" icon="message">
-    한국어로 애플리케이션을 설명하세요. AI가 Yida 양식, 페이지, 워크플로로 변환합니다.
+  <Card title="한 마디로 앱 생성" icon="wand-magic-sparkles">
+    한 마디로 요구사항을 설명하면 AI가 완전한 다중 양식 비즈니스 시스템을 자동으로 생성합니다.
   </Card>
-  <Card title="다중 AI 도구 지원" icon="robot">
-    Claude Code, Cursor, VS Code, Wukong 및 MCP 호환 AI 어시스턴트와 작동합니다.
+  <Card title="요구사항 문서에서 앱으로" icon="file-lines">
+    요구사항 문서를 붙여넣으면 지정된 필드와 로직을 포함하는 완전한 기능의 Yida 앱을 얻습니다.
   </Card>
-  <Card title="완전한 Yida 통합" icon="plug">
-    실제 Yida 애플리케이션을 생성 — 목업이 아닙니다.
+  <Card title="양식 및 페이지 작업" icon="table-columns">
+    자연어 명령으로 양식과 커스텀 표시 페이지의 생성, 수정, 설정을 수행합니다.
   </Card>
-  <Card title="커스텀 페이지 컴파일" icon="code">
-    JSX 기반 커스텀 페이지를 Babel로 자동 컴파일하여 Yida에 게시합니다.
-  </Card>
-</CardGroup>
-
-## 빠른 시작
-
-```bash
-# 설치
-npm install -g openyida
-
-# 로그인
-openyida login
-
-# 앱 생성
-openyida create-app --name "내 CRM"
-```
-
-<CardGroup>
-  <Card title="빠른 시작" icon="play" href="/ko/quickstart">
-    5분 만에 첫 번째 앱 만들기
-  </Card>
-  <Card title="데모 케이스" icon="images" href="/ko/introduction/demo">
-    OpenYida로 구축된 실제 애플리케이션 보기
+  <Card title="게시 및 공유" icon="share-nodes">
+    하나의 명령으로 페이지 컴파일, 게시, 공개 액세스 설정을 완료합니다.
   </Card>
 </CardGroup>
+
+---
+
+## 핵심 기능
+
+| 기능 모듈 | 설명 |
+|---------|------|
+| **앱 관리** | 앱 생성, 가져오기/날내기, 마이그레이션 배포 |
+| **양식 관리** | 양식 생성/업데이트, Schema 가져오기, 권한 설정 |
+| **페이지 게시** | 커스텀 페이지 개발, Babel 컴파일, 원클릭 게시 |
+| **프로세스 설정** | 프로세스 양식 생성, 승인 규칙 설정 |
+| **데이터 관리** | 양식 데이터 쿼리, 프로세스 인스턴스, 작업 관리 |
+| **커넥터** | HTTP 커넥터 생성, API 통합, curl 스마트 가져오기 |
+| **보고서 차트** | Yida 보고서 생성, 차트 추가, 데이터 시각화 |
+| **CDN 관리** | 이미지 업로드, 캐시 새로고침, OSS 설정 |
+
+---
+
+## 다른 AI 구축 플랫폼과의 차이점
+
+| 차원 | OpenYida | 다른 AI 구축 플랫폼 |
+|------|----------|------------------|
+| **대상 사용자** | 개발자(코드를 이해하는 사람) | 비즈니스 사용자(비개발자) |
+| **상호작용 방식** | 자연어 + AI 대화 | 시각적 드래그 + 설정 패널 |
+| **산출물** | Yida 앱(2차 편집 가능, 완전한 로우코드 기능 지원) | 설정(블랙박스 실행) |
+| **배포 방식** | Yida 플랫폼 | SaaS 플랫폼 바인딩 |
+| **AI 모델** | 필요에 따라 선택, 가장 적합한 모델 선택 | 플랫폼 지정, 변경 불가 |
+| **보안 및 규정 준수** | Yida는 완전한 보안 및 규정 준수 기능을 갖춤 | 플랫폼 기능에 의존 |
+
+---
+
+## 지원하는 AI 코딩 도구
+
+OpenYida는 MCP 호환 스킬 팩으로서 모든 주요 AI 코딩 환경과 네이티브 통합됩니다:
+
+| 도구 | 상태 |
+|------|------|
+| [Claude Code](https://claude.ai/code) | ✅ 완전 지원 |
+| [Aone Copilot](https://copilot.code.alibaba-inc.com) | ✅ 완전 지원 |
+| [OpenCode](https://opencode.ai) | ✅ 완전 지원 |
+| [Cursor](https://cursor.com/) | ✅ 완전 지원 |
+| [Visual Studio Code](https://code.visualstudio.com/) | ✅ 완전 지원 |
+| [Qoder](https://qoder.com) | ✅ 완전 지원 |
+| [悟空](https://dingtalk.com/wukong) | ✅ 완전 지원 |
+
+---
+
+## 환경 요구사항
+
+| 의존성 | 버전 | 용도 |
+|------|------|------|
+| Node.js | ≥ 18 | CLI 실행, 페이지 게시 |
+
+Python, Playwright, 빌드 단계는 필요 없음 — 순수 Node.js 구현입니다.

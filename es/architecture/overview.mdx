@@ -1,9 +1,225 @@
 ---
-title: "Descripción General de la Arquitectura"
-description: "Arquitectura y principios de diseño de OpenYida."
-icon: "sitemap"
+title: "Descripción general de la arquitectura"
+description: "Diseño general de la arquitectura OpenYida y explicación de la selección tecnológica"
 ---
 
-<Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/architecture/overview) or [Chinese version](/zh/architecture/overview) for complete content.
-</Tip>
+# Descripción general de la arquitectura
+
+OpenYida es una herramienta CLI basada en Node.js con un diseño de arquitectura en capas que combina orgánicamente las capacidades de IA, la integración de la plataforma Yida y la experiencia del desarrollador.
+
+## Flujo de trabajo general
+
+![Flujo de trabajo OpenYida](/images/architecture-workflow.png)
+
+El flujo de trabajo de OpenYida consta de 6 etapas:
+
+1. **User Requirement** - El usuario describe los requisitos en lenguaje natural
+2. **AI Understanding** - La IA comprende y analiza los requisitos del usuario
+3. **PRD Document** - Generación del documento de requisitos del producto
+4. **CLI Execution** - Ejecución de comandos CLI para crear la aplicación
+5. **YiDa Platform** - Construcción de la aplicación en la plataforma Yida
+6. **Online Access** - La aplicación queda en línea
+
+## Arquitectura del sistema
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI Interface                          │
+│         (Command Parser + Interactive Prompts)              │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Command Layer                            │
+│   create-app │ create-form │ publish │ data │ doctor ...   │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Services                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   AI Service │  │  Yida API    │  │   Config     │      │
+│  │  (Multi-LLM) │  │  (Open API)  │  │   Manager    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Auth        │  │  Skill       │  │   Template   │      │
+│  │  (OAuth 2.0) │  │  System      │  │   Engine     │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+┌─────────────────────────┐    ┌─────────────────────────────┐
+│    AI Providers         │    │    Yida Platform            │
+│  ┌─────────────────┐    │    │                             │
+│  │ OpenAI (GPT-4)  │    │    │   ┌─────────────────────┐   │
+│  ├─────────────────┤    │    │   │   Application       │   │
+│  │ Claude (3.5)    │    │    │   │   Engine            │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ Tongyi Qwen     │    │    │   │   Form Builder      │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ DeepSeek        │    │    │   │   Page Designer     │   │
+│  └─────────────────┘    │    │   ├─────────────────────┤   │
+│                         │    │   │   Data Management   │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Connector Hub     │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Report Center     │   │
+│                         │    │   └─────────────────────┘   │
+└─────────────────────────┘    └─────────────────────────────┘
+```
+
+## Flujo de autenticación
+
+![Flujo de autenticación](/images/architecture-auth.png)
+
+El flujo de autenticación de OpenYida:
+
+1. **config.json** - Almacenamiento de información de configuración
+2. **Login Session** - Establecimiento de sesión de inicio de sesión
+3. **Cookie Cache** - Caché de información de autenticación
+4. **API Request** - Envío de solicitudes API
+5. **YiDa Backend** - Procesamiento backend de Yida
+6. **Page/Form Output** - Salida de página/formulario
+
+## Arquitectura CLI
+
+![Arquitectura CLI](/images/architecture-cli.png)
+
+Interacción entre OpenYida CLI y la plataforma Yida:
+
+- **AI Coding Tool** → **OpenYida CLI**
+  - Login (Inicio de sesión)
+  - Create App (Crear aplicación)
+  - Create Page (Crear página)
+  - Publish (Publicar)
+  - Get Schema (Obtener estructura)
+- **YiDa Low-Code Platform**
+  - App Management (Gestión de aplicaciones)
+  - Form Pages (Páginas de formulario)
+  - Custom Pages (Páginas personalizadas)
+
+## Sistema de habilidades
+
+![Sistema de habilidades](/images/architecture-skills.png)
+
+Las habilidades de OpenYida se dividen en tres categorías:
+
+### Habilidades de inicio de sesión
+- `login` - Iniciar sesión en la plataforma Yida
+- `logout` - Cerrar sesión
+
+### Habilidades de creación
+- `create-app` - Crear aplicación
+- `create-page` - Crear página
+- `create-form` - Crear formulario
+- `get-schema` - Obtener estructura de datos
+
+### Habilidades de publicación
+- `publish` - Publicar aplicación
+
+## Principios de diseño fundamentales
+
+### 1. Diseño modular
+
+Cada módulo funcional está encapsulado de forma independiente e interactúa a través de interfaces claras:
+
+- **Capa de comandos**: Maneja la entrada CLI, llama a los servicios principales
+- **Capa de servicios**: Encapsula la lógica de negocio, proporciona API unificada
+- **Capa de adaptación**: Interfaz con sistemas externos (IA, plataforma Yida)
+
+### 2. Extensión por plugins
+
+El sistema de habilidades soporta carga dinámica y extensión:
+
+```typescript
+// Definición de interfaz Skill
+interface Skill {
+  name: string;
+  version: string;
+  activate(context: SkillContext): void;
+  deactivate(): void;
+}
+```
+
+### 3. Impulsado por configuración
+
+Soporta configuración multi-entorno con cambio flexible:
+
+- Configuración global local (~/.openyida/)
+- Configuración a nivel de proyecto (.openyidarc.json)
+- Sobrescritura por variables de entorno
+
+### 4. Seguridad de tipos
+
+Soporte de tipos TypeScript en toda la cadena para reducir errores en tiempo de ejecución.
+
+## Flujo de datos
+
+### Flujo de creación de aplicación
+
+```
+User Input → AI Service → Code Generation → Yida API → Application
+                ↑                              ↓
+           PRD Analysis                  Validation
+                ↑                              ↓
+           Template Selection           Deployment
+```
+
+### Flujo de operaciones de datos
+
+```
+User Command → Config Load → Auth Check → Yida API → Data Response
+                                              ↓
+                                         Cache/Store
+```
+
+## Stack tecnológico
+
+| Capa | Tecnología |
+|------|------|
+| Runtime | Node.js 18+ |
+| Lenguaje | TypeScript 5.x |
+| Framework CLI | Commander.js |
+| Cliente HTTP | Axios |
+| SDK de IA | OpenAI SDK, Anthropic SDK |
+| Gestión de configuración | Cosmiconfig |
+| Logging | Winston |
+| Tests | Jest |
+
+## Diseño de seguridad
+
+### Seguridad de autenticación
+
+- Flujo estándar OAuth 2.0
+- Mecanismo de refresco automático de tokens
+- Almacenamiento cifrado local de información sensible
+
+### Transmisión de datos
+
+- HTTPS en toda la cadena
+- Verificación de firma API
+- Control de reintentos y timeouts de solicitudes
+
+## Optimización de rendimiento
+
+- **Pool de conexiones**: Reutilización de conexiones HTTP
+- **Caché inteligente**: Caché local de configuración y metadatos
+- **Actualizaciones incrementales**: Solo transmitir contenido modificado
+- **Control de concurrencia**: Limitar llamadas API simultáneas
+
+## Puntos de extensión
+
+Los desarrolladores pueden extender en los siguientes niveles:
+
+1. **Nuevos comandos**: Añadir comandos CLI personalizados
+2. **Nuevas habilidades**: Extender capacidades de IA
+3. **Nuevas plantillas**: Plantillas de generación de código personalizadas
+4. **Nuevos proveedores de IA**: Integrar otros LLMs
+
+## Compatibilidad de versiones
+
+| Versión OpenYida | Node.js soportado | Versión API Yida |
+|------------------|-------------------|------------------|
+| 1.x | >= 18.0.0 | v1 |
+| 2.x | >= 20.0.0 | v2 |
