@@ -1,0 +1,152 @@
+---
+title: "Quick Start"
+description: "Install OpenYiDA and build your first Yida app in under 2 minutes."
+icon: "bolt"
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+| Dependency | Version | Check Command |
+|------------|---------|---------------|
+| [Node.js](https://nodejs.org) | ≥ 18 | `node --version` |
+
+<Tip>
+  That's all you need. OpenYiDA is pure Node.js — no Python, no Playwright, no build step required.
+</Tip>
+
+---
+
+## Step 1 — Install
+
+```bash
+npm install -g openyida
+```
+
+Verify the installation:
+
+```bash
+openyida --version
+```
+
+---
+
+## Step 2 — Log in to Yida
+
+```bash
+openyida login
+```
+
+OpenYiDA will open a browser window (or display a QR code) for you to authenticate with your Yida / Alibaba account. Credentials are cached locally — you only need to do this once.
+
+<Info>
+  If you're using **Wukong (悟空)** as your AI tool, use the special login flag:
+
+  ```bash
+  openyida login --wukong
+  ```
+</Info>
+
+---
+
+## Step 3 — Check Your Environment
+
+```bash
+openyida env
+```
+
+This detects which AI coding tool is currently active (Claude Code, Cursor, Wukong, etc.) and shows your current login status. Run this whenever you switch environments.
+
+---
+
+## Step 4 — Initialize the Project Workspace
+
+```bash
+openyida copy
+```
+
+This copies the `project/` workspace template into your current AI tool's working directory, giving the AI access to your app configuration and page templates.
+
+---
+
+## Step 5 — Start Building
+
+Now just talk to your AI coding assistant. Here are some starter prompts:
+
+```
+Build me an IPD system on Yida to manage the full chip production workflow
+```
+
+```
+Help me set up a CRM with leads, customers, and deals
+```
+
+```
+Create a personal salary calculator app
+```
+
+```
+Generate a birthday greeting mini-game on Yida
+```
+
+The AI will use OpenYiDA's skill pack to call the right CLI commands in sequence: `create-app` → `create-form` / `create-page` → `publish` → `save-share-config`.
+
+---
+
+## Step 6 — Publish Your App
+
+Once the AI has generated your app, publish it with:
+
+```bash
+openyida publish
+```
+
+Or ask the AI:
+```
+Publish the [page name] page
+Make the page publicly accessible
+```
+
+---
+
+## Run Diagnostics
+
+If anything feels off, run the built-in doctor:
+
+```bash
+openyida doctor
+```
+
+It checks your Node.js version, login status, and environment configuration, and can auto-fix common issues with `--fix`.
+
+---
+
+## OpenClaw Integration
+
+If you use OpenClaw, install the OpenYiDA skill pack directly:
+
+```bash
+npx clawhub@latest install nicky1108/yida-app
+```
+
+Then use it via [yida-app on ClawhHub](https://clawhub.ai/nicky1108/yida-app).
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Common Prompts" icon="comments" href="/openyida/features/common-prompts">
+    Browse the full list of natural language prompts OpenYiDA understands.
+  </Card>
+  <Card title="CLI Reference" icon="terminal" href="/openyida/features/skills">
+    Explore all CLI commands and skill modules.
+  </Card>
+  <Card title="Demo Gallery" icon="images" href="/openyida/introduction/demo">
+    See real apps built with OpenYiDA.
+  </Card>
+  <Card title="Best Practices" icon="star" href="/openyida/guides/best-practices">
+    Tips for getting the most out of AI-powered app generation.
+  </Card>
+</CardGroup>

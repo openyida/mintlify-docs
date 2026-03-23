@@ -1,68 +1,111 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "OpenYida Docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0066FF",
+    "light": "#33AAFF",
+    "dark": "#0044CC"
   },
   "favicon": "/favicon.svg",
+  "localization": {
+    "defaultLanguage": "zh",
+    "languages": [
+      {
+        "code": "zh",
+        "name": "简体中文"
+      },
+      {
+        "code": "en",
+        "name": "English"
+      },
+      {
+        "code": "ja",
+        "name": "日本語"
+      },
+      {
+        "code": "ko",
+        "name": "한국어"
+      },
+      {
+        "code": "fr",
+        "name": "Français"
+      },
+      {
+        "code": "de",
+        "name": "Deutsch"
+      },
+      {
+        "code": "es",
+        "name": "Español"
+      },
+      {
+        "code": "pt",
+        "name": "Português"
+      },
+      {
+        "code": "vi",
+        "name": "Tiếng Việt"
+      },
+      {
+        "code": "hi",
+        "name": "हिन्दी"
+      },
+      {
+        "code": "ar",
+        "name": "العربية"
+      },
+      {
+        "code": "zh-TW",
+        "name": "繁體中文"
+      }
+    ]
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "文档",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "开始使用",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "openyida/zh/introduction/overview",
+              "openyida/zh/introduction/demo",
+              "openyida/zh/quickstart"
             ]
           },
           {
-            "group": "Customization",
+            "group": "功能特性",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "openyida/zh/features/common-prompts",
+              "openyida/zh/features/skills",
+              "openyida/zh/features/use-cases",
+              "openyida/zh/features/connector",
+              "openyida/zh/features/data-management",
+              "openyida/zh/features/report",
+              "openyida/zh/features/doctor"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "架构设计",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "openyida/zh/architecture/overview",
+              "openyida/zh/architecture/project-structure",
+              "openyida/zh/architecture/tech-stack"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "使用指南",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
+              "openyida/zh/guides/best-practices",
+              "openyida/zh/guides/faq"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "社区",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "openyida/zh/contributing",
+              "openyida/zh/license"
             ]
           }
         ]
@@ -71,14 +114,14 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "GitHub",
+          "href": "https://github.com/openyida/openyida",
+          "icon": "github"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "npm",
+          "href": "https://www.npmjs.com/package/openyida",
+          "icon": "npm"
         }
       ]
     }
@@ -90,14 +133,14 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "GitHub",
+        "href": "https://github.com/openyida/openyida"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "开始使用",
+      "href": "https://www.npmjs.com/package/openyida"
     }
   },
   "contextual": {
@@ -114,9 +157,8 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/openyida/openyida",
+      "website": "https://www.npmjs.com/package/openyida"
     }
   }
 }

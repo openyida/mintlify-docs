@@ -1,0 +1,234 @@
+---
+title: "报表与图表"
+description: "创建宜搭报表，添加数据可视化图表。"
+icon: "chart-column"
+---
+
+OpenYida 支持创建宜搭报表并添加各种图表，实现数据的可视化展示。
+
+---
+
+## 功能概述
+
+<CardGroup cols={2}>
+  <Card title="报表创建" icon="file-plus">
+    一键创建宜搭报表，支持自定义配置。
+  </Card>
+  <Card title="图表追加" icon="chart-pie">
+    向现有报表追加多种类型的图表。
+  </Card>
+  <Card title="数据绑定" icon="link">
+    自动绑定表单数据源，实时展示数据。
+  </Card>
+  <Card title="图表类型" icon="shapes">
+    支持柱状图、折线图、饼图、表格等多种图表。
+  </Card>
+</CardGroup>
+
+---
+
+## 创建报表
+
+### 基本用法
+
+```bash
+openyida create-report <appType> "报表名称" '<图表定义JSON>'
+```
+
+### 示例：创建销售报表
+
+```bash
+openyida create-report APP_XXXXXX "月度销售报表" '{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "月度销售额",
+      "dataSource": "form_sales",
+      "xField": "month",
+      "yField": "amount"
+    },
+    {
+      "type": "pie",
+      "title": "产品销售占比",
+      "dataSource": "form_sales",
+      "categoryField": "product_type",
+      "valueField": "amount"
+    }
+  ]
+}'
+```
+
+### 从文件加载图表定义
+
+```bash
+openyida create-report APP_XXXXXX "年度统计报表" ./charts-config.json
+```
+
+---
+
+## 图表定义格式
+
+### 柱状图
+
+```json
+{
+  "type": "bar",
+  "title": "柱状图标题",
+  "dataSource": "form_uuid",
+  "xField": "category_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### 折线图
+
+```json
+{
+  "type": "line",
+  "title": "趋势图标题",
+  "dataSource": "form_uuid",
+  "xField": "date_field",
+  "yField": "value_field",
+  "aggregation": "sum"
+}
+```
+
+### 饼图
+
+```json
+{
+  "type": "pie",
+  "title": "占比图标题",
+  "dataSource": "form_uuid",
+  "categoryField": "category_field",
+  "valueField": "value_field"
+}
+```
+
+### 数据表格
+
+```json
+{
+  "type": "table",
+  "title": "数据明细",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "名称" },
+    { "field": "amount", "title": "金额" },
+    { "field": "date", "title": "日期" }
+  ]
+}
+```
+
+---
+
+## 向报表追加图表
+
+```bash
+openyida append-chart <appType> <reportId> '<图表定义JSON>'
+```
+
+### 示例
+
+```bash
+openyida append-chart APP_XXXXXX REPORT_XXXXX '{
+  "type": "line",
+  "title": "增长趋势",
+  "dataSource": "form_sales",
+  "xField": "month",
+  "yField": "growth_rate"
+}'
+```
+
+---
+
+## 完整配置示例
+
+### sales-report-charts.json
+
+```json
+{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "月度销售额统计",
+      "dataSource": "form_monthly_sales",
+      "xField": "month",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "color": "#0066FF"
+    },
+    {
+      "type": "pie",
+      "title": "产品类别占比",
+      "dataSource": "form_sales",
+      "categoryField": "product_category",
+      "valueField": "sales_amount",
+      "showLegend": true
+    },
+    {
+      "type": "line",
+      "title": "销售趋势",
+      "dataSource": "form_daily_sales",
+      "xField": "date",
+      "yField": "sales_amount",
+      "aggregation": "sum",
+      "smooth": true
+    },
+    {
+      "type": "table",
+      "title": "销售明细",
+      "dataSource": "form_sales",
+      "columns": [
+        { "field": "order_no", "title": "订单号", "width": 150 },
+        { "field": "customer_name", "title": "客户名称", "width": 200 },
+        { "field": "product_name", "title": "产品名称", "width": 200 },
+        { "field": "amount", "title": "金额", "width": 120, "align": "right" },
+        { "field": "sales_date", "title": "销售日期", "width": 150 }
+      ],
+      "pageSize": 10
+    }
+  ]
+}
+```
+
+创建报表：
+
+```bash
+openyida create-report APP_XXXXXX "销售分析报表" ./sales-report-charts.json
+```
+
+---
+
+## 图表类型参考
+
+| 类型 | 说明 | 必需字段 |
+|------|------|----------|
+| `bar` | 柱状图 | xField, yField |
+| `line` | 折线图 | xField, yField |
+| `pie` | 饼图 | categoryField, valueField |
+| `table` | 数据表格 | columns |
+| `area` | 面积图 | xField, yField |
+| `scatter` | 散点图 | xField, yField |
+
+---
+
+## 聚合函数
+
+| 函数 | 说明 |
+|------|------|
+| `sum` | 求和 |
+| `avg` | 平均值 |
+| `count` | 计数 |
+| `max` | 最大值 |
+| `min` | 最小值 |
+
+---
+
+## 最佳实践
+
+1. **合理选择图表类型** - 趋势用折线图、对比用柱状图、占比用饼图
+2. **控制图表数量** - 单个报表建议不超过 6 个图表
+3. **使用数据表格** - 配合图表展示详细数据，方便查看原始值
+4. **设置合适的分页** - 数据表格建议每页 10-20 条

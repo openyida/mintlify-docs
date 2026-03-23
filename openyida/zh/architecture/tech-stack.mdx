@@ -1,0 +1,221 @@
+---
+title: "技术架构"
+description: "OpenYida 的技术架构、核心模块和设计原理。"
+icon: "layer-group"
+---
+
+## 架构概览
+
+OpenYida 采用模块化架构设计，核心分为 CLI 入口、核心模块、功能模块三层。
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI 入口层 (bin/)                       │
+│                      yida.js - 命令路由                       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      核心模块 (lib/core/)                     │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │   i18n   │ │   env    │ │  utils   │ │  doctor  │       │
+│  │  国际化   │ │ 环境检测 │ │ 工具函数 │ │ 诊断工具 │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │  check   │ │   copy   │ │  babel   │ │  locales │       │
+│  │ 更新检查 │ │目录复制  │ │ 编译器   │ │  语言包  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      功能模块 (lib/)                          │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │   auth   │ │   app    │ │   data   │ │  report  │       │
+│  │ 认证模块 │ │应用管理  │ │ 数据管理 │ │  报表    │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│  │ connector│ │  process │ │permission│ │   cdn    │       │
+│  │ 连接器   │ │ 流程管理 │ │  权限    │ │ CDN管理  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    宜搭平台 API (aliwork.com)                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 核心模块详解
+
+### 国际化 (i18n.js)
+
+支持 12 种语言的国际化系统：
+
+```javascript
+const { t, getLanguage, setLanguage } = require('./i18n');
+
+// 使用翻译
+console.log(t('login.success'));
+console.log(t('create_app.usage', 'appName'));
+
+// 获取/设置语言
+console.log(getLanguage()); // 'zh'
+setLanguage('en');
+```
+
+**语言检测优先级：**
+1. `OPENYIDA_LANG` 环境变量
+2. `LANG` / `LC_ALL` 系统环境变量
+3. 默认：简体中文
+
+### 环境检测 (env.js)
+
+自动检测当前运行的 AI 工具环境：
+
+| 检测方式 | 工具 |
+|----------|------|
+| 目录存在检测 | Claude Code、Cursor、OpenCode、Aone Copilot、Qoder |
+| 特殊文件检测 | 悟空 (Wukong) |
+
+### 诊断引擎 (doctor.js)
+
+三层架构设计：
+
+1. **DiagnosticEngine** - 诊断调度器
+2. **EnvironmentChecker** - 环境检查器
+3. **ApplicationChecker** - 应用检查器
+4. **FixEngine** - 智能修复引擎
+
+---
+
+## 功能模块详解
+
+### 认证模块 (auth/)
+
+```
+auth/
+├── login.js          # 宜搭登录（Cookie 缓存 + 扫码）
+├── auth.js           # 登录态管理
+├── org.js            # 组织管理
+└── qr-login.js       # 终端二维码登录
+```
+
+**登录流程：**
+1. 检测当前 AI 工具环境
+2. 根据环境选择登录方式（扫码 / CDP / 文件读取）
+3. 获取 Cookie 并本地加密缓存
+4. 后续命令自动使用缓存的登录态
+
+### 连接器模块 (connector/)
+
+```
+connector/
+├── api.js                    # 宜搭连接器 API 封装
+├── curl-parser.js            # curl 命令解析器
+├── action-generator.js       # 动作生成器
+├── desc-generator.js         # 描述生成器
+├── connector-smart-create.js # 智能创建入口
+└── ...
+```
+
+**智能创建流程：**
+```
+curl 命令 → 解析器 → API 信息提取 → 鉴权检测 → 匹配已有连接器 → 生成配置 → 创建/更新
+```
+
+### 数据管理模块 (data-management.js)
+
+统一的数据操作接口，支持：
+
+| 资源类型 | 操作 |
+|----------|------|
+| form | query, get, create, update |
+| process | query, get, create |
+| task | query, execute |
+| subform | query |
+
+---
+
+## 项目工作目录
+
+```
+project/
+├── config.json          # 应用配置
+│   ├── appType          # 应用类型 ID
+│   ├── pageId           # 页面 ID
+│   ├── corpId           # 组织 ID
+│   └── ...
+├── pages/
+│   ├── src/             # 页面源码（React + 宜搭 SDK）
+│   └── dist/            # 编译产物
+├── prd/                 # 需求文档
+└── .cache/
+    ├── cookies.json     # 登录态缓存
+    ├── *-schema.json    # 表单 Schema 缓存
+    └── reports/         # 诊断报告
+```
+
+---
+
+## 宜搭 API 调用
+
+### 基础配置
+
+```javascript
+const BASE_URL = 'https://www.aliwork.com';
+
+// 请求头
+const headers = {
+  'Content-Type': 'application/json',
+  'X-Csrf-Token': csrfToken,
+  'Cookie': cookies,
+};
+```
+
+### 核心 API
+
+| 端点 | 用途 |
+|------|------|
+| `/dingtalk/web/APP_xxx/xxx` | 应用内接口 |
+| `/dingtalk/web/APP_xxx/form/getFormDataList` | 表单数据查询 |
+| `/dingtalk/web/APP_xxx/form/saveFormData` | 保存表单数据 |
+| `/dingtalk/web/APP_xxx/proc/getProcessInstances` | 流程实例查询 |
+
+---
+
+## 安全设计
+
+1. **Cookie 加密存储** - 本地缓存加密保存
+2. **CSRF Token 验证** - 每次请求携带 Token
+3. **无硬编码凭证** - 所有凭证动态获取
+4. **环境隔离** - 不同 AI 工具环境独立
+
+---
+
+## 性能优化
+
+1. **懒加载翻译文件** - 按需加载语言包
+2. **Schema 本地缓存** - 减少 API 调用
+3. **并发请求控制** - 避免请求过多被限流
+4. **增量更新** - 表单更新采用合并而非覆盖
+
+---
+
+## 扩展机制
+
+### 添加新命令
+
+1. 在 `lib/` 下创建 `new-feature.js`
+2. 在 `bin/yida.js` 注册命令路由
+3. 更新 `README.md` 和文档
+4. 添加国际化 key
+
+### 添加新语言
+
+1. 在 `lib/core/locales/` 创建 `xx.js`
+2. 翻译所有 key（以 `zh.js` 为基准）
+3. 更新 `i18n.js` 的 `SUPPORTED_LANGUAGES`
+4. 运行 `npm run validate-i18n` 检查完整性

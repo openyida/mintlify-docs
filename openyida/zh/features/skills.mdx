@@ -1,0 +1,242 @@
+---
+title: "CLI 参考"
+description: "OpenYida 所有 CLI 命令的完整参考。"
+icon: "terminal"
+---
+
+OpenYida 提供丰富的 CLI 命令，支持应用全生命周期管理。
+
+---
+
+## 环境与认证
+
+```bash
+# 环境检测
+openyida env
+
+# 登录
+openyida login [--qr]              # --qr 使用终端二维码
+openyida login --wukong            # 悟空环境专用
+
+# 退出登录
+openyida logout
+
+# 登录态管理
+openyida auth status               # 查看登录状态
+openyida auth login                # 执行登录
+openyida auth refresh              # 刷新登录态
+openyida auth logout               # 退出登录
+
+# 组织管理
+openyida org list                  # 列出可访问的组织
+openyida org switch --corp-id <id> # 切换组织
+
+# 初始化工作目录
+openyida copy [--force]            # 复制 project 目录
+
+# 诊断工具
+openyida doctor [--fix]            # 环境诊断
+openyida doctor --monitor          # 健康监控
+openyida doctor --report <format>  # 生成报告 (json|markdown|html)
+```
+
+---
+
+## 应用管理
+
+```bash
+# 创建应用
+openyida create-app "<名称>" [desc] [icon] [color] [themeColor]
+
+# 导出应用
+openyida export <appType> [output] # 生成迁移包
+
+# 导入应用
+openyida import <file> [name]      # 从迁移包重建应用
+```
+
+---
+
+## 表单管理
+
+```bash
+# 创建表单
+openyida create-form create <appType> "<表单名>" <字段JSON> \
+  [--layout <布局>] \
+  [--theme <主题>] \
+  [--label-align <对齐>]
+
+# 更新表单
+openyida create-form update <appType> <formUuid> <修改JSON>
+
+# 获取表单 Schema
+openyida get-schema <appType> <formUuid>
+
+# 更新表单配置
+openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+```
+
+---
+
+## 页面管理
+
+```bash
+# 创建自定义页面
+openyida create-page <appType> "<页面名>"
+
+# 编译并发布页面
+openyida publish <源文件路径> <appType> <formUuid>
+
+# 页面分享配置
+openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
+openyida get-page-config <appType> <formUuid>
+openyida verify-short-url <appType> <formUuid> <url>
+```
+
+---
+
+## 数据管理
+
+```bash
+# 统一数据管理
+openyida data <action> <resource> [args]
+
+# 表单数据
+openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
+openyida data get form <appType> --inst-id <id>
+openyida data create form <appType> <formUuid> --data-json <JSON>
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
+
+# 流程数据
+openyida data query process <appType> <formUuid> [--instance-status STATUS]
+openyida data get process <appType> --process-inst-id <id>
+openyida data create process <appType> <formUuid> --process-code <code> --data-json <JSON>
+
+# 任务管理
+openyida data query tasks <appType> --type <todo|done|submitted|cc>
+openyida data execute task <appType> --task-id <id> --process-inst-id <id> --out-result <AGREE|DISAGREE>
+
+# 子表单
+openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id <fieldId>
+```
+
+---
+
+## 流程管理
+
+```bash
+# 创建流程表单
+openyida create-process <appType> "<表单名>" <字段JSON> --process-code <code>
+
+# 配置流程规则
+openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+```
+
+---
+
+## 权限管理
+
+```bash
+# 查询表单权限
+openyida get-permission <appType> <formUuid>
+
+# 保存表单权限
+openyida save-permission <appType> <formUuid> \
+  [--data-permission <json>] \
+  [--action-permission <json>]
+```
+
+---
+
+## 连接器管理
+
+```bash
+# 列出连接器
+openyida connector list [--page N] [--size N]
+
+# 创建连接器
+openyida connector create "<名称>" "<域名>" --operations <file> [选项]
+
+# 查看连接器详情
+openyida connector detail <connector-id>
+
+# 删除连接器
+openyida connector delete <connector-id> [--force]
+
+# 动作管理
+openyida connector add-action --connector-id <id> --operations <file> [--confirm]
+openyida connector list-actions <connector-id>
+openyida connector delete-action <connector-id> <operation-id> [--force]
+openyida connector test --connector-id <id> --action <actionId> [选项]
+
+# 鉴权账号管理
+openyida connector list-connections <connector-id>
+openyida connector create-connection <connector-id> "<名称>" [选项]
+
+# 智能创建
+openyida connector smart-create --curl "<curl命令>" [--name <name>] [--desc <desc>]
+
+# 辅助工具
+openyida connector parse-api --curl "<curl命令>" --output <file>
+openyida connector gen-template [输出路径]
+```
+
+---
+
+## 报表管理
+
+```bash
+# 创建报表
+openyida create-report <appType> "<报表名称>" <图表定义JSON或文件路径>
+
+# 追加图表
+openyida append-chart <appType> <reportId> <图表定义JSON或文件路径>
+```
+
+---
+
+## CDN 管理
+
+```bash
+# 配置 CDN
+openyida cdn-config
+
+# 上传图片
+openyida cdn-upload <文件路径>
+
+# 刷新缓存
+openyida cdn-refresh <路径>
+```
+
+---
+
+## 全局选项
+
+| 选项 | 说明 |
+|------|------|
+| `--help`, `-h` | 显示帮助信息 |
+| `--version`, `-v` | 显示版本号 |
+| `--qr` | 使用终端二维码登录 |
+| `--force` | 强制操作，跳过确认 |
+
+---
+
+## 环境变量
+
+| 变量 | 说明 | 示例 |
+|------|------|------|
+| `OPENYIDA_LANG` | 设置语言 | `zh`, `en`, `ja` |
+| `LANG` / `LC_ALL` | 系统语言 | `zh_CN.UTF-8` |
+
+---
+
+## 退出码
+
+| 码 | 含义 |
+|----|------|
+| 0 | 成功 |
+| 1 | 一般错误 |
+| 2 | 参数错误 |
+| 3 | 登录失败/未登录 |
+| 4 | 网络错误 |
+| 5 | API 错误 |

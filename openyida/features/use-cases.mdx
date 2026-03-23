@@ -1,0 +1,150 @@
+---
+title: "Use Cases"
+description: "Real-world scenarios where OpenYiDA accelerates Yida app development."
+icon: "lightbulb"
+---
+
+OpenYiDA is versatile. Below are the most common use cases, organized by app category.
+
+---
+
+## 🏢 Enterprise Business Systems
+
+Build multi-module business platforms with complex forms, workflows, and data relationships.
+
+<AccordionGroup>
+  <Accordion title="IPD (Integrated Product Development)">
+    **Prompt:**
+    ```
+    Build me an IPD system on Yida to manage the full chip production workflow,
+    including project initiation, design review, tape-out, and mass production phases
+    ```
+    **What you get:** Multi-form app with phase tracking, review checklists, milestone management, and cross-team visibility.
+  </Accordion>
+
+  <Accordion title="CRM (Customer Relationship Management)">
+    **Prompt:**
+    ```
+    Help me set up a CRM with modules for leads, customers, deals, and follow-up records
+    ```
+    **What you get:** Linked forms for leads → customers → opportunities → contracts, with status tracking and assignment fields.
+  </Accordion>
+
+  <Accordion title="HR & Leave Management">
+    **Prompt:**
+    ```
+    Create an HR leave management system with leave requests, approval workflow, and leave balance tracking
+    ```
+    **What you get:** Leave request form with approval process, balance calculator, and manager dashboard.
+  </Accordion>
+
+  <Accordion title="Project Management">
+    **Prompt:**
+    ```
+    Build a project management app with tasks, milestones, team members, and progress tracking
+    ```
+    **What you get:** Task list with priority/status/assignee fields, milestone tracker, and Gantt-style view.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 💰 Utility Tools & Calculators
+
+Single-purpose tools that perform calculations or data collection.
+
+<AccordionGroup>
+  <Accordion title="Personal Salary Calculator">
+    **Prompt:**
+    ```
+    Create a personal salary calculator app with gross salary input, tax deduction logic, and net pay display
+    ```
+    **What you get:** Form with formula fields for pre-tax deductions, individual income tax calculation, and take-home pay summary.
+  </Accordion>
+
+  <Accordion title="Budget Tracker">
+    **Prompt:**
+    ```
+    Build a personal budget tracker with income, expense categories, and monthly summary
+    ```
+    **What you get:** Income/expense entry forms with category dropdowns and auto-calculated monthly balance.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🌐 Landing Pages & Portals
+
+Marketing pages, product introductions, and internal portals.
+
+<AccordionGroup>
+  <Accordion title="Enterprise Product Landing Page">
+    **Prompt:**
+    ```
+    Generate an enterprise collaboration product landing page for ZhiLian Xietong with hero section, features, and contact form
+    ```
+    **What you get:** Full custom display page with hero banner, feature cards, and embedded contact form.
+  </Accordion>
+
+  <Accordion title="Event Registration Page">
+    **Prompt:**
+    ```
+    Create an event registration page for our annual tech conference with attendee info form and session selection
+    ```
+    **What you get:** Branded registration page with form validation and confirmation logic.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🎮 Interactive Campaigns & Mini-Games
+
+Engagement tools for internal events, holidays, and marketing campaigns.
+
+<AccordionGroup>
+  <Accordion title="Lantern Festival Riddle Game">
+    **Prompt:**
+    ```
+    Create a Lantern Festival riddle guessing game — AI generates riddle images, users submit answers, wrong answers get a funny AI response
+    ```
+    **What you get:** Game page with AI-generated riddle images, answer submission form, and conditional response logic.
+  </Accordion>
+
+  <Accordion title="Birthday Greeting Mini-Game">
+    **Prompt:**
+    ```
+    Build a birthday greeting mini-game where users enter their name and receive a personalized AI greeting card
+    ```
+    **What you get:** Interactive greeting card generator with data storage for tracking responses.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## 🔌 API Integration (Connectors)
+
+Connect Yida apps to external systems via HTTP connectors.
+
+<AccordionGroup>
+  <Accordion title="Webhook Notification">
+    **Prompt:**
+    ```
+    Create an HTTP connector for our DingTalk webhook, add a POST action to send form submission notifications
+    ```
+    **What you get:** Configured connector with test capability, ready to trigger on form events.
+  </Accordion>
+
+  <Accordion title="Smart Connector from curl">
+    **Prompt:**
+    ```
+    Smart-create a connector from this curl command: curl -X POST https://api.example.com/v1/users -H "Authorization: Bearer TOKEN" -d '{"name":"test"}'
+    ```
+    **What you get:** Auto-configured connector with extracted base URL, headers, and action parameters.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+These are starting points. Because the output is a fully editable Yida app (not a black-box config), you can always refine the generated app through the Yida visual editor or by giving the AI follow-up instructions.
+</Note>
