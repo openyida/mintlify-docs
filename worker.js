@@ -72,55 +72,10 @@ function getIframeHTML() {
             height: 100%;
             border: none;
         }
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50px;
-            background: #0066FF;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            z-index: 1000;
-        }
-        .header-logo {
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .header-nav {
-            display: flex;
-            gap: 20px;
-        }
-        .header-nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .header-nav a:hover {
-            text-decoration: underline;
-        }
-        .iframe-container {
-            margin-top: 50px;
-            width: 100%;
-            height: calc(100% - 50px);
-        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <a href="/" class="header-logo">OpenYida</a>
-        <div class="header-nav">
-            <a href="/docs">文档</a>
-            <a href="https://github.com/openyida/openyida" target="_blank">GitHub</a>
-        </div>
-    </div>
-    <div class="iframe-container">
-        <iframe src="https://ai.aliwork.com/o/openyida" allow="fullscreen"></iframe>
-    </div>
+    <iframe src="https://ai.aliwork.com/o/openyida" allow="fullscreen"></iframe>
 </body>
 </html>`;
 }
