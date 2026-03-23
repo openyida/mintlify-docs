@@ -7,7 +7,20 @@ description: OpenYida 整体架构设计和技术选型说明
 
 OpenYida 是一个基于 Node.js 的 CLI 工具，采用分层架构设计，将 AI 能力、宜搭平台集成和开发者体验有机结合。
 
-## 架构图
+## 整体工作流程
+
+![OpenYida 工作流程](/images/architecture-workflow.png)
+
+OpenYida 的工作流程分为 6 个阶段：
+
+1. **User Requirement** - 用户通过自然语言描述需求
+2. **AI Understanding** - AI 理解并分析用户需求
+3. **PRD Document** - 生成产品需求文档
+4. **CLI Execution** - 执行 CLI 命令创建应用
+5. **YiDa Platform** - 在宜搭平台构建应用
+6. **Online Access** - 应用上线访问
+
+## 系统架构
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -55,6 +68,55 @@ OpenYida 是一个基于 Node.js 的 CLI 工具，采用分层架构设计，将
 │                         │    │   └─────────────────────┘   │
 └─────────────────────────┘    └─────────────────────────────┘
 ```
+
+## 认证流程
+
+![认证流程](/images/architecture-auth.png)
+
+OpenYida 的认证流程：
+
+1. **config.json** - 存储配置信息
+2. **Login Session** - 建立登录会话
+3. **Cookie Cache** - 缓存认证信息
+4. **API Request** - 发送 API 请求
+5. **YiDa Backend** - 宜搭后端处理
+6. **Page/Form Output** - 输出页面/表单
+
+## CLI 架构
+
+![CLI 架构](/images/architecture-cli.png)
+
+OpenYida CLI 与宜搭平台的交互：
+
+- **AI Coding Tool** → **OpenYida CLI**
+  - Login（登录）
+  - Create App（创建应用）
+  - Create Page（创建页面）
+  - Publish（发布）
+  - Get Schema（获取结构）
+- **YiDa Low-Code Platform**
+  - App Management（应用管理）
+  - Form Pages（表单页面）
+  - Custom Pages（自定义页面）
+
+## 技能体系
+
+![技能体系](/images/architecture-skills.png)
+
+OpenYida 的技能分为三大类：
+
+### Login Skills（登录技能）
+- `login` - 登录宜搭平台
+- `logout` - 退出登录
+
+### Create Skills（创建技能）
+- `create-app` - 创建应用
+- `create-page` - 创建页面
+- `create-form` - 创建表单
+- `get-schema` - 获取数据结构
+
+### Publish Skills（发布技能）
+- `publish` - 发布应用
 
 ## 核心设计原则
 

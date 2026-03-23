@@ -4,6 +4,27 @@ description: "OpenYida 的技术架构、核心模块和设计原理。"
 icon: "layer-group"
 ---
 
+## 技术栈架构
+
+![技术栈架构](/images/architecture-tech-stack.png)
+
+OpenYida 的技术栈分为开发环境和云平台两部分：
+
+### 开发环境 (Development Environment)
+- **Node.js** - 运行时环境
+- **Python** - Playwright 自动化测试
+- **Git** - 版本控制
+
+### 自动化测试 (Playwright)
+- 浏览器自动化
+- 端到端测试
+- 页面截图对比
+
+### 宜搭云平台 (YiDa Cloud Platform)
+- **App** - 应用管理
+- **Form** - 表单页面
+- **Custom Page** - 自定义页面
+
 ## 架构概览
 
 OpenYida 采用模块化架构设计，核心分为 CLI 入口、核心模块、功能模块三层。
