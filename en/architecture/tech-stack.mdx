@@ -182,7 +182,61 @@ Exit with Code
 
 ---
 
-## Design Principles
+## Yida API calls
+
+### Base configuration
+
+```javascript
+const BASE_URL = 'https://www.aliwork.com';
+
+// Request headers
+const headers = {
+  'Content-Type': 'application/json',
+  'X-Csrf-Token': csrfToken,
+  'Cookie': cookies,
+};
+```
+
+### Core APIs
+
+| Endpoint | Purpose |
+|----------|---------|
+| `/dingtalk/web/APP_xxx/xxx` | App internal API |
+| `/dingtalk/web/APP_xxx/v1/form/searchFormDatas.json` | Form data query |
+| `/dingtalk/web/APP_xxx/v1/form/saveFormData.json` | Save form data |
+| `/dingtalk/web/APP_xxx/v1/form/getFormDataById.json` | Get form data by ID |
+| `/dingtalk/web/APP_xxx/v1/form/updateFormData.json` | Update form data |
+| `/dingtalk/web/APP_xxx/v1/process/getInstances.json` | Process instance query |
+| `/dingtalk/web/APP_xxx/v1/process/getInstanceById.json` | Get process instance by ID |
+| `/dingtalk/web/APP_xxx/v1/process/startInstance.json` | Start process instance |
+| `/dingtalk/web/APP_xxx/v1/task/executeTask.json` | Execute task |
+| `/dingtalk/web/APP_xxx/v1/task/getTasks.json` | List tasks |
+| `/query/newconnector/listConnector.json` | List connectors |
+| `/query/newconnector/createOrUpdateConnector.json` | Create or update connector |
+| `/query/newconnector/getConnectorDetail.json` | Get connector detail |
+| `/query/newconnector/testConnector.json` | Test connector action |
+
+---
+
+## Security design
+
+1. **Cookie encrypted storage** - Local cache is stored encrypted
+2. **CSRF token verification** - Every request includes a token
+3. **No hardcoded credentials** - All credentials are dynamically obtained
+4. **Environment isolation** - Independent across different AI tool environments
+
+---
+
+## Performance optimization
+
+1. **Lazy-load translation files** - Language packs loaded on demand
+2. **Local schema caching** - Reduces API calls
+3. **Concurrent request control** - Prevents rate limiting from excessive requests
+4. **Incremental updates** - Form updates use merge instead of overwrite
+
+---
+
+## Design principles
 
 ### 1. Single Responsibility
 
