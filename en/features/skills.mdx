@@ -1,5 +1,5 @@
 ---
-title: "CLI Reference"
+title: "CLI reference"
 description: "Complete reference for all OpenYida CLI commands."
 icon: "terminal"
 ---
@@ -8,7 +8,7 @@ OpenYida provides rich CLI commands for full application lifecycle management.
 
 ---
 
-## Environment & Authentication
+## Environment and authentication
 
 ```bash
 # Environment check
@@ -42,144 +42,204 @@ openyida doctor --report <format>  # Generate report (json|markdown|html)
 
 ---
 
-## Application Management
+## Application management
 
 ```bash
 # Create application
 openyida create-app "<name>" [desc] [icon] [color] [themeColor]
 
-# List applications
-openyida list-apps
+# Export application
+openyida export <appType> [output] # Generate migration package
 
-# Import/Export
-openyida import --file <path>      # Import from JSON
-openyida export --app <id>         # Export to JSON
-
-# Deploy
-openyida deploy --env <env>        # Deploy to environment
+# Import application
+openyida import <file> [name]      # Rebuild app from migration package
 ```
 
 ---
 
-## Form Management
+## Form management
 
 ```bash
 # Create form
-openyida create-form "<name>" [--app <appId>] [--folder <folder>]
-
-# Create process form
-openyida create-form "<name>" --process [--app <appId>]
-
-# Get form schema
-openyida get-form-schema --form <formUuid>
+openyida create-form create <appType> "<form name>" <fieldsJSON> \
+  [--layout <layout>] \
+  [--theme <theme>] \
+  [--label-align <alignment>]
 
 # Update form
-openyida update-form --form <formUuid> --schema <file>
+openyida create-form update <appType> <formUuid> <modificationJSON>
+
+# Get form schema
+openyida get-schema <appType> <formUuid>
+
+# Update form config
+openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
 
 ---
 
-## Page Management
+## Page management
 
 ```bash
 # Create custom page
-openyida create-page <appType> "<name>" [--datasource <jsonOrFile>]
+openyida create-page <appType> "<page name>" [--datasource <jsonOrFile>]
 
-# Publish page
-openyida publish --page <id> [--env <env>]
+# Compile and publish page
+openyida publish <sourceFilePath> <appType> <formUuid>
 
-# Share page
-openyida share --page <id> [--public] [--password <pwd>]
+# Compile only (no publish, output to pages/dist/)
+openyida compile <sourceFilePath>
+
+# Page share configuration
+openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
+openyida get-page-config <appType> <formUuid>
+openyida verify-short-url <appType> <formUuid> <url>
 ```
 
 ---
 
-## Data Management
+## Data management
 
 ```bash
-# Query form data
-openyida data query --form <formUuid> [--where <conditions>] [--limit <n>]
+# Unified data management
+openyida data <action> <resource> [args]
 
-# Create data entry
-openyida data create --form <formUuid> --data '<json>'
+# Form data
+openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
+openyida data get form <appType> --inst-id <id>
+openyida data create form <appType> <formUuid> --data <JSON>
+openyida data update form <appType> --inst-id <id> --data <JSON>
 
-# Update data
-openyida data update --form <formUuid> --id <id> --data '<json>'
+# Process data
+openyida data query process <appType> <formUuid> [--instance-status STATUS]
+openyida data get process <appType> --process-inst-id <id>
+openyida data create process <appType> <formUuid> --process-code <code> --data <JSON>
 
-# Delete data
-openyida data delete --form <formUuid> --id <id>
+# Task management
+openyida data query tasks <appType> --type <todo|done|submitted|cc>
+openyida data execute task <appType> --task-id <id> --process-inst-id <id> --out-result <AGREE|DISAGREE>
 
-# Export data
-openyida data export --form <formUuid> --format <csv|json|excel>
+# Subform
+openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id <fieldId>
 ```
 
 ---
 
-## Connector Management
+## Process management
 
 ```bash
-# Create HTTP connector
-openyida create-connector "<name>" --url <url> [--method <method>]
+# Create process form
+openyida create-process <appType> "<form name>" <fieldsJSON> --process-code <code>
 
-# Import from curl
-openyida create-connector --curl '<curl-command>'
+# Configure process rules
+openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+```
 
-# Test connector
-openyida test-connector --id <connectorId>
+---
 
+## Permission management
+
+```bash
+# Query form permissions
+openyida get-permission <appType> <formUuid>
+
+# Save form permissions
+openyida save-permission <appType> <formUuid> \
+  [--data-permission <json>] \
+  [--action-permission <json>]
+```
+
+---
+
+## Connector management
+
+```bash
 # List connectors
-openyida list-connectors [--app <appId>]
+openyida connector list [--page N] [--size N]
+
+# Create connector
+openyida connector create "<name>" "<domain>" --operations <file> [options]
+
+# Get connector details
+openyida connector detail <connector-id>
+
+# Delete connector
+openyida connector delete <connector-id> [--force]
+
+# Action management
+openyida connector add-action --connector-id <id> --operations <file> [--confirm]
+openyida connector list-actions <connector-id>
+openyida connector delete-action <connector-id> <operation-id> [--force]
+openyida connector test --connector-id <id> --action <actionId> [options]
+
+# Auth account management
+openyida connector list-connections <connector-id>
+openyida connector create-connection <connector-id> "<name>" [options]
+
+# Smart creation
+openyida connector smart-create --curl "<curl command>" [--name <name>] [--desc <desc>]
+
+# Helper tools
+openyida connector parse-api --curl "<curl command>" --output <file>
+openyida connector gen-template [output path]
 ```
 
 ---
 
-## Report & Charts
+## Report management
 
 ```bash
 # Create report
-openyida create-report "<name>" [--app <appId>] [--type <type>]
+openyida create-report <appType> "<report name>" <chartDefinitionJSONOrFilePath>
 
-# Add chart
-openyida add-chart --report <id> --chart '<config>'
-
-# Export report
-openyida export-report --id <id> --format <pdf|png>
+# Append chart
+openyida append-chart <appType> <reportId> <chartDefinitionJSONOrFilePath>
 ```
 
 ---
 
-## CDN & Assets
+## CDN management
 
 ```bash
+# Configure CDN
+openyida cdn-config
+
 # Upload image
-openyida upload-image --file <path> [--app <appId>]
+openyida cdn-upload <filePath>
 
 # Refresh cache
-openyida cdn refresh --urls <urls>
-
-# List assets
-openyida list-assets [--app <appId>] [--type <type>]
+openyida cdn-refresh <path>
 ```
 
 ---
 
-## Global Options
+## Global options
 
 | Option | Description |
 |--------|-------------|
-| `--app <appId>` | Specify target application |
-| `--env <env>` | Target environment (dev/prod) |
-| `--format <format>` | Output format (json/table) |
-| `--verbose` | Show detailed logs |
-| `--dry-run` | Preview changes without executing |
+| `--help`, `-h` | Show help information |
+| `--version`, `-v` | Show version number |
+| `--qr` | Use terminal QR code login |
+| `--force` | Force operation, skip confirmation |
 
 ---
 
-## Environment Variables
+## Environment variables
 
-| Variable | Description |
-|----------|-------------|
-| `OPENYIDA_APP_KEY` | App key for API authentication |
-| `OPENYIDA_APP_SECRET` | App secret for API authentication |
-| `OPENYIDA_ACCESS_TOKEN` | Access token (optional) |
-| `OPENYIDA_DEFAULT_ORG` | Default organization ID |
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `OPENYIDA_LANG` | Set language | `zh`, `en`, `ja` |
+| `LANG` / `LC_ALL` | System language | `zh_CN.UTF-8` |
+
+---
+
+## Exit codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | General error |
+| 2 | Argument error |
+| 3 | Login failure / not logged in |
+| 4 | Network error |
+| 5 | API error |

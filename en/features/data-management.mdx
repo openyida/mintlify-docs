@@ -1,5 +1,5 @@
 ---
-title: "Data Management"
+title: "Data management"
 description: "Unified data management interface supporting forms, processes, tasks, and subform operations."
 icon: "database"
 ---
@@ -8,16 +8,16 @@ OpenYida provides a unified data management CLI supporting complete CRUD operati
 
 ---
 
-## Feature Overview
+## Feature overview
 
 <CardGroup cols={2}>
-  <Card title="Form Data" icon="table">
+  <Card title="Form data" icon="table">
     Query, create, update, and delete form instance data.
   </Card>
-  <Card title="Process Data" icon="workflow">
+  <Card title="Process data" icon="workflow">
     Manage process instances, approval records, and process status.
   </Card>
-  <Card title="Task Management" icon="check-circle">
+  <Card title="Task management" icon="check-circle">
     Query todo, done, initiated, and CC'd tasks.
   </Card>
   <Card title="Subforms" icon="list">
@@ -27,192 +27,210 @@ OpenYida provides a unified data management CLI supporting complete CRUD operati
 
 ---
 
-## Command Format
+## Command format
 
 ```bash
 openyida data <action> <resource> [args]
 ```
 
 - **action**: `query` | `get` | `create` | `update` | `execute`
-- **resource**: `form` | `process` | `task` | `subform` | `operation-records`
+- **resource**: `form` | `process` | `task` | `tasks` | `subform` | `operation-records`
 
 ---
 
-## Form Data Operations
+## Form data operations
 
-### Query Data
+### Query data
 
 ```bash
-# Query all data
-openyida data query form --form <formUuid>
+# Basic query
+openyida data query form <appType> <formUuid>
 
-# With conditions
-openyida data query form --form <formUuid> --where '{"status": "active"}'
+# Paginated query
+openyida data query form <appType> <formUuid> --page 1 --size 50
 
-# Pagination
-openyida data query form --form <formUuid> --page 1 --size 50
+# Query with conditions
+openyida data query form <appType> <formUuid> \
+  --search-json '{"field_xxx": "value"}'
 
-# Sort
-openyida data query form --form <formUuid> --sort '{"createdAt": "desc"}'
+# Query specific instance
+openyida data query form <appType> <formUuid> --inst-id <formInstId>
 ```
 
-### Get Single Record
+### Get single record
 
 ```bash
-openyida data get form --form <formUuid> --id <instanceId>
+openyida data get form <appType> --inst-id <formInstId>
 ```
 
-### Create Record
+### Create record
 
 ```bash
-openyida data create form \
-  --form <formUuid> \
-  --data '{"name": "John", "email": "john@example.com"}'
+openyida data create form <appType> <formUuid> \
+  --data '{"field_xxx": "value", "field_yyy": 123}' \
+  --dept-id <departmentId>
 ```
 
-### Update Record
+### Update record
 
 ```bash
-openyida data update form \
-  --form <formUuid> \
-  --id <instanceId> \
-  --data '{"status": "completed"}'
-```
-
-### Delete Record
-
-```bash
-openyida data delete form --form <formUuid> --id <instanceId>
+openyida data update form <appType> \
+  --inst-id <formInstId> \
+  --data '{"field_xxx": "new value"}' \
+  --use-latest-version y
 ```
 
 ---
 
-## Process Data Operations
+## Process data operations
 
-### Query Process Instances
+### Query process instances
 
 ```bash
-# All instances
-openyida data query process --process <processCode>
+# Query process list
+openyida data query process <appType> <formUuid> \
+  --page 1 --size 20 \
+  --instance-status RUNNING
 
-# By status
-openyida data query process --process <processCode> --status RUNNING
+# Status options: RUNNING, COMPLETED, TERMINATED
 ```
 
-### Get Process Detail
+### Get process detail
 
 ```bash
-openyida data get process --process <processCode> --id <instanceId>
+openyida data get process <appType> --process-inst-id <processInstanceId>
 ```
 
-### Execute Process Action
+### Create process instance
 
 ```bash
-# Approve
-openyida data execute process \
-  --process <processCode> \
-  --id <instanceId> \
-  --action AGREE \
-  --comment "Approved"
+openyida data create process <appType> <formUuid> \
+  --process-code <processCode> \
+  --data '{"field_xxx": "value"}' \
+  --dept-id <departmentId>
+```
 
-# Reject
-openyida data execute process \
-  --process <processCode> \
-  --id <instanceId> \
-  --action REJECT \
-  --comment "Need more info"
+### Query approval records
+
+```bash
+openyida data query operation-records <appType> \
+  --process-inst-id <processInstanceId>
 ```
 
 ---
 
-## Task Management
+## Task management
 
-### Query Tasks
+### Query tasks
 
 ```bash
 # Todo tasks
-openyida data query task --type todo
+openyida data query tasks <appType> --type todo
 
 # Done tasks
-openyida data query task --type done
+openyida data query tasks <appType> --type done
 
 # Initiated by me
-openyida data query task --type initiated
+openyida data query tasks <appType> --type submitted
 
 # CC'd to me
-openyida data query task --type cc
+openyida data query tasks <appType> --type cc
 ```
 
-### Get Task Detail
+### Execute task
 
 ```bash
-openyida data get task --id <taskId>
+openyida data execute task <appType> \
+  --task-id <taskId> \
+  --process-inst-id <processInstanceId> \
+  --out-result AGREE \
+  --remark "Approved, please proceed" \
+  --data '{"comment": "Approved"}'
+```
+
+**out-result options:**
+- `AGREE` - Approve
+- `DISAGREE` - Reject
+
+---
+
+## Subform operations
+
+### Query subform data
+
+```bash
+openyida data query subform <appType> <formUuid> \
+  --inst-id <formInstId> \
+  --table-field-id <fieldId> \
+  --page 1 --size 20
 ```
 
 ---
 
-## Subform Operations
+## Advanced usage
 
-### Query Subform Data
+### Complex query conditions
 
 ```bash
-openyida data query subform \
-  --form <formUuid> \
-  --subform <subformId> \
-  --parent <parentInstanceId>
+# Multi-field conditional query
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_status": "approved",
+    "field_amount": { "$gte": 1000 },
+    "field_created_at": { "$gte": "2024-01-01" }
+  }'
 ```
 
-### Create Subform Record
+### Batch operation script example
 
 ```bash
-openyida data create subform \
-  --form <formUuid> \
-  --subform <subformId> \
-  --parent <parentInstanceId> \
-  --data '{"item": "Product A", "quantity": 10}'
-```
+#!/bin/bash
+# Batch export form data
 
----
+APP_TYPE="APP_XXXXXXXX"
+FORM_UUID="FORM-XXXX-XXXX"
+PAGE=1
 
-## Operation Records
-
-### Query Operation History
-
-```bash
-# Form operations
-openyida data query operation-records --form <formUuid> --instance <instanceId>
-
-# Process operations
-openyida data query operation-records --process <processCode> --instance <instanceId>
-```
-
----
-
-## Data Export
-
-### Export to File
-
-```bash
-# CSV format
-openyida data export form --form <formUuid> --format csv --output data.csv
-
-# Excel format
-openyida data export form --form <formUuid> --format excel --output data.xlsx
-
-# JSON format
-openyida data export form --form <formUuid> --format json --output data.json
+while true; do
+  RESULT=$(openyida data query form $APP_TYPE $FORM_UUID --page $PAGE --size 100)
+  
+  # Process current page data
+  echo "$RESULT" >> ./export.json
+  
+  # Check if there are more pages
+  HAS_MORE=$(echo "$RESULT" | jq '.hasMore')
+  if [ "$HAS_MORE" != "true" ]; then
+    break
+  fi
+  
+  PAGE=$((PAGE + 1))
+done
 ```
 
 ---
 
-## Common Options
+## Data export example
 
-| Option | Description |
-|--------|-------------|
-| `--form <uuid>` | Target form UUID |
-| `--process <code>` | Target process code |
-| `--where <json>` | Filter conditions |
-| `--page <n>` | Page number |
-| `--size <n>` | Page size |
-| `--sort <json>` | Sort configuration |
-| `--format <type>` | Export format |
+```bash
+# Export data within a time range
+openyida data query form <appType> <formUuid> \
+  --search-json '{
+    "field_created_at": {
+      "$gte": "2024-01-01T00:00:00",
+      "$lte": "2024-12-31T23:59:59"
+    }
+  }' \
+  --size 100 > ./data-export.json
+```
+
+---
+
+## Important notes
+
+<Warning>
+  Data operations are permanent. Delete and update operations cannot be undone. Always test with a small dataset before running batch operations.
+</Warning>
+
+<Info>
+  Paginated queries default to 20 records per page, with a maximum of 100. For large data exports, use a loop with pagination.
+</Info>
