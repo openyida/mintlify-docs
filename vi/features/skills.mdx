@@ -80,27 +80,63 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <tiêu_đề>
 
 Lệnh `create-form` chỉ chấp nhận các loại trường sau. Sử dụng loại không được hỗ trợ sẽ trả về lỗi.
 
+#### Trường cơ bản
+
+Trường tích hợp sẵn, không cần cài đặt plugin.
+
 | Loại | Mô tả |
 |------|-------|
 | `TextField` | Văn bản một dòng |
 | `TextareaField` | Văn bản nhiều dòng |
+| `NumberField` | Số |
+| `RateField` | Đánh giá |
+| `DateField` | Ngày |
 | `RadioField` | Nút radio |
 | `SelectField` | Danh sách thả xuống (chọn một) |
 | `CheckboxField` | Hộp kiểm |
 | `MultiSelectField` | Danh sách thả xuống (chọn nhiều) |
-| `NumberField` | Số |
-| `RateField` | Đánh giá |
-| `DateField` | Ngày |
+| `CascadeSelectField` | Chọn dạng chuỗi |
 | `CascadeDateField` | Ngày dạng chuỗi |
 | `EmployeeField` | Bộ chọn thành viên |
 | `DepartmentSelectField` | Bộ chọn phòng ban |
-| `CountrySelectField` | Bộ chọn quốc gia/vùng |
-| `AddressField` | Địa chỉ |
+| `AssociationFormField` | Biểu mẫu liên kết |
+| `AssociationQuery` | Truy vấn liên kết |
 | `AttachmentField` | Tệp đính kèm |
 | `ImageField` | Hình ảnh |
+| `AddressField` | Địa chỉ |
+| `CountrySelectField` | Bộ chọn quốc gia/vùng |
 | `TableField` | Biểu mẫu con / chi tiết |
-| `AssociationFormField` | Biểu mẫu liên kết |
 | `SerialNumberField` | Số thứ tự |
+
+#### Trường nâng cao
+
+Trường tích hợp sẵn với chức năng mở rộng. Một số tính năng có thể cần kích hoạt.
+
+| Loại | Mô tả |
+|------|-------|
+| `EditorField` | Trình soạn thảo văn bản phong phú |
+| `DigitalSignatureField` | Chữ ký số |
+| `LocationField` | Vị trí GPS |
+
+#### Trường plugin
+
+Các trường này yêu cầu cài đặt plugin tương ứng từ trung tâm plugin trước khi sử dụng.
+
+| Loại | Plugin cần thiết |
+|------|------------------|
+| `TimeZoneDateField` | Thành phần múi giờ quốc tế |
+| `CC_AIButtonField` | Thành phần AI |
+| `CC_PG_ESignField` | Thành phần tài chính thông minh |
+| `CC_TeambitionProjectLinksField` | Plugin Teambition |
+| `CC_TeambitionTaskLinksField` | Plugin Teambition |
+| `CC_MoneyField` | Thành phần tài chính thông minh |
+| `CC_PhoneNumberField` | Thành phần mở rộng |
+| `CC_ChineseIdField` | Thành phần mở rộng |
+| `YidaDingtalkAgentField` | Plugin đại lý DingTalk |
+
+<Warning>
+Trường plugin sẽ thất bại nếu plugin cần thiết chưa được cài đặt trong tổ chức của bạn. Cài đặt plugin từ trung tâm plugin trước khi sử dụng các loại trường này.
+</Warning>
 
 <Warning>
 Các loại trường như `MobileField` và `EmailField` không được hỗ trợ và sẽ bị từ chối. Chỉ sử dụng các loại được liệt kê ở trên.

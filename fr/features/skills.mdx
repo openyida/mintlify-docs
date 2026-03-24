@@ -80,27 +80,63 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 
 La commande `create-form` n'accepte que les types de champs suivants. L'utilisation d'un type non supporté renvoie une erreur.
 
+#### Champs de base
+
+Champs intégrés ne nécessitant aucun plugin supplémentaire.
+
 | Type | Description |
 |------|-------------|
 | `TextField` | Texte sur une ligne |
 | `TextareaField` | Texte multiligne |
+| `NumberField` | Nombre |
+| `RateField` | Notation |
+| `DateField` | Date |
 | `RadioField` | Boutons radio |
 | `SelectField` | Liste déroulante (sélection unique) |
 | `CheckboxField` | Cases à cocher |
 | `MultiSelectField` | Liste déroulante (sélection multiple) |
-| `NumberField` | Nombre |
-| `RateField` | Notation |
-| `DateField` | Date |
+| `CascadeSelectField` | Sélection en cascade |
 | `CascadeDateField` | Date en cascade |
 | `EmployeeField` | Sélecteur de membre |
 | `DepartmentSelectField` | Sélecteur de département |
-| `CountrySelectField` | Sélecteur de pays/région |
-| `AddressField` | Adresse |
+| `AssociationFormField` | Formulaire associé |
+| `AssociationQuery` | Requête d'association |
 | `AttachmentField` | Pièce jointe |
 | `ImageField` | Image |
+| `AddressField` | Adresse |
+| `CountrySelectField` | Sélecteur de pays/région |
 | `TableField` | Sous-formulaire / détail |
-| `AssociationFormField` | Formulaire associé |
 | `SerialNumberField` | Numéro de série |
+
+#### Champs avancés
+
+Champs intégrés avec des fonctionnalités étendues. Certaines fonctions peuvent nécessiter une activation.
+
+| Type | Description |
+|------|-------------|
+| `EditorField` | Éditeur de texte riche |
+| `DigitalSignatureField` | Signature numérique |
+| `LocationField` | Localisation GPS |
+
+#### Champs de plugin
+
+Ces champs nécessitent l'installation du plugin correspondant depuis le centre de plugins avant utilisation.
+
+| Type | Plugin requis |
+|------|---------------|
+| `TimeZoneDateField` | Composant de fuseau horaire international |
+| `CC_AIButtonField` | Composant IA |
+| `CC_PG_ESignField` | Composant finance intelligente |
+| `CC_TeambitionProjectLinksField` | Plugin Teambition |
+| `CC_TeambitionTaskLinksField` | Plugin Teambition |
+| `CC_MoneyField` | Composant finance intelligente |
+| `CC_PhoneNumberField` | Composant d'extension |
+| `CC_ChineseIdField` | Composant d'extension |
+| `YidaDingtalkAgentField` | Plugin agent DingTalk |
+
+<Warning>
+Les champs de plugin échoueront si le plugin requis n'est pas installé dans votre organisation. Installez les plugins depuis le centre de plugins avant d'utiliser ces types de champs.
+</Warning>
 
 <Warning>
 Les types de champs tels que `MobileField` et `EmailField` ne sont pas supportés et seront rejetés. N'utilisez que les types listés ci-dessus.

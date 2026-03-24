@@ -80,27 +80,63 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 
 `create-form` 指令僅接受以下欄位類型。使用不支援的類型會回傳錯誤。
 
+#### 基礎欄位
+
+內建欄位，無需安裝任何外掛。
+
 | 類型 | 說明 |
 |------|------|
 | `TextField` | 單行文字 |
 | `TextareaField` | 多行文字 |
+| `NumberField` | 數字 |
+| `RateField` | 評分 |
+| `DateField` | 日期 |
 | `RadioField` | 單選按鈕 |
 | `SelectField` | 下拉單選 |
 | `CheckboxField` | 核取方塊 |
 | `MultiSelectField` | 下拉多選 |
-| `NumberField` | 數字 |
-| `RateField` | 評分 |
-| `DateField` | 日期 |
+| `CascadeSelectField` | 級聯選擇 |
 | `CascadeDateField` | 級聯日期 |
 | `EmployeeField` | 成員選擇 |
 | `DepartmentSelectField` | 部門選擇 |
-| `CountrySelectField` | 國家/地區選擇 |
-| `AddressField` | 地址 |
+| `AssociationFormField` | 關聯表單 |
+| `AssociationQuery` | 關聯查詢 |
 | `AttachmentField` | 附件 |
 | `ImageField` | 圖片 |
+| `AddressField` | 地址 |
+| `CountrySelectField` | 國家/地區選擇 |
 | `TableField` | 子表單/明細 |
-| `AssociationFormField` | 關聯表單 |
 | `SerialNumberField` | 流水號 |
+
+#### 進階欄位
+
+內建欄位，部分功能可能需要開通。
+
+| 類型 | 說明 |
+|------|------|
+| `EditorField` | 富文字編輯器 |
+| `DigitalSignatureField` | 數位簽名 |
+| `LocationField` | GPS 定位 |
+
+#### 外掛欄位
+
+使用前需要從外掛中心安裝對應外掛。
+
+| 類型 | 所需外掛 |
+|------|----------|
+| `TimeZoneDateField` | 國際化時區元件 |
+| `CC_AIButtonField` | AI 元件 |
+| `CC_PG_ESignField` | 智慧財務元件 |
+| `CC_TeambitionProjectLinksField` | Teambition 外掛 |
+| `CC_TeambitionTaskLinksField` | Teambition 外掛 |
+| `CC_MoneyField` | 智慧財務元件 |
+| `CC_PhoneNumberField` | 擴充元件 |
+| `CC_ChineseIdField` | 擴充元件 |
+| `YidaDingtalkAgentField` | 釘釘相關外掛 |
+
+<Warning>
+外掛欄位在未安裝對應外掛的情況下會建立失敗。請先從外掛中心安裝所需外掛後再使用這些欄位類型。
+</Warning>
 
 <Warning>
 `MobileField`、`EmailField` 等欄位類型不受支援，使用時會被拒絕。請僅使用上表中列出的類型。

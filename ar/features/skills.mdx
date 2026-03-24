@@ -80,27 +80,63 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 
 يقبل الأمر `create-form` أنواع الحقول التالية فقط. استخدام نوع غير مدعوم يُرجع خطأً.
 
+#### الحقول الأساسية
+
+حقول مدمجة لا تتطلب أي إضافات.
+
 | النوع | الوصف |
 |-------|-------|
 | `TextField` | نص سطر واحد |
 | `TextareaField` | نص متعدد الأسطر |
+| `NumberField` | رقم |
+| `RateField` | تقييم |
+| `DateField` | تاريخ |
 | `RadioField` | أزرار اختيار |
 | `SelectField` | قائمة منسدلة (اختيار فردي) |
 | `CheckboxField` | مربعات اختيار |
 | `MultiSelectField` | قائمة منسدلة (اختيار متعدد) |
-| `NumberField` | رقم |
-| `RateField` | تقييم |
-| `DateField` | تاريخ |
+| `CascadeSelectField` | اختيار متتالي |
 | `CascadeDateField` | تاريخ متتالي |
 | `EmployeeField` | محدد الأعضاء |
 | `DepartmentSelectField` | محدد القسم |
-| `CountrySelectField` | محدد البلد/المنطقة |
-| `AddressField` | عنوان |
+| `AssociationFormField` | نموذج مرتبط |
+| `AssociationQuery` | استعلام مرتبط |
 | `AttachmentField` | مرفق |
 | `ImageField` | صورة |
+| `AddressField` | عنوان |
+| `CountrySelectField` | محدد البلد/المنطقة |
 | `TableField` | نموذج فرعي / تفاصيل |
-| `AssociationFormField` | نموذج مرتبط |
 | `SerialNumberField` | رقم تسلسلي |
+
+#### الحقول المتقدمة
+
+حقول مدمجة بوظائف موسعة. قد تتطلب بعض الميزات التفعيل.
+
+| النوع | الوصف |
+|-------|-------|
+| `EditorField` | محرر نصوص غنية |
+| `DigitalSignatureField` | توقيع رقمي |
+| `LocationField` | موقع GPS |
+
+#### حقول الإضافات
+
+تتطلب هذه الحقول تثبيت الإضافة المقابلة من مركز الإضافات قبل الاستخدام.
+
+| النوع | الإضافة المطلوبة |
+|-------|-------------------|
+| `TimeZoneDateField` | مكون المنطقة الزمنية الدولية |
+| `CC_AIButtonField` | مكون الذكاء الاصطناعي |
+| `CC_PG_ESignField` | مكون المالية الذكية |
+| `CC_TeambitionProjectLinksField` | إضافة Teambition |
+| `CC_TeambitionTaskLinksField` | إضافة Teambition |
+| `CC_MoneyField` | مكون المالية الذكية |
+| `CC_PhoneNumberField` | مكون التوسعة |
+| `CC_ChineseIdField` | مكون التوسعة |
+| `YidaDingtalkAgentField` | إضافة وكيل DingTalk |
+
+<Warning>
+ستفشل حقول الإضافات إذا لم تكن الإضافة المطلوبة مثبتة في مؤسستك. قم بتثبيت الإضافات من مركز الإضافات قبل استخدام أنواع الحقول هذه.
+</Warning>
 
 <Warning>
 أنواع الحقول مثل `MobileField` و `EmailField` غير مدعومة وسيتم رفضها. استخدم فقط الأنواع المدرجة أعلاه.

@@ -81,27 +81,63 @@ openyida update-form --form <formUuid> --schema <file>
 
 The `create-form` command only accepts the following field types. Using an unsupported type returns an error.
 
+#### Base fields
+
+Built-in fields that require no additional plugins.
+
 | Type | Description |
 |------|-------------|
 | `TextField` | Single-line text |
 | `TextareaField` | Multi-line text |
+| `NumberField` | Number |
+| `RateField` | Rating |
+| `DateField` | Date |
 | `RadioField` | Radio buttons |
 | `SelectField` | Dropdown (single select) |
 | `CheckboxField` | Checkboxes |
 | `MultiSelectField` | Dropdown (multi-select) |
-| `NumberField` | Number |
-| `RateField` | Rating |
-| `DateField` | Date |
+| `CascadeSelectField` | Cascading select |
 | `CascadeDateField` | Cascading date |
 | `EmployeeField` | Member selector |
 | `DepartmentSelectField` | Department selector |
-| `CountrySelectField` | Country/region selector |
-| `AddressField` | Address |
+| `AssociationFormField` | Associated form |
+| `AssociationQuery` | Association query |
 | `AttachmentField` | Attachment |
 | `ImageField` | Image |
+| `AddressField` | Address |
+| `CountrySelectField` | Country/region selector |
 | `TableField` | Sub-form / detail table |
-| `AssociationFormField` | Associated form |
 | `SerialNumberField` | Serial number |
+
+#### Advanced fields
+
+Built-in fields with extended functionality. Some features may require activation.
+
+| Type | Description |
+|------|-------------|
+| `EditorField` | Rich text editor |
+| `DigitalSignatureField` | Digital signature |
+| `LocationField` | GPS location |
+
+#### Plugin fields
+
+These fields require installing the corresponding plugin from the plugin center before use.
+
+| Type | Required plugin |
+|------|-----------------|
+| `TimeZoneDateField` | Internationalization timezone component |
+| `CC_AIButtonField` | AI component |
+| `CC_PG_ESignField` | Smart finance component |
+| `CC_TeambitionProjectLinksField` | Teambition plugin |
+| `CC_TeambitionTaskLinksField` | Teambition plugin |
+| `CC_MoneyField` | Smart finance component |
+| `CC_PhoneNumberField` | Extension component |
+| `CC_ChineseIdField` | Extension component |
+| `YidaDingtalkAgentField` | DingTalk agent plugin |
+
+<Warning>
+Plugin fields will fail if the required plugin is not installed in your organization. Install plugins from the plugin center before using these field types.
+</Warning>
 
 <Warning>
 Field types such as `MobileField` and `EmailField` are not supported and will be rejected. Only use the types listed above.
