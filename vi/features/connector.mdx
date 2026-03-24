@@ -65,6 +65,10 @@ openyida connector create "Tên Trình Kết Nối" "api.example.com" \
   --desc "Mô tả trình kết nối"
 ```
 
+<Note>
+Trường `method` trong tệp JSON operations được tự động chuẩn hóa thành chữ thường (ví dụ: `"POST"` sẽ trở thành `"post"`). Nếu không chỉ định `method`, giá trị mặc định là `"get"`.
+</Note>
+
 ### Xem Chi Tiết Trình Kết Nối
 
 ```bash
@@ -89,6 +93,10 @@ openyida connector add-action \
   --operations ./new-action.json \
   --confirm
 ```
+
+<Note>
+Trường `method` trong cấu hình operations được tự động chuẩn hóa thành chữ thường (ví dụ: `"POST"` sẽ trở thành `"post"`). Bạn có thể sử dụng chữ hoa hoặc chữ thường. Nếu không chỉ định, giá trị mặc định là `"get"`.
+</Note>
 
 ### Liệt Kê Action Hiện Có
 

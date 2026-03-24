@@ -65,6 +65,10 @@ openyida connector create "커넥터 이름" "api.example.com" \
   --desc "커넥터 설명"
 ```
 
+<Note>
+operations JSON 파일의 `method` 필드는 자동으로 소문자로 정규화됩니다 (예: `"POST"`는 `"post"`로 변환). `method`를 지정하지 않으면 기본값은 `"get"`입니다.
+</Note>
+
 ### 커넥터 세부 정보
 
 ```bash
@@ -89,6 +93,10 @@ openyida connector add-action \
   --operations ./new-action.json \
   --confirm
 ```
+
+<Note>
+operations 설정의 `method` 필드는 자동으로 소문자로 정규화됩니다 (예: `"POST"`는 `"post"`로 변환). 대소문자 구분 없이 지정할 수 있습니다. 미지정 시 기본값은 `"get"`입니다.
+</Note>
 
 ### 기존 작업 나열
 

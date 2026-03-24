@@ -65,6 +65,10 @@ openyida connector create "Nome do Conector" "api.example.com" \
   --desc "Descrição do conector"
 ```
 
+<Note>
+O campo `method` no arquivo JSON de operations é automaticamente normalizado para minúsculas (por exemplo, `"POST"` se torna `"post"`). Se `method` não for especificado, o valor padrão é `"get"`.
+</Note>
+
 ### Ver Detalhes do Conector
 
 ```bash
@@ -89,6 +93,10 @@ openyida connector add-action \
   --operations ./new-action.json \
   --confirm
 ```
+
+<Note>
+O campo `method` na configuração de operations é automaticamente normalizado para minúsculas (por exemplo, `"POST"` se torna `"post"`). Você pode usar qualquer combinação de maiúsculas e minúsculas. Se não especificado, o valor padrão é `"get"`.
+</Note>
 
 ### Listar Ações Existentes
 

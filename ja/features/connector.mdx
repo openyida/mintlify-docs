@@ -65,6 +65,10 @@ openyida connector create "コネクタ名" "api.example.com" \
   --desc "コネクタ説明"
 ```
 
+<Note>
+operations JSON ファイルの `method` フィールドは自動的に小文字に正規化されます（例：`"POST"` は `"post"` に変換）。`method` を指定しない場合、デフォルト値は `"get"` です。
+</Note>
+
 ### コネクタ詳細
 
 ```bash
@@ -89,6 +93,10 @@ openyida connector add-action \
   --operations ./new-action.json \
   --confirm
 ```
+
+<Note>
+operations 設定の `method` フィールドは自動的に小文字に正規化されます（例：`"POST"` は `"post"` に変換）。大文字・小文字どちらでも指定できます。未指定の場合、デフォルト値は `"get"` です。
+</Note>
 
 ### 既存アクションの一覧
 
