@@ -71,6 +71,18 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
+You can also use field labels instead of field IDs in the `--data` parameter. The CLI automatically detects field labels and converts them to their corresponding field IDs by fetching the form schema.
+
+```bash
+# Using field labels instead of field IDs
+openyida data create form <appType> <formUuid> \
+  --data '{"Name": "John", "Age": 30, "Department": "Engineering"}'
+```
+
+<Info>
+  Field label resolution works by matching label text against the form schema. Both field labels and field IDs are accepted in the same `--data` object -- any key that does not match a known label is passed through as-is.
+</Info>
+
 ### Update a record
 
 ```bash

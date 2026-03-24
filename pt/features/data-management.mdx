@@ -71,6 +71,18 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
+Você também pode usar rótulos de campo em vez de IDs de campo no parâmetro `--data`. O CLI detecta automaticamente os rótulos de campo e os converte nos IDs de campo correspondentes obtendo o esquema do formulário.
+
+```bash
+# Usar rótulos de campo em vez de IDs de campo
+openyida data create form <appType> <formUuid> \
+  --data '{"Nome": "João", "Idade": 30, "Departamento": "Engenharia"}'
+```
+
+<Info>
+  A resolução de rótulos de campo funciona fazendo a correspondência do texto do rótulo com o esquema do formulário. Tanto rótulos de campo quanto IDs de campo são aceitos no mesmo objeto `--data` — qualquer chave que não corresponda a um rótulo conhecido é passada como está.
+</Info>
+
 ### Atualizar dados
 
 ```bash

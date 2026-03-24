@@ -71,6 +71,18 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
+你也可以在 `--data` 參數中使用欄位標籤代替欄位 ID。CLI 會自動偵測欄位標籤，並透過取得表單 Schema 將其轉換為對應的欄位 ID。
+
+```bash
+# 使用欄位標籤代替欄位 ID
+openyida data create form <appType> <formUuid> \
+  --data '{"姓名": "張三", "年齡": 30, "部門": "工程部"}'
+```
+
+<Info>
+  欄位標籤解析透過將標籤文字與表單 Schema 匹配實現。同一 `--data` 物件中可以同時使用欄位標籤和欄位 ID——未匹配到已知標籤的鍵將按原樣傳遞。
+</Info>
+
 ### 更新數據
 
 ```bash

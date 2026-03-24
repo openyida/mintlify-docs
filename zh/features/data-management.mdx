@@ -71,6 +71,18 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
+你也可以在 `--data` 参数中使用字段标签代替字段 ID。CLI 会自动检测字段标签，并通过获取表单 Schema 将其转换为对应的字段 ID。
+
+```bash
+# 使用字段标签代替字段 ID
+openyida data create form <appType> <formUuid> \
+  --data '{"姓名": "张三", "年龄": 30, "部门": "工程部"}'
+```
+
+<Info>
+  字段标签解析通过将标签文本与表单 Schema 匹配实现。同一 `--data` 对象中可以同时使用字段标签和字段 ID——未匹配到已知标签的键将按原样传递。
+</Info>
+
 ### 更新数据
 
 ```bash
