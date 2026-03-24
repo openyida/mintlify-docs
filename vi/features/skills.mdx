@@ -104,13 +104,13 @@ openyida data <hành_động> <tài_nguyên> [args]
 # Dữ liệu biểu mẫu
 openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
 openyida data get form <appType> --inst-id <id>
-openyida data create form <appType> <formUuid> --data-json <JSON>
-openyida data update form <appType> --inst-id <id> --data-json <JSON>
+openyida data create form <appType> <formUuid> --data <JSON>
+openyida data update form <appType> --inst-id <id> --data <JSON>
 
 # Dữ liệu quy trình
 openyida data query process <appType> <formUuid> [--instance-status TRẠNG_THÁI]
 openyida data get process <appType> --process-inst-id <id>
-openyida data create process <appType> <formUuid> --process-code <mã> --data-json <JSON>
+openyida data create process <appType> <formUuid> --process-code <mã> --data <JSON>
 
 # Quản lý tác vụ
 openyida data query tasks <appType> --type <todo|done|submitted|cc>
