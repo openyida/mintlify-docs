@@ -37,9 +37,9 @@ icon: "circle-question"
   <Accordion title="Làm thế nào để thêm trường thiếu vào biểu mẫu do AI tạo?">
     Nói trực tiếp với AI:
     ```
-    Thêm trường [tên trường] vào [tên trang], loại trường: [văn bản/số/ngày/dropdown/...], đặt thành bắt buộc
+    Thêm trường [tên trường] vào [tên trang], loại trường: [TextField/NumberField/DateField/SelectField/...], đặt thành bắt buộc
     ```
-    OpenYida sẽ gọi `openyida create-form` với Schema đã cập nhật, hợp nhất các trường mới mà không ghi đè lên các trường hiện có.
+    OpenYida sẽ gọi `openyida create-form` với Schema đã cập nhật, hợp nhất các trường mới mà không ghi đè lên các trường hiện có. Chỉ [các loại trường được hỗ trợ](/vi/features/skills#các-loại-trường-được-hỗ-trợ) mới được chấp nhận — các loại không được hỗ trợ sẽ bị từ chối với lỗi.
   </Accordion>
 
   <Accordion title="Tôi có thể chỉnh sửa ứng dụng đã tạo trong trình chỉnh sửa trực quan YiDa không?">

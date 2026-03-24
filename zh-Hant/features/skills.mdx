@@ -76,6 +76,36 @@ openyida get-schema <appType> <formUuid>
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
 
+### 支援的欄位類型
+
+`create-form` 指令僅接受以下欄位類型。使用不支援的類型會回傳錯誤。
+
+| 類型 | 說明 |
+|------|------|
+| `TextField` | 單行文字 |
+| `TextareaField` | 多行文字 |
+| `RadioField` | 單選按鈕 |
+| `SelectField` | 下拉單選 |
+| `CheckboxField` | 核取方塊 |
+| `MultiSelectField` | 下拉多選 |
+| `NumberField` | 數字 |
+| `RateField` | 評分 |
+| `DateField` | 日期 |
+| `CascadeDateField` | 級聯日期 |
+| `EmployeeField` | 成員選擇 |
+| `DepartmentSelectField` | 部門選擇 |
+| `CountrySelectField` | 國家/地區選擇 |
+| `AddressField` | 地址 |
+| `AttachmentField` | 附件 |
+| `ImageField` | 圖片 |
+| `TableField` | 子表單/明細 |
+| `AssociationFormField` | 關聯表單 |
+| `SerialNumberField` | 流水號 |
+
+<Warning>
+`MobileField`、`EmailField` 等欄位類型不受支援，使用時會被拒絕。請僅使用上表中列出的類型。
+</Warning>
+
 ---
 
 ## 頁面管理

@@ -37,9 +37,9 @@ icon: "circle-question"
   <Accordion title="AI 生成的表单缺少字段，如何添加？">
     直接告诉 AI：
     ```
-    给 [页面名] 添加一个 [字段名] 字段，字段类型：[文本/数字/日期/下拉框/...]，设为必填
+    给 [页面名] 添加一个 [字段名] 字段，字段类型：[TextField/NumberField/DateField/SelectField/...]，设为必填
     ```
-    OpenYida 会调用 `openyida create-form` 用更新后的 Schema，合并新字段而不覆盖现有字段。
+    OpenYida 会调用 `openyida create-form` 用更新后的 Schema，合并新字段而不覆盖现有字段。仅接受[支持的字段类型](/zh/features/skills#支持的字段类型)——不支持的类型会返回错误。
   </Accordion>
 
   <Accordion title="可在宜搭可视化编辑器中编辑生成的应用吗？">

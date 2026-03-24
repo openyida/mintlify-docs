@@ -37,9 +37,9 @@ icon: "circle-question"
   <Accordion title="Comment ajouter des champs manquants aux formulaires générés par l'IA ?">
     Dites directement à l'IA :
     ```
-    Ajouter un champ [nom du champ] à [nom de la page], type de champ : [texte/nombre/date/menu déroulant/...], le rendre obligatoire
+    Ajouter un champ [nom du champ] à [nom de la page], type de champ : [TextField/NumberField/DateField/SelectField/...], le rendre obligatoire
     ```
-    OpenYida appellera `openyida create-form` avec le Schema mis à jour, fusionnant les nouveaux champs sans écraser les existants.
+    OpenYida appellera `openyida create-form` avec le Schema mis à jour, fusionnant les nouveaux champs sans écraser les existants. Seuls les [types de champs supportés](/fr/features/skills#types-de-champs-supportés) sont acceptés — les types non supportés seront rejetés avec une erreur.
   </Accordion>
 
   <Accordion title="Puis-je modifier les applications générées dans l'éditeur visuel YiDa ?">

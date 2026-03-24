@@ -76,6 +76,36 @@ openyida get-schema <appType> <formUuid>
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
 
+### 支持的字段类型
+
+`create-form` 命令仅接受以下字段类型。使用不支持的类型会返回错误。
+
+| 类型 | 说明 |
+|------|------|
+| `TextField` | 单行文本 |
+| `TextareaField` | 多行文本 |
+| `RadioField` | 单选按钮 |
+| `SelectField` | 下拉单选 |
+| `CheckboxField` | 复选框 |
+| `MultiSelectField` | 下拉多选 |
+| `NumberField` | 数字 |
+| `RateField` | 评分 |
+| `DateField` | 日期 |
+| `CascadeDateField` | 级联日期 |
+| `EmployeeField` | 成员选择 |
+| `DepartmentSelectField` | 部门选择 |
+| `CountrySelectField` | 国家/地区选择 |
+| `AddressField` | 地址 |
+| `AttachmentField` | 附件 |
+| `ImageField` | 图片 |
+| `TableField` | 子表单/明细 |
+| `AssociationFormField` | 关联表单 |
+| `SerialNumberField` | 流水号 |
+
+<Warning>
+`MobileField`、`EmailField` 等字段类型不受支持，使用时会被拒绝。请仅使用上表中列出的类型。
+</Warning>
+
 ---
 
 ## 页面管理

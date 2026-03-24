@@ -37,9 +37,9 @@ icon: "circle-question"
   <Accordion title="Wie füge ich fehlende Felder zu KI-generierten Formularen hinzu?">
     Sagen Sie der KI direkt:
     ```
-    Füge ein [Feldname]-Feld zu [Seitenname] hinzu, Feldtyp: [Text/Zahl/Datum/Dropdown/...], mache es erforderlich
+    Füge ein [Feldname]-Feld zu [Seitenname] hinzu, Feldtyp: [TextField/NumberField/DateField/SelectField/...], mache es erforderlich
     ```
-    OpenYida ruft `openyida create-form` mit dem aktualisierten Schema auf und fügt neue Felder hinzu, ohne bestehende zu überschreiben.
+    OpenYida ruft `openyida create-form` mit dem aktualisierten Schema auf und fügt neue Felder hinzu, ohne bestehende zu überschreiben. Nur [unterstützte Feldtypen](/de/features/skills#unterstützte-feldtypen) werden akzeptiert — nicht unterstützte Typen werden mit einem Fehler abgelehnt.
   </Accordion>
 
   <Accordion title="Kann ich generierte Apps im YiDa-Visual-Editor bearbeiten?">

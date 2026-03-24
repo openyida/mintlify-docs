@@ -37,9 +37,9 @@ icon: "circle-question"
   <Accordion title="Como adicionar campos ausentes a formulários gerados por IA?">
     Diga diretamente à IA:
     ```
-    Adicionar um campo [nome do campo] a [nome da página], tipo de campo: [texto/número/data/dropdown/...], torná-lo obrigatório
+    Adicionar um campo [nome do campo] a [nome da página], tipo de campo: [TextField/NumberField/DateField/SelectField/...], torná-lo obrigatório
     ```
-    O OpenYida chamará `openyida create-form` com o Schema atualizado, mesclando novos campos sem sobrescrever os existentes.
+    O OpenYida chamará `openyida create-form` com o Schema atualizado, mesclando novos campos sem sobrescrever os existentes. Apenas [tipos de campo suportados](/pt/features/skills#tipos-de-campo-suportados) são aceitos — tipos não suportados serão rejeitados com erro.
   </Accordion>
 
   <Accordion title="Posso editar aplicativos gerados no editor visual do YiDa?">

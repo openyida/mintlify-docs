@@ -37,9 +37,9 @@ icon: "circle-question"
   <Accordion title="AI が生成したフォームにフィールドが不足している場合、追加方法は？">
     AI に直接指示してください：
     ```
-    [ページ名] に [フィールド名] フィールドを追加、フィールドタイプ：[テキスト/数値/日付/ドロップダウン/...]、必須にする
+    [ページ名] に [フィールド名] フィールドを追加、フィールドタイプ：[TextField/NumberField/DateField/SelectField/...]、必須にする
     ```
-    OpenYida は更新された Schema で `openyida create-form` を呼び出し、既存のフィールドを上書きせずに新しいフィールドをマージします。
+    OpenYida は更新された Schema で `openyida create-form` を呼び出し、既存のフィールドを上書きせずに新しいフィールドをマージします。[サポートされているフィールドタイプ](/ja/features/skills#サポートされているフィールドタイプ)のみ受け付けられ、サポートされていないタイプはエラーで拒否されます。
   </Accordion>
 
   <Accordion title="生成されたアプリを宜搭ビジュアルエディタで編集できますか？">

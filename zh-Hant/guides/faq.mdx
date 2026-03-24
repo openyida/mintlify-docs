@@ -37,9 +37,9 @@ icon: "circle-question"
   <Accordion title="AI 產生的表單缺少欄位，如何新增？">
     直接告知 AI：
     ```
-    給 [頁面名] 新增一個 [欄位名] 欄位，欄位類型：[文字/數字/日期/下拉式選單/...]，設為必填
+    給 [頁面名] 新增一個 [欄位名] 欄位，欄位類型：[TextField/NumberField/DateField/SelectField/...]，設為必填
     ```
-    OpenYida 會呼叫 `openyida create-form` 使用更新後的 Schema，合併新欄位而不覆蓋現有欄位。
+    OpenYida 會呼叫 `openyida create-form` 使用更新後的 Schema，合併新欄位而不覆蓋現有欄位。僅接受[支援的欄位類型](/zh-Hant/features/skills#支援的欄位類型)——不支援的類型會傳回錯誤。
   </Accordion>
 
   <Accordion title="可在宜搭視覺化編輯器中編輯產生的應用嗎？">

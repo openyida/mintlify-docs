@@ -77,6 +77,36 @@ openyida get-form-schema --form <formUuid>
 openyida update-form --form <formUuid> --schema <file>
 ```
 
+### Supported field types
+
+The `create-form` command only accepts the following field types. Using an unsupported type returns an error.
+
+| Type | Description |
+|------|-------------|
+| `TextField` | Single-line text |
+| `TextareaField` | Multi-line text |
+| `RadioField` | Radio buttons |
+| `SelectField` | Dropdown (single select) |
+| `CheckboxField` | Checkboxes |
+| `MultiSelectField` | Dropdown (multi-select) |
+| `NumberField` | Number |
+| `RateField` | Rating |
+| `DateField` | Date |
+| `CascadeDateField` | Cascading date |
+| `EmployeeField` | Member selector |
+| `DepartmentSelectField` | Department selector |
+| `CountrySelectField` | Country/region selector |
+| `AddressField` | Address |
+| `AttachmentField` | Attachment |
+| `ImageField` | Image |
+| `TableField` | Sub-form / detail table |
+| `AssociationFormField` | Associated form |
+| `SerialNumberField` | Serial number |
+
+<Warning>
+Field types such as `MobileField` and `EmailField` are not supported and will be rejected. Only use the types listed above.
+</Warning>
+
 ---
 
 ## Page Management

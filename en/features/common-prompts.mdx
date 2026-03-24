@@ -48,11 +48,15 @@ Create a leave application form with: employee name, department, start date, end
 ### Add Form Fields
 
 ```
-Add a [field name] field to [page name], type: [text/number/date/dropdown/...]
+Add a [field name] field to [page name], type: [TextField/NumberField/DateField/SelectField/...]
 ```
 ```
 Add a "Department" dropdown field to the employee info form, options: Engineering, Marketing, Sales, HR
 ```
+
+<Note>
+Only [supported field types](/en/features/skills#supported-field-types) are accepted. Unsupported types (e.g. `MobileField`, `EmailField`) will be rejected.
+</Note>
 
 ### Modify Field Properties
 

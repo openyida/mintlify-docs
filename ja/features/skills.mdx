@@ -76,6 +76,36 @@ openyida get-schema <appType> <formUuid>
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
 
+### サポートされているフィールドタイプ
+
+`create-form` コマンドは以下のフィールドタイプのみ受け付けます。サポートされていないタイプを使用するとエラーが返されます。
+
+| タイプ | 説明 |
+|--------|------|
+| `TextField` | 1行テキスト |
+| `TextareaField` | 複数行テキスト |
+| `RadioField` | ラジオボタン |
+| `SelectField` | ドロップダウン（単一選択） |
+| `CheckboxField` | チェックボックス |
+| `MultiSelectField` | ドロップダウン（複数選択） |
+| `NumberField` | 数値 |
+| `RateField` | 評価 |
+| `DateField` | 日付 |
+| `CascadeDateField` | カスケード日付 |
+| `EmployeeField` | メンバー選択 |
+| `DepartmentSelectField` | 部門選択 |
+| `CountrySelectField` | 国/地域選択 |
+| `AddressField` | 住所 |
+| `AttachmentField` | 添付ファイル |
+| `ImageField` | 画像 |
+| `TableField` | サブフォーム/明細 |
+| `AssociationFormField` | 関連フォーム |
+| `SerialNumberField` | シリアル番号 |
+
+<Warning>
+`MobileField`、`EmailField` などのフィールドタイプはサポートされておらず、使用すると拒否されます。上記の表に記載されているタイプのみを使用してください。
+</Warning>
+
 ---
 
 ## ページ管理

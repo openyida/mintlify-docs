@@ -48,11 +48,15 @@ Erstellen Sie ein Urlaubsantragsformular, einschließlich: Mitarbeitername, Abte
 ### Formularfelder hinzufügen
 
 ```
-Fügen Sie ein Feld [Feldname] zur Seite [Seitenname] hinzu, Feldtyp: [Text/Zahl/Datum/Dropdown-Auswahl/...]
+Fügen Sie ein Feld [Feldname] zur Seite [Seitenname] hinzu, Feldtyp: [TextField/NumberField/DateField/SelectField/...]
 ```
 ```
 Fügen Sie ein Dropdown-Feld "Abteilung" zum Mitarbeiter-Informationsformular hinzu, Optionen: Ingenieurabteilung, Marketingabteilung, Vertriebsabteilung, Personalabteilung
 ```
+
+<Note>
+Nur [unterstützte Feldtypen](/de/features/skills#unterstützte-feldtypen) werden akzeptiert. Nicht unterstützte Typen (z.B. `MobileField`, `EmailField`) werden abgelehnt.
+</Note>
 
 ### Feldeigenschaften ändern
 
