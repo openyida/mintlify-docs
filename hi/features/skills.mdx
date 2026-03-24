@@ -76,6 +76,36 @@ openyida get-schema <appType> <formUuid>
 openyida update-form-config <appType> <formUuid> <isRenderNav> <शीर्षक>
 ```
 
+### समर्थित फ़ील्ड प्रकार
+
+`create-form` कमांड केवल निम्नलिखित फ़ील्ड प्रकारों को स्वीकार करती है। असमर्थित प्रकार का उपयोग करने पर त्रुटि लौटाई जाती है।
+
+| प्रकार | विवरण |
+|--------|--------|
+| `TextField` | एक पंक्ति का टेक्स्ट |
+| `TextareaField` | बहु-पंक्ति टेक्स्ट |
+| `RadioField` | रेडियो बटन |
+| `SelectField` | ड्रॉपडाउन (एकल चयन) |
+| `CheckboxField` | चेकबॉक्स |
+| `MultiSelectField` | ड्रॉपडाउन (बहु चयन) |
+| `NumberField` | संख्या |
+| `RateField` | रेटिंग |
+| `DateField` | दिनांक |
+| `CascadeDateField` | कैस्केड दिनांक |
+| `EmployeeField` | सदस्य चयनकर्ता |
+| `DepartmentSelectField` | विभाग चयनकर्ता |
+| `CountrySelectField` | देश/क्षेत्र चयनकर्ता |
+| `AddressField` | पता |
+| `AttachmentField` | अनुलग्नक |
+| `ImageField` | छवि |
+| `TableField` | उप-फ़ॉर्म / विवरण |
+| `AssociationFormField` | संबद्ध फ़ॉर्म |
+| `SerialNumberField` | क्रम संख्या |
+
+<Warning>
+`MobileField`, `EmailField` जैसे फ़ील्ड प्रकार समर्थित नहीं हैं और अस्वीकार कर दिए जाएंगे। केवल ऊपर सूचीबद्ध प्रकारों का उपयोग करें।
+</Warning>
+
 ---
 
 ## पेज प्रबंधन

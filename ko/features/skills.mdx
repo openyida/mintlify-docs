@@ -76,6 +76,36 @@ openyida get-schema <appType> <formUuid>
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
 
+### 지원되는 필드 유형
+
+`create-form` 명령은 다음 필드 유형만 허용합니다. 지원되지 않는 유형을 사용하면 오류가 반환됩니다.
+
+| 유형 | 설명 |
+|------|------|
+| `TextField` | 한 줄 텍스트 |
+| `TextareaField` | 여러 줄 텍스트 |
+| `RadioField` | 라디오 버튼 |
+| `SelectField` | 드롭다운 (단일 선택) |
+| `CheckboxField` | 체크박스 |
+| `MultiSelectField` | 드롭다운 (다중 선택) |
+| `NumberField` | 숫자 |
+| `RateField` | 평점 |
+| `DateField` | 날짜 |
+| `CascadeDateField` | 계단식 날짜 |
+| `EmployeeField` | 구성원 선택 |
+| `DepartmentSelectField` | 부서 선택 |
+| `CountrySelectField` | 국가/지역 선택 |
+| `AddressField` | 주소 |
+| `AttachmentField` | 첨부 파일 |
+| `ImageField` | 이미지 |
+| `TableField` | 하위 양식/상세 |
+| `AssociationFormField` | 연관 양식 |
+| `SerialNumberField` | 일련 번호 |
+
+<Warning>
+`MobileField`, `EmailField` 등의 필드 유형은 지원되지 않으며 거부됩니다. 위 표에 나열된 유형만 사용하세요.
+</Warning>
+
 ---
 
 ## 페이지 관리

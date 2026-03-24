@@ -37,9 +37,9 @@ icon: "circle-question"
   <Accordion title="How to add missing fields to AI-generated forms?">
     Tell the AI directly:
     ```
-    Add a [field name] field to [page name], field type: [text/number/date/dropdown/...], make it required
+    Add a [field name] field to [page name], field type: [TextField/NumberField/DateField/SelectField/...], make it required
     ```
-    OpenYida will call `openyida create-form` with the updated Schema, merging new fields without overwriting existing ones.
+    OpenYida will call `openyida create-form` with the updated Schema, merging new fields without overwriting existing ones. Only [supported field types](/en/features/skills#supported-field-types) are accepted — unsupported types will be rejected with an error.
   </Accordion>
 
   <Accordion title="Can I edit generated apps in YiDa visual editor?">

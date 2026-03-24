@@ -76,6 +76,36 @@ openyida get-schema <appType> <formUuid>
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
 
+### أنواع الحقول المدعومة
+
+يقبل الأمر `create-form` أنواع الحقول التالية فقط. استخدام نوع غير مدعوم يُرجع خطأً.
+
+| النوع | الوصف |
+|-------|-------|
+| `TextField` | نص سطر واحد |
+| `TextareaField` | نص متعدد الأسطر |
+| `RadioField` | أزرار اختيار |
+| `SelectField` | قائمة منسدلة (اختيار فردي) |
+| `CheckboxField` | مربعات اختيار |
+| `MultiSelectField` | قائمة منسدلة (اختيار متعدد) |
+| `NumberField` | رقم |
+| `RateField` | تقييم |
+| `DateField` | تاريخ |
+| `CascadeDateField` | تاريخ متتالي |
+| `EmployeeField` | محدد الأعضاء |
+| `DepartmentSelectField` | محدد القسم |
+| `CountrySelectField` | محدد البلد/المنطقة |
+| `AddressField` | عنوان |
+| `AttachmentField` | مرفق |
+| `ImageField` | صورة |
+| `TableField` | نموذج فرعي / تفاصيل |
+| `AssociationFormField` | نموذج مرتبط |
+| `SerialNumberField` | رقم تسلسلي |
+
+<Warning>
+أنواع الحقول مثل `MobileField` و `EmailField` غير مدعومة وسيتم رفضها. استخدم فقط الأنواع المدرجة أعلاه.
+</Warning>
+
 ---
 
 ## إدارة الصفحات

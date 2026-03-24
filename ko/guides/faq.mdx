@@ -37,9 +37,9 @@ icon: "circle-question"
   <Accordion title="AI 가 생성한 양식에 필드가 누락된 경우 추가 방법은?">
     AI 에 직접 지시하십시오:
     ```
-    [페이지명] 에 [필드명] 필드를 추가, 필드 유형: [텍스트/숫자/날짜/드롭다운/...], 필수로 설정
+    [페이지명] 에 [필드명] 필드를 추가, 필드 유형: [TextField/NumberField/DateField/SelectField/...], 필수로 설정
     ```
-    OpenYida 는 업데이트된 Schema 로 `openyida create-form` 을 호출하여 기존 필드를 덮어쓰지 않고 새 필드를 병합합니다.
+    OpenYida 는 업데이트된 Schema 로 `openyida create-form` 을 호출하여 기존 필드를 덮어쓰지 않고 새 필드를 병합합니다. [지원되는 필드 유형](/ko/features/skills#지원되는-필드-유형)만 허용되며, 지원되지 않는 유형은 오류로 거부됩니다.
   </Accordion>
 
   <Accordion title="생성된 앱을 Yida 시각적 편집기에서 편집할 수 있습니까?">

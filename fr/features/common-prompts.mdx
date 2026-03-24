@@ -48,11 +48,15 @@ Créer un formulaire de demande de congé, incluant : nom de l'employé, départ
 ### Ajouter des champs de formulaire
 
 ```
-Ajouter un champ [nom du champ] à la page [nom de la page], type de champ : [texte/numérique/date/liste déroulante/...]
+Ajouter un champ [nom du champ] à la page [nom de la page], type de champ : [TextField/NumberField/DateField/SelectField/...]
 ```
 ```
 Ajouter un champ "département" de type liste déroulante au formulaire d'informations des employés, options : département d'ingénierie, département marketing, département des ventes, département des ressources humaines
 ```
+
+<Note>
+Seuls les [types de champs supportés](/fr/features/skills#types-de-champs-supportés) sont acceptés. Les types non supportés (ex : `MobileField`, `EmailField`) seront rejetés.
+</Note>
 
 ### Modifier les propriétés des champs
 

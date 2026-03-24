@@ -76,6 +76,36 @@ openyida get-schema <appType> <formUuid>
 openyida update-form-config <appType> <formUuid> <isRenderNav> <tiêu_đề>
 ```
 
+### Các loại trường được hỗ trợ
+
+Lệnh `create-form` chỉ chấp nhận các loại trường sau. Sử dụng loại không được hỗ trợ sẽ trả về lỗi.
+
+| Loại | Mô tả |
+|------|-------|
+| `TextField` | Văn bản một dòng |
+| `TextareaField` | Văn bản nhiều dòng |
+| `RadioField` | Nút radio |
+| `SelectField` | Danh sách thả xuống (chọn một) |
+| `CheckboxField` | Hộp kiểm |
+| `MultiSelectField` | Danh sách thả xuống (chọn nhiều) |
+| `NumberField` | Số |
+| `RateField` | Đánh giá |
+| `DateField` | Ngày |
+| `CascadeDateField` | Ngày dạng chuỗi |
+| `EmployeeField` | Bộ chọn thành viên |
+| `DepartmentSelectField` | Bộ chọn phòng ban |
+| `CountrySelectField` | Bộ chọn quốc gia/vùng |
+| `AddressField` | Địa chỉ |
+| `AttachmentField` | Tệp đính kèm |
+| `ImageField` | Hình ảnh |
+| `TableField` | Biểu mẫu con / chi tiết |
+| `AssociationFormField` | Biểu mẫu liên kết |
+| `SerialNumberField` | Số thứ tự |
+
+<Warning>
+Các loại trường như `MobileField` và `EmailField` không được hỗ trợ và sẽ bị từ chối. Chỉ sử dụng các loại được liệt kê ở trên.
+</Warning>
+
 ---
 
 ## Quản Lý Trang

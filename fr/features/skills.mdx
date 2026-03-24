@@ -76,6 +76,36 @@ openyida get-schema <appType> <formUuid>
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
 
+### Types de champs supportés
+
+La commande `create-form` n'accepte que les types de champs suivants. L'utilisation d'un type non supporté renvoie une erreur.
+
+| Type | Description |
+|------|-------------|
+| `TextField` | Texte sur une ligne |
+| `TextareaField` | Texte multiligne |
+| `RadioField` | Boutons radio |
+| `SelectField` | Liste déroulante (sélection unique) |
+| `CheckboxField` | Cases à cocher |
+| `MultiSelectField` | Liste déroulante (sélection multiple) |
+| `NumberField` | Nombre |
+| `RateField` | Notation |
+| `DateField` | Date |
+| `CascadeDateField` | Date en cascade |
+| `EmployeeField` | Sélecteur de membre |
+| `DepartmentSelectField` | Sélecteur de département |
+| `CountrySelectField` | Sélecteur de pays/région |
+| `AddressField` | Adresse |
+| `AttachmentField` | Pièce jointe |
+| `ImageField` | Image |
+| `TableField` | Sous-formulaire / détail |
+| `AssociationFormField` | Formulaire associé |
+| `SerialNumberField` | Numéro de série |
+
+<Warning>
+Les types de champs tels que `MobileField` et `EmailField` ne sont pas supportés et seront rejetés. N'utilisez que les types listés ci-dessus.
+</Warning>
+
 ---
 
 ## Gestion des pages
