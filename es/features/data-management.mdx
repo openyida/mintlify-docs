@@ -71,6 +71,18 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
+También puedes usar etiquetas de campo en lugar de IDs de campo en el parámetro `--data`. El CLI detecta automáticamente las etiquetas de campo y las convierte a los IDs de campo correspondientes obteniendo el esquema del formulario.
+
+```bash
+# Usar etiquetas de campo en lugar de IDs de campo
+openyida data create form <appType> <formUuid> \
+  --data '{"Nombre": "Juan", "Edad": 30, "Departamento": "Ingeniería"}'
+```
+
+<Info>
+  La resolución de etiquetas de campo funciona haciendo coincidir el texto de la etiqueta con el esquema del formulario. Se aceptan tanto etiquetas de campo como IDs de campo en el mismo objeto `--data` — cualquier clave que no coincida con una etiqueta conocida se pasa tal cual.
+</Info>
+
 ### Actualizar datos
 
 ```bash

@@ -71,6 +71,18 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
+Vous pouvez également utiliser des libellés de champ au lieu d'identifiants de champ dans le paramètre `--data`. Le CLI détecte automatiquement les libellés de champ et les convertit en identifiants de champ correspondants en récupérant le schéma du formulaire.
+
+```bash
+# Utiliser des libellés de champ au lieu d'identifiants de champ
+openyida data create form <appType> <formUuid> \
+  --data '{"Nom": "Jean", "Âge": 30, "Département": "Ingénierie"}'
+```
+
+<Info>
+  La résolution des libellés de champ fonctionne en faisant correspondre le texte du libellé avec le schéma du formulaire. Les libellés de champ et les identifiants de champ sont acceptés dans le même objet `--data` — toute clé ne correspondant pas à un libellé connu est transmise telle quelle.
+</Info>
+
 ### Mettre à jour les données
 
 ```bash

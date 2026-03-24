@@ -71,6 +71,18 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
+Bạn cũng có thể sử dụng nhãn trường thay vì ID trường trong tham số `--data`. CLI tự động phát hiện nhãn trường và chuyển đổi chúng thành ID trường tương ứng bằng cách lấy schema biểu mẫu.
+
+```bash
+# Sử dụng nhãn trường thay vì ID trường
+openyida data create form <appType> <formUuid> \
+  --data '{"Tên": "Nguyễn Văn A", "Tuổi": 30, "Phòng ban": "Kỹ thuật"}'
+```
+
+<Info>
+  Giải quyết nhãn trường hoạt động bằng cách khớp văn bản nhãn với schema biểu mẫu. Cả nhãn trường và ID trường đều được chấp nhận trong cùng một đối tượng `--data` — bất kỳ khóa nào không khớp với nhãn đã biết sẽ được truyền nguyên trạng.
+</Info>
+
 ### Cập nhật dữ liệu
 
 ```bash

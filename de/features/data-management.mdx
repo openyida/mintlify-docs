@@ -71,6 +71,18 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
+Sie können im `--data`-Parameter auch Feldbezeichnungen anstelle von Feld-IDs verwenden. Das CLI erkennt Feldbezeichnungen automatisch und wandelt sie durch Abrufen des Formularschemas in die entsprechenden Feld-IDs um.
+
+```bash
+# Feldbezeichnungen anstelle von Feld-IDs verwenden
+openyida data create form <appType> <formUuid> \
+  --data '{"Name": "Max", "Alter": 30, "Abteilung": "Engineering"}'
+```
+
+<Info>
+  Die Auflösung von Feldbezeichnungen erfolgt durch Abgleich des Bezeichnungstextes mit dem Formularschema. Sowohl Feldbezeichnungen als auch Feld-IDs können im selben `--data`-Objekt verwendet werden — Schlüssel, die keiner bekannten Bezeichnung entsprechen, werden unverändert weitergegeben.
+</Info>
+
 ### Daten aktualisieren
 
 ```bash
