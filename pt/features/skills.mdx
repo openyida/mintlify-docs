@@ -104,13 +104,13 @@ openyida data <ação> <recurso> [args]
 # Dados do formulário
 openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
 openyida data get form <appType> --inst-id <id>
-openyida data create form <appType> <formUuid> --data-json <JSON>
-openyida data update form <appType> --inst-id <id> --data-json <JSON>
+openyida data create form <appType> <formUuid> --data <JSON>
+openyida data update form <appType> --inst-id <id> --data <JSON>
 
 # Dados do processo
 openyida data query process <appType> <formUuid> [--instance-status STATUS]
 openyida data get process <appType> --process-inst-id <id>
-openyida data create process <appType> <formUuid> --process-code <código> --data-json <JSON>
+openyida data create process <appType> <formUuid> --process-code <código> --data <JSON>
 
 # Gestão de tarefas
 openyida data query tasks <appType> --type <todo|done|submitted|cc>

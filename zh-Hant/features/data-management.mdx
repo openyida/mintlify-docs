@@ -67,7 +67,7 @@ openyida data get form <appType> --inst-id <formInstId>
 
 ```bash
 openyida data create form <appType> <formUuid> \
-  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
+  --data '{"field_xxx": "value", "field_yyy": 123}' \
   --dept-id <departmentId>
 ```
 
@@ -76,7 +76,7 @@ openyida data create form <appType> <formUuid> \
 ```bash
 openyida data update form <appType> \
   --inst-id <formInstId> \
-  --data-json '{"field_xxx": "new value"}' \
+  --data '{"field_xxx": "new value"}' \
   --use-latest-version y
 ```
 
@@ -106,7 +106,7 @@ openyida data get process <appType> --process-inst-id <processInstanceId>
 ```bash
 openyida data create process <appType> <formUuid> \
   --process-code <processCode> \
-  --data-json '{"field_xxx": "value"}' \
+  --data '{"field_xxx": "value"}' \
   --dept-id <departmentId>
 ```
 
@@ -145,7 +145,7 @@ openyida data execute task <appType> \
   --process-inst-id <processInstanceId> \
   --out-result AGREE \
   --remark "同意，請繼續推進" \
-  --data-json '{"comment": "審批通過"}'
+  --data '{"comment": "審批通過"}'
 ```
 
 **out-result 選項：**
