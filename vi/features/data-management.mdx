@@ -8,26 +8,26 @@ OpenYida cung cấp CLI quản lý dữ liệu thống nhất, hỗ trợ thao t
 
 ---
 
-## Tổng Quan
+## Tổng quan
 
 <CardGroup cols={2}>
-  <Card title="Dữ Liệu Biểu Mẫu" icon="table">
+  <Card title="Dữ liệu biểu mẫu" icon="table">
     Truy vấn, tạo, cập nhật, xóa dữ liệu phiên bản biểu mẫu.
   </Card>
-  <Card title="Dữ Liệu Quy Trình" icon="workflow">
+  <Card title="Dữ liệu quy trình" icon="workflow">
     Quản lý phiên bản quy trình, bản ghi phê duyệt, trạng thái quy trình.
   </Card>
-  <Card title="Quản Lý Tác Vụ" icon="check-circle">
-    Truy vấn tác vụ đang chờ, đã hoàn thành, do tôi khởi tạo, CC cho tôi.
+  <Card title="Quản lý tác vụ" icon="check-circle">
+    Truy vấn tác vụ đang chờ, đã hoàn thành, do tôi gửi, CC cho tôi.
   </Card>
-  <Card title="Biểu Mẫu Con" icon="list">
+  <Card title="Biểu mẫu con" icon="list">
     Truy vấn và quản lý dữ liệu biểu mẫu con độc lập.
   </Card>
 </CardGroup>
 
 ---
 
-## Định Dạng Lệnh
+## Định dạng lệnh
 
 ```bash
 openyida data <action> <resource> [args]
@@ -38,9 +38,9 @@ openyida data <action> <resource> [args]
 
 ---
 
-## Quản Lý Dữ Liệu Biểu Mẫu
+## Quản lý dữ liệu biểu mẫu
 
-### Truy Vấn Dữ Liệu Biểu Mẫu
+### Truy vấn dữ liệu biểu mẫu
 
 ```bash
 # Truy vấn cơ bản
@@ -57,13 +57,13 @@ openyida data query form <appType> <formUuid> \
 openyida data query form <appType> <formUuid> --inst-id <formInstId>
 ```
 
-### Lấy Một Bản Ghi
+### Lấy một bản ghi
 
 ```bash
 openyida data get form <appType> --inst-id <formInstId>
 ```
 
-### Tạo Dữ Liệu
+### Tạo dữ liệu
 
 ```bash
 openyida data create form <appType> <formUuid> \
@@ -71,7 +71,7 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
-### Cập Nhật Dữ Liệu
+### Cập nhật dữ liệu
 
 ```bash
 openyida data update form <appType> \
@@ -82,9 +82,9 @@ openyida data update form <appType> \
 
 ---
 
-## Quản Lý Dữ Liệu Quy Trình
+## Quản lý dữ liệu quy trình
 
-### Truy Vấn Phiên Bản Quy Trình
+### Truy vấn phiên bản quy trình
 
 ```bash
 # Truy vấn danh sách quy trình
@@ -95,13 +95,13 @@ openyida data query process <appType> <formUuid> \
 # Trạng thái khả dụng: RUNNING (đang chạy), COMPLETED (đã hoàn thành), TERMINATED (đã chấm dứt)
 ```
 
-### Lấy Chi Tiết Quy Trình
+### Lấy chi tiết quy trình
 
 ```bash
 openyida data get process <appType> --process-inst-id <processInstanceId>
 ```
 
-### Tạo Phiên Bản Quy Trình
+### Tạo phiên bản quy trình
 
 ```bash
 openyida data create process <appType> <formUuid> \
@@ -110,7 +110,7 @@ openyida data create process <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
-### Truy Vấn Bản Ghi Phê Duyệt
+### Truy vấn bản ghi phê duyệt
 
 ```bash
 openyida data query operation-records <appType> \
@@ -119,9 +119,9 @@ openyida data query operation-records <appType> \
 
 ---
 
-## Quản Lý Tác Vụ
+## Quản lý tác vụ
 
-### Truy Vấn Danh Sách Tác Vụ
+### Truy vấn danh sách tác vụ
 
 ```bash
 # Tác vụ đang chờ
@@ -130,14 +130,14 @@ openyida data query tasks <appType> --type todo
 # Tác vụ đã hoàn thành
 openyida data query tasks <appType> --type done
 
-# Do tôi khởi tạo
+# Do tôi gửi
 openyida data query tasks <appType> --type submitted
 
 # CC cho tôi
 openyida data query tasks <appType> --type cc
 ```
 
-### Thực Thi Tác Vụ
+### Thực thi tác vụ
 
 ```bash
 openyida data execute task <appType> \
@@ -154,9 +154,9 @@ openyida data execute task <appType> \
 
 ---
 
-## Quản Lý Biểu Mẫu Con
+## Quản lý biểu mẫu con
 
-### Truy Vấn Dữ Liệu Biểu Mẫu Con
+### Truy vấn dữ liệu biểu mẫu con
 
 ```bash
 openyida data query subform <appType> <formUuid> \
@@ -167,9 +167,9 @@ openyida data query subform <appType> <formUuid> \
 
 ---
 
-## Sử Dụng Nâng Cao
+## Sử dụng nâng cao
 
-### Điều Kiện Truy Vấn Phức Tạp
+### Điều kiện truy vấn phức tạp
 
 ```bash
 # Truy vấn có điều kiện nhiều trường
@@ -181,7 +181,7 @@ openyida data query form <appType> <formUuid> \
   }'
 ```
 
-### Ví Dụ Script Thao Tác Hàng Loạt
+### Ví dụ script thao tác hàng loạt
 
 ```bash
 #!/bin/bash
@@ -209,7 +209,7 @@ done
 
 ---
 
-## Ví Dụ Xuất Dữ Liệu
+## Ví dụ xuất dữ liệu
 
 ```bash
 # Xuất dữ liệu trong khoảng thời gian cụ thể
@@ -225,7 +225,7 @@ openyida data query form <appType> <formUuid> \
 
 ---
 
-## Lưu Ý
+## Lưu ý
 
 <Warning>
   Thao tác dữ liệu là vĩnh viễn, thao tác xóa và cập nhật không thể hoàn tác. Khuyến nghị thực hiện thử nghiệm quy mô nhỏ trước khi thực hiện thao tác hàng loạt.

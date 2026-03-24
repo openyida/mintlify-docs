@@ -8,17 +8,17 @@ O OpenYida fornece uma CLI unificada de gerenciamento de dados, suporta operaç�
 
 ---
 
-## Visão Geral
+## Visão geral
 
 <CardGroup cols={2}>
-  <Card title="Dados do Formulário" icon="table">
+  <Card title="Dados do formulário" icon="table">
     Consultar, criar, atualizar, excluir dados de instâncias de formulário.
   </Card>
-  <Card title="Dados do Fluxo" icon="workflow">
+  <Card title="Dados do fluxo" icon="workflow">
     Gerenciar instâncias de fluxo, registros de aprovação, status do fluxo.
   </Card>
-  <Card title="Gestão de Tarefas" icon="check-circle">
-    Consultar tarefas pendentes, concluídas, iniciadas por mim, CC para mim.
+  <Card title="Gestão de tarefas" icon="check-circle">
+    Consultar tarefas pendentes, concluídas, enviadas por mim, CC para mim.
   </Card>
   <Card title="Subformulários" icon="list">
     Consultar e gerenciar dados de subformulários de forma independente.
@@ -27,7 +27,7 @@ O OpenYida fornece uma CLI unificada de gerenciamento de dados, suporta operaç�
 
 ---
 
-## Formato do Comando
+## Formato do comando
 
 ```bash
 openyida data <action> <resource> [args]
@@ -38,9 +38,9 @@ openyida data <action> <resource> [args]
 
 ---
 
-## Gerenciamento de Dados do Formulário
+## Gerenciamento de dados do formulário
 
-### Consultar Dados do Formulário
+### Consultar dados do formulário
 
 ```bash
 # Consulta básica
@@ -57,13 +57,13 @@ openyida data query form <appType> <formUuid> \
 openyida data query form <appType> <formUuid> --inst-id <formInstId>
 ```
 
-### Obter Um Único Registro
+### Obter um único registro
 
 ```bash
 openyida data get form <appType> --inst-id <formInstId>
 ```
 
-### Criar Dados
+### Criar dados
 
 ```bash
 openyida data create form <appType> <formUuid> \
@@ -71,7 +71,7 @@ openyida data create form <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
-### Atualizar Dados
+### Atualizar dados
 
 ```bash
 openyida data update form <appType> \
@@ -82,9 +82,9 @@ openyida data update form <appType> \
 
 ---
 
-## Gerenciamento de Dados do Fluxo
+## Gerenciamento de dados do fluxo
 
-### Consultar Instâncias de Fluxo
+### Consultar instâncias de fluxo
 
 ```bash
 # Consultar lista de fluxos
@@ -95,13 +95,13 @@ openyida data query process <appType> <formUuid> \
 # Status disponíveis: RUNNING (em andamento), COMPLETED (concluído), TERMINATED (encerrado)
 ```
 
-### Obter Detalhes do Fluxo
+### Obter detalhes do fluxo
 
 ```bash
 openyida data get process <appType> --process-inst-id <processInstanceId>
 ```
 
-### Criar Instância de Fluxo
+### Criar instância de fluxo
 
 ```bash
 openyida data create process <appType> <formUuid> \
@@ -110,7 +110,7 @@ openyida data create process <appType> <formUuid> \
   --dept-id <departmentId>
 ```
 
-### Consultar Registros de Aprovação
+### Consultar registros de aprovação
 
 ```bash
 openyida data query operation-records <appType> \
@@ -119,9 +119,9 @@ openyida data query operation-records <appType> \
 
 ---
 
-## Gestão de Tarefas
+## Gestão de tarefas
 
-### Consultar Lista de Tarefas
+### Consultar lista de tarefas
 
 ```bash
 # Tarefas pendentes
@@ -130,14 +130,14 @@ openyida data query tasks <appType> --type todo
 # Tarefas concluídas
 openyida data query tasks <appType> --type done
 
-# Iniciadas por mim
+# Enviadas por mim
 openyida data query tasks <appType> --type submitted
 
 # CC para mim
 openyida data query tasks <appType> --type cc
 ```
 
-### Executar Tarefa
+### Executar tarefa
 
 ```bash
 openyida data execute task <appType> \
@@ -154,9 +154,9 @@ openyida data execute task <appType> \
 
 ---
 
-## Gerenciamento de Subformulários
+## Gerenciamento de subformulários
 
-### Consultar Dados do Subformulário
+### Consultar dados do subformulário
 
 ```bash
 openyida data query subform <appType> <formUuid> \
@@ -167,9 +167,9 @@ openyida data query subform <appType> <formUuid> \
 
 ---
 
-## Uso Avançado
+## Uso avançado
 
-### Condições de Consulta Complexas
+### Condições de consulta complexas
 
 ```bash
 # Consulta condicional de múltiplos campos
@@ -181,7 +181,7 @@ openyida data query form <appType> <formUuid> \
   }'
 ```
 
-### Exemplo de Script de Operação em Lote
+### Exemplo de script de operação em lote
 
 ```bash
 #!/bin/bash
@@ -209,7 +209,7 @@ done
 
 ---
 
-## Exemplo de Exportação de Dados
+## Exemplo de exportação de dados
 
 ```bash
 # Exportar dados de um período específico
