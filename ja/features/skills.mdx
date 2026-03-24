@@ -80,27 +80,63 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 
 `create-form` コマンドは以下のフィールドタイプのみ受け付けます。サポートされていないタイプを使用するとエラーが返されます。
 
+#### 基本フィールド
+
+組み込みフィールドで、プラグインのインストールは不要です。
+
 | タイプ | 説明 |
 |--------|------|
 | `TextField` | 1行テキスト |
 | `TextareaField` | 複数行テキスト |
+| `NumberField` | 数値 |
+| `RateField` | 評価 |
+| `DateField` | 日付 |
 | `RadioField` | ラジオボタン |
 | `SelectField` | ドロップダウン（単一選択） |
 | `CheckboxField` | チェックボックス |
 | `MultiSelectField` | ドロップダウン（複数選択） |
-| `NumberField` | 数値 |
-| `RateField` | 評価 |
-| `DateField` | 日付 |
+| `CascadeSelectField` | カスケード選択 |
 | `CascadeDateField` | カスケード日付 |
 | `EmployeeField` | メンバー選択 |
 | `DepartmentSelectField` | 部門選択 |
-| `CountrySelectField` | 国/地域選択 |
-| `AddressField` | 住所 |
+| `AssociationFormField` | 関連フォーム |
+| `AssociationQuery` | 関連クエリ |
 | `AttachmentField` | 添付ファイル |
 | `ImageField` | 画像 |
+| `AddressField` | 住所 |
+| `CountrySelectField` | 国/地域選択 |
 | `TableField` | サブフォーム/明細 |
-| `AssociationFormField` | 関連フォーム |
 | `SerialNumberField` | シリアル番号 |
+
+#### 高度なフィールド
+
+組み込みフィールドで、一部の機能はアクティベーションが必要な場合があります。
+
+| タイプ | 説明 |
+|--------|------|
+| `EditorField` | リッチテキストエディタ |
+| `DigitalSignatureField` | デジタル署名 |
+| `LocationField` | GPS位置情報 |
+
+#### プラグインフィールド
+
+使用する前にプラグインセンターから対応するプラグインのインストールが必要です。
+
+| タイプ | 必要なプラグイン |
+|--------|------------------|
+| `TimeZoneDateField` | 国際化タイムゾーンコンポーネント |
+| `CC_AIButtonField` | AIコンポーネント |
+| `CC_PG_ESignField` | スマート財務コンポーネント |
+| `CC_TeambitionProjectLinksField` | Teambitionプラグイン |
+| `CC_TeambitionTaskLinksField` | Teambitionプラグイン |
+| `CC_MoneyField` | スマート財務コンポーネント |
+| `CC_PhoneNumberField` | 拡張コンポーネント |
+| `CC_ChineseIdField` | 拡張コンポーネント |
+| `YidaDingtalkAgentField` | DingTalk関連プラグイン |
+
+<Warning>
+プラグインフィールドは、対応するプラグインがインストールされていない場合、作成に失敗します。これらのフィールドタイプを使用する前に、プラグインセンターから必要なプラグインをインストールしてください。
+</Warning>
 
 <Warning>
 `MobileField`、`EmailField` などのフィールドタイプはサポートされておらず、使用すると拒否されます。上記の表に記載されているタイプのみを使用してください。

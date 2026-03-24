@@ -80,27 +80,63 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 
 Der Befehl `create-form` akzeptiert nur die folgenden Feldtypen. Die Verwendung eines nicht unterstützten Typs gibt einen Fehler zurück.
 
+#### Basisfelder
+
+Integrierte Felder, die keine zusätzlichen Plugins erfordern.
+
 | Typ | Beschreibung |
 |-----|--------------|
 | `TextField` | Einzeiliger Text |
 | `TextareaField` | Mehrzeiliger Text |
+| `NumberField` | Zahl |
+| `RateField` | Bewertung |
+| `DateField` | Datum |
 | `RadioField` | Optionsfelder |
 | `SelectField` | Dropdown (Einzelauswahl) |
 | `CheckboxField` | Kontrollkästchen |
 | `MultiSelectField` | Dropdown (Mehrfachauswahl) |
-| `NumberField` | Zahl |
-| `RateField` | Bewertung |
-| `DateField` | Datum |
+| `CascadeSelectField` | Kaskadierende Auswahl |
 | `CascadeDateField` | Kaskadierendes Datum |
 | `EmployeeField` | Mitgliedauswahl |
 | `DepartmentSelectField` | Abteilungsauswahl |
-| `CountrySelectField` | Land/Region-Auswahl |
-| `AddressField` | Adresse |
+| `AssociationFormField` | Verknüpftes Formular |
+| `AssociationQuery` | Verknüpfte Abfrage |
 | `AttachmentField` | Anhang |
 | `ImageField` | Bild |
+| `AddressField` | Adresse |
+| `CountrySelectField` | Land/Region-Auswahl |
 | `TableField` | Unterformular / Detail |
-| `AssociationFormField` | Verknüpftes Formular |
 | `SerialNumberField` | Seriennummer |
+
+#### Erweiterte Felder
+
+Integrierte Felder mit erweiterten Funktionen. Einige Funktionen erfordern möglicherweise eine Aktivierung.
+
+| Typ | Beschreibung |
+|-----|--------------|
+| `EditorField` | Rich-Text-Editor |
+| `DigitalSignatureField` | Digitale Signatur |
+| `LocationField` | GPS-Standort |
+
+#### Plugin-Felder
+
+Diese Felder erfordern die Installation des entsprechenden Plugins aus dem Plugin-Center vor der Verwendung.
+
+| Typ | Erforderliches Plugin |
+|-----|-----------------------|
+| `TimeZoneDateField` | Internationale Zeitzonen-Komponente |
+| `CC_AIButtonField` | KI-Komponente |
+| `CC_PG_ESignField` | Smart-Finance-Komponente |
+| `CC_TeambitionProjectLinksField` | Teambition-Plugin |
+| `CC_TeambitionTaskLinksField` | Teambition-Plugin |
+| `CC_MoneyField` | Smart-Finance-Komponente |
+| `CC_PhoneNumberField` | Erweiterungs-Komponente |
+| `CC_ChineseIdField` | Erweiterungs-Komponente |
+| `YidaDingtalkAgentField` | DingTalk-Agent-Plugin |
+
+<Warning>
+Plugin-Felder schlagen fehl, wenn das erforderliche Plugin nicht in Ihrer Organisation installiert ist. Installieren Sie Plugins aus dem Plugin-Center, bevor Sie diese Feldtypen verwenden.
+</Warning>
 
 <Warning>
 Feldtypen wie `MobileField` und `EmailField` werden nicht unterstützt und abgelehnt. Verwenden Sie nur die oben aufgeführten Typen.
