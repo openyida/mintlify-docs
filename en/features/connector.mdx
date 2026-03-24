@@ -98,6 +98,10 @@ openyida connector action add \
   --params '[{"name":"page","type":"number"}]'
 ```
 
+<Note>
+The `method` field is automatically normalized to lowercase (e.g., `"POST"` becomes `"post"`). You can specify the method in any case. If omitted, it defaults to `"get"`.
+</Note>
+
 ### Test Action
 
 ```bash

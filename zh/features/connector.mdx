@@ -65,6 +65,10 @@ openyida connector create "连接器名称" "api.example.com" \
   --desc "连接器描述"
 ```
 
+<Note>
+operations JSON 文件中的 `method` 字段会自动规范化为小写（例如 `"POST"` 会转换为 `"post"`）。如果未指定 `method`，默认值为 `"get"`。
+</Note>
+
 ### 查看连接器详情
 
 ```bash
@@ -89,6 +93,10 @@ openyida connector add-action \
   --operations ./new-action.json \
   --confirm
 ```
+
+<Note>
+operations 配置中的 `method` 字段会自动规范化为小写（例如 `"POST"` 会转换为 `"post"`）。你可以使用任意大小写。如果未指定，默认值为 `"get"`。
+</Note>
 
 ### 列出现有动作
 
