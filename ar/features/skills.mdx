@@ -191,11 +191,14 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 ## إدارة العمليات
 
 ```bash
-# إنشاء نموذج العملية
-openyida create-process <appType> "<اسم النموذج>" <JSON الحقول> --process-code <code>
+# إنشاء نموذج العملية (نموذج جديد + تكوين العملية)
+openyida create-process <appType> "<اسم النموذج>" <ملف JSON الحقول> <ملف تعريف العملية>
 
-# تكوين قواعد العملية
-openyida configure-process <appType> <formUuid> --rules <JSON القواعد>
+# إنشاء نموذج العملية (إعادة استخدام نموذج موجود + تكوين العملية)
+openyida create-process <appType> --formUuid <formUuid> <ملف تعريف العملية>
+
+# تكوين قواعد العملية من ملف التعريف
+openyida configure-process <appType> <formUuid> <ملف تعريف العملية> [processCode]
 ```
 
 ---

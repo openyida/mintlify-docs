@@ -191,11 +191,14 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 ## 流程管理
 
 ```bash
-# 創建流程表單
-openyida create-process <appType> "<表單名>" <字段JSON> --process-code <code>
+# 創建流程表單（新建表單 + 配置流程）
+openyida create-process <appType> "<表單名>" <字段JSON檔案> <流程定義檔案>
 
-# 配置流程規則
-openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+# 創建流程表單（複用已有表單 + 配置流程）
+openyida create-process <appType> --formUuid <formUuid> <流程定義檔案>
+
+# 從定義檔案配置流程規則
+openyida configure-process <appType> <formUuid> <流程定義檔案> [processCode]
 ```
 
 ---
