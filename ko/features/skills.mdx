@@ -151,7 +151,7 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 openyida create-page <appType> "<페이지명>" [--datasource <jsonOrFile>]
 
 # 페이지 컴파일 및 게시
-openyida publish <源文件路径> <appType> <formUuid>
+openyida publish <源文件路径> <appType> <formUuid> [--skip-lint]
 
 # 페이지 공유 구성
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -284,6 +284,7 @@ openyida cdn-refresh <路径>
 | `--version`, `-v` | 버전 표시 |
 | `--qr` | 터미널 QR 코드로 로그인 |
 | `--force` | 강제 실행, 확인 건너뛰기 |
+| `--skip-lint` | `publish` 시 Yida 코딩 표준 사전 검사 건너뛰기 |
 
 ---
 
