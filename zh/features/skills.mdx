@@ -151,7 +151,7 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 openyida create-page <appType> "<页面名>" [--datasource <jsonOrFile>]
 
 # 编译并发布页面
-openyida publish <源文件路径> <appType> <formUuid>
+openyida publish <源文件路径> <appType> <formUuid> [--skip-lint]
 
 # 页面分享配置
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -284,6 +284,7 @@ openyida cdn-refresh <路径>
 | `--version`, `-v` | 显示版本号 |
 | `--qr` | 使用终端二维码登录 |
 | `--force` | 强制操作，跳过确认 |
+| `--skip-lint` | 在 `publish` 时跳过宜搭编码规范预检 |
 
 ---
 

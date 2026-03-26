@@ -151,7 +151,7 @@ Các loại trường như `MobileField` và `EmailField` không được hỗ t
 openyida create-page <appType> "<tên>" [--datasource <jsonOrFile>]
 
 # Biên dịch và xuất bản trang
-openyida publish <đường_dẫn_tệp_nguồn> <appType> <formUuid>
+openyida publish <đường_dẫn_tệp_nguồn> <appType> <formUuid> [--skip-lint]
 
 # Cấu hình chia sẻ trang
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -284,6 +284,7 @@ openyida cdn-refresh <đường_dẫn>
 | `--version`, `-v` | Hiển thị số phiên bản |
 | `--qr` | Sử dụng mã QR trong terminal để đăng nhập |
 | `--force` | Buộc thực hiện, bỏ qua xác nhận |
+| `--skip-lint` | Bỏ qua kiểm tra tiêu chuẩn mã hóa Yida khi `publish` |
 
 ---
 

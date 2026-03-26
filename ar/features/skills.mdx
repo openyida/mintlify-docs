@@ -151,7 +151,7 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 openyida create-page <appType> "<اسم الصفحة>" [--datasource <jsonOrFile>]
 
 # تجميع ونشر الصفحة
-openyida publish <مسار الملف المصدر> <appType> <formUuid>
+openyida publish <مسار الملف المصدر> <appType> <formUuid> [--skip-lint]
 
 # تكوين مشاركة الصفحة
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -284,6 +284,7 @@ openyida cdn-refresh <المسار>
 | `--version`, `-v` | عرض رقم الإصدار |
 | `--qr` | استخدام رمز QR في المحطة لتسجيل الدخول |
 | `--force` | فرض العملية، تخطي التأكيد |
+| `--skip-lint` | تخطي فحص معايير ترميز Yida أثناء `publish` |
 
 ---
 

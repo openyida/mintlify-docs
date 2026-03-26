@@ -151,7 +151,7 @@ Tipos de campo como `MobileField` e `EmailField` não são suportados e serão r
 openyida create-page <appType> "<nome>" [--datasource <jsonOrFile>]
 
 # Compilar e publicar página
-openyida publish <caminho_arquivo_fonte> <appType> <formUuid>
+openyida publish <caminho_arquivo_fonte> <appType> <formUuid> [--skip-lint]
 
 # Configuração de compartilhamento de página
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -284,6 +284,7 @@ openyida cdn-refresh <caminho>
 | `--version`, `-v` | Mostrar número da versão |
 | `--qr` | Usar QR code no terminal para login |
 | `--force` | Forçar operação, pular confirmação |
+| `--skip-lint` | Pular a verificação de padrões de codificação Yida durante o `publish` |
 
 ---
 

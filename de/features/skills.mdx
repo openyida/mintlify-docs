@@ -151,7 +151,7 @@ Feldtypen wie `MobileField` und `EmailField` werden nicht unterstützt und abgel
 openyida create-page <appType> "<Seitenname>" [--datasource <jsonOrFile>]
 
 # Seite kompilieren und veröffentlichen
-openyida publish <QuellDateiPfad> <appType> <formUuid>
+openyida publish <QuellDateiPfad> <appType> <formUuid> [--skip-lint]
 
 # Seitenfreigabekonfiguration
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -284,6 +284,7 @@ openyida cdn-refresh <Pfad>
 | `--version`, `-v` | Versionsnummer anzeigen |
 | `--qr` | Terminal-QR-Code für Anmeldung verwenden |
 | `--force` | Operation erzwingen, Bestätigung überspringen |
+| `--skip-lint` | Yida-Codierungsstandard-Prüfung beim `publish` überspringen |
 
 ---
 
