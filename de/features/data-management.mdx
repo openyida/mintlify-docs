@@ -4,7 +4,7 @@ description: "Einheitliche Datenverwaltungsschnittstelle, unterstützt Operation
 icon: "database"
 ---
 
-OpenYida bietet ein einheitliches Datenverwaltungs-CLI, das vollständige CRUD-Operationen für Formulardaten, Prozessinstanzen, Aufgaben, Unterformulare usw. unterstützt.
+OpenYida bietet ein einheitliches Datenverwaltungs-CLI, das vollständige Operationen für Formulardaten, Prozessinstanzen, Aufgaben, Unterformulare usw. unterstützt.
 
 ---
 
@@ -12,7 +12,7 @@ OpenYida bietet ein einheitliches Datenverwaltungs-CLI, das vollständige CRUD-O
 
 <CardGroup cols={2}>
   <Card title="Formulardaten" icon="table">
-    Abfragen, Erstellen, Aktualisieren, Löschen von Formularinstanzdaten.
+    Abfragen, Erstellen, Aktualisieren von Formularinstanzdaten.
   </Card>
   <Card title="Prozessdaten" icon="workflow">
     Verwalten von Prozessinstanzen, Genehmigungsdatensätzen, Prozessstatus.
@@ -51,10 +51,13 @@ openyida data query form <appType> <formUuid> --page 1 --size 50
 
 # Bedingte Abfrage
 openyida data query form <appType> <formUuid> \
-  --search-json '{"field_xxx": "value"}'
+  --search-json '[{"key":"field_xxx","value":"value","type":"TEXT","operator":"eq","componentName":"TextField"}]'
 
 # Spezifische Instanz abfragen
 openyida data query form <appType> <formUuid> --inst-id <formInstId>
+
+# Nur IDs zurückgeben
+openyida data query form <appType> <formUuid> --ids-only
 ```
 
 ### Einzelne Daten abrufen
@@ -67,28 +70,16 @@ openyida data get form <appType> --inst-id <formInstId>
 
 ```bash
 openyida data create form <appType> <formUuid> \
-  --data '{"field_xxx": "value", "field_yyy": 123}' \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
   --dept-id <departmentId>
 ```
-
-Sie können im `--data`-Parameter auch Feldbezeichnungen anstelle von Feld-IDs verwenden. Das CLI erkennt Feldbezeichnungen automatisch und wandelt sie durch Abrufen des Formularschemas in die entsprechenden Feld-IDs um.
-
-```bash
-# Feldbezeichnungen anstelle von Feld-IDs verwenden
-openyida data create form <appType> <formUuid> \
-  --data '{"Name": "Max", "Alter": 30, "Abteilung": "Engineering"}'
-```
-
-<Info>
-  Die Auflösung von Feldbezeichnungen erfolgt durch Abgleich des Bezeichnungstextes mit dem Formularschema. Sowohl Feldbezeichnungen als auch Feld-IDs können im selben `--data`-Objekt verwendet werden — Schlüssel, die keiner bekannten Bezeichnung entsprechen, werden unverändert weitergegeben.
-</Info>
 
 ### Daten aktualisieren
 
 ```bash
 openyida data update form <appType> \
   --inst-id <formInstId> \
-  --data '{"field_xxx": "new value"}' \
+  --data-json '{"field_xxx": "new value"}' \
   --use-latest-version y
 ```
 
@@ -105,6 +96,9 @@ openyida data query process <appType> <formUuid> \
   --instance-status RUNNING
 
 # Verfügbare Status: RUNNING (laufend), COMPLETED (abgeschlossen), TERMINATED (beendet)
+
+# Nur IDs zurückgeben
+openyida data query process <appType> <formUuid> --ids-only
 ```
 
 ### Prozessdetails abrufen
@@ -118,8 +112,16 @@ openyida data get process <appType> --process-inst-id <processInstanceId>
 ```bash
 openyida data create process <appType> <formUuid> \
   --process-code <processCode> \
-  --data '{"field_xxx": "value"}' \
+  --data-json '{"field_xxx": "value"}' \
   --dept-id <departmentId>
+```
+
+### Prozessinstanz aktualisieren
+
+```bash
+openyida data update process <appType> \
+  --process-inst-id <processInstanceId> \
+  --data-json '{"field_xxx": "updated value"}'
 ```
 
 ### Genehmigungsdatensätze abfragen
@@ -157,7 +159,7 @@ openyida data execute task <appType> \
   --process-inst-id <processInstanceId> \
   --out-result AGREE \
   --remark "Zustimmung, bitte fortfahren" \
-  --data '{"comment": "Genehmigung erfolgreich"}'
+  --data-json '{"comment": "Genehmigung erfolgreich"}'
 ```
 
 **out-result-Optionen:**
@@ -181,16 +183,26 @@ openyida data query subform <appType> <formUuid> \
 
 ## Erweiterte Verwendung
 
-### Komplexe Abfragebedingungen
+### Abfragebedingungsformat
+
+Der `--search-json` Parameter akzeptiert ein Array-basiertes Abfrageformat. Jede Bedingung ist ein Objekt mit folgenden Feldern:
+
+| Feld | Beschreibung |
+|------|-------------|
+| `key` | Feld-ID (z.B. `field_xxx`) |
+| `value` | Abzugleichender Wert |
+| `type` | Datentyp: `TEXT`, `NUMBER`, `DATE`, etc. |
+| `operator` | Operator: `eq`, `like`, `gt`, `gte`, `lt`, `lte`, `in`, `range` |
+| `componentName` | Komponententyp: `TextField`, `NumberField`, `DateField`, etc. |
+
+Beispiel:
 
 ```bash
-# Mehrfeld-Abfrage
 openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_status": "approved",
-    "field_amount": { "$gte": 1000 },
-    "field_created_at": { "$gte": "2024-01-01" }
-  }'
+  --search-json '[
+    {"key":"field_status","value":"approved","type":"TEXT","operator":"eq","componentName":"TextField"},
+    {"key":"field_amount","value":"1000","type":"NUMBER","operator":"gte","componentName":"NumberField"}
+  ]'
 ```
 
 ### Batch-Operationsskriptbeispiel
@@ -221,26 +233,10 @@ done
 
 ---
 
-## Datenexportbeispiel
-
-```bash
-# Daten eines bestimmten Zeitraums exportieren
-openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_created_at": {
-      "$gte": "2024-01-01T00:00:00",
-      "$lte": "2024-12-31T23:59:59"
-    }
-  }' \
-  --size 100 > ./data-export.json
-```
-
----
-
 ## Vorsichtsmaßnahmen
 
 <Warning>
-  Datenoperationen sind dauerhaft, Lösch- und Aktualisierungsvorgänge können nicht rückgängig gemacht werden. Es wird empfohlen, vor der Ausführung von Batch-Operationen kleine Tests durchzuführen.
+  Datenoperationen sind dauerhaft, Aktualisierungsvorgänge können nicht rückgängig gemacht werden. Es wird empfohlen, vor der Ausführung von Batch-Operationen kleine Tests durchzuführen.
 </Warning>
 
 <Info>

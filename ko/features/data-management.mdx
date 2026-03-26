@@ -4,7 +4,7 @@ description: "통합 데이터 관리 인터페이스, 양식, 프로세스, 작
 icon: "database"
 ---
 
-OpenYida는 통합 데이터 관리 CLI를 제공하며 양식 데이터, 프로세스 인스턴스, 작업, 하위 양식 등의 완전한 CRUD 작업을 지원합니다.
+OpenYida는 통합 데이터 관리 CLI를 제공하며 양식 데이터, 프로세스 인스턴스, 작업, 하위 양식 등의 작업을 지원합니다.
 
 ---
 
@@ -12,7 +12,7 @@ OpenYida는 통합 데이터 관리 CLI를 제공하며 양식 데이터, 프로
 
 <CardGroup cols={2}>
   <Card title="양식 데이터" icon="table">
-    양식 인스턴스 데이터 쿼리, 생성, 업데이트, 삭제.
+    양식 인스턴스 데이터 쿼리, 생성, 업데이트.
   </Card>
   <Card title="프로세스 데이터" icon="workflow">
     프로세스 인스턴스, 승인 기록, 프로세스 상태 관리.
@@ -51,10 +51,13 @@ openyida data query form <appType> <formUuid> --page 1 --size 50
 
 # 조건 쿼리
 openyida data query form <appType> <formUuid> \
-  --search-json '{"field_xxx": "value"}'
+  --search-json '[{"key":"field_xxx","value":"value","type":"TEXT","operator":"eq","componentName":"TextField"}]'
 
 # 지정 인스턴스 쿼리
 openyida data query form <appType> <formUuid> --inst-id <formInstId>
+
+# ID만 반환
+openyida data query form <appType> <formUuid> --ids-only
 ```
 
 ### 단일 데이터 가져오기
@@ -67,28 +70,16 @@ openyida data get form <appType> --inst-id <formInstId>
 
 ```bash
 openyida data create form <appType> <formUuid> \
-  --data '{"field_xxx": "value", "field_yyy": 123}' \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
   --dept-id <departmentId>
 ```
-
-`--data` 매개변수에서 필드 ID 대신 필드 레이블을 사용할 수도 있습니다. CLI가 자동으로 필드 레이블을 감지하고 양식 스키마를 가져와 해당 필드 ID로 변환합니다.
-
-```bash
-# 필드 ID 대신 필드 레이블 사용
-openyida data create form <appType> <formUuid> \
-  --data '{"이름": "홍길동", "나이": 30, "부서": "엔지니어링"}'
-```
-
-<Info>
-  필드 레이블 해석은 레이블 텍스트를 양식 스키마와 매칭하여 수행됩니다. 동일한 `--data` 객체에서 필드 레이블과 필드 ID를 모두 사용할 수 있으며, 알려진 레이블과 일치하지 않는 키는 그대로 전달됩니다.
-</Info>
 
 ### 데이터 업데이트
 
 ```bash
 openyida data update form <appType> \
   --inst-id <formInstId> \
-  --data '{"field_xxx": "new value"}' \
+  --data-json '{"field_xxx": "new value"}' \
   --use-latest-version y
 ```
 
@@ -105,6 +96,9 @@ openyida data query process <appType> <formUuid> \
   --instance-status RUNNING
 
 # 상태 옵션：RUNNING（진행 중）、COMPLETED（완료）、TERMINATED（종료）
+
+# ID만 반환
+openyida data query process <appType> <formUuid> --ids-only
 ```
 
 ### 프로세스 세부 정보 가져오기
@@ -118,8 +112,16 @@ openyida data get process <appType> --process-inst-id <processInstanceId>
 ```bash
 openyida data create process <appType> <formUuid> \
   --process-code <processCode> \
-  --data '{"field_xxx": "value"}' \
+  --data-json '{"field_xxx": "value"}' \
   --dept-id <departmentId>
+```
+
+### 프로세스 인스턴스 업데이트
+
+```bash
+openyida data update process <appType> \
+  --process-inst-id <processInstanceId> \
+  --data-json '{"field_xxx": "updated value"}'
 ```
 
 ### 승인 기록 쿼리
@@ -157,7 +159,7 @@ openyida data execute task <appType> \
   --process-inst-id <processInstanceId> \
   --out-result AGREE \
   --remark "동의, 계속 진행하세요" \
-  --data '{"comment": "승인됨"}'
+  --data-json '{"comment": "승인됨"}'
 ```
 
 **out-result 옵션：**
@@ -181,16 +183,26 @@ openyida data query subform <appType> <formUuid> \
 
 ## 고급 사용법
 
-### 복잡한 쿼리 조건
+### 쿼리 조건 형식
+
+`--search-json` 매개변수는 배열 기반 쿼리 형식을 사용합니다. 각 조건은 다음 필드를 가진 객체입니다:
+
+| 필드 | 설명 |
+|------|------|
+| `key` | 필드 ID (예: `field_xxx`) |
+| `value` | 매칭할 값 |
+| `type` | 데이터 타입: `TEXT`, `NUMBER`, `DATE` 등 |
+| `operator` | 연산자: `eq`, `like`, `gt`, `gte`, `lt`, `lte`, `in`, `range` |
+| `componentName` | 컴포넌트 타입: `TextField`, `NumberField`, `DateField` 등 |
+
+예:
 
 ```bash
-# 다중 필드 조건 쿼리
 openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_status": "approved",
-    "field_amount": { "$gte": 1000 },
-    "field_created_at": { "$gte": "2024-01-01" }
-  }'
+  --search-json '[
+    {"key":"field_status","value":"approved","type":"TEXT","operator":"eq","componentName":"TextField"},
+    {"key":"field_amount","value":"1000","type":"NUMBER","operator":"gte","componentName":"NumberField"}
+  ]'
 ```
 
 ### 배치 작업 스크립트 예
@@ -221,26 +233,10 @@ done
 
 ---
 
-## 데이터 내보내기 예
-
-```bash
-# 지정 기간 데이터 내보내기
-openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_created_at": {
-      "$gte": "2024-01-01T00:00:00",
-      "$lte": "2024-12-31T23:59:59"
-    }
-  }' \
-  --size 100 > ./data-export.json
-```
-
----
-
 ## 주의사항
 
 <Warning>
-  데이터 작업은 영구적이며 삭제 및 업데이트 작업은 취소할 수 없습니다. 배치 작업을 수행하기 전에 소규모 테스트를 수행하는 것이 좋습니다.
+  데이터 작업은 영구적이며 업데이트 작업은 취소할 수 없습니다. 배치 작업을 수행하기 전에 소규모 테스트를 수행하는 것이 좋습니다.
 </Warning>
 
 <Info>

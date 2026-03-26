@@ -4,7 +4,7 @@ description: "統一データ管理インターフェース、フォーム、プ
 icon: "database"
 ---
 
-OpenYidaは統一データ管理CLIを提供し、フォームデータ、プロセスインスタンス、タスク、サブフォームなどの完全なCRUD操作をサポートします。
+OpenYidaは統一データ管理CLIを提供し、フォームデータ、プロセスインスタンス、タスク、サブフォームなどの操作をサポートします。
 
 ---
 
@@ -12,7 +12,7 @@ OpenYidaは統一データ管理CLIを提供し、フォームデータ、プロ
 
 <CardGroup cols={2}>
   <Card title="フォームデータ" icon="table">
-    フォームインスタンスデータのクエリ、作成、更新、削除。
+    フォームインスタンスデータのクエリ、作成、更新。
   </Card>
   <Card title="プロセスデータ" icon="workflow">
     プロセスインスタンス、承認記録、プロセス状態の管理。
@@ -51,10 +51,13 @@ openyida data query form <appType> <formUuid> --page 1 --size 50
 
 # 条件クエリ
 openyida data query form <appType> <formUuid> \
-  --search-json '{"field_xxx": "value"}'
+  --search-json '[{"key":"field_xxx","value":"value","type":"TEXT","operator":"eq","componentName":"TextField"}]'
 
 # 指定インスタンスのクエリ
 openyida data query form <appType> <formUuid> --inst-id <formInstId>
+
+# IDのみ返す
+openyida data query form <appType> <formUuid> --ids-only
 ```
 
 ### 単一データの取得
@@ -67,28 +70,16 @@ openyida data get form <appType> --inst-id <formInstId>
 
 ```bash
 openyida data create form <appType> <formUuid> \
-  --data '{"field_xxx": "value", "field_yyy": 123}' \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
   --dept-id <departmentId>
 ```
-
-`--data` パラメータではフィールド ID の代わりにフィールドラベルを使用することもできます。CLI はフィールドラベルを自動検出し、フォームスキーマを取得して対応するフィールド ID に変換します。
-
-```bash
-# フィールド ID の代わりにフィールドラベルを使用
-openyida data create form <appType> <formUuid> \
-  --data '{"氏名": "田中太郎", "年齢": 30, "部署": "エンジニアリング"}'
-```
-
-<Info>
-  フィールドラベルの解決は、ラベルテキストをフォームスキーマと照合することで行われます。同じ `--data` オブジェクト内でフィールドラベルとフィールド ID の両方を使用できます。既知のラベルに一致しないキーはそのまま渡されます。
-</Info>
 
 ### データの更新
 
 ```bash
 openyida data update form <appType> \
   --inst-id <formInstId> \
-  --data '{"field_xxx": "new value"}' \
+  --data-json '{"field_xxx": "new value"}' \
   --use-latest-version y
 ```
 
@@ -105,6 +96,9 @@ openyida data query process <appType> <formUuid> \
   --instance-status RUNNING
 
 # ステータスオプション：RUNNING（進行中）、COMPLETED（完了）、TERMINATED（終了）
+
+# IDのみ返す
+openyida data query process <appType> <formUuid> --ids-only
 ```
 
 ### プロセス詳細の取得
@@ -118,8 +112,16 @@ openyida data get process <appType> --process-inst-id <processInstanceId>
 ```bash
 openyida data create process <appType> <formUuid> \
   --process-code <processCode> \
-  --data '{"field_xxx": "value"}' \
+  --data-json '{"field_xxx": "value"}' \
   --dept-id <departmentId>
+```
+
+### プロセスインスタンスの更新
+
+```bash
+openyida data update process <appType> \
+  --process-inst-id <processInstanceId> \
+  --data-json '{"field_xxx": "updated value"}'
 ```
 
 ### 承認記録のクエリ
@@ -157,7 +159,7 @@ openyida data execute task <appType> \
   --process-inst-id <processInstanceId> \
   --out-result AGREE \
   --remark "同意、続けて進めてください" \
-  --data '{"comment": "承認済み"}'
+  --data-json '{"comment": "承認済み"}'
 ```
 
 **out-resultオプション：**
@@ -181,16 +183,26 @@ openyida data query subform <appType> <formUuid> \
 
 ## 高度な使用法
 
-### 複雑なクエリ条件
+### クエリ条件形式
+
+`--search-json` パラメータは配列ベースのクエリ形式を受け付けます。各条件は以下のフィールドを持つオブジェクトです：
+
+| フィールド | 説明 |
+|------------|------|
+| `key` | フィールドID（例：`field_xxx`） |
+| `value` | マッチする値 |
+| `type` | データ型：`TEXT`、`NUMBER`、`DATE` など |
+| `operator` | 演算子：`eq`、`like`、`gt`、`gte`、`lt`、`lte`、`in`、`range` |
+| `componentName` | コンポーネント型：`TextField`、`NumberField`、`DateField` など |
+
+例：
 
 ```bash
-# 複数フィールド条件クエリ
 openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_status": "approved",
-    "field_amount": { "$gte": 1000 },
-    "field_created_at": { "$gte": "2024-01-01" }
-  }'
+  --search-json '[
+    {"key":"field_status","value":"approved","type":"TEXT","operator":"eq","componentName":"TextField"},
+    {"key":"field_amount","value":"1000","type":"NUMBER","operator":"gte","componentName":"NumberField"}
+  ]'
 ```
 
 ### バッチ操作スクリプト例
@@ -221,26 +233,10 @@ done
 
 ---
 
-## データエクスポート例
-
-```bash
-# 指定期間のデータをエクスポート
-openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_created_at": {
-      "$gte": "2024-01-01T00:00:00",
-      "$lte": "2024-12-31T23:59:59"
-    }
-  }' \
-  --size 100 > ./data-export.json
-```
-
----
-
 ## 注意事項
 
 <Warning>
-  データ操作は永続的であり、削除と更新操作は取り消せません。バッチ操作を実行する前に、小規模なテストを行うことをお勧めします。
+  データ操作は永続的であり、更新操作は取り消せません。バッチ操作を実行する前に、小規模なテストを行うことをお勧めします。
 </Warning>
 
 <Info>

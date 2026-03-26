@@ -1,44 +1,46 @@
 ---
-title: "Reports & Charts"
+title: "Reports & charts"
 description: "Create Yida reports and add data visualization charts."
 icon: "chart-column"
 ---
 
-OpenYida supports creating Yida reports and adding various charts for data visualization.
+OpenYida supports creating Yida reports and adding charts for data visualization using the `create-report` and `append-chart` commands.
 
 ---
 
-## Feature Overview
+## Feature overview
 
 <CardGroup cols={2}>
-  <Card title="Report Creation" icon="file-plus">
-    One-click creation of Yida reports with custom configuration.
+  <Card title="Report creation" icon="file-plus">
+    Create Yida reports with custom chart configuration.
   </Card>
-  <Card title="Chart Append" icon="chart-pie">
+  <Card title="Chart append" icon="chart-pie">
     Add various chart types to existing reports.
   </Card>
-  <Card title="Data Binding" icon="link">
+  <Card title="Data binding" icon="link">
     Auto-bind form data sources for real-time display.
   </Card>
-  <Card title="Chart Types" icon="shapes">
+  <Card title="Chart types" icon="shapes">
     Supports bar, line, pie, table, and more chart types.
   </Card>
 </CardGroup>
 
 ---
 
-## Creating Reports
+## Creating reports
 
-### Basic Usage
+### Basic usage
 
 ```bash
-openyida create-report <appType> "Report Name" '<chart-definition-JSON>'
+openyida create-report <appType> "Report Name" '<chart-definition-JSON-or-file>'
 ```
 
-### Example: Create Sales Report
+The third argument can be either an inline JSON string or a path to a JSON file.
+
+### Example: create a sales report
 
 ```bash
-openyida create-report APP "Sales Dashboard" '{
+openyida create-report APP_XXXXXX "Sales Dashboard" '{
   "charts": [
     {
       "type": "bar",
@@ -51,154 +53,105 @@ openyida create-report APP "Sales Dashboard" '{
 }'
 ```
 
----
-
-## Report Management
-
-### List Reports
+### Load chart definition from a file
 
 ```bash
-openyida report list [--app <appId>]
-```
-
-### Get Report Details
-
-```bash
-openyida report get --id <reportId>
-```
-
-### Delete Report
-
-```bash
-openyida report delete --id <reportId> [--force]
+openyida create-report APP_XXXXXX "Annual Report" ./charts-config.json
 ```
 
 ---
 
-## Adding Charts
+## Appending charts to a report
 
-### Chart Types
+```bash
+openyida append-chart <appType> <reportId> '<chart-definition-JSON-or-file>'
+```
 
-| Type | Description | Best For |
+### Example
+
+```bash
+openyida append-chart APP_XXXXXX REPORT_XXXXX '{
+  "type": "line",
+  "title": "Growth Trend",
+  "dataSource": "form_sales",
+  "xField": "month",
+  "yField": "growth_rate"
+}'
+```
+
+---
+
+## Chart types
+
+| Type | Description | Best for |
 |------|-------------|----------|
 | **bar** | Bar chart | Comparing categories |
 | **line** | Line chart | Trends over time |
 | **pie** | Pie chart | Part-to-whole relationships |
 | **table** | Data table | Detailed data view |
-| **metric** | Single metric | KPI display |
 | **area** | Area chart | Cumulative trends |
-
-### Add Chart to Report
-
-```bash
-openyida report chart add \
-  --report <reportId> \
-  --type bar \
-  --title "Quarterly Revenue" \
-  --config '{
-    "dataSource": "orders",
-    "xField": "quarter",
-    "yField": "revenue",
-    "aggregation": "sum"
-  }'
-```
+| **scatter** | Scatter chart | Correlation analysis |
 
 ---
 
-## Chart Configuration
+## Chart definition format
 
-### Bar Chart
+### Bar chart
 
 ```json
 {
   "type": "bar",
   "title": "Sales by Region",
-  "dataSource": "sales_form",
+  "dataSource": "form_uuid",
   "xField": "region",
   "yField": "amount",
-  "aggregation": "sum",
-  "orientation": "vertical"
+  "aggregation": "sum"
 }
 ```
 
-### Line Chart
+### Line chart
 
 ```json
 {
   "type": "line",
   "title": "Traffic Trend",
-  "dataSource": "visits",
+  "dataSource": "form_uuid",
   "xField": "date",
   "yField": "visitors",
-  "groupBy": "channel"
+  "aggregation": "sum"
 }
 ```
 
-### Pie Chart
+### Pie chart
 
 ```json
 {
   "type": "pie",
   "title": "Market Share",
-  "dataSource": "sales",
-  "labelField": "product",
+  "dataSource": "form_uuid",
+  "categoryField": "product",
   "valueField": "share"
 }
 ```
 
----
-
-## Data Source Configuration
-
-### Form Data Source
+### Data table
 
 ```json
 {
-  "dataSource": {
-    "type": "form",
-    "formUuid": "FORM-XXX",
-    "conditions": {
-      "status": "completed"
-    }
-  }
-}
-```
-
-### Process Data Source
-
-```json
-{
-  "dataSource": {
-    "type": "process",
-    "processCode": "PROC-XXX",
-    "status": "finished"
-  }
+  "type": "table",
+  "title": "Detail View",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "Name" },
+    { "field": "amount", "title": "Amount" },
+    { "field": "date", "title": "Date" }
+  ]
 }
 ```
 
 ---
 
-## Filtering & Aggregation
-
-### Filter Conditions
-
-```bash
-openyida report chart add \
-  --report <id> \
-  --type bar \
-  --config '{
-    "dataSource": "orders",
-    "filter": {
-      "status": "completed",
-      "createdAt": {
-        "$gte": "2024-01-01",
-        "$lte": "2024-12-31"
-      }
-    }
-  }'
-```
-
-### Aggregation Functions
+## Aggregation functions
 
 | Function | Description |
 |----------|-------------|
@@ -210,16 +163,64 @@ openyida report chart add \
 
 ---
 
-## Export Reports
+## Complete configuration example
 
-### Export to PDF
+### sales-report-charts.json
 
-```bash
-openyida report export --id <reportId> --format pdf --output report.pdf
+```json
+{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "Monthly Sales",
+      "dataSource": "form_monthly_sales",
+      "xField": "month",
+      "yField": "sales_amount",
+      "aggregation": "sum"
+    },
+    {
+      "type": "pie",
+      "title": "Product Categories",
+      "dataSource": "form_sales",
+      "categoryField": "product_category",
+      "valueField": "sales_amount"
+    },
+    {
+      "type": "line",
+      "title": "Sales Trend",
+      "dataSource": "form_daily_sales",
+      "xField": "date",
+      "yField": "sales_amount",
+      "aggregation": "sum"
+    },
+    {
+      "type": "table",
+      "title": "Sales Detail",
+      "dataSource": "form_sales",
+      "columns": [
+        { "field": "order_no", "title": "Order No.", "width": 150 },
+        { "field": "customer_name", "title": "Customer", "width": 200 },
+        { "field": "product_name", "title": "Product", "width": 200 },
+        { "field": "amount", "title": "Amount", "width": 120 },
+        { "field": "sales_date", "title": "Date", "width": 150 }
+      ],
+      "pageSize": 10
+    }
+  ]
+}
 ```
 
-### Export to Image
+Create the report:
 
 ```bash
-openyida report export --id <reportId> --format png --output report.png
+openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.json
 ```
+
+---
+
+## Best practices
+
+1. **Choose appropriate chart types** - Use line charts for trends, bar charts for comparisons, pie charts for proportions
+2. **Limit chart count** - Keep reports to 6 or fewer charts
+3. **Include data tables** - Pair charts with tables for detailed data inspection
+4. **Set reasonable page sizes** - For data tables, use 10-20 rows per page

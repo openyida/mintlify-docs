@@ -1,10 +1,10 @@
 ---
-title: "Gestión de Datos"
+title: "Gestión de datos"
 description: "Interfaz unificada de gestión de datos, soporta operaciones de datos de formularios, flujos, tareas, subformularios, etc."
 icon: "database"
 ---
 
-OpenYida proporciona una CLI unificada de gestión de datos, soporta operaciones CRUD completas para datos de formularios, instancias de flujo, tareas, subformularios, etc.
+OpenYida proporciona una CLI unificada de gestión de datos, soporta operaciones completas para datos de formularios, instancias de flujo, tareas, subformularios, etc.
 
 ---
 
@@ -12,7 +12,7 @@ OpenYida proporciona una CLI unificada de gestión de datos, soporta operaciones
 
 <CardGroup cols={2}>
   <Card title="Datos de formulario" icon="table">
-    Consultar, crear, actualizar, eliminar datos de instancias de formulario.
+    Consultar, crear, actualizar datos de instancias de formulario.
   </Card>
   <Card title="Datos de flujo" icon="workflow">
     Gestionar instancias de flujo, registros de aprobación, estado de flujo.
@@ -51,10 +51,13 @@ openyida data query form <appType> <formUuid> --page 1 --size 50
 
 # Consulta condicional
 openyida data query form <appType> <formUuid> \
-  --search-json '{"field_xxx": "value"}'
+  --search-json '[{"key":"field_xxx","value":"value","type":"TEXT","operator":"eq","componentName":"TextField"}]'
 
 # Consultar instancia específica
 openyida data query form <appType> <formUuid> --inst-id <formInstId>
+
+# Devolver solo IDs
+openyida data query form <appType> <formUuid> --ids-only
 ```
 
 ### Obtener un solo registro
@@ -67,28 +70,16 @@ openyida data get form <appType> --inst-id <formInstId>
 
 ```bash
 openyida data create form <appType> <formUuid> \
-  --data '{"field_xxx": "value", "field_yyy": 123}' \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
   --dept-id <departmentId>
 ```
-
-También puedes usar etiquetas de campo en lugar de IDs de campo en el parámetro `--data`. El CLI detecta automáticamente las etiquetas de campo y las convierte a los IDs de campo correspondientes obteniendo el esquema del formulario.
-
-```bash
-# Usar etiquetas de campo en lugar de IDs de campo
-openyida data create form <appType> <formUuid> \
-  --data '{"Nombre": "Juan", "Edad": 30, "Departamento": "Ingeniería"}'
-```
-
-<Info>
-  La resolución de etiquetas de campo funciona haciendo coincidir el texto de la etiqueta con el esquema del formulario. Se aceptan tanto etiquetas de campo como IDs de campo en el mismo objeto `--data` — cualquier clave que no coincida con una etiqueta conocida se pasa tal cual.
-</Info>
 
 ### Actualizar datos
 
 ```bash
 openyida data update form <appType> \
   --inst-id <formInstId> \
-  --data '{"field_xxx": "new value"}' \
+  --data-json '{"field_xxx": "new value"}' \
   --use-latest-version y
 ```
 
@@ -105,6 +96,9 @@ openyida data query process <appType> <formUuid> \
   --instance-status RUNNING
 
 # Estados disponibles: RUNNING (en progreso), COMPLETED (completado), TERMINATED (terminado)
+
+# Devolver solo IDs
+openyida data query process <appType> <formUuid> --ids-only
 ```
 
 ### Obtener detalles del flujo
@@ -118,8 +112,16 @@ openyida data get process <appType> --process-inst-id <processInstanceId>
 ```bash
 openyida data create process <appType> <formUuid> \
   --process-code <processCode> \
-  --data '{"field_xxx": "value"}' \
+  --data-json '{"field_xxx": "value"}' \
   --dept-id <departmentId>
+```
+
+### Actualizar instancia de flujo
+
+```bash
+openyida data update process <appType> \
+  --process-inst-id <processInstanceId> \
+  --data-json '{"field_xxx": "updated value"}'
 ```
 
 ### Consultar registros de aprobación
@@ -157,7 +159,7 @@ openyida data execute task <appType> \
   --process-inst-id <processInstanceId> \
   --out-result AGREE \
   --remark "Aprobado, por favor continuar" \
-  --data '{"comment": "Aprobación aprobada"}'
+  --data-json '{"comment": "Aprobación aprobada"}'
 ```
 
 **Opciones de out-result:**
@@ -181,16 +183,26 @@ openyida data query subform <appType> <formUuid> \
 
 ## Uso avanzado
 
-### Condiciones de consulta complejas
+### Formato de condiciones de consulta
+
+El parámetro `--search-json` acepta un formato de consulta basado en array. Cada condición es un objeto con los siguientes campos:
+
+| Campo | Descripción |
+|-------|-------------|
+| `key` | ID del campo (ej: `field_xxx`) |
+| `value` | Valor a comparar |
+| `type` | Tipo de datos: `TEXT`, `NUMBER`, `DATE`, etc. |
+| `operator` | Operador: `eq`, `like`, `gt`, `gte`, `lt`, `lte`, `in`, `range` |
+| `componentName` | Tipo de componente: `TextField`, `NumberField`, `DateField`, etc. |
+
+Ejemplo:
 
 ```bash
-# Consulta condicional de múltiples campos
 openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_status": "approved",
-    "field_amount": { "$gte": 1000 },
-    "field_created_at": { "$gte": "2024-01-01" }
-  }'
+  --search-json '[
+    {"key":"field_status","value":"approved","type":"TEXT","operator":"eq","componentName":"TextField"},
+    {"key":"field_amount","value":"1000","type":"NUMBER","operator":"gte","componentName":"NumberField"}
+  ]'
 ```
 
 ### Ejemplo de script de operación por lotes
@@ -221,26 +233,10 @@ done
 
 ---
 
-## Ejemplo de exportación de datos
-
-```bash
-# Exportar datos de un período específico
-openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_created_at": {
-      "$gte": "2024-01-01T00:00:00",
-      "$lte": "2024-12-31T23:59:59"
-    }
-  }' \
-  --size 100 > ./data-export.json
-```
-
----
-
 ## Notas
 
 <Warning>
-  Las operaciones de datos son permanentes, las operaciones de eliminación y actualización no se pueden deshacer. Se recomienda realizar pruebas a pequeña escala antes de ejecutar operaciones por lotes.
+  Las operaciones de datos son permanentes, las operaciones de actualización no se pueden deshacer. Se recomienda realizar pruebas a pequeña escala antes de ejecutar operaciones por lotes.
 </Warning>
 
 <Info>

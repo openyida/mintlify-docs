@@ -1,33 +1,33 @@
 ---
-title: "Connectors (HTTP Integration)"
+title: "Connectors (HTTP integration)"
 description: "Integrate Yida applications with external APIs through HTTP connectors."
 icon: "plug"
 ---
 
-OpenYida provides powerful HTTP connector management, supporting intelligent connector creation from curl commands for seamless integration between Yida and external systems.
+OpenYida provides HTTP connector management, supporting intelligent connector creation from curl commands for integration between Yida and external systems.
 
 ---
 
-## Feature Overview
+## Feature overview
 
 <CardGroup cols={2}>
-  <Card title="Smart Creation" icon="wand-magic-sparkles">
+  <Card title="Smart creation" icon="wand-magic-sparkles">
     Automatically parse and create connectors from curl commands, with auth extraction.
   </Card>
-  <Card title="API Management" icon="code">
-    Full connector lifecycle: create, update, test, delete.
+  <Card title="API management" icon="code">
+    Full connector lifecycle: create, test, delete.
   </Card>
-  <Card title="Auth Support" icon="key">
+  <Card title="Auth support" icon="key">
     Supports Bearer Token, API Key, OAuth2, and more.
   </Card>
-  <Card title="Action Management" icon="play">
+  <Card title="Action management" icon="play">
     Add, test, and manage connector execution actions.
   </Card>
 </CardGroup>
 
 ---
 
-## Smart Connector Creation
+## Smart connector creation
 
 Create connectors from curl commands with one click:
 
@@ -40,88 +40,134 @@ openyida connector smart-create \
 
 Smart creation process:
 
-1. **Parse API Info** - Extract protocol, host, method, path, auth type
-2. **Match Existing** - Find existing connectors with same host and auth
-3. **Generate Config** - Auto-build OpenAPI format connector definition
-4. **Create or Update** - Create new connector or add actions to existing
+1. **Parse API info** - Extract protocol, host, method, path, auth type
+2. **Match existing** - Find existing connectors with same host and auth
+3. **Generate config** - Auto-build OpenAPI format connector definition
+4. **Create or update** - Create new connector or add actions to existing
 
 ---
 
-## Connector Management Commands
+## Connector management commands
 
-### List Connectors
+### List connectors
 
 ```bash
 # List all connectors
 openyida connector list
 
-# List with pagination
-openyida connector list --page 1 --size 20
+# Filter by keyword
+openyida connector list --keyword "user"
 
-# Filter by app
-openyida connector list --app <appId>
+# Filter by type (mine or manager)
+openyida connector list --type mine
+
+# Filter by date range
+openyida connector list --start-date 2024-01-01 --end-date 2024-12-31
+
+# Set page size
+openyida connector list --page-size 50
 ```
 
-### Get Connector Details
+### Create a connector
 
 ```bash
-openyida connector get --id <connectorId>
-```
-
-### Update Connector
-
-```bash
-openyida connector update \
-  --id <connectorId> \
-  --name "New Name" \
-  --desc "Updated description"
-```
-
-### Delete Connector
-
-```bash
-openyida connector delete --id <connectorId> [--force]
-```
-
----
-
-## Action Management
-
-### Add Action
-
-```bash
-openyida connector action add \
-  --connector <connectorId> \
-  --name "Get Users" \
-  --method GET \
-  --path "/v1/users" \
-  --params '[{"name":"page","type":"number"}]'
+openyida connector create "Connector Name" "api.example.com" \
+  --operations ./operations.json \
+  --desc "Connector description"
 ```
 
 <Note>
-The `method` field is automatically normalized to lowercase (e.g., `"POST"` becomes `"post"`). You can specify the method in any case. If omitted, it defaults to `"get"`.
+The `method` field in the operations JSON file is automatically normalized to lowercase (e.g., `"POST"` becomes `"post"`). If omitted, it defaults to `"get"`.
 </Note>
 
-### Test Action
+### Get connector details
 
 ```bash
-openyida connector action test \
-  --connector <connectorId> \
-  --action <actionId> \
-  --data '{"page": 1}'
+openyida connector detail <connector-id>
 ```
 
-### List Actions
+### Delete a connector
 
 ```bash
-openyida connector action list --connector <connectorId>
+openyida connector delete <connector-id> --force
 ```
 
 ---
 
-## Authentication Types
+## Action management
 
-| Type | Description | Use Case |
+### Add an action
+
+```bash
+openyida connector add-action \
+  --connector-id <id> \
+  --operations ./new-action.json \
+  --confirm
+```
+
+<Note>
+The `method` field in the operations config is automatically normalized to lowercase. You can use any case. If omitted, it defaults to `"get"`.
+</Note>
+
+### List actions
+
+```bash
+openyida connector list-actions <connector-id>
+```
+
+### Test an action
+
+```bash
+openyida connector test \
+  --connector-id <id> \
+  --action <actionId> \
+  --params '{"key": "value"}'
+```
+
+### Delete an action
+
+```bash
+openyida connector delete-action <connector-id> <operation-id> --force
+```
+
+---
+
+## Auth account management
+
+### List auth accounts
+
+```bash
+openyida connector list-connections <connector-id>
+```
+
+### Create an auth account
+
+```bash
+openyida connector create-connection <connector-id> "Production Account" \
+  --api-key "your-api-key"
+```
+
+---
+
+## Auxiliary tools
+
+### Parse API info
+
+```bash
+openyida connector parse-api --curl "curl command" --output ./api-info.json
+```
+
+### Generate API document template
+
+```bash
+openyida connector gen-template ./my-api-template.md
+```
+
+---
+
+## Authentication types
+
+| Type | Description | Use case |
 |------|-------------|----------|
 | **None** | No authentication | Public APIs |
 | **Bearer Token** | Token in Authorization header | JWT-based APIs |
@@ -131,9 +177,9 @@ openyida connector action list --connector <connectorId>
 
 ---
 
-## Common Use Cases
+## Common use cases
 
-### REST API Integration
+### REST API integration
 
 ```bash
 # Create connector for REST API
@@ -142,31 +188,23 @@ openyida connector smart-create \
   --name "Item Service"
 ```
 
-### Webhook Handler
+### Step-by-step connector creation
 
 ```bash
-# Create webhook connector
-openyida connector create \
-  --name "Webhook Handler" \
-  --type webhook \
-  --url "https://hooks.example.com/webhook"
-```
+# Step 1: Create the base connector
+openyida connector create "DingTalk API" "oapi.dingtalk.com"
 
-### Database Proxy
-
-```bash
-# Create database connector via HTTP proxy
-openyida connector smart-create \
-  --curl "curl -X POST https://db-proxy.example.com/query" \
-  --name "Database Proxy"
+# Step 2: Add actions one by one
+openyida connector add-action --connector-id <id> --operations ./action1.json
+openyida connector add-action --connector-id <id> --operations ./action2.json
 ```
 
 ---
 
-## Best Practices
+## Best practices
 
-1. **Reuse Connectors** - Use same connector for same host/auth combination
-2. **Naming Convention** - Use descriptive names: `{Service}-{Purpose}`
+1. **Reuse connectors** - Use same connector for same host/auth combination
+2. **Naming convention** - Use descriptive names: `{Service}-{Purpose}`
 3. **Documentation** - Add clear descriptions for each action
 4. **Testing** - Always test connectors before production use
 5. **Security** - Never commit credentials; use environment variables

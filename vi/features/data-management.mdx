@@ -1,10 +1,10 @@
 ---
-title: "Quản Lý Dữ Liệu"
+title: "Quản lý dữ liệu"
 description: "Giao diện quản lý dữ liệu thống nhất, hỗ trợ thao tác dữ liệu biểu mẫu, quy trình, tác vụ, biểu mẫu con, v.v."
 icon: "database"
 ---
 
-OpenYida cung cấp CLI quản lý dữ liệu thống nhất, hỗ trợ thao tác CRUD hoàn chỉnh cho dữ liệu biểu mẫu, phiên bản quy trình, tác vụ, biểu mẫu con, v.v.
+OpenYida cung cấp CLI quản lý dữ liệu thống nhất, hỗ trợ thao tác hoàn chỉnh cho dữ liệu biểu mẫu, phiên bản quy trình, tác vụ, biểu mẫu con, v.v.
 
 ---
 
@@ -12,7 +12,7 @@ OpenYida cung cấp CLI quản lý dữ liệu thống nhất, hỗ trợ thao t
 
 <CardGroup cols={2}>
   <Card title="Dữ liệu biểu mẫu" icon="table">
-    Truy vấn, tạo, cập nhật, xóa dữ liệu phiên bản biểu mẫu.
+    Truy vấn, tạo, cập nhật dữ liệu phiên bản biểu mẫu.
   </Card>
   <Card title="Dữ liệu quy trình" icon="workflow">
     Quản lý phiên bản quy trình, bản ghi phê duyệt, trạng thái quy trình.
@@ -51,10 +51,13 @@ openyida data query form <appType> <formUuid> --page 1 --size 50
 
 # Truy vấn có điều kiện
 openyida data query form <appType> <formUuid> \
-  --search-json '{"field_xxx": "value"}'
+  --search-json '[{"key":"field_xxx","value":"value","type":"TEXT","operator":"eq","componentName":"TextField"}]'
 
 # Truy vấn phiên bản cụ thể
 openyida data query form <appType> <formUuid> --inst-id <formInstId>
+
+# Chỉ trả về ID
+openyida data query form <appType> <formUuid> --ids-only
 ```
 
 ### Lấy một bản ghi
@@ -67,28 +70,16 @@ openyida data get form <appType> --inst-id <formInstId>
 
 ```bash
 openyida data create form <appType> <formUuid> \
-  --data '{"field_xxx": "value", "field_yyy": 123}' \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
   --dept-id <departmentId>
 ```
-
-Bạn cũng có thể sử dụng nhãn trường thay vì ID trường trong tham số `--data`. CLI tự động phát hiện nhãn trường và chuyển đổi chúng thành ID trường tương ứng bằng cách lấy schema biểu mẫu.
-
-```bash
-# Sử dụng nhãn trường thay vì ID trường
-openyida data create form <appType> <formUuid> \
-  --data '{"Tên": "Nguyễn Văn A", "Tuổi": 30, "Phòng ban": "Kỹ thuật"}'
-```
-
-<Info>
-  Giải quyết nhãn trường hoạt động bằng cách khớp văn bản nhãn với schema biểu mẫu. Cả nhãn trường và ID trường đều được chấp nhận trong cùng một đối tượng `--data` — bất kỳ khóa nào không khớp với nhãn đã biết sẽ được truyền nguyên trạng.
-</Info>
 
 ### Cập nhật dữ liệu
 
 ```bash
 openyida data update form <appType> \
   --inst-id <formInstId> \
-  --data '{"field_xxx": "new value"}' \
+  --data-json '{"field_xxx": "new value"}' \
   --use-latest-version y
 ```
 
@@ -105,6 +96,9 @@ openyida data query process <appType> <formUuid> \
   --instance-status RUNNING
 
 # Trạng thái khả dụng: RUNNING (đang chạy), COMPLETED (đã hoàn thành), TERMINATED (đã chấm dứt)
+
+# Chỉ trả về ID
+openyida data query process <appType> <formUuid> --ids-only
 ```
 
 ### Lấy chi tiết quy trình
@@ -118,8 +112,16 @@ openyida data get process <appType> --process-inst-id <processInstanceId>
 ```bash
 openyida data create process <appType> <formUuid> \
   --process-code <processCode> \
-  --data '{"field_xxx": "value"}' \
+  --data-json '{"field_xxx": "value"}' \
   --dept-id <departmentId>
+```
+
+### Cập nhật phiên bản quy trình
+
+```bash
+openyida data update process <appType> \
+  --process-inst-id <processInstanceId> \
+  --data-json '{"field_xxx": "updated value"}'
 ```
 
 ### Truy vấn bản ghi phê duyệt
@@ -157,7 +159,7 @@ openyida data execute task <appType> \
   --process-inst-id <processInstanceId> \
   --out-result AGREE \
   --remark "Đã đồng ý, vui lòng tiếp tục" \
-  --data '{"comment": "Phê duyệt đã thông qua"}'
+  --data-json '{"comment": "Phê duyệt đã thông qua"}'
 ```
 
 **Tùy chọn out-result:**
@@ -181,16 +183,26 @@ openyida data query subform <appType> <formUuid> \
 
 ## Sử dụng nâng cao
 
-### Điều kiện truy vấn phức tạp
+### Định dạng điều kiện truy vấn
+
+Tham số `--search-json` chấp nhận định dạng truy vấn dựa trên mảng. Mỗi điều kiện là một đối tượng với các trường sau:
+
+| Trường | Mô tả |
+|--------|-------|
+| `key` | ID trường (vd: `field_xxx`) |
+| `value` | Giá trị để so khớp |
+| `type` | Kiểu dữ liệu: `TEXT`, `NUMBER`, `DATE`, v.v. |
+| `operator` | Toán tử: `eq`, `like`, `gt`, `gte`, `lt`, `lte`, `in`, `range` |
+| `componentName` | Loại component: `TextField`, `NumberField`, `DateField`, v.v. |
+
+Ví dụ:
 
 ```bash
-# Truy vấn có điều kiện nhiều trường
 openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_status": "approved",
-    "field_amount": { "$gte": 1000 },
-    "field_created_at": { "$gte": "2024-01-01" }
-  }'
+  --search-json '[
+    {"key":"field_status","value":"approved","type":"TEXT","operator":"eq","componentName":"TextField"},
+    {"key":"field_amount","value":"1000","type":"NUMBER","operator":"gte","componentName":"NumberField"}
+  ]'
 ```
 
 ### Ví dụ script thao tác hàng loạt
@@ -221,26 +233,10 @@ done
 
 ---
 
-## Ví dụ xuất dữ liệu
-
-```bash
-# Xuất dữ liệu trong khoảng thời gian cụ thể
-openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_created_at": {
-      "$gte": "2024-01-01T00:00:00",
-      "$lte": "2024-12-31T23:59:59"
-    }
-  }' \
-  --size 100 > ./data-export.json
-```
-
----
-
 ## Lưu ý
 
 <Warning>
-  Thao tác dữ liệu là vĩnh viễn, thao tác xóa và cập nhật không thể hoàn tác. Khuyến nghị thực hiện thử nghiệm quy mô nhỏ trước khi thực hiện thao tác hàng loạt.
+  Thao tác dữ liệu là vĩnh viễn, thao tác cập nhật không thể hoàn tác. Khuyến nghị thực hiện thử nghiệm quy mô nhỏ trước khi thực hiện thao tác hàng loạt.
 </Warning>
 
 <Info>
