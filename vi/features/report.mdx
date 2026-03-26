@@ -1,140 +1,78 @@
 ---
-title: "Báo Cáo và Biểu Đồ"
+title: "Báo cáo và biểu đồ"
 description: "Tạo báo cáo Yida và thêm biểu đồ trực quan hóa dữ liệu."
 icon: "chart-column"
 ---
 
-OpenYida hỗ trợ tạo báo cáo Yida và thêm nhiều loại biểu đồ khác nhau để đạt được trực quan hóa dữ liệu.
+OpenYida hỗ trợ tạo báo cáo Yida và thêm biểu đồ để trực quan hóa dữ liệu bằng lệnh `create-report` và `append-chart`.
 
 ---
 
-## Tổng Quan
+## Tổng quan tính năng
 
 <CardGroup cols={2}>
-  <Card title="Tạo Báo Cáo" icon="file-plus">
-    Tạo báo cáo Yida chỉ với một cú nhấp chuột, hỗ trợ cấu hình tùy chỉnh.
+  <Card title="Tạo báo cáo" icon="file-plus">
+    Tạo báo cáo Yida với cấu hình biểu đồ tùy chỉnh.
   </Card>
-  <Card title="Thêm Biểu Đồ" icon="chart-pie">
+  <Card title="Thêm biểu đồ" icon="chart-pie">
     Thêm nhiều loại biểu đồ khác nhau vào báo cáo hiện có.
   </Card>
-  <Card title="Liên Kết Dữ Liệu" icon="link">
+  <Card title="Liên kết dữ liệu" icon="link">
     Tự động liên kết nguồn dữ liệu biểu mẫu, hiển thị dữ liệu thời gian thực.
   </Card>
-  <Card title="Loại Biểu Đồ" icon="shapes">
+  <Card title="Loại biểu đồ" icon="shapes">
     Hỗ trợ biểu đồ cột, đường, tròn, bảng và nhiều loại khác.
   </Card>
 </CardGroup>
 
 ---
 
-## Tạo Báo Cáo
+## Tạo báo cáo
 
-### Sử Dụng Cơ Bản
+### Cách sử dụng cơ bản
 
 ```bash
-openyida create-report <appType> "Tên Báo Cáo" '<JSON định nghĩa biểu đồ>'
+openyida create-report <appType> "Tên báo cáo" '<JSON-định-nghĩa-hoặc-tệp>'
 ```
 
-### Ví Dụ: Tạo Báo Cáo Bán Hàng
+Đối số thứ ba có thể là chuỗi JSON nội tuyến hoặc đường dẫn đến tệp JSON.
+
+### Ví dụ: tạo báo cáo bán hàng
 
 ```bash
-openyida create-report APP_XXXXXX "Báo Cáo Bán Hàng Hàng Tháng" '{
+openyida create-report APP_XXXXXX "Sales Dashboard" '{
   "charts": [
     {
       "type": "bar",
-      "title": "Doanh Số Hàng Tháng",
-      "dataSource": "form_sales",
+      "title": "Monthly Sales",
+      "dataSource": "sales_form",
       "xField": "month",
       "yField": "amount"
-    },
-    {
-      "type": "pie",
-      "title": "Tỷ Lệ Bán Hàng Theo Sản Phẩm",
-      "dataSource": "form_sales",
-      "categoryField": "product_type",
-      "valueField": "amount"
     }
   ]
 }'
 ```
 
-### Tải Định Nghĩa Biểu Đồ Từ Tệp
+### Tải định nghĩa biểu đồ từ tệp
 
 ```bash
-openyida create-report APP_XXXXXX "Báo Cáo Thống Kê Hàng Năm" ./charts-config.json
+openyida create-report APP_XXXXXX "Annual Report" ./charts-config.json
 ```
 
 ---
 
-## Định Dạng Định Nghĩa Biểu Đồ
-
-### Biểu Đồ Cột
-
-```json
-{
-  "type": "bar",
-  "title": "Tiêu Đề Biểu Đồ Cột",
-  "dataSource": "form_uuid",
-  "xField": "category_field",
-  "yField": "value_field",
-  "aggregation": "sum"
-}
-```
-
-### Biểu Đồ Đường
-
-```json
-{
-  "type": "line",
-  "title": "Tiêu Đề Biểu Đồ Xu Hướng",
-  "dataSource": "form_uuid",
-  "xField": "date_field",
-  "yField": "value_field",
-  "aggregation": "sum"
-}
-```
-
-### Biểu Đồ Tròn
-
-```json
-{
-  "type": "pie",
-  "title": "Tiêu Đề Biểu Đồ Tỷ Lệ",
-  "dataSource": "form_uuid",
-  "categoryField": "category_field",
-  "valueField": "value_field"
-}
-```
-
-### Bảng Dữ Liệu
-
-```json
-{
-  "type": "table",
-  "title": "Chi Tiết Dữ Liệu",
-  "dataSource": "form_uuid",
-  "columns": [
-    { "field": "name", "title": "Tên" },
-    { "field": "amount", "title": "Số Tiền" },
-    { "field": "date", "title": "Ngày" }
-  ]
-}
-```
-
----
-
-## Thêm Biểu Đồ Vào Báo Cáo
+## Thêm biểu đồ vào báo cáo
 
 ```bash
-openyida append-chart <appType> <reportId> '<JSON định nghĩa biểu đồ>'
+openyida append-chart <appType> <reportId> '<JSON-định-nghĩa-hoặc-tệp>'
 ```
 
-### Ví Dụ
+### Ví dụ
 
 ```bash
 openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "type": "line",
-  "title": "Xu Hướng Tăng Trưởng",
+  "title": "Growth Trend",
   "dataSource": "form_sales",
   "xField": "month",
   "yField": "growth_rate"
@@ -143,7 +81,89 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 
 ---
 
-## Ví Dụ Cấu Hình Đầy Đủ
+## Loại biểu đồ
+
+| Loại | Mô tả | Phù hợp cho |
+|------|-------------|----------|
+| **bar** | Biểu đồ cột | So sánh danh mục |
+| **line** | Biểu đồ đường | Xu hướng theo thời gian |
+| **pie** | Biểu đồ tròn | Quan hệ phần-toàn thể |
+| **table** | Bảng dữ liệu | Xem dữ liệu chi tiết |
+| **area** | Biểu đồ vùng | Xu hướng tích lũy |
+| **scatter** | Biểu đồ phân tán | Phân tích tương quan |
+
+---
+
+## Định dạng định nghĩa biểu đồ
+
+### Biểu đồ cột
+
+```json
+{
+  "type": "bar",
+  "title": "Sales by Region",
+  "dataSource": "form_uuid",
+  "xField": "region",
+  "yField": "amount",
+  "aggregation": "sum"
+}
+```
+
+### Biểu đồ đường
+
+```json
+{
+  "type": "line",
+  "title": "Traffic Trend",
+  "dataSource": "form_uuid",
+  "xField": "date",
+  "yField": "visitors",
+  "aggregation": "sum"
+}
+```
+
+### Biểu đồ tròn
+
+```json
+{
+  "type": "pie",
+  "title": "Market Share",
+  "dataSource": "form_uuid",
+  "categoryField": "product",
+  "valueField": "share"
+}
+```
+
+### Bảng dữ liệu
+
+```json
+{
+  "type": "table",
+  "title": "Detail View",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "Name" },
+    { "field": "amount", "title": "Amount" },
+    { "field": "date", "title": "Date" }
+  ]
+}
+```
+
+---
+
+## Hàm tổng hợp
+
+| Hàm | Mô tả |
+|----------|-------------|
+| **sum** | Tổng các giá trị |
+| **avg** | Giá trị trung bình |
+| **count** | Số lượng bản ghi |
+| **max** | Giá trị lớn nhất |
+| **min** | Giá trị nhỏ nhất |
+
+---
+
+## Ví dụ cấu hình đầy đủ
 
 ### sales-report-charts.json
 
@@ -152,40 +172,37 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "charts": [
     {
       "type": "bar",
-      "title": "Thống Kê Doanh Số Hàng Tháng",
+      "title": "Monthly Sales",
       "dataSource": "form_monthly_sales",
       "xField": "month",
       "yField": "sales_amount",
-      "aggregation": "sum",
-      "color": "#0066FF"
+      "aggregation": "sum"
     },
     {
       "type": "pie",
-      "title": "Tỷ Lệ Theo Danh Mục Sản Phẩm",
+      "title": "Product Categories",
       "dataSource": "form_sales",
       "categoryField": "product_category",
-      "valueField": "sales_amount",
-      "showLegend": true
+      "valueField": "sales_amount"
     },
     {
       "type": "line",
-      "title": "Xu Hướng Bán Hàng",
+      "title": "Sales Trend",
       "dataSource": "form_daily_sales",
       "xField": "date",
       "yField": "sales_amount",
-      "aggregation": "sum",
-      "smooth": true
+      "aggregation": "sum"
     },
     {
       "type": "table",
-      "title": "Chi Tiết Bán Hàng",
+      "title": "Sales Detail",
       "dataSource": "form_sales",
       "columns": [
-        { "field": "order_no", "title": "Số Đơn Hàng", "width": 150 },
-        { "field": "customer_name", "title": "Tên Khách Hàng", "width": 200 },
-        { "field": "product_name", "title": "Tên Sản Phẩm", "width": 200 },
-        { "field": "amount", "title": "Số Tiền", "width": 120, "align": "right" },
-        { "field": "sales_date", "title": "Ngày Bán", "width": 150 }
+        { "field": "order_no", "title": "Order No.", "width": 150 },
+        { "field": "customer_name", "title": "Customer", "width": 200 },
+        { "field": "product_name", "title": "Product", "width": 200 },
+        { "field": "amount", "title": "Amount", "width": 120 },
+        { "field": "sales_date", "title": "Date", "width": 150 }
       ],
       "pageSize": 10
     }
@@ -196,39 +213,14 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 Tạo báo cáo:
 
 ```bash
-openyida create-report APP_XXXXXX "Báo Cáo Phân Tích Bán Hàng" ./sales-report-charts.json
+openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.json
 ```
 
 ---
 
-## Tham Khảo Loại Biểu Đồ
+## Thực hành tốt nhất
 
-| Loại | Mô Tả | Trường Bắt Buộc |
-|------|------|----------|
-| `bar` | Biểu đồ cột | xField, yField |
-| `line` | Biểu đồ đường | xField, yField |
-| `pie` | Biểu đồ tròn | categoryField, valueField |
-| `table` | Bảng dữ liệu | columns |
-| `area` | Biểu đồ vùng | xField, yField |
-| `scatter` | Biểu đồ phân tán | xField, yField |
-
----
-
-## Hàm Tổng Hợp
-
-| Hàm | Mô Tả |
-|------|------|
-| `sum` | Tổng |
-| `avg` | Trung bình |
-| `count` | Đếm |
-| `max` | Giá trị lớn nhất |
-| `min` | Giá trị nhỏ nhất |
-
----
-
-## Thực Hành Tốt Nhất
-
-1. **Chọn loại biểu đồ phù hợp** - Xu hướng dùng đường, so sánh dùng cột, tỷ lệ dùng tròn
-2. **Kiểm soát số lượng biểu đồ** - Khuyến nghị không quá 6 biểu đồ mỗi báo cáo
-3. **Sử dụng bảng dữ liệu** - Bổ sung biểu đồ bằng dữ liệu chi tiết để xem giá trị gốc
-4. **Cấu hình phân trang phù hợp** - Khuyến nghị 10-20 bản ghi mỗi trang cho bảng
+1. **Chọn loại biểu đồ phù hợp** - Biểu đồ đường cho xu hướng, biểu đồ cột cho so sánh, biểu đồ tròn cho tỷ lệ
+2. **Giới hạn số lượng biểu đồ** - Giữ mỗi báo cáo không quá 6 biểu đồ
+3. **Bao gồm bảng dữ liệu** - Kết hợp biểu đồ với bảng để kiểm tra dữ liệu chi tiết
+4. **Đặt kích thước trang hợp lý** - Với bảng dữ liệu, sử dụng 10-20 hàng mỗi trang
