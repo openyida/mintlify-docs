@@ -191,11 +191,14 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 ## Gestión de procesos
 
 ```bash
-# Crear formulario de proceso
-openyida create-process <appType> "<nombre>" <camposJSON> --process-code <código>
+# Crear formulario de proceso (nuevo formulario + configurar proceso)
+openyida create-process <appType> "<nombre>" <archivoCamposJSON> <archivoDefiniciónProceso>
 
-# Configurar reglas de proceso
-openyida configure-process <appType> <formUuid> --rules <reglasJSON>
+# Crear formulario de proceso (reutilizar formulario existente + configurar proceso)
+openyida create-process <appType> --formUuid <formUuid> <archivoDefiniciónProceso>
+
+# Configurar reglas de proceso desde un archivo de definición
+openyida configure-process <appType> <formUuid> <archivoDefiniciónProceso> [processCode]
 ```
 
 ---

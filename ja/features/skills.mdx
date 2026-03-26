@@ -191,11 +191,14 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 ## プロセス管理
 
 ```bash
-# プロセスフォーム作成
-openyida create-process <appType> "<表单名>" <字段JSON> --process-code <code>
+# プロセスフォーム作成（新規フォーム + プロセス設定）
+openyida create-process <appType> "<フォーム名>" <フィールドJSONファイル> <プロセス定義ファイル>
 
-# プロセスルール設定
-openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+# プロセスフォーム作成（既存フォーム再利用 + プロセス設定）
+openyida create-process <appType> --formUuid <formUuid> <プロセス定義ファイル>
+
+# 定義ファイルからプロセスルールを設定
+openyida configure-process <appType> <formUuid> <プロセス定義ファイル> [processCode]
 ```
 
 ---

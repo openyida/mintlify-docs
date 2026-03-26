@@ -191,11 +191,14 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 ## प्रक्रिया प्रबंधन
 
 ```bash
-# प्रक्रिया फॉर्म बनाएं
-openyida create-process <appType> "<नाम>" <फ़ील्डJSON> --process-code <कोड>
+# प्रक्रिया फॉर्म बनाएं (नया फॉर्म + प्रक्रिया कॉन्फ़िगर करें)
+openyida create-process <appType> "<नाम>" <फ़ील्डJSONफ़ाइल> <प्रक्रियापरिभाषाफ़ाइल>
 
-# प्रक्रिया नियम कॉन्फ़िगर करें
-openyida configure-process <appType> <formUuid> --rules <नियमJSON>
+# प्रक्रिया फॉर्म बनाएं (मौजूदा फॉर्म पुनः उपयोग + प्रक्रिया कॉन्फ़िगर करें)
+openyida create-process <appType> --formUuid <formUuid> <प्रक्रियापरिभाषाफ़ाइल>
+
+# परिभाषा फ़ाइल से प्रक्रिया नियम कॉन्फ़िगर करें
+openyida configure-process <appType> <formUuid> <प्रक्रियापरिभाषाफ़ाइल> [processCode]
 ```
 
 ---

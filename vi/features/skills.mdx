@@ -191,11 +191,14 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 ## Quản lý quy trình
 
 ```bash
-# Tạo biểu mẫu quy trình
-openyida create-process <appType> "<tên>" <trườngJSON> --process-code <mã>
+# Tạo biểu mẫu quy trình (biểu mẫu mới + cấu hình quy trình)
+openyida create-process <appType> "<tên>" <tệpTrườngJSON> <tệpĐịnhNghĩaQuyTrình>
 
-# Cấu hình quy tắc quy trình
-openyida configure-process <appType> <formUuid> --rules <quy_tắcJSON>
+# Tạo biểu mẫu quy trình (tái sử dụng biểu mẫu hiện có + cấu hình quy trình)
+openyida create-process <appType> --formUuid <formUuid> <tệpĐịnhNghĩaQuyTrình>
+
+# Cấu hình quy tắc quy trình từ tệp định nghĩa
+openyida configure-process <appType> <formUuid> <tệpĐịnhNghĩaQuyTrình> [processCode]
 ```
 
 ---

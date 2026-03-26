@@ -191,11 +191,14 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 ## 프로세스 관리
 
 ```bash
-# 프로세스 양식 생성
-openyida create-process <appType> "<表单名>" <字段JSON> --process-code <code>
+# 프로세스 양식 생성 (새 양식 + 프로세스 구성)
+openyida create-process <appType> "<양식명>" <필드JSON파일> <프로세스정의파일>
 
-# 프로세스 규칙 구성
-openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+# 프로세스 양식 생성 (기존 양식 재사용 + 프로세스 구성)
+openyida create-process <appType> --formUuid <formUuid> <프로세스정의파일>
+
+# 정의 파일에서 프로세스 규칙 구성
+openyida configure-process <appType> <formUuid> <프로세스정의파일> [processCode]
 ```
 
 ---
