@@ -1,10 +1,10 @@
 ---
-title: "Data Management"
+title: "Data management"
 description: "Unified data management interface supporting forms, processes, tasks, and subform operations."
 icon: "database"
 ---
 
-OpenYida provides a unified data management CLI supporting complete CRUD operations on form data, process instances, tasks, and subforms.
+OpenYida provides a unified data management CLI supporting complete operations on form data, process instances, tasks, and subforms.
 
 ---
 
@@ -12,7 +12,7 @@ OpenYida provides a unified data management CLI supporting complete CRUD operati
 
 <CardGroup cols={2}>
   <Card title="Form data" icon="table">
-    Query, create, update, and delete form instance data.
+    Query, create, and update form instance data.
   </Card>
   <Card title="Process data" icon="workflow">
     Manage process instances, approval records, and process status.
@@ -51,10 +51,13 @@ openyida data query form <appType> <formUuid> --page 1 --size 50
 
 # Conditional query
 openyida data query form <appType> <formUuid> \
-  --search-json '{"field_xxx": "value"}'
+  --search-json '[{"key":"field_xxx","value":"value","type":"TEXT","operator":"eq","componentName":"TextField"}]'
 
 # Query a specific instance
 openyida data query form <appType> <formUuid> --inst-id <formInstId>
+
+# Return only instance IDs
+openyida data query form <appType> <formUuid> --ids-only
 ```
 
 ### Get a single record
@@ -67,28 +70,16 @@ openyida data get form <appType> --inst-id <formInstId>
 
 ```bash
 openyida data create form <appType> <formUuid> \
-  --data '{"field_xxx": "value", "field_yyy": 123}' \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
   --dept-id <departmentId>
 ```
-
-You can also use field labels instead of field IDs in the `--data` parameter. The CLI automatically detects field labels and converts them to their corresponding field IDs by fetching the form schema.
-
-```bash
-# Using field labels instead of field IDs
-openyida data create form <appType> <formUuid> \
-  --data '{"Name": "John", "Age": 30, "Department": "Engineering"}'
-```
-
-<Info>
-  Field label resolution works by matching label text against the form schema. Both field labels and field IDs are accepted in the same `--data` object -- any key that does not match a known label is passed through as-is.
-</Info>
 
 ### Update a record
 
 ```bash
 openyida data update form <appType> \
   --inst-id <formInstId> \
-  --data '{"field_xxx": "new value"}' \
+  --data-json '{"field_xxx": "new value"}' \
   --use-latest-version y
 ```
 
@@ -105,6 +96,9 @@ openyida data query process <appType> <formUuid> \
   --instance-status RUNNING
 
 # Status options: RUNNING (in progress), COMPLETED, TERMINATED
+
+# Return only instance IDs
+openyida data query process <appType> <formUuid> --ids-only
 ```
 
 ### Get process detail
@@ -118,8 +112,16 @@ openyida data get process <appType> --process-inst-id <processInstanceId>
 ```bash
 openyida data create process <appType> <formUuid> \
   --process-code <processCode> \
-  --data '{"field_xxx": "value"}' \
+  --data-json '{"field_xxx": "value"}' \
   --dept-id <departmentId>
+```
+
+### Update a process instance
+
+```bash
+openyida data update process <appType> \
+  --process-inst-id <processInstanceId> \
+  --data-json '{"field_xxx": "updated value"}'
 ```
 
 ### Query approval records
@@ -157,7 +159,7 @@ openyida data execute task <appType> \
   --process-inst-id <processInstanceId> \
   --out-result AGREE \
   --remark "Approved, please proceed" \
-  --data '{"comment": "Approval passed"}'
+  --data-json '{"comment": "Approval passed"}'
 ```
 
 **out-result options:**
@@ -181,16 +183,26 @@ openyida data query subform <appType> <formUuid> \
 
 ## Advanced usage
 
-### Complex query conditions
+### Query condition format
+
+The `--search-json` parameter accepts an array-based query format. Each condition is an object with these fields:
+
+| Field | Description |
+|-------|-------------|
+| `key` | Field ID (e.g., `field_xxx`) |
+| `value` | Value to match |
+| `type` | Data type: `TEXT`, `NUMBER`, `DATE`, etc. |
+| `operator` | Operator: `eq`, `like`, `gt`, `gte`, `lt`, `lte`, `in`, `range` |
+| `componentName` | Component type: `TextField`, `NumberField`, `DateField`, etc. |
+
+Example:
 
 ```bash
-# Multi-field conditional query
 openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_status": "approved",
-    "field_amount": { "$gte": 1000 },
-    "field_created_at": { "$gte": "2024-01-01" }
-  }'
+  --search-json '[
+    {"key":"field_status","value":"approved","type":"TEXT","operator":"eq","componentName":"TextField"},
+    {"key":"field_amount","value":"1000","type":"NUMBER","operator":"gte","componentName":"NumberField"}
+  ]'
 ```
 
 ### Batch operation script example
@@ -221,26 +233,10 @@ done
 
 ---
 
-## Data export example
-
-```bash
-# Export data for a specific time period
-openyida data query form <appType> <formUuid> \
-  --search-json '{
-    "field_created_at": {
-      "$gte": "2024-01-01T00:00:00",
-      "$lte": "2024-12-31T23:59:59"
-    }
-  }' \
-  --size 100 > ./data-export.json
-```
-
----
-
 ## Important notes
 
 <Warning>
-  Data operations are permanent — update and delete operations cannot be undone. Run a small-scale test before performing batch operations.
+  Data operations are permanent — update operations cannot be undone. Run a small-scale test before performing batch operations.
 </Warning>
 
 <Info>
