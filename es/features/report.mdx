@@ -1,132 +1,70 @@
 ---
-title: "Informes y Gráficos"
+title: "Informes y gráficos"
 description: "Crea informes Yida y agrega gráficos de visualización de datos."
 icon: "chart-column"
 ---
 
-OpenYida soporta la creación de informes Yida y la adición de diversos gráficos para lograr la visualización de datos.
+OpenYida permite crear informes Yida y agregar gráficos para la visualización de datos usando los comandos `create-report` y `append-chart`.
 
 ---
 
-## Descripción General
+## Descripción general
 
 <CardGroup cols={2}>
-  <Card title="Creación de Informes" icon="file-plus">
-    Crea informes Yida con un clic, soporta configuración personalizada.
+  <Card title="Creación de informes" icon="file-plus">
+    Crea informes Yida con configuración personalizada de gráficos.
   </Card>
-  <Card title="Agregar Gráficos" icon="chart-pie">
+  <Card title="Agregar gráficos" icon="chart-pie">
     Agrega múltiples tipos de gráficos a informes existentes.
   </Card>
-  <Card title="Vinculación de Datos" icon="link">
+  <Card title="Vinculación de datos" icon="link">
     Vincula automáticamente fuentes de datos de formularios, muestra datos en tiempo real.
   </Card>
-  <Card title="Tipos de Gráficos" icon="shapes">
+  <Card title="Tipos de gráficos" icon="shapes">
     Soporta gráficos de barras, líneas, circulares, tablas y más.
   </Card>
 </CardGroup>
 
 ---
 
-## Crear Informe
+## Crear informes
 
-### Uso Básico
+### Uso básico
 
 ```bash
-openyida create-report <appType> "Nombre del Informe" '<JSON definición del gráfico>'
+openyida create-report <appType> "Nombre del informe" '<JSON-definición-o-archivo>'
 ```
 
-### Ejemplo: Crear Informe de Ventas
+El tercer argumento puede ser una cadena JSON en línea o una ruta a un archivo JSON.
+
+### Ejemplo: crear un informe de ventas
 
 ```bash
-openyida create-report APP_XXXXXX "Informe de Ventas Mensual" '{
+openyida create-report APP_XXXXXX "Sales Dashboard" '{
   "charts": [
     {
       "type": "bar",
-      "title": "Ventas Mensuales",
-      "dataSource": "form_sales",
+      "title": "Monthly Sales",
+      "dataSource": "sales_form",
       "xField": "month",
       "yField": "amount"
-    },
-    {
-      "type": "pie",
-      "title": "Proporción de Ventas por Producto",
-      "dataSource": "form_sales",
-      "categoryField": "product_type",
-      "valueField": "amount"
     }
   ]
 }'
 ```
 
-### Cargar Definición de Gráfico desde Archivo
+### Cargar definición de gráfico desde archivo
 
 ```bash
-openyida create-report APP_XXXXXX "Informe Estadístico Anual" ./charts-config.json
+openyida create-report APP_XXXXXX "Annual Report" ./charts-config.json
 ```
 
 ---
 
-## Formato de Definición de Gráfico
-
-### Gráfico de Barras
-
-```json
-{
-  "type": "bar",
-  "title": "Título del Gráfico de Barras",
-  "dataSource": "form_uuid",
-  "xField": "category_field",
-  "yField": "value_field",
-  "aggregation": "sum"
-}
-```
-
-### Gráfico de Líneas
-
-```json
-{
-  "type": "line",
-  "title": "Título del Gráfico de Tendencias",
-  "dataSource": "form_uuid",
-  "xField": "date_field",
-  "yField": "value_field",
-  "aggregation": "sum"
-}
-```
-
-### Gráfico Circular
-
-```json
-{
-  "type": "pie",
-  "title": "Título del Gráfico de Proporción",
-  "dataSource": "form_uuid",
-  "categoryField": "category_field",
-  "valueField": "value_field"
-}
-```
-
-### Tabla de Datos
-
-```json
-{
-  "type": "table",
-  "title": "Detalles de Datos",
-  "dataSource": "form_uuid",
-  "columns": [
-    { "field": "name", "title": "Nombre" },
-    { "field": "amount", "title": "Monto" },
-    { "field": "date", "title": "Fecha" }
-  ]
-}
-```
-
----
-
-## Agregar Gráficos al Informe
+## Agregar gráficos a un informe
 
 ```bash
-openyida append-chart <appType> <reportId> '<JSON definición del gráfico>'
+openyida append-chart <appType> <reportId> '<JSON-definición-o-archivo>'
 ```
 
 ### Ejemplo
@@ -134,7 +72,7 @@ openyida append-chart <appType> <reportId> '<JSON definición del gráfico>'
 ```bash
 openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "type": "line",
-  "title": "Tendencia de Crecimiento",
+  "title": "Growth Trend",
   "dataSource": "form_sales",
   "xField": "month",
   "yField": "growth_rate"
@@ -143,7 +81,89 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 
 ---
 
-## Ejemplo de Configuración Completa
+## Tipos de gráficos
+
+| Tipo | Descripción | Ideal para |
+|------|-------------|----------|
+| **bar** | Gráfico de barras | Comparar categorías |
+| **line** | Gráfico de líneas | Tendencias en el tiempo |
+| **pie** | Gráfico circular | Relaciones parte-todo |
+| **table** | Tabla de datos | Vista detallada de datos |
+| **area** | Gráfico de área | Tendencias acumulativas |
+| **scatter** | Gráfico de dispersión | Análisis de correlación |
+
+---
+
+## Formato de definición de gráfico
+
+### Gráfico de barras
+
+```json
+{
+  "type": "bar",
+  "title": "Sales by Region",
+  "dataSource": "form_uuid",
+  "xField": "region",
+  "yField": "amount",
+  "aggregation": "sum"
+}
+```
+
+### Gráfico de líneas
+
+```json
+{
+  "type": "line",
+  "title": "Traffic Trend",
+  "dataSource": "form_uuid",
+  "xField": "date",
+  "yField": "visitors",
+  "aggregation": "sum"
+}
+```
+
+### Gráfico circular
+
+```json
+{
+  "type": "pie",
+  "title": "Market Share",
+  "dataSource": "form_uuid",
+  "categoryField": "product",
+  "valueField": "share"
+}
+```
+
+### Tabla de datos
+
+```json
+{
+  "type": "table",
+  "title": "Detail View",
+  "dataSource": "form_uuid",
+  "columns": [
+    { "field": "name", "title": "Name" },
+    { "field": "amount", "title": "Amount" },
+    { "field": "date", "title": "Date" }
+  ]
+}
+```
+
+---
+
+## Funciones de agregación
+
+| Función | Descripción |
+|----------|-------------|
+| **sum** | Suma de valores |
+| **avg** | Valor promedio |
+| **count** | Conteo de registros |
+| **max** | Valor máximo |
+| **min** | Valor mínimo |
+
+---
+
+## Ejemplo de configuración completa
 
 ### sales-report-charts.json
 
@@ -152,40 +172,37 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "charts": [
     {
       "type": "bar",
-      "title": "Estadísticas de Ventas Mensuales",
+      "title": "Monthly Sales",
       "dataSource": "form_monthly_sales",
       "xField": "month",
       "yField": "sales_amount",
-      "aggregation": "sum",
-      "color": "#0066FF"
+      "aggregation": "sum"
     },
     {
       "type": "pie",
-      "title": "Proporción por Categoría de Producto",
+      "title": "Product Categories",
       "dataSource": "form_sales",
       "categoryField": "product_category",
-      "valueField": "sales_amount",
-      "showLegend": true
+      "valueField": "sales_amount"
     },
     {
       "type": "line",
-      "title": "Tendencia de Ventas",
+      "title": "Sales Trend",
       "dataSource": "form_daily_sales",
       "xField": "date",
       "yField": "sales_amount",
-      "aggregation": "sum",
-      "smooth": true
+      "aggregation": "sum"
     },
     {
       "type": "table",
-      "title": "Detalles de Ventas",
+      "title": "Sales Detail",
       "dataSource": "form_sales",
       "columns": [
-        { "field": "order_no", "title": "Número de Pedido", "width": 150 },
-        { "field": "customer_name", "title": "Nombre del Cliente", "width": 200 },
-        { "field": "product_name", "title": "Nombre del Producto", "width": 200 },
-        { "field": "amount", "title": "Monto", "width": 120, "align": "right" },
-        { "field": "sales_date", "title": "Fecha de Venta", "width": 150 }
+        { "field": "order_no", "title": "Order No.", "width": 150 },
+        { "field": "customer_name", "title": "Customer", "width": 200 },
+        { "field": "product_name", "title": "Product", "width": 200 },
+        { "field": "amount", "title": "Amount", "width": 120 },
+        { "field": "sales_date", "title": "Date", "width": 150 }
       ],
       "pageSize": 10
     }
@@ -193,42 +210,17 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 }
 ```
 
-Crear informe:
+Crear el informe:
 
 ```bash
-openyida create-report APP_XXXXXX "Informe de Análisis de Ventas" ./sales-report-charts.json
+openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.json
 ```
 
 ---
 
-## Referencia de Tipos de Gráficos
+## Mejores prácticas
 
-| Tipo | Descripción | Campos Requeridos |
-|------|------|----------|
-| `bar` | Gráfico de barras | xField, yField |
-| `line` | Gráfico de líneas | xField, yField |
-| `pie` | Gráfico circular | categoryField, valueField |
-| `table` | Tabla de datos | columns |
-| `area` | Gráfico de área | xField, yField |
-| `scatter` | Gráfico de dispersión | xField, yField |
-
----
-
-## Funciones de Agregación
-
-| Función | Descripción |
-|------|------|
-| `sum` | Suma |
-| `avg` | Promedio |
-| `count` | Conteo |
-| `max` | Máximo |
-| `min` | Mínimo |
-
----
-
-## Mejores Prácticas
-
-1. **Elige el tipo de gráfico apropiado** - Tendencias con líneas, comparaciones con barras, proporciones con circulares
-2. **Controla la cantidad de gráficos** - Se recomienda no más de 6 gráficos por informe
-3. **Usa tablas de datos** - Complementa los gráficos con datos detallados para ver valores originales
-4. **Configura paginación adecuada** - Se recomienda 10-20 registros por página para tablas
+1. **Elige el tipo de gráfico apropiado** - Gráficos de líneas para tendencias, de barras para comparaciones, circulares para proporciones
+2. **Limita la cantidad de gráficos** - Mantén los informes con 6 gráficos o menos
+3. **Incluye tablas de datos** - Complementa los gráficos con tablas para inspección detallada
+4. **Configura tamaños de página razonables** - Para tablas de datos, usa 10-20 filas por página

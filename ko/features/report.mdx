@@ -4,7 +4,7 @@ description: "Yida 보고서를 만들고 데이터 시각화 차트를 추가�
 icon: "chart-column"
 ---
 
-OpenYida는 Yida 보고서 생성 및 다양한 차트 추가를 지원하며 데이터 시각화 표시를 실현합니다.
+OpenYida는 `create-report` 및 `append-chart` 명령어를 사용하여 Yida 보고서 생성 및 데이터 시각화를 위한 차트 추가를 지원합니다.
 
 ---
 
@@ -12,12 +12,12 @@ OpenYida는 Yida 보고서 생성 및 다양한 차트 추가를 지원하며 �
 
 <CardGroup cols={2}>
   <Card title="보고서 생성" icon="file-plus">
-    원클릭으로 Yida 보고서를 생성하고 사용자 정의 설정을 지원합니다.
+    사용자 정의 차트 설정으로 Yida 보고서를 생성합니다.
   </Card>
   <Card title="차트 추가" icon="chart-pie">
     기존 보고서에 다양한 유형의 차트를 추가합니다.
   </Card>
-  <Card title=" 데이터 바인딩" icon="link">
+  <Card title="데이터 바인딩" icon="link">
     양식 데이터 소스를 자동으로 바인딩하고 데이터를 실시간으로 표시합니다.
   </Card>
   <Card title="차트 유형" icon="shapes">
@@ -32,27 +32,22 @@ OpenYida는 Yida 보고서 생성 및 다양한 차트 추가를 지원하며 �
 ### 기본 사용법
 
 ```bash
-openyida create-report <appType> "보고서 이름" '<차트 정의 JSON>'
+openyida create-report <appType> "보고서 이름" '<차트-정의-JSON-또는-파일>'
 ```
 
-### 예：판매 보고서 생성
+세 번째 인수는 인라인 JSON 문자열 또는 JSON 파일 경로일 수 있습니다.
+
+### 예: 판매 보고서 생성
 
 ```bash
-openyida create-report APP_XXXXXX "월간 판매 보고서" '{
+openyida create-report APP_XXXXXX "Sales Dashboard" '{
   "charts": [
     {
       "type": "bar",
-      "title": "월간 매출",
-      "dataSource": "form_sales",
+      "title": "Monthly Sales",
+      "dataSource": "sales_form",
       "xField": "month",
       "yField": "amount"
-    },
-    {
-      "type": "pie",
-      "title": "제품 판매 비율",
-      "dataSource": "form_sales",
-      "categoryField": "product_type",
-      "valueField": "amount"
     }
   ]
 }'
@@ -61,8 +56,41 @@ openyida create-report APP_XXXXXX "월간 판매 보고서" '{
 ### 파일에서 차트 정의 로드
 
 ```bash
-openyida create-report APP_XXXXXX "연간 통계 보고서" ./charts-config.json
+openyida create-report APP_XXXXXX "Annual Report" ./charts-config.json
 ```
+
+---
+
+## 보고서에 차트 추가
+
+```bash
+openyida append-chart <appType> <reportId> '<차트-정의-JSON-또는-파일>'
+```
+
+### 예
+
+```bash
+openyida append-chart APP_XXXXXX REPORT_XXXXX '{
+  "type": "line",
+  "title": "Growth Trend",
+  "dataSource": "form_sales",
+  "xField": "month",
+  "yField": "growth_rate"
+}'
+```
+
+---
+
+## 차트 유형
+
+| 유형 | 설명 | 적합한 용도 |
+|------|-------------|----------|
+| **bar** | 막대형 차트 | 카테고리 비교 |
+| **line** | 꺾은선형 차트 | 시간에 따른 추세 |
+| **pie** | 원형 차트 | 부분 대 전체 관계 |
+| **table** | 데이터 테이블 | 상세 데이터 보기 |
+| **area** | 영역형 차트 | 누적 추세 |
+| **scatter** | 산점도 | 상관 분석 |
 
 ---
 
@@ -73,10 +101,10 @@ openyida create-report APP_XXXXXX "연간 통계 보고서" ./charts-config.json
 ```json
 {
   "type": "bar",
-  "title": "막대형 차트 제목",
+  "title": "Sales by Region",
   "dataSource": "form_uuid",
-  "xField": "category_field",
-  "yField": "value_field",
+  "xField": "region",
+  "yField": "amount",
   "aggregation": "sum"
 }
 ```
@@ -86,10 +114,10 @@ openyida create-report APP_XXXXXX "연간 통계 보고서" ./charts-config.json
 ```json
 {
   "type": "line",
-  "title": "트렌드 차트 제목",
+  "title": "Traffic Trend",
   "dataSource": "form_uuid",
-  "xField": "date_field",
-  "yField": "value_field",
+  "xField": "date",
+  "yField": "visitors",
   "aggregation": "sum"
 }
 ```
@@ -99,10 +127,10 @@ openyida create-report APP_XXXXXX "연간 통계 보고서" ./charts-config.json
 ```json
 {
   "type": "pie",
-  "title": "비율 차트 제목",
+  "title": "Market Share",
   "dataSource": "form_uuid",
-  "categoryField": "category_field",
-  "valueField": "value_field"
+  "categoryField": "product",
+  "valueField": "share"
 }
 ```
 
@@ -111,35 +139,27 @@ openyida create-report APP_XXXXXX "연간 통계 보고서" ./charts-config.json
 ```json
 {
   "type": "table",
-  "title": "데이터 상세",
+  "title": "Detail View",
   "dataSource": "form_uuid",
   "columns": [
-    { "field": "name", "title": "이름" },
-    { "field": "amount", "title": "금액" },
-    { "field": "date", "title": "날짜" }
+    { "field": "name", "title": "Name" },
+    { "field": "amount", "title": "Amount" },
+    { "field": "date", "title": "Date" }
   ]
 }
 ```
 
 ---
 
-## 보고서에 차트 추가
+## 집계 함수
 
-```bash
-openyida append-chart <appType> <reportId> '<차트 정의 JSON>'
-```
-
-### 예
-
-```bash
-openyida append-chart APP_XXXXXX REPORT_XXXXX '{
-  "type": "line",
-  "title": "성장 트렌드",
-  "dataSource": "form_sales",
-  "xField": "month",
-  "yField": "growth_rate"
-}'
-```
+| 함수 | 설명 |
+|----------|-------------|
+| **sum** | 값의 합계 |
+| **avg** | 평균 값 |
+| **count** | 레코드 수 |
+| **max** | 최대 값 |
+| **min** | 최소 값 |
 
 ---
 
@@ -152,40 +172,37 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "charts": [
     {
       "type": "bar",
-      "title": "월간 매출 통계",
+      "title": "Monthly Sales",
       "dataSource": "form_monthly_sales",
       "xField": "month",
       "yField": "sales_amount",
-      "aggregation": "sum",
-      "color": "#0066FF"
+      "aggregation": "sum"
     },
     {
       "type": "pie",
-      "title": "제품 카테고리 비율",
+      "title": "Product Categories",
       "dataSource": "form_sales",
       "categoryField": "product_category",
-      "valueField": "sales_amount",
-      "showLegend": true
+      "valueField": "sales_amount"
     },
     {
       "type": "line",
-      "title": "판매 트렌드",
+      "title": "Sales Trend",
       "dataSource": "form_daily_sales",
       "xField": "date",
       "yField": "sales_amount",
-      "aggregation": "sum",
-      "smooth": true
+      "aggregation": "sum"
     },
     {
       "type": "table",
-      "title": "판매 상세",
+      "title": "Sales Detail",
       "dataSource": "form_sales",
       "columns": [
-        { "field": "order_no", "title": "주문 번호", "width": 150 },
-        { "field": "customer_name", "title": "고객명", "width": 200 },
-        { "field": "product_name", "title": "제품명", "width": 200 },
-        { "field": "amount", "title": "금액", "width": 120, "align": "right" },
-        { "field": "sales_date", "title": "판매일", "width": 150 }
+        { "field": "order_no", "title": "Order No.", "width": 150 },
+        { "field": "customer_name", "title": "Customer", "width": 200 },
+        { "field": "product_name", "title": "Product", "width": 200 },
+        { "field": "amount", "title": "Amount", "width": 120 },
+        { "field": "sales_date", "title": "Date", "width": 150 }
       ],
       "pageSize": 10
     }
@@ -193,42 +210,17 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 }
 ```
 
-보고서 생성：
+보고서 생성:
 
 ```bash
-openyida create-report APP_XXXXXX "판매 분석 보고서" ./sales-report-charts.json
+openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.json
 ```
-
----
-
-## 차트 유형 참조
-
-| 유형 | 설명 | 필수 필드 |
-|------|------|----------|
-| `bar` | 막대형 차트 | xField, yField |
-| `line` | 꺾은선형 차트 | xField, yField |
-| `pie` | 원형 차트 | categoryField, valueField |
-| `table` | 데이터 테이블 | columns |
-| `area` | 영역형 차트 | xField, yField |
-| `scatter` | 산점도 | xField, yField |
-
----
-
-## 집계 함수
-
-| 함수 | 설명 |
-|------|------|
-| `sum` | 합계 |
-| `avg` | 평균 |
-| `count` | 개수 |
-| `max` | 최대값 |
-| `min` | 최소값 |
 
 ---
 
 ## 모범 사례
 
-1. **적절한 차트 유형 선택** - 트렌드는 꺾은선형, 비교는 막대형, 비율은 원형
-2. **차트 수 제어** - 하나의 보고서는 6개 이하의 차트를 권장
-3. **데이터 테이블 사용** - 차트와 함께 상세 데이터를 표시하여 원본 값을 쉽게 확인
-4. **적절한 페이지네이션 설정** - 데이터 테이블은 페이지당 10-20개를 권장
+1. **적절한 차트 유형 선택** - 추세에는 꺾은선형, 비교에는 막대형, 비율에는 원형 차트 사용
+2. **차트 수 제한** - 보고서당 6개 이하의 차트 유지
+3. **데이터 테이블 포함** - 상세 데이터 검사를 위해 차트와 테이블을 함께 사용
+4. **적절한 페이지 크기 설정** - 데이터 테이블은 페이지당 10-20행 사용
