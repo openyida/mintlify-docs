@@ -368,6 +368,133 @@ Lệnh in kết quả JSON ra stdout:
 
 ---
 
+## Tích hợp và tự động hóa
+
+Tạo các luồng logic tích hợp được kích hoạt bởi sự kiện biểu mẫu và thực hiện các hành động tự động như thông báo, tra cứu dữ liệu và tạo dữ liệu.
+
+```bash
+openyida integration create <appType> <formUuid> "<flowName>" [options]
+```
+
+### Tham số bắt buộc
+
+| Tham số | Mô tả |
+|---------|-------|
+| `<appType>` | ID ứng dụng |
+| `<formUuid>` | UUID biểu mẫu kích hoạt |
+| `<flowName>` | Tên cho luồng tích hợp |
+
+### Tùy chọn
+
+| Tùy chọn | Mô tả | Mặc định |
+|----------|-------|---------|
+| `--process-code <code>` | Mã quy trình hiện có để cập nhật (bỏ qua để tạo mới) | — |
+| `--receivers <id1,id2>` | ID người dùng phân cách bằng dấu phẩy cho người nhận thông báo | — |
+| `--title <text>` | Tiêu đề thông báo | Tên luồng |
+| `--content <text>` | Nội dung thông báo | — |
+| `--events <types>` | Sự kiện kích hoạt phân cách bằng dấu phẩy: `insert`, `update`, `delete` | `insert` |
+| `--data-form-uuid <uuid>` | UUID biểu mẫu cho nút dữ liệu "lấy bản ghi đơn" | — |
+| `--data-condition <mapping>` | Ánh xạ trường cho nút dữ liệu (`bFieldId:bFieldName:aFieldId[:componentType]`). Có thể chỉ định nhiều lần. | — |
+| `--add-data-form-uuid <uuid>` | UUID biểu mẫu cho nút dữ liệu "thêm bản ghi" | — |
+| `--add-data-assignment <mapping>` | Gán trường cho nút thêm dữ liệu (`targetFieldId:valueType:value`). `valueType` có thể là `processVar`, `literal` hoặc `column`. Có thể chỉ định nhiều lần. | — |
+| `--publish` | Xuất bản luồng ngay sau khi tạo | Chỉ bản nháp |
+
+### Ví dụ
+
+```bash
+# Tạo luồng thông báo kích hoạt khi có gửi mới
+openyida integration create APP_XXX FORM-YYY "New Order Alert" \
+  --receivers "user1,user2" \
+  --events insert \
+  --title "New Order" \
+  --content "A new order was submitted"
+
+# Tạo và xuất bản ngay
+openyida integration create APP_XXX FORM-YYY "Auto Notify" \
+  --receivers "user1" \
+  --publish
+```
+
+---
+
+## DingTalk CLI (dws)
+
+Chuyển tiếp lệnh đến DingTalk Workspace CLI cho danh bạ, lịch, việc cần làm, phê duyệt, chấm công và nhiều hơn nữa.
+
+```bash
+openyida dws <command> [args]
+```
+
+<Info>
+  Lệnh `dws` yêu cầu cài đặt riêng DingTalk CLI. Nếu chưa được cài đặt, OpenYida sẽ nhắc bạn cài đặt khi sử dụng lần đầu.
+</Info>
+
+### Lệnh thường dùng
+
+| Lệnh | Mô tả |
+|------|-------|
+| `contact user search --keyword "<name>"` | Tìm kiếm danh bạ |
+| `calendar event list` | Liệt kê sự kiện lịch |
+| `todo task create --title "<title>" --executors "<userId>"` | Tạo việc cần làm |
+| `approval instance list` | Liệt kê phiên phê duyệt |
+| `attendance record list` | Truy vấn bản ghi chấm công |
+| `chat robot send --content "<message>"` | Gửi tin nhắn robot chat |
+
+### Lệnh đặc biệt
+
+```bash
+# Cài đặt DingTalk CLI
+openyida dws install
+
+# Hiển thị trợ giúp
+openyida dws help
+```
+
+### Định dạng đầu ra
+
+Mặc định, đầu ra được định dạng dạng bảng để dễ đọc. Thêm `-f json` để có đầu ra JSON phù hợp cho AI agent.
+
+```bash
+openyida dws contact user search --keyword "name" -f json
+```
+
+---
+
+## Xuất cuộc hội thoại
+
+Xuất bản ghi hội thoại AI từ môi trường công cụ AI hiện tại dưới dạng tài liệu Markdown.
+
+```bash
+openyida export-conversation [options]
+```
+
+### Tùy chọn
+
+| Tùy chọn | Viết tắt | Mô tả | Mặc định |
+|----------|---------|-------|---------|
+| `--output` | `-o` | Đường dẫn tệp đầu ra | Đường dẫn tự động tạo |
+| `--input` | `-i` | Tệp hội thoại đầu vào (JSON/JSONL) | — |
+| `--latest` | — | Chỉ xuất cuộc hội thoại mới nhất | Đã bật |
+| `--list` | — | Liệt kê các bản ghi hội thoại có sẵn | — |
+
+### Ví dụ
+
+```bash
+# Xuất cuộc hội thoại hiện tại
+openyida export-conversation
+
+# Xuất ra tệp cụ thể
+openyida export-conversation -o output.md
+
+# Liệt kê các cuộc hội thoại có sẵn
+openyida export-conversation --list
+
+# Xuất từ tệp đầu vào cụ thể
+openyida export-conversation -i conversation.json -o result.md
+```
+
+---
+
 ## Tùy chọn toàn cục
 
 | Tùy chọn | Mô tả |

@@ -368,6 +368,133 @@ cat meeting.txt | openyida flash-to-prd --name <プロジェクト名> [--max-to
 
 ---
 
+## インテグレーションと自動化
+
+フォームイベントでトリガーされ、通知、データ検索、データ作成などの自動アクションを実行するインテグレーションロジックフローを作成します。
+
+```bash
+openyida integration create <appType> <formUuid> "<flowName>" [options]
+```
+
+### 必須引数
+
+| 引数 | 説明 |
+|------|------|
+| `<appType>` | アプリケーション ID |
+| `<formUuid>` | トリガーフォーム UUID |
+| `<flowName>` | インテグレーションフローの名前 |
+
+### オプション
+
+| オプション | 説明 | デフォルト |
+|-----------|------|----------|
+| `--process-code <code>` | 更新する既存のプロセスコード（省略で新規作成） | — |
+| `--receivers <id1,id2>` | 通知受信者のユーザー ID（カンマ区切り） | — |
+| `--title <text>` | 通知タイトル | フロー名 |
+| `--content <text>` | 通知本文 | — |
+| `--events <types>` | トリガーイベント（カンマ区切り）：`insert`、`update`、`delete` | `insert` |
+| `--data-form-uuid <uuid>` | 「単一レコード取得」データノードのフォーム UUID | — |
+| `--data-condition <mapping>` | データノードのフィールドマッピング（`bFieldId:bFieldName:aFieldId[:componentType]`）。複数回指定可能。 | — |
+| `--add-data-form-uuid <uuid>` | 「レコード追加」データノードのフォーム UUID | — |
+| `--add-data-assignment <mapping>` | データ追加ノードのフィールド割り当て（`targetFieldId:valueType:value`）。`valueType` は `processVar`、`literal`、`column` のいずれか。複数回指定可能。 | — |
+| `--publish` | 作成後すぐにフローを公開 | ドラフトのみ |
+
+### 例
+
+```bash
+# 新しい送信でトリガーされる通知フローを作成
+openyida integration create APP_XXX FORM-YYY "New Order Alert" \
+  --receivers "user1,user2" \
+  --events insert \
+  --title "New Order" \
+  --content "A new order was submitted"
+
+# 作成してすぐに公開
+openyida integration create APP_XXX FORM-YYY "Auto Notify" \
+  --receivers "user1" \
+  --publish
+```
+
+---
+
+## DingTalk CLI (dws)
+
+連絡先、カレンダー、ToDo、承認、勤怠などの DingTalk Workspace CLI へのプロキシコマンド。
+
+```bash
+openyida dws <command> [args]
+```
+
+<Info>
+  `dws` コマンドには DingTalk CLI の別途インストールが必要です。インストールされていない場合、OpenYida は初回使用時にインストールを促します。
+</Info>
+
+### よく使うコマンド
+
+| コマンド | 説明 |
+|---------|------|
+| `contact user search --keyword "<name>"` | 連絡先を検索 |
+| `calendar event list` | カレンダーイベントを一覧表示 |
+| `todo task create --title "<title>" --executors "<userId>"` | ToDo タスクを作成 |
+| `approval instance list` | 承認インスタンスを一覧表示 |
+| `attendance record list` | 勤怠記録を照会 |
+| `chat robot send --content "<message>"` | チャットロボットメッセージを送信 |
+
+### 特殊コマンド
+
+```bash
+# DingTalk CLI をインストール
+openyida dws install
+
+# ヘルプを表示
+openyida dws help
+```
+
+### 出力形式
+
+デフォルトでは、出力は人間が読みやすいテーブル形式でフォーマットされます。AI エージェントに適した JSON 出力には `-f json` を追加してください。
+
+```bash
+openyida dws contact user search --keyword "name" -f json
+```
+
+---
+
+## 会話のエクスポート
+
+現在の AI ツール環境から AI 会話記録を Markdown ドキュメントとしてエクスポートします。
+
+```bash
+openyida export-conversation [options]
+```
+
+### オプション
+
+| オプション | エイリアス | 説明 | デフォルト |
+|-----------|----------|------|----------|
+| `--output` | `-o` | 出力ファイルパス | 自動生成パス |
+| `--input` | `-i` | 入力会話ファイル（JSON/JSONL） | — |
+| `--latest` | — | 最新の会話のみエクスポート | 有効 |
+| `--list` | — | 利用可能な会話記録を一覧表示 | — |
+
+### 例
+
+```bash
+# 現在の会話をエクスポート
+openyida export-conversation
+
+# 特定のファイルにエクスポート
+openyida export-conversation -o output.md
+
+# 利用可能な会話を一覧表示
+openyida export-conversation --list
+
+# 特定の入力ファイルからエクスポート
+openyida export-conversation -i conversation.json -o result.md
+```
+
+---
+
 ## グローバルオプション
 
 | オプション | 説明 |

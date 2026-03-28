@@ -368,6 +368,133 @@ cat meeting.txt | openyida flash-to-prd --name <프로젝트명> [--max-tokens <
 
 ---
 
+## 통합 및 자동화
+
+폼 이벤트에서 트리거되어 알림, 데이터 조회, 데이터 생성 등의 자동화된 작업을 실행하는 통합 로직 플로우를 생성합니다.
+
+```bash
+openyida integration create <appType> <formUuid> "<flowName>" [options]
+```
+
+### 필수 인수
+
+| 인수 | 설명 |
+|------|------|
+| `<appType>` | 애플리케이션 ID |
+| `<formUuid>` | 트리거 폼 UUID |
+| `<flowName>` | 통합 플로우 이름 |
+
+### 옵션
+
+| 옵션 | 설명 | 기본값 |
+|------|------|--------|
+| `--process-code <code>` | 업데이트할 기존 프로세스 코드 (생략하면 새로 생성) | — |
+| `--receivers <id1,id2>` | 알림 수신자 사용자 ID (쉼표로 구분) | — |
+| `--title <text>` | 알림 제목 | 플로우 이름 |
+| `--content <text>` | 알림 본문 | — |
+| `--events <types>` | 트리거 이벤트 (쉼표로 구분): `insert`, `update`, `delete` | `insert` |
+| `--data-form-uuid <uuid>` | "단일 레코드 가져오기" 데이터 노드의 폼 UUID | — |
+| `--data-condition <mapping>` | 데이터 노드의 필드 매핑 (`bFieldId:bFieldName:aFieldId[:componentType]`). 여러 번 지정 가능. | — |
+| `--add-data-form-uuid <uuid>` | "레코드 추가" 데이터 노드의 폼 UUID | — |
+| `--add-data-assignment <mapping>` | 데이터 추가 노드의 필드 할당 (`targetFieldId:valueType:value`). `valueType`은 `processVar`, `literal` 또는 `column`일 수 있음. 여러 번 지정 가능. | — |
+| `--publish` | 생성 후 즉시 플로우 게시 | 초안만 |
+
+### 예시
+
+```bash
+# 새 제출 시 트리거되는 알림 플로우 생성
+openyida integration create APP_XXX FORM-YYY "New Order Alert" \
+  --receivers "user1,user2" \
+  --events insert \
+  --title "New Order" \
+  --content "A new order was submitted"
+
+# 생성 후 즉시 게시
+openyida integration create APP_XXX FORM-YYY "Auto Notify" \
+  --receivers "user1" \
+  --publish
+```
+
+---
+
+## DingTalk CLI (dws)
+
+연락처, 캘린더, 할 일, 결재, 근태 등을 위한 DingTalk Workspace CLI 프록시 명령입니다.
+
+```bash
+openyida dws <command> [args]
+```
+
+<Info>
+  `dws` 명령은 DingTalk CLI를 별도로 설치해야 합니다. 설치되어 있지 않으면 OpenYida가 처음 사용 시 설치를 안내합니다.
+</Info>
+
+### 자주 사용하는 명령
+
+| 명령 | 설명 |
+|------|------|
+| `contact user search --keyword "<name>"` | 연락처 검색 |
+| `calendar event list` | 캘린더 이벤트 목록 |
+| `todo task create --title "<title>" --executors "<userId>"` | 할 일 작업 생성 |
+| `approval instance list` | 결재 인스턴스 목록 |
+| `attendance record list` | 근태 기록 조회 |
+| `chat robot send --content "<message>"` | 챗 로봇 메시지 전송 |
+
+### 특수 명령
+
+```bash
+# DingTalk CLI 설치
+openyida dws install
+
+# 도움말 표시
+openyida dws help
+```
+
+### 출력 형식
+
+기본적으로 출력은 사람이 읽기 쉬운 테이블 형식으로 포맷됩니다. AI 에이전트에 적합한 JSON 출력을 위해 `-f json`을 추가하세요.
+
+```bash
+openyida dws contact user search --keyword "name" -f json
+```
+
+---
+
+## 대화 내보내기
+
+현재 AI 도구 환경에서 AI 대화 기록을 Markdown 문서로 내보냅니다.
+
+```bash
+openyida export-conversation [options]
+```
+
+### 옵션
+
+| 옵션 | 별칭 | 설명 | 기본값 |
+|------|------|------|--------|
+| `--output` | `-o` | 출력 파일 경로 | 자동 생성 경로 |
+| `--input` | `-i` | 입력 대화 파일 (JSON/JSONL) | — |
+| `--latest` | — | 최신 대화만 내보내기 | 활성화됨 |
+| `--list` | — | 사용 가능한 대화 기록 목록 | — |
+
+### 예시
+
+```bash
+# 현재 대화 내보내기
+openyida export-conversation
+
+# 특정 파일로 내보내기
+openyida export-conversation -o output.md
+
+# 사용 가능한 대화 목록
+openyida export-conversation --list
+
+# 특정 입력 파일에서 내보내기
+openyida export-conversation -i conversation.json -o result.md
+```
+
+---
+
 ## 전역 옵션
 
 | 옵션 | 설명 |

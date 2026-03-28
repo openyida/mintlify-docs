@@ -368,6 +368,133 @@ La commande affiche un résultat JSON sur stdout :
 
 ---
 
+## Intégration et automatisation
+
+Créez des flux logiques d'intégration qui se déclenchent sur des événements de formulaire et exécutent des actions automatisées telles que des notifications, des recherches de données et la création de données.
+
+```bash
+openyida integration create <appType> <formUuid> "<flowName>" [options]
+```
+
+### Arguments requis
+
+| Argument | Description |
+|----------|-------------|
+| `<appType>` | ID de l'application |
+| `<formUuid>` | UUID du formulaire déclencheur |
+| `<flowName>` | Nom du flux d'intégration |
+
+### Options
+
+| Option | Description | Valeur par défaut |
+|--------|-------------|-------------------|
+| `--process-code <code>` | Code de processus existant à mettre à jour (omettre pour créer un nouveau) | — |
+| `--receivers <id1,id2>` | IDs utilisateurs séparés par des virgules pour les destinataires des notifications | — |
+| `--title <text>` | Titre de la notification | Nom du flux |
+| `--content <text>` | Texte de la notification | — |
+| `--events <types>` | Événements déclencheurs séparés par des virgules : `insert`, `update`, `delete` | `insert` |
+| `--data-form-uuid <uuid>` | UUID du formulaire pour un nœud de données "obtenir un enregistrement unique" | — |
+| `--data-condition <mapping>` | Mappage de champs pour le nœud de données (`bFieldId:bFieldName:aFieldId[:componentType]`). Peut être spécifié plusieurs fois. | — |
+| `--add-data-form-uuid <uuid>` | UUID du formulaire pour un nœud de données "ajouter un enregistrement" | — |
+| `--add-data-assignment <mapping>` | Affectation de champs pour le nœud d'ajout de données (`targetFieldId:valueType:value`). `valueType` peut être `processVar`, `literal` ou `column`. Peut être spécifié plusieurs fois. | — |
+| `--publish` | Publier le flux immédiatement après la création | Brouillon uniquement |
+
+### Exemples
+
+```bash
+# Créer un flux de notification déclenché lors de nouvelles soumissions
+openyida integration create APP_XXX FORM-YYY "New Order Alert" \
+  --receivers "user1,user2" \
+  --events insert \
+  --title "New Order" \
+  --content "A new order was submitted"
+
+# Créer et publier immédiatement
+openyida integration create APP_XXX FORM-YYY "Auto Notify" \
+  --receivers "user1" \
+  --publish
+```
+
+---
+
+## DingTalk CLI (dws)
+
+Commandes proxy vers le CLI DingTalk Workspace pour les contacts, le calendrier, les tâches, les approbations, la présence et plus encore.
+
+```bash
+openyida dws <command> [args]
+```
+
+<Info>
+  La commande `dws` nécessite l'installation séparée du CLI DingTalk. S'il n'est pas installé, OpenYida vous invitera à l'installer lors de la première utilisation.
+</Info>
+
+### Commandes courantes
+
+| Commande | Description |
+|----------|-------------|
+| `contact user search --keyword "<name>"` | Rechercher des contacts |
+| `calendar event list` | Lister les événements du calendrier |
+| `todo task create --title "<title>" --executors "<userId>"` | Créer une tâche à faire |
+| `approval instance list` | Lister les instances d'approbation |
+| `attendance record list` | Consulter les registres de présence |
+| `chat robot send --content "<message>"` | Envoyer un message robot |
+
+### Commandes spéciales
+
+```bash
+# Installer le CLI DingTalk
+openyida dws install
+
+# Afficher l'aide
+openyida dws help
+```
+
+### Format de sortie
+
+Par défaut, la sortie est formatée en tableau pour la lisibilité. Ajoutez `-f json` pour une sortie JSON adaptée aux agents IA.
+
+```bash
+openyida dws contact user search --keyword "name" -f json
+```
+
+---
+
+## Exporter la conversation
+
+Exportez les enregistrements de conversations IA de l'environnement d'outils IA actuel sous forme de documents Markdown.
+
+```bash
+openyida export-conversation [options]
+```
+
+### Options
+
+| Option | Alias | Description | Valeur par défaut |
+|--------|-------|-------------|-------------------|
+| `--output` | `-o` | Chemin du fichier de sortie | Chemin généré automatiquement |
+| `--input` | `-i` | Fichier de conversation d'entrée (JSON/JSONL) | — |
+| `--latest` | — | Exporter uniquement la conversation la plus récente | Activé |
+| `--list` | — | Lister les enregistrements de conversations disponibles | — |
+
+### Exemples
+
+```bash
+# Exporter la conversation actuelle
+openyida export-conversation
+
+# Exporter vers un fichier spécifique
+openyida export-conversation -o output.md
+
+# Lister les conversations disponibles
+openyida export-conversation --list
+
+# Exporter depuis un fichier d'entrée spécifique
+openyida export-conversation -i conversation.json -o result.md
+```
+
+---
+
 ## Options globales
 
 | Option | Description |
