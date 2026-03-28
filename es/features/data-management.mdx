@@ -58,7 +58,28 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # Devolver solo IDs
 openyida data query form <appType> <formUuid> --ids-only
+
+# Filtrar por creador y rango de fechas
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### Parámetros opcionales
+
+| Parámetro | Descripción |
+|-----------|-------------|
+| `--page N` | Número de página (por defecto `1`) |
+| `--size N` | Elementos por página (por defecto `20`, máx `100`) |
+| `--search-json JSON` | Condiciones de búsqueda (debe ser JSON válido, ver [formato de condiciones de consulta](#formato-de-condiciones-de-consulta)) |
+| `--inst-id ID` | Consultar un registro por ID de instancia |
+| `--ids-only` | Devolver solo IDs de instancia |
+| `--originator-id ID` | Filtrar por creador |
+| `--create-from DATE` | Filtrar registros creados después de esta fecha |
+| `--create-to DATE` | Filtrar registros creados antes de esta fecha |
+| `--modified-from DATE` | Filtrar registros modificados después de esta fecha |
+| `--modified-to DATE` | Filtrar registros modificados antes de esta fecha |
+| `--dynamic-order FIELD` | Ordenar por campo |
 
 ### Obtener un solo registro
 
@@ -99,7 +120,29 @@ openyida data query process <appType> <formUuid> \
 
 # Devolver solo IDs
 openyida data query process <appType> <formUuid> --ids-only
+
+# Filtrar por tarea y resultado de aprobación
+openyida data query process <appType> <formUuid> \
+  --task-id <taskId> \
+  --approved-result AGREE
 ```
+
+#### Parámetros opcionales
+
+| Parámetro | Descripción |
+|-----------|-------------|
+| `--page N` | Número de página (por defecto `1`) |
+| `--size N` | Elementos por página (por defecto `20`, máx `100`) |
+| `--search-json JSON` | Condiciones de búsqueda en formato JSON (ver [formato de condiciones de consulta](#formato-de-condiciones-de-consulta)) |
+| `--instance-status STATUS` | Filtrar por estado de instancia: `RUNNING`, `COMPLETED`, `TERMINATED` |
+| `--task-id ID` | Filtrar por ID de tarea |
+| `--approved-result RESULT` | Filtrar por resultado de aprobación: `AGREE`, `DISAGREE` |
+| `--ids-only` | Devolver solo IDs de instancia |
+| `--originator-id ID` | Filtrar por creador |
+| `--create-from DATE` | Filtrar registros creados después de esta fecha |
+| `--create-to DATE` | Filtrar registros creados antes de esta fecha |
+| `--modified-from DATE` | Filtrar registros modificados después de esta fecha |
+| `--modified-to DATE` | Filtrar registros modificados antes de esta fecha |
 
 ### Obtener detalles del flujo
 
@@ -153,7 +196,21 @@ openyida data query tasks <appType> --type submitted
 
 # CC a mí
 openyida data query tasks <appType> --type cc
+
+# Con paginación y filtro por palabra clave
+openyida data query tasks <appType> --type todo --page 1 --size 20 --keyword "urgente"
 ```
+
+#### Parámetros opcionales
+
+| Parámetro | Descripción |
+|-----------|-------------|
+| `--type TYPE` | **(Requerido)** Tipo de tarea: `todo` (pendientes), `done` (completadas), `submitted` (enviadas por mí), `cc` (CC a mí) |
+| `--page N` | Número de página (por defecto `1`) |
+| `--size N` | Elementos por página (por defecto `20`, máx `100`) |
+| `--keyword TEXT` | Filtrar tareas por palabra clave |
+| `--process-codes CODES` | Filtrar por códigos de proceso (separados por coma) |
+| `--instance-status STATUS` | Filtrar por estado de instancia: `RUNNING`, `COMPLETED`, `TERMINATED` |
 
 ### Ejecutar tarea
 
@@ -166,9 +223,16 @@ openyida data execute task <appType> \
   --data-json '{"comment": "Aprobación aprobada"}'
 ```
 
-**Opciones de out-result:**
-- `AGREE` - Aprobar
-- `DISAGREE` - No aprobar
+#### Parámetros
+
+| Parámetro | Requerido | Descripción |
+|-----------|-----------|-------------|
+| `--task-id ID` | Sí | ID de la tarea a ejecutar |
+| `--process-inst-id ID` | Sí | ID de la instancia de flujo asociada |
+| `--out-result RESULT` | Sí | Resultado de la acción: `AGREE` (Aprobar) o `DISAGREE` (No aprobar) |
+| `--remark TEXT` | Sí | Comentario de la acción |
+| `--data-json JSON` | No | Datos adicionales en formato JSON |
+| `--no-execute-expressions` | No | Deshabilitar la ejecución de expresiones al ejecutar la tarea |
 
 ---
 
@@ -189,7 +253,7 @@ openyida data query subform <appType> <formUuid> \
 
 ### Formato de condiciones de consulta
 
-El parámetro `--search-json` acepta un formato de consulta basado en array. Cada condición es un objeto con los siguientes campos:
+El parámetro `--search-json` acepta un formato de consulta basado en array. El valor debe ser JSON válido; la CLI valida la entrada antes de enviar la solicitud y rechaza JSON malformado. Cada condición es un objeto con los siguientes campos:
 
 | Campo | Descripción |
 |-------|-------------|
