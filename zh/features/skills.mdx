@@ -322,6 +322,52 @@ openyida cdn-refresh <路径>
 
 ---
 
+## 闪记转 PRD
+
+使用 AI 将钉钉闪记（会议录音转文字）转化为结构化的 PRD 文档。
+
+```bash
+# 从文件读取
+openyida flash-to-prd --file <文件路径> [--name <项目名>] [--max-tokens <数量>]
+
+# 从标准输入读取
+cat meeting.txt | openyida flash-to-prd --name <项目名> [--max-tokens <数量>]
+```
+
+### 参数
+
+| 参数 | 缩写 | 说明 | 默认值 |
+|------|------|------|--------|
+| `--file` | `-f` | 闪记文件路径 | — |
+| `--name` | `-n` | 项目名称（未指定时自动从内容中推断） | — |
+| `--max-tokens` | — | AI 响应的最大 token 数 | `8000` |
+
+该命令从指定文件或标准输入读取闪记内容，对文本进行预处理（包括会议元数据提取和发言人识别），然后调用宜搭 AI 服务生成结构化的 PRD。输出的 PRD 文件保存到项目的 `prd/` 目录。
+
+### 输出
+
+命令在 stdout 输出 JSON 格式的结果：
+
+```json
+{
+  "success": true,
+  "projectName": "我的项目",
+  "prdFile": "/path/to/prd/我的项目.md",
+  "contentLength": 4096,
+  "meetingRecognition": {
+    "metaFields": 3,
+    "a1Sections": 2,
+    "speakers": 5
+  }
+}
+```
+
+<Info>
+  运行此命令前需要先登录。如果尚未认证，请先运行 `openyida login`。
+</Info>
+
+---
+
 ## 全局选项
 
 | 选项 | 说明 |
