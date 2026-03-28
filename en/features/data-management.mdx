@@ -1,0 +1,312 @@
+---
+title: "Data management"
+description: "Unified data management interface supporting forms, processes, tasks, and subform operations."
+icon: "database"
+---
+
+OpenYida provides a unified data management CLI supporting complete operations on form data, process instances, tasks, and subforms.
+
+---
+
+## Feature overview
+
+<CardGroup cols={2}>
+  <Card title="Form data" icon="table">
+    Query, create, and update form instance data.
+  </Card>
+  <Card title="Process data" icon="workflow">
+    Manage process instances, approval records, and process status.
+  </Card>
+  <Card title="Task management" icon="check-circle">
+    Query todo, done, submitted, and CC'd tasks.
+  </Card>
+  <Card title="Subforms" icon="list">
+    Independently query and manage subform data.
+  </Card>
+</CardGroup>
+
+---
+
+## Command format
+
+```bash
+openyida data <action> <resource> [args]
+```
+
+- **action**: `query` | `get` | `create` | `update` | `execute`
+- **resource**: `form` | `process` | `task` | `subform` | `operation-records`
+
+---
+
+## Form data operations
+
+### Query form data
+
+```bash
+# Basic query
+openyida data query form <appType> <formUuid>
+
+# Paginated query
+openyida data query form <appType> <formUuid> --page 1 --size 50
+
+# Conditional query
+openyida data query form <appType> <formUuid> \
+  --search-json '[{"key":"field_xxx","value":"value","type":"TEXT","operator":"eq","componentName":"TextField"}]'
+
+# Query a specific instance
+openyida data query form <appType> <formUuid> --inst-id <formInstId>
+
+# Return only instance IDs
+openyida data query form <appType> <formUuid> --ids-only
+
+# Filter by originator and date range
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
+```
+
+#### Optional parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `--page N` | Page number (default `1`) |
+| `--size N` | Items per page (default `20`, max `100`) |
+| `--search-json JSON` | Query conditions (must be valid JSON, see [query condition format](#query-condition-format)) |
+| `--inst-id ID` | Query a single instance by ID |
+| `--ids-only` | Return only instance IDs instead of full data |
+| `--originator-id ID` | Filter by the user who created the record |
+| `--create-from DATE` | Filter records created on or after this date |
+| `--create-to DATE` | Filter records created on or before this date |
+| `--modified-from DATE` | Filter records modified on or after this date |
+| `--modified-to DATE` | Filter records modified on or before this date |
+| `--dynamic-order FIELD` | Sort results by a field |
+
+### Get a single record
+
+```bash
+openyida data get form <appType> --inst-id <formInstId>
+```
+
+### Create a record
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{"field_xxx": "value", "field_yyy": 123}' \
+  --dept-id <departmentId>
+```
+
+### Update a record
+
+```bash
+openyida data update form <appType> \
+  --inst-id <formInstId> \
+  --data-json '{"field_xxx": "new value"}' \
+  --use-latest-version y
+```
+
+---
+
+## Process data operations
+
+### Query process instances
+
+```bash
+# Query process list
+openyida data query process <appType> <formUuid> \
+  --page 1 --size 20 \
+  --instance-status RUNNING
+
+# Status options: RUNNING (in progress), COMPLETED, TERMINATED
+
+# Return only instance IDs
+openyida data query process <appType> <formUuid> --ids-only
+
+# Filter by task and approval result
+openyida data query process <appType> <formUuid> \
+  --task-id <taskId> \
+  --approved-result AGREE
+```
+
+#### Optional parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `--page N` | Page number (default `1`) |
+| `--size N` | Items per page (default `10`, max `100`) |
+| `--search-json JSON` | Query conditions (must be valid JSON) |
+| `--instance-status STATUS` | Filter by status: `RUNNING`, `COMPLETED`, `TERMINATED` |
+| `--task-id ID` | Filter by task ID |
+| `--approved-result RESULT` | Filter by approval result: `AGREE`, `DISAGREE` |
+| `--ids-only` | Return only instance IDs instead of full data |
+| `--originator-id ID` | Filter by the user who created the instance |
+| `--create-from DATE` | Filter instances created on or after this date |
+| `--create-to DATE` | Filter instances created on or before this date |
+| `--modified-from DATE` | Filter instances modified on or after this date |
+| `--modified-to DATE` | Filter instances modified on or before this date |
+
+### Get process detail
+
+```bash
+openyida data get process <appType> --process-inst-id <processInstanceId>
+```
+
+### Create a process instance
+
+```bash
+openyida data create process <appType> <formUuid> \
+  --process-code <processCode> \
+  --data-json '{"field_xxx": "value"}' \
+  --dept-id <departmentId>
+```
+
+### Update a process instance
+
+```bash
+openyida data update process <appType> \
+  --process-inst-id <processInstanceId> \
+  --data-json '{"field_xxx": "updated value"}'
+```
+
+### Query approval records
+
+```bash
+openyida data query operation-records <appType> \
+  --process-inst-id <processInstanceId>
+```
+
+---
+
+## Task management
+
+<Tip>
+  To query global task center data across all applications without specifying an `appType`, use the `openyida task-center` command. See [CLI reference](/en/features/skills#global-task-center).
+</Tip>
+
+### Query task list
+
+```bash
+# Todo tasks
+openyida data query tasks <appType> --type todo
+
+# Done tasks
+openyida data query tasks <appType> --type done
+
+# Submitted by me
+openyida data query tasks <appType> --type submitted
+
+# CC'd to me
+openyida data query tasks <appType> --type cc
+
+# With pagination and keyword filter
+openyida data query tasks <appType> --type todo --page 1 --size 20 --keyword "urgent"
+```
+
+#### Optional parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `--type TYPE` | **Required.** Task type: `todo`, `done`, `submitted`, `cc` |
+| `--page N` | Page number (default `1`) |
+| `--size N` | Items per page (default `10`, max `100`) |
+| `--keyword TEXT` | Search keyword |
+| `--process-codes JSON` | Filter by process codes (JSON array) |
+| `--instance-status STATUS` | Filter by process instance status |
+
+### Execute a task
+
+```bash
+openyida data execute task <appType> \
+  --task-id <taskId> \
+  --process-inst-id <processInstanceId> \
+  --out-result AGREE \
+  --remark "Approved, please proceed" \
+  --data-json '{"comment": "Approval passed"}'
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `--task-id ID` | **Required.** Task ID |
+| `--process-inst-id ID` | **Required.** Process instance ID |
+| `--out-result RESULT` | **Required.** `AGREE` (approve) or `DISAGREE` (reject) |
+| `--remark TEXT` | **Required.** Approval comment |
+| `--data-json JSON` | Optional form data to update during approval |
+| `--no-execute-expressions y` | Skip expression execution after task completion |
+
+---
+
+## Subform operations
+
+### Query subform data
+
+```bash
+openyida data query subform <appType> <formUuid> \
+  --inst-id <formInstId> \
+  --table-field-id <fieldId> \
+  --page 1 --size 20
+```
+
+---
+
+## Advanced usage
+
+### Query condition format
+
+The `--search-json` parameter accepts an array-based query format. The value must be valid JSON — the CLI validates the input before sending the request and rejects malformed JSON with an error.
+
+Each condition is an object with these fields:
+
+| Field | Description |
+|-------|-------------|
+| `key` | Field ID (e.g., `field_xxx`) |
+| `value` | Value to match |
+| `type` | Data type: `TEXT`, `NUMBER`, `DATE`, etc. |
+| `operator` | Operator: `eq`, `like`, `gt`, `gte`, `lt`, `lte`, `in`, `range` |
+| `componentName` | Component type: `TextField`, `NumberField`, `DateField`, etc. |
+
+Example:
+
+```bash
+openyida data query form <appType> <formUuid> \
+  --search-json '[
+    {"key":"field_status","value":"approved","type":"TEXT","operator":"eq","componentName":"TextField"},
+    {"key":"field_amount","value":"1000","type":"NUMBER","operator":"gte","componentName":"NumberField"}
+  ]'
+```
+
+### Batch operation script example
+
+```bash
+#!/bin/bash
+# Batch export form data
+
+APP_TYPE="APP_XXXXXXXX"
+FORM_UUID="FORM-XXXX-XXXX"
+PAGE=1
+
+while true; do
+  RESULT=$(openyida data query form $APP_TYPE $FORM_UUID --page $PAGE --size 100)
+  
+  # Process current page data
+  echo "$RESULT" >> ./export.json
+  
+  # Check if there is a next page
+  HAS_MORE=$(echo "$RESULT" | jq '.hasMore')
+  if [ "$HAS_MORE" != "true" ]; then
+    break
+  fi
+  
+  PAGE=$((PAGE + 1))
+done
+```
+
+---
+
+## Important notes
+
+<Warning>
+  Data operations are permanent — update operations cannot be undone. Run a small-scale test before performing batch operations.
+</Warning>
+
+<Info>
+  Paginated queries default to 20 records per page, with a maximum of 100. For large data exports, use a loop with pagination.
+</Info>
