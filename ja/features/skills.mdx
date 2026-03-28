@@ -188,6 +188,52 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
+## グローバルタスクセンター
+
+`appType` を指定せずに、現在のユーザーのグローバルタスクセンターデータを照会します。
+
+```bash
+# 未処理タスク
+openyida task-center todo [--page N] [--size N] [--keyword TEXT]
+
+# 自分が作成した
+openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
+
+# 処理済み
+openyida task-center done [--page N] [--size N] [--keyword TEXT]
+
+# CC されたタスク
+openyida task-center cc [--page N] [--size N] [--keyword TEXT]
+
+# 代理提出
+openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
+```
+
+### タスクタイプ
+
+| タイプ | 説明 | API エンドポイント |
+|--------|------|-------------------|
+| `todo` | 未処理タスク（対応が必要なもの） | `getTodoTasksInCorp` |
+| `created` | 自分が作成した（自分が開始したプロセス） | `getMyCreateInCorp` |
+| `done` | 処理済み（既に処理したもの） | `getDoneTasksInCorp` |
+| `cc` | CC されたタスク | `getNotifyMeInCorp` |
+| `proxy` | 代理提出（代理で提出したプロセス） | `getSubmitAgentInCorp` |
+
+### オプションパラメータ
+
+| パラメータ | 説明 | デフォルト |
+|-----------|------|-----------|
+| `--page N` | ページ番号 | `1` |
+| `--size N` | 1ページあたりの件数（最大 100） | `20` |
+| `--keyword TEXT` | 検索キーワード | — |
+| `--no-detail` | 詳細を返さない（`created` タイプのみ対応） | — |
+
+<Info>
+  `openyida data query tasks` とは異なり、`task-center` コマンドはグローバルタスクセンターデータを照会し、`appType` パラメータは不要です。
+</Info>
+
+---
+
 ## プロセス管理
 
 ```bash

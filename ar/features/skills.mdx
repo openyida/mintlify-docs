@@ -188,6 +188,52 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
+## مركز المهام العالمي
+
+استعلم عن بيانات مركز المهام العالمي للمستخدم الحالي دون تحديد `appType`.
+
+```bash
+# المهام المعلقة
+openyida task-center todo [--page N] [--size N] [--keyword TEXT]
+
+# أنشأتها
+openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
+
+# المعالجة
+openyida task-center done [--page N] [--size N] [--keyword TEXT]
+
+# نسخة إلي
+openyida task-center cc [--page N] [--size N] [--keyword TEXT]
+
+# تقديم بالنيابة
+openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
+```
+
+### أنواع المهام
+
+| النوع | الوصف | نقطة نهاية API |
+|-------|-------|---------------|
+| `todo` | مهام معلقة تحتاج إلى إجراء | `getTodoTasksInCorp` |
+| `created` | عمليات بدأتها أنت | `getMyCreateInCorp` |
+| `done` | مهام تمت معالجتها | `getDoneTasksInCorp` |
+| `cc` | مهام تم نسخك فيها | `getNotifyMeInCorp` |
+| `proxy` | عمليات قُدمت بالنيابة | `getSubmitAgentInCorp` |
+
+### المعلمات الاختيارية
+
+| المعلمة | الوصف | القيمة الافتراضية |
+|---------|-------|-----------------|
+| `--page N` | رقم الصفحة | `1` |
+| `--size N` | عناصر لكل صفحة (الحد الأقصى 100) | `20` |
+| `--keyword TEXT` | كلمة البحث | — |
+| `--no-detail` | حذف التفاصيل (فقط لنوع `created`) | — |
+
+<Info>
+  على عكس `openyida data query tasks`، يستعلم أمر `task-center` عن بيانات مركز المهام العالمي ولا يتطلب معلمة `appType`.
+</Info>
+
+---
+
 ## إدارة العمليات
 
 ```bash
