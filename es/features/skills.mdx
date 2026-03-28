@@ -170,13 +170,13 @@ openyida data <acción> <recurso> [args]
 # Datos de formulario
 openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
 openyida data get form <appType> --inst-id <id>
-openyida data create form <appType> <formUuid> --data <JSON>  # Las claves JSON pueden ser IDs o etiquetas de campo
-openyida data update form <appType> --inst-id <id> --data <JSON>
+openyida data create form <appType> <formUuid> --data-json <JSON>  # Las claves JSON pueden ser IDs o etiquetas de campo
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
 
 # Datos de proceso
 openyida data query process <appType> <formUuid> [--instance-status ESTADO]
 openyida data get process <appType> --process-inst-id <id>
-openyida data create process <appType> <formUuid> --process-code <código> --data <JSON>
+openyida data create process <appType> <formUuid> --process-code <código> --data-json <JSON>
 
 # Gestión de tareas
 openyida data query tasks <appType> --type <todo|done|submitted|cc>
