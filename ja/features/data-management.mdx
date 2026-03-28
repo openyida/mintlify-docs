@@ -58,7 +58,28 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # IDのみ返す
 openyida data query form <appType> <formUuid> --ids-only
+
+# 作成者と日付範囲でフィルタ
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### オプションパラメータ
+
+| パラメータ | 説明 |
+|-----------|------|
+| `--page N` | ページ番号（デフォルト `1`） |
+| `--size N` | 1ページあたりの件数（デフォルト `20`、最大 `100`） |
+| `--search-json JSON` | 検索条件（有効なJSONである必要があります。[クエリ条件フォーマット](#クエリ条件フォーマット)を参照） |
+| `--inst-id ID` | インスタンスIDで単一レコードを検索 |
+| `--ids-only` | インスタンスIDのみを返す |
+| `--originator-id ID` | 作成者でフィルタ |
+| `--create-from DATE` | 指定日以降に作成されたレコードをフィルタ |
+| `--create-to DATE` | 指定日以前に作成されたレコードをフィルタ |
+| `--modified-from DATE` | 指定日以降に更新されたレコードをフィルタ |
+| `--modified-to DATE` | 指定日以前に更新されたレコードをフィルタ |
+| `--dynamic-order FIELD` | フィールドでソート |
 
 ### 単一データの取得
 
@@ -99,7 +120,29 @@ openyida data query process <appType> <formUuid> \
 
 # IDのみ返す
 openyida data query process <appType> <formUuid> --ids-only
+
+# タスクと承認結果でフィルタ
+openyida data query process <appType> <formUuid> \
+  --task-id <taskId> \
+  --approved-result AGREE
 ```
+
+#### オプションパラメータ
+
+| パラメータ | 説明 |
+|-----------|------|
+| `--page N` | ページ番号（デフォルト `1`） |
+| `--size N` | 1ページあたりの件数（デフォルト `10`、最大 `100`） |
+| `--search-json JSON` | 検索条件（有効なJSONである必要があります） |
+| `--instance-status STATUS` | ステータスでフィルタ：`RUNNING`、`COMPLETED`、`TERMINATED` |
+| `--task-id ID` | タスクIDでフィルタ |
+| `--approved-result RESULT` | 承認結果でフィルタ：`AGREE`、`DISAGREE` |
+| `--ids-only` | インスタンスIDのみを返す |
+| `--originator-id ID` | 作成者でフィルタ |
+| `--create-from DATE` | 指定日以降に作成されたインスタンスをフィルタ |
+| `--create-to DATE` | 指定日以前に作成されたインスタンスをフィルタ |
+| `--modified-from DATE` | 指定日以降に更新されたインスタンスをフィルタ |
+| `--modified-to DATE` | 指定日以前に更新されたインスタンスをフィルタ |
 
 ### プロセス詳細の取得
 
@@ -153,7 +196,21 @@ openyida data query tasks <appType> --type submitted
 
 # 自分にCCされた
 openyida data query tasks <appType> --type cc
+
+# ページネーションとキーワードフィルタ付き
+openyida data query tasks <appType> --type todo --page 1 --size 20 --keyword "緊急"
 ```
+
+#### オプションパラメータ
+
+| パラメータ | 説明 |
+|-----------|------|
+| `--type TYPE` | **必須。** タスクタイプ：`todo`、`done`、`submitted`、`cc` |
+| `--page N` | ページ番号（デフォルト `1`） |
+| `--size N` | 1ページあたりの件数（デフォルト `10`、最大 `100`） |
+| `--keyword TEXT` | 検索キーワード |
+| `--process-codes JSON` | プロセスコードでフィルタ（JSON配列） |
+| `--instance-status STATUS` | プロセスインスタンスのステータスでフィルタ |
 
 ### タスクの実行
 
@@ -166,9 +223,14 @@ openyida data execute task <appType> \
   --data-json '{"comment": "承認済み"}'
 ```
 
-**out-resultオプション：**
-- `AGREE` - 同意
-- `DISAGREE` - 不同意
+| パラメータ | 説明 |
+|-----------|------|
+| `--task-id ID` | **必須。** タスクID |
+| `--process-inst-id ID` | **必須。** プロセスインスタンスID |
+| `--out-result RESULT` | **必須。** `AGREE`（承認）または `DISAGREE`（却下） |
+| `--remark TEXT` | **必須。** 承認コメント |
+| `--data-json JSON` | 承認時に更新するフォームデータ |
+| `--no-execute-expressions y` | タスク完了後の式実行をスキップ |
 
 ---
 
@@ -189,7 +251,7 @@ openyida data query subform <appType> <formUuid> \
 
 ### クエリ条件形式
 
-`--search-json` パラメータは配列ベースのクエリ形式を受け付けます。各条件は以下のフィールドを持つオブジェクトです：
+`--search-json` パラメータは配列ベースのクエリ形式を受け付けます。値は有効なJSONである必要があり、CLIはリクエスト送信前に入力を検証します。各条件は以下のフィールドを持つオブジェクトです：
 
 | フィールド | 説明 |
 |------------|------|
