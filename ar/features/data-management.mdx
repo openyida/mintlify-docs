@@ -58,7 +58,26 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # إرجاع المعرّفات فقط
 openyida data query form <appType> <formUuid> --ids-only
+
+# التصفية حسب المنشئ ونطاق التاريخ
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### معلمات اختيارية
+
+| المعلمة | الوصف |
+|---------|-------|
+| `--page N` | رقم الصفحة (افتراضي `1`) |
+| `--size N` | عناصر لكل صفحة (افتراضي `20`، الحد الأقصى `100`) |
+| `--search-json JSON` | شروط البحث (يجب أن يكون JSON صالح) |
+| `--inst-id ID` | استعلام سجل واحد بمعرّف المثيل |
+| `--ids-only` | إرجاع معرّفات المثيلات فقط |
+| `--originator-id ID` | التصفية حسب المنشئ |
+| `--create-from DATE` / `--create-to DATE` | التصفية حسب تاريخ الإنشاء |
+| `--modified-from DATE` / `--modified-to DATE` | التصفية حسب تاريخ التعديل |
+| `--dynamic-order FIELD` | الترتيب حسب الحقل |
 
 ### الحصول على سجل واحد
 
@@ -99,7 +118,27 @@ openyida data query process <appType> <formUuid> \
 
 # إرجاع المعرّفات فقط
 openyida data query process <appType> <formUuid> --ids-only
+
+# التصفية حسب المنشئ ونطاق التاريخ
+openyida data query process <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### معلمات اختيارية
+
+| المعلمة | الوصف |
+|---------|-------|
+| `--page N` | رقم الصفحة (افتراضي `1`) |
+| `--size N` | عناصر لكل صفحة (افتراضي `20`، الحد الأقصى `100`) |
+| `--search-json JSON` | شروط البحث (يجب أن يكون JSON صالح) |
+| `--instance-status STATUS` | حالة السير: `RUNNING`، `COMPLETED`، `TERMINATED` |
+| `--task-id ID` | معرّف المهمة |
+| `--approved-result RESULT` | نتيجة الموافقة |
+| `--ids-only` | إرجاع معرّفات المثيلات فقط |
+| `--originator-id ID` | التصفية حسب المنشئ |
+| `--create-from DATE` / `--create-to DATE` | التصفية حسب تاريخ الإنشاء |
+| `--modified-from DATE` / `--modified-to DATE` | التصفية حسب تاريخ التعديل |
 
 ### الحصول على تفاصيل السير
 
@@ -153,7 +192,21 @@ openyida data query tasks <appType> --type submitted
 
 # المُنسَخة إليّ
 openyida data query tasks <appType> --type cc
+
+# البحث بالكلمة المفتاحية
+openyida data query tasks <appType> --type todo --keyword "طلب إجازة"
 ```
+
+#### معلمات اختيارية
+
+| المعلمة | الوصف |
+|---------|-------|
+| `--type TYPE` | **(مطلوب)** نوع المهمة: `todo`، `done`، `submitted`، `cc` |
+| `--page N` | رقم الصفحة (افتراضي `1`) |
+| `--size N` | عناصر لكل صفحة (افتراضي `20`، الحد الأقصى `100`) |
+| `--keyword TEXT` | البحث بالكلمة المفتاحية |
+| `--process-codes CODES` | تصفية حسب رموز السير |
+| `--instance-status STATUS` | حالة السير: `RUNNING`، `COMPLETED`، `TERMINATED` |
 
 ### تنفيذ المهمة
 
@@ -166,9 +219,16 @@ openyida data execute task <appType> \
   --data-json '{"comment": "تمت الموافقة"}'
 ```
 
-**خيارات out-result:**
-- `AGREE` - موافق
-- `DISAGREE` - غير موافق
+#### معلمات
+
+| المعلمة | الوصف |
+|---------|-------|
+| `--task-id ID` | **(مطلوب)** معرّف المهمة |
+| `--process-inst-id ID` | **(مطلوب)** معرّف نسخة العملية |
+| `--out-result RESULT` | **(مطلوب)** `AGREE` (موافق) أو `DISAGREE` (غير موافق) |
+| `--remark TEXT` | **(مطلوب)** تعليق الموافقة |
+| `--data-json JSON` | بيانات النموذج للتحديث أثناء الموافقة |
+| `--no-execute-expressions y` | تخطي تنفيذ التعبيرات بعد إتمام المهمة |
 
 ---
 
@@ -190,6 +250,10 @@ openyida data query subform <appType> <formUuid> \
 ### تنسيق شروط الاستعلام
 
 يقبل المعامل `--search-json` تنسيق استعلام قائم على المصفوفات. كل شرط هو كائن يحتوي على الحقول التالية:
+
+<Warning>
+  يجب أن تكون قيمة `--search-json` نص JSON صالح. تأكد من استخدام علامات الاقتباس المزدوجة للمفاتيح والقيم النصية، وتجنب الفواصل الزائدة. يمكنك التحقق من صحة JSON باستخدام أدوات مثل `jq` قبل تمريره للأمر.
+</Warning>
 
 | الحقل | الوصف |
 |-------|-------|
