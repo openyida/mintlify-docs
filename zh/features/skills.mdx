@@ -368,6 +368,133 @@ cat meeting.txt | openyida flash-to-prd --name <项目名> [--max-tokens <数量
 
 ---
 
+## 集成与自动化
+
+创建集成逻辑流，在表单事件触发时自动执行通知、数据查询、数据新增等操作。
+
+```bash
+openyida integration create <appType> <formUuid> "<流程名称>" [选项]
+```
+
+### 必填参数
+
+| 参数 | 说明 |
+|------|------|
+| `<appType>` | 应用 ID |
+| `<formUuid>` | 触发表单 UUID |
+| `<flowName>` | 集成流程名称 |
+
+### 选项
+
+| 选项 | 说明 | 默认值 |
+|------|------|--------|
+| `--process-code <code>` | 已有流程编码（省略则新建） | — |
+| `--receivers <id1,id2>` | 通知接收人用户 ID（逗号分隔） | — |
+| `--title <text>` | 通知标题 | 流程名称 |
+| `--content <text>` | 通知正文 | — |
+| `--events <types>` | 触发事件（逗号分隔）：`insert`、`update`、`delete` | `insert` |
+| `--data-form-uuid <uuid>` | "获取单条数据"节点的表单 UUID | — |
+| `--data-condition <mapping>` | 数据节点字段映射（`bFieldId:bFieldName:aFieldId[:componentType]`），可多次指定 | — |
+| `--add-data-form-uuid <uuid>` | "新增数据"节点的表单 UUID | — |
+| `--add-data-assignment <mapping>` | 新增数据节点字段赋值（`目标字段ID:valueType:value`），`valueType` 可选：`processVar`（引用触发表单字段）、`literal`（固定值）、`column`（公式），可多次指定 | — |
+| `--publish` | 创建后立即发布流程 | 仅保存草稿 |
+
+### 示例
+
+```bash
+# 创建新提交通知流程
+openyida integration create APP_XXX FORM-YYY "新订单提醒" \
+  --receivers "user1,user2" \
+  --events insert \
+  --title "新订单" \
+  --content "有新订单提交，请及时查看"
+
+# 创建并立即发布
+openyida integration create APP_XXX FORM-YYY "自动通知" \
+  --receivers "user1" \
+  --publish
+```
+
+---
+
+## 钉钉 CLI (dws)
+
+代理执行钉钉 CLI 命令，支持通讯录、日历、待办、审批、考勤等功能。
+
+```bash
+openyida dws <command> [args]
+```
+
+<Info>
+  `dws` 命令需要单独安装钉钉 CLI。如果未安装，OpenYida 会在首次使用时提示安装。
+</Info>
+
+### 常用命令
+
+| 命令 | 说明 |
+|------|------|
+| `contact user search --keyword "<姓名>"` | 搜索联系人 |
+| `calendar event list` | 列出日历事件 |
+| `todo task create --title "<标题>" --executors "<用户ID>"` | 创建待办任务 |
+| `approval instance list` | 列出审批实例 |
+| `attendance record list` | 查询考勤记录 |
+| `chat robot send --content "<消息>"` | 发送机器人消息 |
+
+### 特殊命令
+
+```bash
+# 安装钉钉 CLI
+openyida dws install
+
+# 显示帮助
+openyida dws help
+```
+
+### 输出格式
+
+默认使用表格输出（适合人类阅读）。添加 `-f json` 参数使用 JSON 输出（适合 AI Agent）。
+
+```bash
+openyida dws contact user search --keyword "悟空" -f json
+```
+
+---
+
+## 导出对话记录
+
+将当前 AI 工具的对话记录导出为 Markdown 文档。
+
+```bash
+openyida export-conversation [选项]
+```
+
+### 选项
+
+| 选项 | 缩写 | 说明 | 默认值 |
+|------|------|------|--------|
+| `--output` | `-o` | 输出文件路径 | 自动生成路径 |
+| `--input` | `-i` | 输入对话文件（JSON/JSONL） | — |
+| `--latest` | — | 只导出最新对话 | 默认启用 |
+| `--list` | — | 列出可用的对话记录 | — |
+
+### 示例
+
+```bash
+# 导出当前对话记录
+openyida export-conversation
+
+# 导出到指定路径
+openyida export-conversation -o output.md
+
+# 列出可用对话
+openyida export-conversation --list
+
+# 从指定输入文件导出
+openyida export-conversation -i conversation.json -o result.md
+```
+
+---
+
 ## 全局选项
 
 | 选项 | 说明 |

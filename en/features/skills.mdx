@@ -368,6 +368,133 @@ The command prints a JSON result to stdout with the following shape:
 
 ---
 
+## Integration & automation
+
+Create integration logic flows that trigger on form events and execute automated actions such as notifications, data lookups, and data creation.
+
+```bash
+openyida integration create <appType> <formUuid> "<flowName>" [options]
+```
+
+### Required arguments
+
+| Argument | Description |
+|----------|-------------|
+| `<appType>` | Application ID |
+| `<formUuid>` | Trigger form UUID |
+| `<flowName>` | Name for the integration flow |
+
+### Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--process-code <code>` | Existing process code to update (omit to create new) | — |
+| `--receivers <id1,id2>` | Comma-separated user IDs for notification recipients | — |
+| `--title <text>` | Notification title | Flow name |
+| `--content <text>` | Notification body text | — |
+| `--events <types>` | Comma-separated trigger events: `insert`, `update`, `delete` | `insert` |
+| `--data-form-uuid <uuid>` | Form UUID for a "get single record" data node | — |
+| `--data-condition <mapping>` | Field mapping for the data node (`bFieldId:bFieldName:aFieldId[:componentType]`). Can be specified multiple times. | — |
+| `--add-data-form-uuid <uuid>` | Form UUID for an "add record" data node | — |
+| `--add-data-assignment <mapping>` | Field assignment for the add-data node (`targetFieldId:valueType:value`). `valueType` can be `processVar`, `literal`, or `column`. Can be specified multiple times. | — |
+| `--publish` | Publish the flow immediately after creation | Draft only |
+
+### Examples
+
+```bash
+# Create a notification flow triggered on new submissions
+openyida integration create APP_XXX FORM-YYY "New Order Alert" \
+  --receivers "user1,user2" \
+  --events insert \
+  --title "New Order" \
+  --content "A new order was submitted"
+
+# Create and publish immediately
+openyida integration create APP_XXX FORM-YYY "Auto Notify" \
+  --receivers "user1" \
+  --publish
+```
+
+---
+
+## DingTalk CLI (dws)
+
+Proxy commands to the DingTalk Workspace CLI for contacts, calendar, todo, approval, attendance, and more.
+
+```bash
+openyida dws <command> [args]
+```
+
+<Info>
+  The `dws` command requires the DingTalk CLI to be installed separately. If it is not installed, OpenYida will prompt you to install it on first use.
+</Info>
+
+### Common commands
+
+| Command | Description |
+|---------|-------------|
+| `contact user search --keyword "<name>"` | Search contacts |
+| `calendar event list` | List calendar events |
+| `todo task create --title "<title>" --executors "<userId>"` | Create a todo task |
+| `approval instance list` | List approval instances |
+| `attendance record list` | Query attendance records |
+| `chat robot send --content "<message>"` | Send a chat robot message |
+
+### Special commands
+
+```bash
+# Install DingTalk CLI
+openyida dws install
+
+# Show help
+openyida dws help
+```
+
+### Output format
+
+By default, output is formatted as a table for human readability. Add `-f json` for JSON output suitable for AI agents.
+
+```bash
+openyida dws contact user search --keyword "name" -f json
+```
+
+---
+
+## Export conversation
+
+Export AI conversation records from the current AI tool environment as Markdown documents.
+
+```bash
+openyida export-conversation [options]
+```
+
+### Options
+
+| Option | Alias | Description | Default |
+|--------|-------|-------------|---------|
+| `--output` | `-o` | Output file path | Auto-generated path |
+| `--input` | `-i` | Input conversation file (JSON/JSONL) | — |
+| `--latest` | — | Export only the latest conversation | Enabled |
+| `--list` | — | List available conversation records | — |
+
+### Examples
+
+```bash
+# Export current conversation
+openyida export-conversation
+
+# Export to a specific file
+openyida export-conversation -o output.md
+
+# List available conversations
+openyida export-conversation --list
+
+# Export from a specific input file
+openyida export-conversation -i conversation.json -o result.md
+```
+
+---
+
 ## Global options
 
 | Option | Description |
