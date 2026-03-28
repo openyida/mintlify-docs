@@ -368,6 +368,133 @@ Der Befehl gibt ein JSON-Ergebnis auf stdout aus:
 
 ---
 
+## Integration & Automatisierung
+
+Erstellen Sie Integrations-Logikflüsse, die bei Formularereignissen ausgelöst werden und automatisierte Aktionen wie Benachrichtigungen, Datenabfragen und Datenerstellung ausführen.
+
+```bash
+openyida integration create <appType> <formUuid> "<flowName>" [options]
+```
+
+### Erforderliche Argumente
+
+| Argument | Beschreibung |
+|----------|-------------|
+| `<appType>` | Anwendungs-ID |
+| `<formUuid>` | Auslöser-Formular-UUID |
+| `<flowName>` | Name für den Integrationsfluss |
+
+### Optionen
+
+| Option | Beschreibung | Standard |
+|--------|-------------|---------|
+| `--process-code <code>` | Vorhandener Prozesscode zum Aktualisieren (weglassen für Neuerstellung) | — |
+| `--receivers <id1,id2>` | Kommagetrennte Benutzer-IDs für Benachrichtigungsempfänger | — |
+| `--title <text>` | Benachrichtigungstitel | Flussname |
+| `--content <text>` | Benachrichtigungstext | — |
+| `--events <types>` | Kommagetrennte Auslöserereignisse: `insert`, `update`, `delete` | `insert` |
+| `--data-form-uuid <uuid>` | Formular-UUID für einen "Einzeldatensatz abrufen"-Datenknoten | — |
+| `--data-condition <mapping>` | Feldzuordnung für den Datenknoten (`bFieldId:bFieldName:aFieldId[:componentType]`). Kann mehrfach angegeben werden. | — |
+| `--add-data-form-uuid <uuid>` | Formular-UUID für einen "Datensatz hinzufügen"-Datenknoten | — |
+| `--add-data-assignment <mapping>` | Feldzuweisung für den Datensatz-hinzufügen-Knoten (`targetFieldId:valueType:value`). `valueType` kann `processVar`, `literal` oder `column` sein. Kann mehrfach angegeben werden. | — |
+| `--publish` | Fluss sofort nach Erstellung veröffentlichen | Nur Entwurf |
+
+### Beispiele
+
+```bash
+# Benachrichtigungsfluss erstellen, der bei neuen Einreichungen ausgelöst wird
+openyida integration create APP_XXX FORM-YYY "New Order Alert" \
+  --receivers "user1,user2" \
+  --events insert \
+  --title "New Order" \
+  --content "A new order was submitted"
+
+# Erstellen und sofort veröffentlichen
+openyida integration create APP_XXX FORM-YYY "Auto Notify" \
+  --receivers "user1" \
+  --publish
+```
+
+---
+
+## DingTalk CLI (dws)
+
+Proxy-Befehle an die DingTalk Workspace CLI für Kontakte, Kalender, Aufgaben, Genehmigungen, Anwesenheit und mehr.
+
+```bash
+openyida dws <command> [args]
+```
+
+<Info>
+  Der Befehl `dws` erfordert eine separate Installation der DingTalk CLI. Wenn sie nicht installiert ist, fordert OpenYida Sie bei der ersten Verwendung zur Installation auf.
+</Info>
+
+### Häufige Befehle
+
+| Befehl | Beschreibung |
+|--------|-------------|
+| `contact user search --keyword "<name>"` | Kontakte suchen |
+| `calendar event list` | Kalendereinträge auflisten |
+| `todo task create --title "<title>" --executors "<userId>"` | Aufgabe erstellen |
+| `approval instance list` | Genehmigungsinstanzen auflisten |
+| `attendance record list` | Anwesenheitsdaten abfragen |
+| `chat robot send --content "<message>"` | Chat-Robot-Nachricht senden |
+
+### Spezielle Befehle
+
+```bash
+# DingTalk CLI installieren
+openyida dws install
+
+# Hilfe anzeigen
+openyida dws help
+```
+
+### Ausgabeformat
+
+Standardmäßig wird die Ausgabe als Tabelle für die menschliche Lesbarkeit formatiert. Fügen Sie `-f json` für JSON-Ausgabe hinzu, die für KI-Agenten geeignet ist.
+
+```bash
+openyida dws contact user search --keyword "name" -f json
+```
+
+---
+
+## Konversation exportieren
+
+Exportieren Sie KI-Gesprächsprotokolle aus der aktuellen KI-Toolumgebung als Markdown-Dokumente.
+
+```bash
+openyida export-conversation [options]
+```
+
+### Optionen
+
+| Option | Alias | Beschreibung | Standard |
+|--------|-------|-------------|---------|
+| `--output` | `-o` | Ausgabedateipfad | Automatisch generierter Pfad |
+| `--input` | `-i` | Eingabe-Konversationsdatei (JSON/JSONL) | — |
+| `--latest` | — | Nur die neueste Konversation exportieren | Aktiviert |
+| `--list` | — | Verfügbare Konversationsprotokolle auflisten | — |
+
+### Beispiele
+
+```bash
+# Aktuelle Konversation exportieren
+openyida export-conversation
+
+# In eine bestimmte Datei exportieren
+openyida export-conversation -o output.md
+
+# Verfügbare Konversationen auflisten
+openyida export-conversation --list
+
+# Aus einer bestimmten Eingabedatei exportieren
+openyida export-conversation -i conversation.json -o result.md
+```
+
+---
+
 ## Globale Optionen
 
 | Option | Beschreibung |

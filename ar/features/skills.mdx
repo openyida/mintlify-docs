@@ -368,6 +368,133 @@ cat meeting.txt | openyida flash-to-prd --name <اسم المشروع> [--max-to
 
 ---
 
+## التكامل والأتمتة
+
+إنشاء تدفقات منطق التكامل التي تُفعَّل عند أحداث النماذج وتنفذ إجراءات تلقائية مثل الإشعارات واستعلام البيانات وإنشاء البيانات.
+
+```bash
+openyida integration create <appType> <formUuid> "<flowName>" [options]
+```
+
+### المعاملات المطلوبة
+
+| المعامل | الوصف |
+|---------|-------|
+| `<appType>` | معرّف التطبيق |
+| `<formUuid>` | UUID النموذج المُفعِّل |
+| `<flowName>` | اسم تدفق التكامل |
+
+### الخيارات
+
+| الخيار | الوصف | القيمة الافتراضية |
+|--------|-------|-------------------|
+| `--process-code <code>` | رمز عملية موجود للتحديث (حذفه لإنشاء جديد) | — |
+| `--receivers <id1,id2>` | معرّفات المستخدمين لمستلمي الإشعارات (مفصولة بفواصل) | — |
+| `--title <text>` | عنوان الإشعار | اسم التدفق |
+| `--content <text>` | نص الإشعار | — |
+| `--events <types>` | أحداث التفعيل (مفصولة بفواصل): `insert`، `update`، `delete` | `insert` |
+| `--data-form-uuid <uuid>` | UUID النموذج لعقدة "الحصول على سجل واحد" | — |
+| `--data-condition <mapping>` | تعيين الحقول لعقدة البيانات (`bFieldId:bFieldName:aFieldId[:componentType]`). يمكن تحديده عدة مرات. | — |
+| `--add-data-form-uuid <uuid>` | UUID النموذج لعقدة "إضافة سجل" | — |
+| `--add-data-assignment <mapping>` | تعيين الحقول لعقدة إضافة البيانات (`targetFieldId:valueType:value`). `valueType` يمكن أن يكون `processVar` أو `literal` أو `column`. يمكن تحديده عدة مرات. | — |
+| `--publish` | نشر التدفق فوراً بعد الإنشاء | مسودة فقط |
+
+### أمثلة
+
+```bash
+# إنشاء تدفق إشعارات يُفعَّل عند الإرسالات الجديدة
+openyida integration create APP_XXX FORM-YYY "New Order Alert" \
+  --receivers "user1,user2" \
+  --events insert \
+  --title "New Order" \
+  --content "A new order was submitted"
+
+# إنشاء ونشر فوري
+openyida integration create APP_XXX FORM-YYY "Auto Notify" \
+  --receivers "user1" \
+  --publish
+```
+
+---
+
+## DingTalk CLI (dws)
+
+تنفيذ أوامر DingTalk Workspace CLI لجهات الاتصال والتقويم والمهام والموافقات والحضور والمزيد.
+
+```bash
+openyida dws <command> [args]
+```
+
+<Info>
+  يتطلب أمر `dws` تثبيت DingTalk CLI بشكل منفصل. إذا لم يكن مثبتاً، سيطلب منك OpenYida تثبيته عند الاستخدام الأول.
+</Info>
+
+### الأوامر الشائعة
+
+| الأمر | الوصف |
+|-------|-------|
+| `contact user search --keyword "<name>"` | البحث في جهات الاتصال |
+| `calendar event list` | عرض أحداث التقويم |
+| `todo task create --title "<title>" --executors "<userId>"` | إنشاء مهمة |
+| `approval instance list` | عرض طلبات الموافقة |
+| `attendance record list` | الاستعلام عن سجلات الحضور |
+| `chat robot send --content "<message>"` | إرسال رسالة روبوت |
+
+### أوامر خاصة
+
+```bash
+# تثبيت DingTalk CLI
+openyida dws install
+
+# عرض المساعدة
+openyida dws help
+```
+
+### تنسيق الإخراج
+
+بشكل افتراضي، يتم تنسيق الإخراج كجدول لسهولة القراءة. أضف `-f json` للحصول على إخراج JSON مناسب لوكلاء الذكاء الاصطناعي.
+
+```bash
+openyida dws contact user search --keyword "name" -f json
+```
+
+---
+
+## تصدير المحادثة
+
+تصدير سجلات محادثات الذكاء الاصطناعي من بيئة أداة AI الحالية كمستندات Markdown.
+
+```bash
+openyida export-conversation [options]
+```
+
+### الخيارات
+
+| الخيار | الاختصار | الوصف | القيمة الافتراضية |
+|--------|----------|-------|-------------------|
+| `--output` | `-o` | مسار ملف الإخراج | مسار مُولَّد تلقائياً |
+| `--input` | `-i` | ملف المحادثة المدخل (JSON/JSONL) | — |
+| `--latest` | — | تصدير أحدث محادثة فقط | مُفعَّل |
+| `--list` | — | عرض سجلات المحادثات المتاحة | — |
+
+### أمثلة
+
+```bash
+# تصدير المحادثة الحالية
+openyida export-conversation
+
+# التصدير إلى ملف محدد
+openyida export-conversation -o output.md
+
+# عرض المحادثات المتاحة
+openyida export-conversation --list
+
+# التصدير من ملف إدخال محدد
+openyida export-conversation -i conversation.json -o result.md
+```
+
+---
+
 ## الخيارات العامة
 
 | الخيار | الوصف |
