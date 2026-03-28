@@ -170,13 +170,13 @@ openyida data <action> <resource> [args]
 # 表单数据
 openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
 openyida data get form <appType> --inst-id <id>
-openyida data create form <appType> <formUuid> --data <JSON>  # JSON 键可以是字段 ID 或字段标签
-openyida data update form <appType> --inst-id <id> --data <JSON>
+openyida data create form <appType> <formUuid> --data-json <JSON>  # JSON 键可以是字段 ID 或字段标签
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
 
 # 流程数据
 openyida data query process <appType> <formUuid> [--instance-status STATUS]
 openyida data get process <appType> --process-inst-id <id>
-openyida data create process <appType> <formUuid> --process-code <code> --data <JSON>
+openyida data create process <appType> <formUuid> --process-code <code> --data-json <JSON>
 
 # 任务管理
 openyida data query tasks <appType> --type <todo|done|submitted|cc>
