@@ -246,6 +246,56 @@ openyida configure-process <appType> <formUuid> --rules <JSON القواعد>
 
 ---
 
+## التكامل والأتمتة
+
+إنشاء وإدارة تدفقات المنطق (التكامل والأتمتة) مع مشغلات أحداث النموذج والإشعارات وعمليات البيانات.
+
+```bash
+# إنشاء تدفق منطقي
+openyida integration create <appType> <formUuid> <flowName> [خيارات]
+```
+
+### المعلمات
+
+| المعلمة | مطلوب | الوصف |
+|---------|-------|-------|
+| `appType` | نعم | معرف التطبيق (مثال: `APP_XXXX`) |
+| `formUuid` | نعم | UUID نموذج المشغل (مثال: `FORM-XXXX`) |
+| `flowName` | نعم | اسم تدفق المنطق |
+
+### الخيارات
+
+| الخيار | الافتراضي | الوصف |
+|--------|-----------|-------|
+| `--process-code <code>` | تلقائي | processCode موجود (`LPROC-xxx`) |
+| `--receivers <userId,...>` | فارغ | معرفات المستخدمين لإشعارات DingTalk (مفصولة بفواصل) |
+| `--title <title>` | مثل flowName | عنوان الإشعار، يدعم `#{fieldId-ComponentType}#` |
+| `--content <content>` | `"تم إرسال سجل جديد"` | محتوى الإشعار |
+| `--events <insert,update>` | `insert` | أحداث المشغل: `insert`/`update`/`delete`/`comment` |
+| `--add-data-form-uuid <formUuid>` | — | UUID النموذج المستهدف لعقدة إضافة البيانات |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | تعيين الحقل (قابل للتحديد عدة مرات). `valueType`: `processVar`/`literal`/`column` |
+| `--publish` | غير منشور | النشر فوراً بعد الحفظ |
+
+### المخرجات
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "إشعار سجل جديد",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  يجب تسجيل الدخول قبل تنفيذ هذا الأمر. مع `--publish`، سيكون `published` هو `true`؛ في حالة الفشل، سيكون `published` هو `false` مع حقل `warning`.
+</Info>
+
+---
+
 ## إدارة الأذونات
 
 ```bash

@@ -246,6 +246,90 @@ openyida configure-process <appType> <formUuid> --rules <rulesJSON>
 
 ---
 
+## 集成与自动化
+
+创建和管理逻辑流（集成&自动化），支持表单事件触发、消息通知、数据操作等场景。
+
+```bash
+# 创建逻辑流
+openyida integration create <appType> <formUuid> <flowName> [选项]
+```
+
+### 参数
+
+| 参数 | 必填 | 说明 |
+|------|------|------|
+| `appType` | 是 | 应用 ID，如 `APP_XXXX` |
+| `formUuid` | 是 | 触发表单 UUID，如 `FORM-XXXX` |
+| `flowName` | 是 | 逻辑流名称 |
+
+### 选项
+
+| 选项 | 默认值 | 说明 |
+|------|--------|------|
+| `--process-code <code>` | 自动生成 | 已有逻辑流的 processCode（`LPROC-xxx` 格式） |
+| `--receivers <userId,...>` | 空 | 接收钉钉工作通知的用户 ID，多个用逗号分隔 |
+| `--title <title>` | 同 flowName | 通知标题，支持 `#{fieldId-ComponentType}#` 引用表单字段 |
+| `--content <content>` | `"表单有新记录提交，请及时查看。"` | 通知内容，支持字段变量引用 |
+| `--events <insert,update>` | `insert` | 触发事件：`insert`/`update`/`delete`/`comment`，多个用逗号分隔 |
+| `--data-form-uuid <formUuid>` | — | 获取单条数据节点的目标表单 UUID |
+| `--data-condition <bFieldId:bFieldName:aFieldId[:componentType]>` | — | 获取单条数据的过滤条件，可多次传入 |
+| `--add-data-form-uuid <formUuid>` | — | 新增数据节点的目标表单 UUID |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | 新增数据的字段赋值，可多次传入。`valueType` 可选 `processVar`/`literal`/`column` |
+| `--publish` | 不发布 | 保存后立即发布（开启状态），否则仅保存为草稿 |
+
+### 示例
+
+```bash
+# 表单新增时通知指定用户
+openyida integration create APP_XXX FORM-XXX "新增记录通知" \
+  --receivers user123 \
+  --title "有新记录提交" \
+  --content "表单有新记录提交，请及时处理。"
+
+# 引用表单字段变量，保存并发布
+openyida integration create APP_XXX FORM-XXX "记录变更通知" \
+  --receivers user123,user456 \
+  --events insert,update,delete,comment \
+  --publish
+
+# 带新增数据节点：将 A 表单数据同步到 B 表单
+openyida integration create APP_XXX FORM-A-XXX "同步到表单B" \
+  --add-data-form-uuid FORM-B-XXX \
+  --add-data-assignment "textField_b1:processVar:textField_a1" \
+  --add-data-assignment "numberField_b2:literal:0" \
+  --publish
+```
+
+### 字段变量引用
+
+在通知标题和内容中使用 `#{fieldId-ComponentType}#` 格式引用触发表单的字段值：
+
+```
+#{textField_mmq4ldti-TextField}#
+#{numberField_abc123-NumberField}#
+```
+
+### 输出
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "新增记录通知",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  运行此命令前需要先登录。使用 `--publish` 时 `published` 为 `true`；若发布失败，`published` 为 `false` 并附带 `warning` 字段。
+</Info>
+
+---
+
 ## 权限管理
 
 ```bash

@@ -246,6 +246,56 @@ openyida configure-process <appType> <formUuid> --rules <règlesJSON>
 
 ---
 
+## Intégration et automatisation
+
+Créez et gérez des flux logiques (intégration et automatisation) prenant en charge les déclencheurs d'événements de formulaire, les notifications et les opérations de données.
+
+```bash
+# Créer un flux logique
+openyida integration create <appType> <formUuid> <flowName> [options]
+```
+
+### Paramètres
+
+| Paramètre | Obligatoire | Description |
+|-----------|-------------|-------------|
+| `appType` | Oui | ID de l'application (ex : `APP_XXXX`) |
+| `formUuid` | Oui | UUID du formulaire déclencheur (ex : `FORM-XXXX`) |
+| `flowName` | Oui | Nom du flux logique |
+
+### Options
+
+| Option | Défaut | Description |
+|--------|--------|-------------|
+| `--process-code <code>` | Auto-généré | processCode existant (`LPROC-xxx`) |
+| `--receivers <userId,...>` | Vide | ID utilisateurs pour notifications DingTalk (séparés par virgules) |
+| `--title <title>` | Identique à flowName | Titre de notification, supporte `#{fieldId-ComponentType}#` |
+| `--content <content>` | `"Nouvel enregistrement soumis"` | Contenu de la notification |
+| `--events <insert,update>` | `insert` | Événements déclencheurs : `insert`/`update`/`delete`/`comment` |
+| `--add-data-form-uuid <formUuid>` | — | UUID du formulaire cible pour le nœud d'ajout de données |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | Attribution de champ (spécifiable plusieurs fois). `valueType` : `processVar`/`literal`/`column` |
+| `--publish` | Non publié | Publier immédiatement après l'enregistrement |
+
+### Sortie
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "Notification de nouvel enregistrement",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  Vous devez être connecté avant d'exécuter cette commande. Avec `--publish`, `published` sera `true` ; en cas d'échec, `published` sera `false` avec un champ `warning`.
+</Info>
+
+---
+
 ## Gestion des permissions
 
 ```bash

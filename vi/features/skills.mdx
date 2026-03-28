@@ -246,6 +246,56 @@ openyida configure-process <appType> <formUuid> --rules <quy_tắcJSON>
 
 ---
 
+## Tích hợp và tự động hóa
+
+Tạo và quản lý luồng logic (tích hợp và tự động hóa) với trình kích hoạt sự kiện biểu mẫu, thông báo và thao tác dữ liệu.
+
+```bash
+# Tạo luồng logic
+openyida integration create <appType> <formUuid> <flowName> [tùy chọn]
+```
+
+### Tham số
+
+| Tham số | Bắt buộc | Mô tả |
+|---------|----------|-------|
+| `appType` | Có | ID ứng dụng (VD: `APP_XXXX`) |
+| `formUuid` | Có | UUID biểu mẫu kích hoạt (VD: `FORM-XXXX`) |
+| `flowName` | Có | Tên luồng logic |
+
+### Tùy chọn
+
+| Tùy chọn | Mặc định | Mô tả |
+|----------|----------|-------|
+| `--process-code <code>` | Tự động tạo | processCode hiện có (`LPROC-xxx`) |
+| `--receivers <userId,...>` | Trống | ID người dùng nhận thông báo DingTalk (phân cách bằng dấu phẩy) |
+| `--title <title>` | Giống flowName | Tiêu đề thông báo, hỗ trợ `#{fieldId-ComponentType}#` |
+| `--content <content>` | `"Bản ghi mới đã được gửi"` | Nội dung thông báo |
+| `--events <insert,update>` | `insert` | Sự kiện kích hoạt: `insert`/`update`/`delete`/`comment` |
+| `--add-data-form-uuid <formUuid>` | — | UUID biểu mẫu đích cho nút thêm dữ liệu |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | Gán trường (có thể chỉ định nhiều lần). `valueType`: `processVar`/`literal`/`column` |
+| `--publish` | Không xuất bản | Xuất bản ngay sau khi lưu |
+
+### Đầu ra
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "Thông báo bản ghi mới",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  Bạn phải đăng nhập trước khi chạy lệnh này. Với `--publish`, `published` sẽ là `true`; nếu thất bại, `published` sẽ là `false` kèm trường `warning`.
+</Info>
+
+---
+
 ## Quản lý quyền hạn
 
 ```bash

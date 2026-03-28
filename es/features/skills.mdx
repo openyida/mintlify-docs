@@ -246,6 +246,56 @@ openyida configure-process <appType> <formUuid> --rules <reglasJSON>
 
 ---
 
+## Integración y automatización
+
+Cree y gestione flujos lógicos (integración y automatización) con disparadores de eventos de formulario, notificaciones y operaciones de datos.
+
+```bash
+# Crear un flujo lógico
+openyida integration create <appType> <formUuid> <flowName> [opciones]
+```
+
+### Parámetros
+
+| Parámetro | Obligatorio | Descripción |
+|-----------|-------------|-------------|
+| `appType` | Sí | ID de la aplicación (ej: `APP_XXXX`) |
+| `formUuid` | Sí | UUID del formulario disparador (ej: `FORM-XXXX`) |
+| `flowName` | Sí | Nombre del flujo lógico |
+
+### Opciones
+
+| Opción | Predeterminado | Descripción |
+|--------|---------------|-------------|
+| `--process-code <code>` | Autogenerado | processCode existente (`LPROC-xxx`) |
+| `--receivers <userId,...>` | Vacío | IDs de usuario para notificaciones DingTalk (separados por comas) |
+| `--title <title>` | Igual que flowName | Título de notificación, soporta `#{fieldId-ComponentType}#` |
+| `--content <content>` | `"Nuevo registro enviado"` | Contenido de la notificación |
+| `--events <insert,update>` | `insert` | Eventos disparadores: `insert`/`update`/`delete`/`comment` |
+| `--add-data-form-uuid <formUuid>` | — | UUID del formulario destino para el nodo de agregar datos |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | Asignación de campo (especificable múltiples veces). `valueType`: `processVar`/`literal`/`column` |
+| `--publish` | No publicado | Publicar inmediatamente después de guardar |
+
+### Salida
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "Notificación de nuevo registro",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  Debe iniciar sesión antes de ejecutar este comando. Con `--publish`, `published` será `true`; si falla, `published` será `false` con un campo `warning`.
+</Info>
+
+---
+
 ## Gestión de permisos
 
 ```bash

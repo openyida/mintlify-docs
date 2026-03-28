@@ -246,6 +246,56 @@ openyida configure-process <appType> <formUuid> --rules <rulesJSON>
 
 ---
 
+## 統合と自動化
+
+ロジックフロー（統合&自動化）を作成・管理します。フォームイベントトリガー、メッセージ通知、データ操作などをサポートします。
+
+```bash
+# ロジックフローを作成
+openyida integration create <appType> <formUuid> <flowName> [オプション]
+```
+
+### パラメータ
+
+| パラメータ | 必須 | 説明 |
+|-----------|------|------|
+| `appType` | はい | アプリID（例：`APP_XXXX`） |
+| `formUuid` | はい | トリガーフォームUUID（例：`FORM-XXXX`） |
+| `flowName` | はい | ロジックフロー名 |
+
+### オプション
+
+| オプション | デフォルト | 説明 |
+|-----------|-----------|------|
+| `--process-code <code>` | 自動生成 | 既存のロジックフローprocessCode（`LPROC-xxx`形式） |
+| `--receivers <userId,...>` | 空 | DingTalk通知の受信者ユーザーID（カンマ区切り） |
+| `--title <title>` | flowNameと同じ | 通知タイトル、`#{fieldId-ComponentType}#`でフィールド参照可能 |
+| `--content <content>` | `"新しいレコードが送信されました"` | 通知内容、フィールド変数参照可能 |
+| `--events <insert,update>` | `insert` | トリガーイベント：`insert`/`update`/`delete`/`comment`（カンマ区切り） |
+| `--add-data-form-uuid <formUuid>` | — | データ追加ノードの対象フォームUUID |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | データ追加のフィールド代入（複数指定可）。`valueType`：`processVar`/`literal`/`column` |
+| `--publish` | 未公開 | 保存後すぐに公開、指定しない場合は下書きのみ |
+
+### 出力
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "新しいレコード通知",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  このコマンドを実行する前にログインが必要です。`--publish`使用時は`published`が`true`になります。公開に失敗した場合は`published`が`false`で`warning`フィールドが付与されます。
+</Info>
+
+---
+
 ## 権限管理
 
 ```bash
