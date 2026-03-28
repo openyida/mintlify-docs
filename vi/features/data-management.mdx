@@ -58,7 +58,26 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # Chỉ trả về ID
 openyida data query form <appType> <formUuid> --ids-only
+
+# Lọc theo người tạo và khoảng ngày
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### Tham số tùy chọn
+
+| Tham số | Mô tả |
+|---------|-------|
+| `--page N` | Số trang (mặc định `1`) |
+| `--size N` | Số mục mỗi trang (mặc định `20`, tối đa `100`) |
+| `--search-json JSON` | Điều kiện tìm kiếm (phải là JSON hợp lệ) |
+| `--inst-id ID` | Truy vấn bản ghi theo ID thực thể |
+| `--ids-only` | Chỉ trả về ID thực thể |
+| `--originator-id ID` | Lọc theo người tạo |
+| `--create-from DATE` / `--create-to DATE` | Lọc theo ngày tạo |
+| `--modified-from DATE` / `--modified-to DATE` | Lọc theo ngày sửa đổi |
+| `--dynamic-order FIELD` | Sắp xếp theo trường |
 
 ### Lấy một bản ghi
 
@@ -99,7 +118,28 @@ openyida data query process <appType> <formUuid> \
 
 # Chỉ trả về ID
 openyida data query process <appType> <formUuid> --ids-only
+
+# Lọc theo người tạo và trạng thái
+openyida data query process <appType> <formUuid> \
+  --originator-id <userId> \
+  --instance-status COMPLETED \
+  --create-from "2026-01-01" --create-to "2026-06-30"
 ```
+
+#### Tham số tùy chọn
+
+| Tham số | Mô tả |
+|---------|-------|
+| `--page N` | Số trang (mặc định `1`) |
+| `--size N` | Số mục mỗi trang (mặc định `20`, tối đa `100`) |
+| `--search-json JSON` | Điều kiện tìm kiếm (phải là JSON hợp lệ) |
+| `--instance-status STATUS` | Trạng thái quy trình: `RUNNING`, `COMPLETED`, `TERMINATED` |
+| `--task-id ID` | Lọc theo ID tác vụ |
+| `--approved-result RESULT` | Lọc theo kết quả phê duyệt |
+| `--ids-only` | Chỉ trả về ID thực thể |
+| `--originator-id ID` | Lọc theo người tạo |
+| `--create-from DATE` / `--create-to DATE` | Lọc theo ngày tạo |
+| `--modified-from DATE` / `--modified-to DATE` | Lọc theo ngày sửa đổi |
 
 ### Lấy chi tiết quy trình
 
@@ -153,7 +193,21 @@ openyida data query tasks <appType> --type submitted
 
 # CC cho tôi
 openyida data query tasks <appType> --type cc
+
+# Tìm kiếm theo từ khóa
+openyida data query tasks <appType> --type todo --keyword "phê duyệt"
 ```
+
+#### Tham số tùy chọn
+
+| Tham số | Mô tả |
+|---------|-------|
+| `--type TYPE` | **(bắt buộc)** Loại tác vụ: `todo`, `done`, `submitted`, `cc` |
+| `--page N` | Số trang (mặc định `1`) |
+| `--size N` | Số mục mỗi trang (mặc định `20`, tối đa `100`) |
+| `--keyword TEXT` | Tìm kiếm theo từ khóa |
+| `--process-codes CODES` | Lọc theo mã quy trình |
+| `--instance-status STATUS` | Trạng thái quy trình: `RUNNING`, `COMPLETED`, `TERMINATED` |
 
 ### Thực thi tác vụ
 
@@ -166,9 +220,16 @@ openyida data execute task <appType> \
   --data-json '{"comment": "Phê duyệt đã thông qua"}'
 ```
 
-**Tùy chọn out-result:**
-- `AGREE` - Đồng ý
-- `DISAGREE` - Không đồng ý
+#### Tham số tùy chọn
+
+| Tham số | Mô tả |
+|---------|-------|
+| `--task-id ID` | **(bắt buộc)** ID tác vụ cần thực thi |
+| `--process-inst-id ID` | **(bắt buộc)** ID phiên bản quy trình |
+| `--out-result RESULT` | **(bắt buộc)** Kết quả thực thi: `AGREE` (đồng ý), `DISAGREE` (không đồng ý) |
+| `--remark TEXT` | **(bắt buộc)** Ghi chú cho tác vụ |
+| `--data-json JSON` | Dữ liệu bổ sung (phải là JSON hợp lệ) |
+| `--no-execute-expressions y` | Bỏ qua thực thi biểu thức sau khi hoàn thành tác vụ |
 
 ---
 
@@ -190,6 +251,10 @@ openyida data query subform <appType> <formUuid> \
 ### Định dạng điều kiện truy vấn
 
 Tham số `--search-json` chấp nhận định dạng truy vấn dựa trên mảng. Mỗi điều kiện là một đối tượng với các trường sau:
+
+<Note>
+  Giá trị của `--search-json` phải là JSON hợp lệ. CLI sẽ xác thực cú pháp JSON trước khi gửi yêu cầu — nếu JSON không hợp lệ, lệnh sẽ báo lỗi ngay lập tức mà không thực hiện truy vấn.
+</Note>
 
 | Trường | Mô tả |
 |--------|-------|
