@@ -170,13 +170,13 @@ openyida data <action> <resource> [args]
 # Form data
 openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
 openyida data get form <appType> --inst-id <id>
-openyida data create form <appType> <formUuid> --data <JSON>  # JSON keys can be field IDs or field labels
-openyida data update form <appType> --inst-id <id> --data <JSON>
+openyida data create form <appType> <formUuid> --data-json <JSON>  # JSON keys can be field IDs or field labels
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
 
 # Process data
 openyida data query process <appType> <formUuid> [--instance-status STATUS]
 openyida data get process <appType> --process-inst-id <id>
-openyida data create process <appType> <formUuid> --process-code <code> --data <JSON>
+openyida data create process <appType> <formUuid> --process-code <code> --data-json <JSON>
 
 # Task management
 openyida data query tasks <appType> --type <todo|done|submitted|cc>
