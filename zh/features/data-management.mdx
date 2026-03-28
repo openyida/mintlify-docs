@@ -58,7 +58,28 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # 仅返回实例 ID
 openyida data query form <appType> <formUuid> --ids-only
+
+# 按创建人和日期范围过滤
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### 可选参数
+
+| 参数 | 说明 |
+|------|------|
+| `--page N` | 页码（默认 `1`） |
+| `--size N` | 每页条数（默认 `20`，最大 `100`） |
+| `--search-json JSON` | 查询条件（必须是合法 JSON，详见[查询条件格式](#查询条件格式)） |
+| `--inst-id ID` | 按实例 ID 查询单条记录 |
+| `--ids-only` | 仅返回实例 ID |
+| `--originator-id ID` | 按创建人过滤 |
+| `--create-from DATE` | 过滤指定日期之后创建的记录 |
+| `--create-to DATE` | 过滤指定日期之前创建的记录 |
+| `--modified-from DATE` | 过滤指定日期之后修改的记录 |
+| `--modified-to DATE` | 过滤指定日期之前修改的记录 |
+| `--dynamic-order FIELD` | 按字段排序 |
 
 ### 获取单条数据
 
@@ -99,7 +120,29 @@ openyida data query process <appType> <formUuid> \
 
 # 仅返回实例 ID
 openyida data query process <appType> <formUuid> --ids-only
+
+# 按任务和审批结果过滤
+openyida data query process <appType> <formUuid> \
+  --task-id <taskId> \
+  --approved-result AGREE
 ```
+
+#### 可选参数
+
+| 参数 | 说明 |
+|------|------|
+| `--page N` | 页码（默认 `1`） |
+| `--size N` | 每页条数（默认 `10`，最大 `100`） |
+| `--search-json JSON` | 查询条件（必须是合法 JSON） |
+| `--instance-status STATUS` | 按状态过滤：`RUNNING`、`COMPLETED`、`TERMINATED` |
+| `--task-id ID` | 按任务 ID 过滤 |
+| `--approved-result RESULT` | 按审批结果过滤：`AGREE`、`DISAGREE` |
+| `--ids-only` | 仅返回实例 ID |
+| `--originator-id ID` | 按创建人过滤 |
+| `--create-from DATE` | 过滤指定日期之后创建的实例 |
+| `--create-to DATE` | 过滤指定日期之前创建的实例 |
+| `--modified-from DATE` | 过滤指定日期之后修改的实例 |
+| `--modified-to DATE` | 过滤指定日期之前修改的实例 |
 
 ### 获取流程详情
 
@@ -153,7 +196,21 @@ openyida data query tasks <appType> --type submitted
 
 # 抄送我的
 openyida data query tasks <appType> --type cc
+
+# 带分页和关键词过滤
+openyida data query tasks <appType> --type todo --page 1 --size 20 --keyword "紧急"
 ```
+
+#### 可选参数
+
+| 参数 | 说明 |
+|------|------|
+| `--type TYPE` | **必填。** 任务类型：`todo`、`done`、`submitted`、`cc` |
+| `--page N` | 页码（默认 `1`） |
+| `--size N` | 每页条数（默认 `10`，最大 `100`） |
+| `--keyword TEXT` | 搜索关键词 |
+| `--process-codes JSON` | 按流程编码过滤（JSON 数组） |
+| `--instance-status STATUS` | 按流程实例状态过滤 |
 
 ### 执行任务
 
@@ -166,9 +223,14 @@ openyida data execute task <appType> \
   --data-json '{"comment": "审批通过"}'
 ```
 
-**out-result 选项：**
-- `AGREE` - 同意
-- `DISAGREE` - 不同意
+| 参数 | 说明 |
+|------|------|
+| `--task-id ID` | **必填。** 任务 ID |
+| `--process-inst-id ID` | **必填。** 流程实例 ID |
+| `--out-result RESULT` | **必填。** `AGREE`（同意）或 `DISAGREE`（不同意） |
+| `--remark TEXT` | **必填。** 审批意见 |
+| `--data-json JSON` | 审批时同步更新的表单数据 |
+| `--no-execute-expressions y` | 任务完成后跳过表达式执行 |
 
 ---
 
@@ -189,7 +251,9 @@ openyida data query subform <appType> <formUuid> \
 
 ### 查询条件格式
 
-`--search-json` 参数接受数组格式的查询条件。每个条件是一个包含以下字段的对象：
+`--search-json` 参数接受数组格式的查询条件。该值必须是合法 JSON——CLI 会在发送请求前验证输入，格式错误的 JSON 会被拒绝并报错。
+
+每个条件是一个包含以下字段的对象：
 
 | 字段 | 说明 |
 |------|------|
