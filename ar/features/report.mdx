@@ -96,6 +96,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **pivot** | جدول محوري متقاطع | تحليل متعدد الأبعاد |
 | **gauge** | مقياس | تتبع التقدم أو الأهداف |
 | **funnel** | رسم بياني قمعي | التحويل عبر المراحل |
+| **radar** | رسم بياني رادار | مقارنة متعددة المتغيرات |
 
 ---
 
@@ -179,6 +180,99 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 }
 ```
 
+### مؤشر (KPI)
+
+```json
+{
+  "type": "indicator",
+  "title": "Total Revenue",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_amount",
+  "aggregation": "sum"
+}
+```
+
+### مقياس
+
+```json
+{
+  "type": "gauge",
+  "title": "Completion Rate",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_rate",
+  "aggregation": "avg"
+}
+```
+
+### رسم بياني رادار
+
+```json
+{
+  "type": "radar",
+  "title": "Performance Overview",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_score1", "aggregateType": "AVG" },
+    { "fieldCode": "numberField_score2", "aggregateType": "AVG" }
+  ]
+}
+```
+
+---
+
+## رموز الحقول في التقارير
+
+عند الإشارة إلى حقول النموذج في تعريفات الرسوم البيانية للتقارير، تستخدم معظم أنواع الحقول معرّف الحقل مباشرة (مثل `textField_abc123`). ومع ذلك، تتطلب الحقول من نوع الاختيار — مثل `SelectField` و `RadioField` و `CheckboxField` و `EmployeeField` و `DepartmentSelectField` — إضافة اللاحقة `_value` إلى معرّف الحقل.
+
+| Field type | Field ID example | Report field code |
+|------------|------------------|-------------------|
+| TextField | textField_abc123 | textField_abc123 |
+| NumberField | numberField_abc123 | numberField_abc123 |
+| DateField | dateField_abc123 | dateField_abc123 |
+| SelectField | selectField_abc123 | selectField_abc123_value |
+| RadioField | radioField_abc123 | radioField_abc123_value |
+| CheckboxField | checkboxField_abc123 | checkboxField_abc123_value |
+| EmployeeField | employeeField_abc123 | employeeField_abc123_value |
+| DepartmentSelectField | departmentSelectField_abc123 | departmentSelectField_abc123_value |
+
+<Tip>
+استخدم `openyida get-schema` للحصول على هيكل النموذج وتحديد رموز الحقول الصحيحة لرسومك البيانية.
+</Tip>
+
+<Warning>
+استخدام معرّف الحقل بدون اللاحقة `_value` للحقول من نوع الاختيار سيؤدي إلى بيانات فارغة أو غير صحيحة في الرسم البياني.
+</Warning>
+
+---
+
+## تنسيق الحقل البديل
+
+بدلاً من استخدام `xField` و `yField` كسلاسل نصية، يمكنك استخدام مصفوفة `fields` لتحديد مقاييس متعددة مع أنواع تجميع فردية:
+
+```json
+{
+  "type": "bar",
+  "title": "Multi-measure Chart",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_amount", "aggregateType": "SUM" },
+    { "fieldCode": "numberField_count", "aggregateType": "COUNT" }
+  ]
+}
+```
+
+هذا التنسيق مفيد بشكل خاص للرسوم البيانية المركبة ورسوم الرادار التي تحتاج إلى عرض مقاييس متعددة على نفس التصور.
+
+---
+
+## المرشحات
+
+تُنشئ الحقول من نوع الاختيار (SelectField و RadioField و CheckboxField وغيرها) مرشحات تلقائيًا في التقرير. عندما يستخدم الرسم البياني حقلاً من نوع الاختيار كـ `xField`، تعرض واجهة التقرير قائمة منسدلة للتصفية تتيح للمستخدمين تصفية بيانات الرسم البياني بشكل تفاعلي.
+
+لا حاجة لأي تكوين إضافي — يتم إنشاء المرشحات بناءً على نوع الحقل في هيكل النموذج.
+
 ---
 
 ## دوال التجميع
@@ -190,6 +284,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **count** | العد |
 | **max** | القيمة القصوى |
 | **min** | القيمة الدنيا |
+| **count_distinct** | عدد القيم الفريدة |
 
 ---
 
@@ -248,9 +343,22 @@ openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.
 
 ---
 
+## التحقق من التكوين
+
+قبل إنشاء التقرير، تحقق من تكوين الرسوم البيانية لتجنب الأخطاء الشائعة:
+
+1. **تحقق من رموز الحقول** — قم بتشغيل `openyida get-schema` للتحقق من معرّفات الحقول والتأكد من أن الحقول من نوع الاختيار تتضمن اللاحقة `_value`.
+2. **تحقق من مصدر البيانات** — تأكد من أن `dataSource` أو `cubeCode` يطابق UUID نموذج صالح في تطبيقك.
+3. **تحقق من أنواع التجميع** — تأكد من أن دالة التجميع متوافقة مع نوع الحقل (مثلاً، `sum` يعمل فقط على الحقول الرقمية).
+4. **اختبر برسم بياني واحد** — ابدأ برسم بياني واحد للتحقق من التكوين قبل إضافة عدة رسوم بيانية.
+
+---
+
 ## أفضل الممارسات
 
 1. **اختر نوع الرسم البياني المناسب** - الاتجاهات بالخطي، المقارنات بالعمودي، النسب بالدائري
 2. **تحكم في عدد الرسوم البيانية** - يُنصح بعدم تجاوز 6 رسوم بيانية لكل تقرير
 3. **استخدم جداول البيانات** - أكمل الرسوم البيانية بجداول لفحص البيانات المفصلة
 4. **اضبط أحجام الصفحات المناسبة** - يُنصح بـ 10-20 سجلًا لكل صفحة للجداول
+5. **استخدم get-schema لاكتشاف الحقول** - قم بتشغيل `openyida get-schema` للحصول على رموز الحقول الصحيحة قبل بناء تعريفات الرسوم البيانية
+6. **استفد من المرشحات التلقائية** - تُنشئ الحقول من نوع الاختيار مرشحات تقارير تلقائيًا، استخدمها كـ `xField` للوحات المعلومات التفاعلية

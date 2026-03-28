@@ -96,6 +96,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **pivot** | クロスピボットテーブル | 多次元分析 |
 | **gauge** | ゲージチャート | 進捗や目標の追跡 |
 | **funnel** | ファネルチャート | 段階別のコンバージョン |
+| **radar** | レーダーチャート | 多変数の比較 |
 
 ---
 
@@ -179,6 +180,99 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 }
 ```
 
+### 指標カード (KPI)
+
+```json
+{
+  "type": "indicator",
+  "title": "Total Revenue",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_amount",
+  "aggregation": "sum"
+}
+```
+
+### ゲージ
+
+```json
+{
+  "type": "gauge",
+  "title": "Completion Rate",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_rate",
+  "aggregation": "avg"
+}
+```
+
+### レーダーチャート
+
+```json
+{
+  "type": "radar",
+  "title": "Performance Overview",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_score1", "aggregateType": "AVG" },
+    { "fieldCode": "numberField_score2", "aggregateType": "AVG" }
+  ]
+}
+```
+
+---
+
+## レポートフィールドコード
+
+レポートチャート定義でフォームフィールドを参照する場合、ほとんどのフィールドタイプはフィールド ID をそのまま使用します（例：`textField_abc123`）。ただし、選択系フィールド — `SelectField`、`RadioField`、`CheckboxField`、`EmployeeField`、`DepartmentSelectField` — はフィールド ID に `_value` サフィックスを追加する必要があります。
+
+| Field type | Field ID example | Report field code |
+|------------|------------------|-------------------|
+| TextField | textField_abc123 | textField_abc123 |
+| NumberField | numberField_abc123 | numberField_abc123 |
+| DateField | dateField_abc123 | dateField_abc123 |
+| SelectField | selectField_abc123 | selectField_abc123_value |
+| RadioField | radioField_abc123 | radioField_abc123_value |
+| CheckboxField | checkboxField_abc123 | checkboxField_abc123_value |
+| EmployeeField | employeeField_abc123 | employeeField_abc123_value |
+| DepartmentSelectField | departmentSelectField_abc123 | departmentSelectField_abc123_value |
+
+<Tip>
+`openyida get-schema` を使用してフォームスキーマを取得し、レポートチャートの正しいフィールドコードを確認してください。
+</Tip>
+
+<Warning>
+選択系フィールドに `_value` サフィックスなしのフィールド ID を使用すると、チャートのデータが空になるか不正確になります。
+</Warning>
+
+---
+
+## 代替フィールド形式
+
+`xField` と `yField` を文字列として使用する代わりに、`fields` 配列を使用して個別の集計タイプを持つ複数のメジャーを指定できます：
+
+```json
+{
+  "type": "bar",
+  "title": "Multi-measure Chart",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_amount", "aggregateType": "SUM" },
+    { "fieldCode": "numberField_count", "aggregateType": "COUNT" }
+  ]
+}
+```
+
+この形式は、同じビジュアライゼーションで複数の指標を表示する必要があるコンボチャートやレーダーチャートに特に便利です。
+
+---
+
+## フィルター
+
+選択系フィールド（SelectField、RadioField、CheckboxField など）は、レポートで自動的にフィルターを生成します。チャートが選択系フィールドを `xField` として使用すると、レポート UI にフィルタードロップダウンが表示され、ユーザーがチャートデータを対話的にフィルタリングできます。
+
+追加の設定は不要です — フィルターはフォームスキーマのフィールドタイプに基づいて自動的に生成されます。
+
 ---
 
 ## 集計関数
@@ -190,6 +284,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **count** | レコード数 |
 | **max** | 最大値 |
 | **min** | 最小値 |
+| **count_distinct** | ユニーク値のカウント |
 
 ---
 
@@ -248,9 +343,22 @@ openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.
 
 ---
 
+## 設定の検証
+
+レポートを作成する前に、チャート設定を検証して一般的なエラーを回避してください：
+
+1. **フィールドコードを確認** — `openyida get-schema` を実行してフィールド ID を確認し、選択系フィールドに `_value` サフィックスが含まれていることを確認します。
+2. **データソースを確認** — `dataSource` または `cubeCode` がアプリケーション内の有効なフォーム UUID と一致することを確認します。
+3. **集計タイプを確認** — 集計関数がフィールドタイプと互換性があることを確認します（例：`sum` は数値フィールドでのみ機能します）。
+4. **単一チャートでテスト** — 複数のチャートを追加する前に、1つのチャートで設定を確認します。
+
+---
+
 ## ベストプラクティス
 
 1. **適切なチャートタイプを選択** - トレンドは折れ線グラフ、比較は棒グラフ、比率は円グラフ
 2. **チャート数を制限** - レポートあたり6つ以下のチャートに抑える
 3. **データテーブルを含める** - 詳細なデータ検査のためにチャートとテーブルを組み合わせる
 4. **適切なページサイズを設定** - データテーブルは1ページあたり10-20行を推奨
+5. **get-schema でフィールドを確認** - チャート定義を構築する前に `openyida get-schema` を実行して正しいフィールドコードを取得する
+6. **自動フィルターを活用** - 選択系フィールドは自動的にレポートフィルターを生成するため、インタラクティブなダッシュボードには `xField` として使用する

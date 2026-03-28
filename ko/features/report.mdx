@@ -96,6 +96,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **pivot** | 크로스 피벗 테이블 | 다차원 분석 |
 | **gauge** | 게이지 차트 | 진행률 또는 목표 추적 |
 | **funnel** | 퍼널 차트 | 단계별 전환 |
+| **radar** | 레이더 차트 | 다변수 비교 |
 
 ---
 
@@ -179,6 +180,99 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 }
 ```
 
+### 지표 카드 (KPI)
+
+```json
+{
+  "type": "indicator",
+  "title": "Total Revenue",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_amount",
+  "aggregation": "sum"
+}
+```
+
+### 게이지
+
+```json
+{
+  "type": "gauge",
+  "title": "Completion Rate",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_rate",
+  "aggregation": "avg"
+}
+```
+
+### 레이더 차트
+
+```json
+{
+  "type": "radar",
+  "title": "Performance Overview",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_score1", "aggregateType": "AVG" },
+    { "fieldCode": "numberField_score2", "aggregateType": "AVG" }
+  ]
+}
+```
+
+---
+
+## 보고서 필드 코드
+
+보고서 차트 정의에서 양식 필드를 참조할 때, 대부분의 필드 유형은 필드 ID를 직접 사용합니다(예: `textField_abc123`). 그러나 선택형 필드 — `SelectField`, `RadioField`, `CheckboxField`, `EmployeeField`, `DepartmentSelectField` — 는 필드 ID에 `_value` 접미사를 추가해야 합니다.
+
+| Field type | Field ID example | Report field code |
+|------------|------------------|-------------------|
+| TextField | textField_abc123 | textField_abc123 |
+| NumberField | numberField_abc123 | numberField_abc123 |
+| DateField | dateField_abc123 | dateField_abc123 |
+| SelectField | selectField_abc123 | selectField_abc123_value |
+| RadioField | radioField_abc123 | radioField_abc123_value |
+| CheckboxField | checkboxField_abc123 | checkboxField_abc123_value |
+| EmployeeField | employeeField_abc123 | employeeField_abc123_value |
+| DepartmentSelectField | departmentSelectField_abc123 | departmentSelectField_abc123_value |
+
+<Tip>
+`openyida get-schema`를 사용하여 양식 스키마를 가져오고 보고서 차트에 올바른 필드 코드를 확인하세요.
+</Tip>
+
+<Warning>
+선택형 필드에 `_value` 접미사 없이 필드 ID를 사용하면 차트에 빈 데이터 또는 잘못된 데이터가 표시됩니다.
+</Warning>
+
+---
+
+## 대체 필드 형식
+
+`xField`와 `yField`를 문자열로 사용하는 대신, `fields` 배열을 사용하여 개별 집계 유형을 가진 여러 측정값을 지정할 수 있습니다:
+
+```json
+{
+  "type": "bar",
+  "title": "Multi-measure Chart",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_amount", "aggregateType": "SUM" },
+    { "fieldCode": "numberField_count", "aggregateType": "COUNT" }
+  ]
+}
+```
+
+이 형식은 동일한 시각화에 여러 지표를 표시해야 하는 콤보 차트와 레이더 차트에 특히 유용합니다.
+
+---
+
+## 필터
+
+선택형 필드(SelectField, RadioField, CheckboxField 등)는 보고서에서 자동으로 필터를 생성합니다. 차트가 선택형 필드를 `xField`로 사용하면, 보고서 UI에 필터 드롭다운이 표시되어 사용자가 차트 데이터를 대화형으로 필터링할 수 있습니다.
+
+추가 구성은 필요 없습니다 — 필터는 양식 스키마의 필드 유형에 따라 자동으로 생성됩니다.
+
 ---
 
 ## 집계 함수
@@ -190,6 +284,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **count** | 레코드 수 |
 | **max** | 최대 값 |
 | **min** | 최소 값 |
+| **count_distinct** | 고유 값 수 |
 
 ---
 
@@ -248,9 +343,22 @@ openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.
 
 ---
 
+## 구성 유효성 검사
+
+보고서를 만들기 전에 차트 구성을 검증하여 일반적인 오류를 방지하세요:
+
+1. **필드 코드 확인** — `openyida get-schema`를 실행하여 필드 ID를 확인하고 선택형 필드에 `_value` 접미사가 포함되어 있는지 확인합니다.
+2. **데이터 소스 확인** — `dataSource` 또는 `cubeCode`가 애플리케이션의 유효한 양식 UUID와 일치하는지 확인합니다.
+3. **집계 유형 검증** — 집계 함수가 필드 유형과 호환되는지 확인합니다(예: `sum`은 숫자 필드에서만 작동).
+4. **단일 차트로 테스트** — 여러 차트를 추가하기 전에 하나의 차트로 구성을 확인합니다.
+
+---
+
 ## 모범 사례
 
 1. **적절한 차트 유형 선택** - 추세에는 꺾은선형, 비교에는 막대형, 비율에는 원형 차트 사용
 2. **차트 수 제한** - 보고서당 6개 이하의 차트 유지
 3. **데이터 테이블 포함** - 상세 데이터 검사를 위해 차트와 테이블을 함께 사용
 4. **적절한 페이지 크기 설정** - 데이터 테이블은 페이지당 10-20행 사용
+5. **get-schema로 필드 확인** - 차트 정의를 작성하기 전에 `openyida get-schema`를 실행하여 올바른 필드 코드를 가져오세요
+6. **자동 필터 활용** - 선택형 필드는 자동으로 보고서 필터를 생성하므로 대화형 대시보드를 위해 `xField`로 사용하세요

@@ -96,6 +96,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **pivot** | Tableau croisé dynamique | Analyse multidimensionnelle |
 | **gauge** | Jauge | Suivi de progression ou d'objectifs |
 | **funnel** | Graphique en entonnoir | Conversion par étapes |
+| **radar** | Graphique radar | Comparaison multivariable |
 
 ---
 
@@ -179,6 +180,99 @@ Définir `w` ou `h` à `0` est valide et sera respecté. Si omis, les valeurs pa
 }
 ```
 
+### Indicateur (KPI)
+
+```json
+{
+  "type": "indicator",
+  "title": "Total Revenue",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_amount",
+  "aggregation": "sum"
+}
+```
+
+### Jauge
+
+```json
+{
+  "type": "gauge",
+  "title": "Completion Rate",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_rate",
+  "aggregation": "avg"
+}
+```
+
+### Graphique radar
+
+```json
+{
+  "type": "radar",
+  "title": "Performance Overview",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_score1", "aggregateType": "AVG" },
+    { "fieldCode": "numberField_score2", "aggregateType": "AVG" }
+  ]
+}
+```
+
+---
+
+## Codes de champs pour les rapports
+
+Lors du référencement de champs de formulaire dans les définitions de graphiques, la plupart des types de champs utilisent directement leur ID de champ (par ex. `textField_abc123`). Cependant, les champs de type sélection — tels que `SelectField`, `RadioField`, `CheckboxField`, `EmployeeField` et `DepartmentSelectField` — nécessitent l'ajout du suffixe `_value` à l'ID du champ.
+
+| Field type | Field ID example | Report field code |
+|------------|------------------|-------------------|
+| TextField | textField_abc123 | textField_abc123 |
+| NumberField | numberField_abc123 | numberField_abc123 |
+| DateField | dateField_abc123 | dateField_abc123 |
+| SelectField | selectField_abc123 | selectField_abc123_value |
+| RadioField | radioField_abc123 | radioField_abc123_value |
+| CheckboxField | checkboxField_abc123 | checkboxField_abc123_value |
+| EmployeeField | employeeField_abc123 | employeeField_abc123_value |
+| DepartmentSelectField | departmentSelectField_abc123 | departmentSelectField_abc123_value |
+
+<Tip>
+Utilisez `openyida get-schema` pour récupérer le schéma du formulaire et identifier les codes de champs corrects pour vos graphiques.
+</Tip>
+
+<Warning>
+L'utilisation d'un ID de champ sans le suffixe `_value` pour les champs de type sélection entraînera des données vides ou incorrectes dans le graphique.
+</Warning>
+
+---
+
+## Format de champ alternatif
+
+Au lieu d'utiliser `xField` et `yField` comme chaînes de caractères, vous pouvez utiliser un tableau `fields` pour spécifier plusieurs mesures avec des types d'agrégation individuels :
+
+```json
+{
+  "type": "bar",
+  "title": "Multi-measure Chart",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_amount", "aggregateType": "SUM" },
+    { "fieldCode": "numberField_count", "aggregateType": "COUNT" }
+  ]
+}
+```
+
+Ce format est particulièrement utile pour les graphiques combinés et les graphiques radar qui doivent afficher plusieurs métriques sur la même visualisation.
+
+---
+
+## Filtres
+
+Les champs de type sélection (SelectField, RadioField, CheckboxField, etc.) génèrent automatiquement des filtres dans le rapport. Lorsqu'un graphique utilise un champ de type sélection comme `xField`, l'interface du rapport affiche un menu déroulant de filtrage permettant aux utilisateurs de filtrer les données du graphique de manière interactive.
+
+Aucune configuration supplémentaire n'est nécessaire — les filtres sont générés en fonction du type de champ dans le schéma du formulaire.
+
 ---
 
 ## Fonctions d'agrégation
@@ -190,6 +284,7 @@ Définir `w` ou `h` à `0` est valide et sera respecté. Si omis, les valeurs pa
 | **count** | Nombre d'enregistrements |
 | **max** | Valeur maximale |
 | **min** | Valeur minimale |
+| **count_distinct** | Nombre de valeurs uniques |
 
 ---
 
@@ -248,9 +343,22 @@ openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.
 
 ---
 
+## Validation de la configuration
+
+Avant de créer un rapport, validez la configuration de vos graphiques pour éviter les erreurs courantes :
+
+1. **Vérifiez les codes de champs** — Exécutez `openyida get-schema` pour vérifier les ID de champs et vous assurer que les champs de type sélection incluent le suffixe `_value`.
+2. **Vérifiez la source de données** — Assurez-vous que `dataSource` ou `cubeCode` correspond à un UUID de formulaire valide dans votre application.
+3. **Validez les types d'agrégation** — Confirmez que la fonction d'agrégation est compatible avec le type de champ (par ex., `sum` ne fonctionne que sur les champs numériques).
+4. **Testez avec un seul graphique** — Commencez par un graphique pour vérifier la configuration avant d'en ajouter plusieurs.
+
+---
+
 ## Meilleures pratiques
 
 1. **Choisissez le type de graphique approprié** - Graphiques linéaires pour les tendances, à barres pour les comparaisons, circulaires pour les proportions
 2. **Limitez le nombre de graphiques** - Gardez 6 graphiques ou moins par rapport
 3. **Incluez des tableaux de données** - Associez des tableaux aux graphiques pour une inspection détaillée
 4. **Définissez des tailles de page raisonnables** - Pour les tableaux de données, utilisez 10-20 lignes par page
+5. **Utilisez get-schema pour découvrir les champs** - Exécutez `openyida get-schema` pour obtenir les codes de champs corrects avant de construire les définitions de graphiques
+6. **Tirez parti des filtres automatiques** - Les champs de type sélection génèrent automatiquement des filtres de rapport, utilisez-les comme `xField` pour des tableaux de bord interactifs

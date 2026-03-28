@@ -96,6 +96,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **pivot** | 交叉透视表 | 多维分析 |
 | **gauge** | 仪表盘 | 进度或目标跟踪 |
 | **funnel** | 漏斗图 | 阶段转化分析 |
+| **radar** | 雷达图 | 多变量对比 |
 
 ---
 
@@ -179,6 +180,99 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 }
 ```
 
+### 指标卡 (KPI)
+
+```json
+{
+  "type": "indicator",
+  "title": "Total Revenue",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_amount",
+  "aggregation": "sum"
+}
+```
+
+### 仪表盘
+
+```json
+{
+  "type": "gauge",
+  "title": "Completion Rate",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_rate",
+  "aggregation": "avg"
+}
+```
+
+### 雷达图
+
+```json
+{
+  "type": "radar",
+  "title": "Performance Overview",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_score1", "aggregateType": "AVG" },
+    { "fieldCode": "numberField_score2", "aggregateType": "AVG" }
+  ]
+}
+```
+
+---
+
+## 报表字段编码
+
+在报表图表定义中引用表单字段时，大多数字段类型直接使用其字段 ID（如 `textField_abc123`）。但是，选择类字段——如 `SelectField`、`RadioField`、`CheckboxField`、`EmployeeField` 和 `DepartmentSelectField`——需要在字段 ID 后追加 `_value` 后缀。
+
+| Field type | Field ID example | Report field code |
+|------------|------------------|-------------------|
+| TextField | textField_abc123 | textField_abc123 |
+| NumberField | numberField_abc123 | numberField_abc123 |
+| DateField | dateField_abc123 | dateField_abc123 |
+| SelectField | selectField_abc123 | selectField_abc123_value |
+| RadioField | radioField_abc123 | radioField_abc123_value |
+| CheckboxField | checkboxField_abc123 | checkboxField_abc123_value |
+| EmployeeField | employeeField_abc123 | employeeField_abc123_value |
+| DepartmentSelectField | departmentSelectField_abc123 | departmentSelectField_abc123_value |
+
+<Tip>
+使用 `openyida get-schema` 获取表单结构，确认报表图表中的正确字段编码。
+</Tip>
+
+<Warning>
+对选择类字段使用不带 `_value` 后缀的字段 ID 会导致图表中数据为空或不正确。
+</Warning>
+
+---
+
+## 替代字段格式
+
+除了使用字符串形式的 `xField` 和 `yField`，还可以使用 `fields` 数组来指定多个度量及其各自的聚合类型：
+
+```json
+{
+  "type": "bar",
+  "title": "Multi-measure Chart",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_amount", "aggregateType": "SUM" },
+    { "fieldCode": "numberField_count", "aggregateType": "COUNT" }
+  ]
+}
+```
+
+此格式特别适用于需要在同一可视化中显示多个指标的柱线混合图和雷达图。
+
+---
+
+## 筛选器
+
+选择类字段（SelectField、RadioField、CheckboxField 等）会自动在报表中生成筛选器。当图表使用选择类字段作为 `xField` 时，报表界面会显示筛选下拉菜单，允许用户交互式地筛选图表数据。
+
+无需额外配置——筛选器根据表单结构中的字段类型自动生成。
+
 ---
 
 ## 聚合函数
@@ -190,6 +284,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **count** | 计数 |
 | **max** | 最大值 |
 | **min** | 最小值 |
+| **count_distinct** | 唯一值计数 |
 
 ---
 
@@ -248,9 +343,22 @@ openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.
 
 ---
 
+## 配置验证
+
+在创建报表之前，验证图表配置以避免常见错误：
+
+1. **检查字段编码** — 运行 `openyida get-schema` 验证字段 ID，确保选择类字段包含 `_value` 后缀。
+2. **验证数据源** — 确保 `dataSource` 或 `cubeCode` 与应用中的有效表单 UUID 匹配。
+3. **验证聚合类型** — 确认聚合函数与字段类型兼容（例如，`sum` 仅适用于数字字段）。
+4. **先测试单个图表** — 先使用一个图表验证配置，然后再添加多个图表。
+
+---
+
 ## 最佳实践
 
 1. **合理选择图表类型** - 趋势用折线图、对比用柱状图、占比用饼图
 2. **控制图表数量** - 单个报表建议不超过 6 个图表
 3. **使用数据表格** - 配合图表展示详细数据，方便查看原始值
 4. **设置合适的分页** - 数据表格建议每页 10-20 条
+5. **使用 get-schema 发现字段** - 在构建图表定义之前运行 `openyida get-schema` 获取正确的字段编码
+6. **利用自动筛选器** - 选择类字段自动生成报表筛选器，将其用作 `xField` 可构建交互式仪表板
