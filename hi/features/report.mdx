@@ -96,6 +96,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **pivot** | क्रॉस पिवट टेबल | बहु-आयामी विश्लेषण |
 | **gauge** | गेज चार्ट | प्रगति या लक्ष्य ट्रैकिंग |
 | **funnel** | फ़नल चार्ट | चरणबद्ध रूपांतरण |
+| **radar** | रडार चार्ट | बहु-चर तुलना |
 
 ---
 
@@ -179,6 +180,99 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 }
 ```
 
+### संकेतक (KPI)
+
+```json
+{
+  "type": "indicator",
+  "title": "Total Revenue",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_amount",
+  "aggregation": "sum"
+}
+```
+
+### गेज
+
+```json
+{
+  "type": "gauge",
+  "title": "Completion Rate",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_rate",
+  "aggregation": "avg"
+}
+```
+
+### रडार चार्ट
+
+```json
+{
+  "type": "radar",
+  "title": "Performance Overview",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_score1", "aggregateType": "AVG" },
+    { "fieldCode": "numberField_score2", "aggregateType": "AVG" }
+  ]
+}
+```
+
+---
+
+## रिपोर्ट फ़ील्ड कोड
+
+रिपोर्ट चार्ट परिभाषाओं में फॉर्म फ़ील्ड का संदर्भ देते समय, अधिकांश फ़ील्ड प्रकार सीधे अपने फ़ील्ड ID का उपयोग करते हैं (जैसे `textField_abc123`)। हालांकि, चयन-प्रकार के फ़ील्ड — जैसे `SelectField`, `RadioField`, `CheckboxField`, `EmployeeField`, और `DepartmentSelectField` — को फ़ील्ड ID में `_value` प्रत्यय जोड़ने की आवश्यकता होती है।
+
+| Field type | Field ID example | Report field code |
+|------------|------------------|-------------------|
+| TextField | textField_abc123 | textField_abc123 |
+| NumberField | numberField_abc123 | numberField_abc123 |
+| DateField | dateField_abc123 | dateField_abc123 |
+| SelectField | selectField_abc123 | selectField_abc123_value |
+| RadioField | radioField_abc123 | radioField_abc123_value |
+| CheckboxField | checkboxField_abc123 | checkboxField_abc123_value |
+| EmployeeField | employeeField_abc123 | employeeField_abc123_value |
+| DepartmentSelectField | departmentSelectField_abc123 | departmentSelectField_abc123_value |
+
+<Tip>
+फॉर्म स्कीमा प्राप्त करने और अपने रिपोर्ट चार्ट के लिए सही फ़ील्ड कोड की पहचान करने के लिए `openyida get-schema` का उपयोग करें।
+</Tip>
+
+<Warning>
+चयन-प्रकार के फ़ील्ड के लिए `_value` प्रत्यय के बिना फ़ील्ड ID का उपयोग करने से चार्ट में खाली या गलत डेटा प्रदर्शित होगा।
+</Warning>
+
+---
+
+## वैकल्पिक फ़ील्ड प्रारूप
+
+`xField` और `yField` को स्ट्रिंग के रूप में उपयोग करने के बजाय, आप व्यक्तिगत एग्रीगेशन प्रकारों के साथ कई माप निर्दिष्ट करने के लिए `fields` ऐरे का उपयोग कर सकते हैं:
+
+```json
+{
+  "type": "bar",
+  "title": "Multi-measure Chart",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_amount", "aggregateType": "SUM" },
+    { "fieldCode": "numberField_count", "aggregateType": "COUNT" }
+  ]
+}
+```
+
+यह प्रारूप विशेष रूप से कॉम्बो चार्ट और रडार चार्ट के लिए उपयोगी है जिन्हें एक ही विज़ुअलाइज़ेशन में कई मेट्रिक्स प्रदर्शित करने की आवश्यकता होती है।
+
+---
+
+## फ़िल्टर
+
+चयन-प्रकार के फ़ील्ड (SelectField, RadioField, CheckboxField, आदि) स्वचालित रूप से रिपोर्ट में फ़िल्टर उत्पन्न करते हैं। जब कोई चार्ट चयन-प्रकार के फ़ील्ड को `xField` के रूप में उपयोग करता है, तो रिपोर्ट UI एक फ़िल्टर ड्रॉपडाउन प्रदर्शित करता है जो उपयोगकर्ताओं को चार्ट डेटा को इंटरैक्टिव रूप से फ़िल्टर करने की अनुमति देता है।
+
+कोई अतिरिक्त कॉन्फ़िगरेशन आवश्यक नहीं है — फ़िल्टर फॉर्म स्कीमा में फ़ील्ड प्रकार के आधार पर स्वचालित रूप से उत्पन्न होते हैं।
+
 ---
 
 ## एग्रीगेशन फ़ंक्शन
@@ -190,6 +284,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **count** | रिकॉर्ड की गणना |
 | **max** | अधिकतम मान |
 | **min** | न्यूनतम मान |
+| **count_distinct** | अद्वितीय मानों की गणना |
 
 ---
 
@@ -248,9 +343,22 @@ openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.
 
 ---
 
+## कॉन्फ़िगरेशन सत्यापन
+
+रिपोर्ट बनाने से पहले, सामान्य त्रुटियों से बचने के लिए अपने चार्ट कॉन्फ़िगरेशन को सत्यापित करें:
+
+1. **फ़ील्ड कोड जांचें** — `openyida get-schema` चलाकर फ़ील्ड ID सत्यापित करें और सुनिश्चित करें कि चयन-प्रकार के फ़ील्ड में `_value` प्रत्यय शामिल है।
+2. **डेटा स्रोत सत्यापित करें** — सुनिश्चित करें कि `dataSource` या `cubeCode` आपके एप्लिकेशन में एक मान्य फॉर्म UUID से मेल खाता है।
+3. **एग्रीगेशन प्रकार मान्य करें** — पुष्टि करें कि एग्रीगेशन फ़ंक्शन फ़ील्ड प्रकार के साथ संगत है (उदा., `sum` केवल संख्या फ़ील्ड पर काम करता है)।
+4. **एकल चार्ट से परीक्षण करें** — कई चार्ट जोड़ने से पहले एक चार्ट से कॉन्फ़िगरेशन सत्यापित करें।
+
+---
+
 ## सर्वोत्तम अभ्यास
 
 1. **उचित चार्ट प्रकार चुनें** - प्रवृत्तियों के लिए लाइन चार्ट, तुलना के लिए बार चार्ट, अनुपात के लिए पाई चार्ट
 2. **चार्ट की संख्या सीमित रखें** - प्रति रिपोर्ट 6 या उससे कम चार्ट रखें
 3. **डेटा टेबल शामिल करें** - विस्तृत डेटा निरीक्षण के लिए चार्ट के साथ टेबल जोड़ें
 4. **उचित पेज साइज़ सेट करें** - डेटा टेबल के लिए प्रति पृष्ठ 10-20 पंक्तियां उपयोग करें
+5. **get-schema से फ़ील्ड खोजें** - चार्ट परिभाषा बनाने से पहले सही फ़ील्ड कोड प्राप्त करने के लिए `openyida get-schema` चलाएं
+6. **ऑटो-फ़िल्टर का लाभ उठाएं** - चयन-प्रकार के फ़ील्ड स्वचालित रूप से रिपोर्ट फ़िल्टर उत्पन्न करते हैं, इंटरैक्टिव डैशबोर्ड के लिए उन्हें `xField` के रूप में उपयोग करें

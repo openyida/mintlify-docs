@@ -96,6 +96,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **pivot** | Kreuz-Pivottabelle | Mehrdimensionale Analyse |
 | **gauge** | Messgerät-Diagramm | Fortschritts- oder Zielverfolgung |
 | **funnel** | Trichterdiagramm | Stufenweise Konversion |
+| **radar** | Radardiagramm | Mehrvariablenvergleich |
 
 ---
 
@@ -179,6 +180,99 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
 }
 ```
 
+### Kennzahl (KPI)
+
+```json
+{
+  "type": "indicator",
+  "title": "Total Revenue",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_amount",
+  "aggregation": "sum"
+}
+```
+
+### Tachometer
+
+```json
+{
+  "type": "gauge",
+  "title": "Completion Rate",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_rate",
+  "aggregation": "avg"
+}
+```
+
+### Radardiagramm
+
+```json
+{
+  "type": "radar",
+  "title": "Performance Overview",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_score1", "aggregateType": "AVG" },
+    { "fieldCode": "numberField_score2", "aggregateType": "AVG" }
+  ]
+}
+```
+
+---
+
+## Feldcodes für Berichte
+
+Beim Referenzieren von Formularfeldern in Berichts-Diagrammdefinitionen verwenden die meisten Feldtypen ihre Feld-ID direkt (z.B. `textField_abc123`). Auswahlfelder — wie `SelectField`, `RadioField`, `CheckboxField`, `EmployeeField` und `DepartmentSelectField` — erfordern jedoch das Anhängen des Suffixes `_value` an die Feld-ID.
+
+| Field type | Field ID example | Report field code |
+|------------|------------------|-------------------|
+| TextField | textField_abc123 | textField_abc123 |
+| NumberField | numberField_abc123 | numberField_abc123 |
+| DateField | dateField_abc123 | dateField_abc123 |
+| SelectField | selectField_abc123 | selectField_abc123_value |
+| RadioField | radioField_abc123 | radioField_abc123_value |
+| CheckboxField | checkboxField_abc123 | checkboxField_abc123_value |
+| EmployeeField | employeeField_abc123 | employeeField_abc123_value |
+| DepartmentSelectField | departmentSelectField_abc123 | departmentSelectField_abc123_value |
+
+<Tip>
+Verwenden Sie `openyida get-schema`, um das Formularschema abzurufen und die korrekten Feldcodes für Ihre Berichtsdiagramme zu ermitteln.
+</Tip>
+
+<Warning>
+Die Verwendung einer Feld-ID ohne das Suffix `_value` für Auswahlfelder führt zu leeren oder falschen Daten im Diagramm.
+</Warning>
+
+---
+
+## Alternatives Feldformat
+
+Anstatt `xField` und `yField` als Zeichenketten zu verwenden, können Sie ein `fields`-Array verwenden, um mehrere Kennzahlen mit individuellen Aggregationstypen anzugeben:
+
+```json
+{
+  "type": "bar",
+  "title": "Multi-measure Chart",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_amount", "aggregateType": "SUM" },
+    { "fieldCode": "numberField_count", "aggregateType": "COUNT" }
+  ]
+}
+```
+
+Dieses Format ist besonders nützlich für Kombi-Diagramme und Radardiagramme, die mehrere Kennzahlen in derselben Visualisierung anzeigen müssen.
+
+---
+
+## Filter
+
+Auswahlfelder (SelectField, RadioField, CheckboxField usw.) erzeugen automatisch Filter im Bericht. Wenn ein Diagramm ein Auswahlfeld als `xField` verwendet, zeigt die Berichts-UI ein Filter-Dropdown an, mit dem Benutzer die Diagrammdaten interaktiv filtern können.
+
+Es ist keine zusätzliche Konfiguration erforderlich — Filter werden basierend auf dem Feldtyp im Formularschema automatisch generiert.
+
 ---
 
 ## Aggregationsfunktionen
@@ -190,6 +284,7 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
 | **count** | Anzahl der Datensätze |
 | **max** | Maximalwert |
 | **min** | Minimalwert |
+| **count_distinct** | Anzahl eindeutiger Werte |
 
 ---
 
@@ -248,9 +343,22 @@ openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.
 
 ---
 
+## Konfigurationsvalidierung
+
+Bevor Sie einen Bericht erstellen, validieren Sie Ihre Diagrammkonfiguration, um häufige Fehler zu vermeiden:
+
+1. **Feldcodes prüfen** — Führen Sie `openyida get-schema` aus, um Feld-IDs zu überprüfen und sicherzustellen, dass Auswahlfelder das Suffix `_value` enthalten.
+2. **Datenquelle überprüfen** — Stellen Sie sicher, dass `dataSource` oder `cubeCode` einer gültigen Formular-UUID in Ihrer Anwendung entspricht.
+3. **Aggregationstypen validieren** — Bestätigen Sie, dass die Aggregationsfunktion mit dem Feldtyp kompatibel ist (z.B. `sum` funktioniert nur bei Zahlenfeldern).
+4. **Mit einem einzelnen Diagramm testen** — Beginnen Sie mit einem Diagramm, um die Konfiguration zu überprüfen, bevor Sie mehrere hinzufügen.
+
+---
+
 ## Best Practices
 
 1. **Wählen Sie den passenden Diagrammtyp** - Liniendiagramme für Trends, Balkendiagramme für Vergleiche, Kreisdiagramme für Anteile
 2. **Begrenzen Sie die Diagrammanzahl** - Maximal 6 Diagramme pro Bericht
 3. **Verwenden Sie Datentabellen** - Ergänzen Sie Diagramme mit Tabellen zur detaillierten Datenprüfung
 4. **Legen Sie angemessene Seitengrößen fest** - Für Datentabellen 10-20 Zeilen pro Seite
+5. **Verwenden Sie get-schema zur Felderkennung** - Führen Sie `openyida get-schema` aus, um korrekte Feldcodes vor dem Erstellen von Diagrammdefinitionen abzurufen
+6. **Nutzen Sie automatische Filter** - Auswahlfelder erzeugen automatisch Berichtsfilter, verwenden Sie sie als `xField` für interaktive Dashboards

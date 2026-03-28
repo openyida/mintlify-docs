@@ -96,6 +96,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **pivot** | Tabela dinâmica cruzada | Análise multidimensional |
 | **gauge** | Gráfico de medidor | Acompanhamento de progresso ou metas |
 | **funnel** | Gráfico de funil | Conversão por etapas |
+| **radar** | Gráfico radar | Comparação multivariável |
 
 ---
 
@@ -179,6 +180,99 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
 }
 ```
 
+### Indicador (KPI)
+
+```json
+{
+  "type": "indicator",
+  "title": "Total Revenue",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_amount",
+  "aggregation": "sum"
+}
+```
+
+### Medidor
+
+```json
+{
+  "type": "gauge",
+  "title": "Completion Rate",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_rate",
+  "aggregation": "avg"
+}
+```
+
+### Gráfico radar
+
+```json
+{
+  "type": "radar",
+  "title": "Performance Overview",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_score1", "aggregateType": "AVG" },
+    { "fieldCode": "numberField_score2", "aggregateType": "AVG" }
+  ]
+}
+```
+
+---
+
+## Códigos de campo para relatórios
+
+Ao referenciar campos de formulário nas definições de gráficos, a maioria dos tipos de campo usa seu ID de campo diretamente (ex: `textField_abc123`). No entanto, campos do tipo seleção — como `SelectField`, `RadioField`, `CheckboxField`, `EmployeeField` e `DepartmentSelectField` — requerem a adição do sufixo `_value` ao ID do campo.
+
+| Field type | Field ID example | Report field code |
+|------------|------------------|-------------------|
+| TextField | textField_abc123 | textField_abc123 |
+| NumberField | numberField_abc123 | numberField_abc123 |
+| DateField | dateField_abc123 | dateField_abc123 |
+| SelectField | selectField_abc123 | selectField_abc123_value |
+| RadioField | radioField_abc123 | radioField_abc123_value |
+| CheckboxField | checkboxField_abc123 | checkboxField_abc123_value |
+| EmployeeField | employeeField_abc123 | employeeField_abc123_value |
+| DepartmentSelectField | departmentSelectField_abc123 | departmentSelectField_abc123_value |
+
+<Tip>
+Use `openyida get-schema` para obter o esquema do formulário e identificar os códigos de campo corretos para seus gráficos.
+</Tip>
+
+<Warning>
+Usar um ID de campo sem o sufixo `_value` para campos do tipo seleção resultará em dados vazios ou incorretos no gráfico.
+</Warning>
+
+---
+
+## Formato de campo alternativo
+
+Em vez de usar `xField` e `yField` como strings, você pode usar um array `fields` para especificar múltiplas medidas com tipos de agregação individuais:
+
+```json
+{
+  "type": "bar",
+  "title": "Multi-measure Chart",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_amount", "aggregateType": "SUM" },
+    { "fieldCode": "numberField_count", "aggregateType": "COUNT" }
+  ]
+}
+```
+
+Este formato é especialmente útil para gráficos combinados e gráficos radar que precisam exibir múltiplas métricas na mesma visualização.
+
+---
+
+## Filtros
+
+Campos do tipo seleção (SelectField, RadioField, CheckboxField, etc.) geram automaticamente filtros no relatório. Quando um gráfico usa um campo do tipo seleção como `xField`, a interface do relatório exibe um menu suspenso de filtro, permitindo que os usuários filtrem os dados do gráfico interativamente.
+
+Nenhuma configuração adicional é necessária — os filtros são gerados com base no tipo de campo no esquema do formulário.
+
 ---
 
 ## Funções de agregação
@@ -190,6 +284,7 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
 | **count** | Contagem de registros |
 | **max** | Valor máximo |
 | **min** | Valor mínimo |
+| **count_distinct** | Contagem de valores únicos |
 
 ---
 
@@ -248,9 +343,22 @@ openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.
 
 ---
 
+## Validação de configuração
+
+Antes de criar um relatório, valide a configuração dos seus gráficos para evitar erros comuns:
+
+1. **Verifique os códigos de campo** — Execute `openyida get-schema` para verificar os IDs de campo e garantir que campos do tipo seleção incluem o sufixo `_value`.
+2. **Verifique a fonte de dados** — Certifique-se de que `dataSource` ou `cubeCode` corresponde a um UUID de formulário válido no seu aplicativo.
+3. **Valide os tipos de agregação** — Confirme que a função de agregação é compatível com o tipo de campo (ex: `sum` funciona apenas em campos numéricos).
+4. **Teste com um único gráfico** — Comece com um gráfico para verificar a configuração antes de adicionar vários.
+
+---
+
 ## Melhores práticas
 
 1. **Escolha o tipo de gráfico apropriado** - Gráficos de linhas para tendências, de barras para comparações, circulares para proporções
 2. **Limite a quantidade de gráficos** - Mantenha 6 gráficos ou menos por relatório
 3. **Inclua tabelas de dados** - Combine gráficos com tabelas para inspeção detalhada dos dados
 4. **Configure tamanhos de página razoáveis** - Para tabelas de dados, use 10-20 linhas por página
+5. **Use get-schema para descobrir campos** - Execute `openyida get-schema` para obter os códigos de campo corretos antes de construir as definições de gráficos
+6. **Aproveite os filtros automáticos** - Campos do tipo seleção geram automaticamente filtros de relatório, use-os como `xField` para painéis interativos

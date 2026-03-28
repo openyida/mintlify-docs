@@ -96,6 +96,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **pivot** | Cross pivot table | Multi-dimensional analysis |
 | **gauge** | Gauge chart | Progress or target tracking |
 | **funnel** | Funnel chart | Stage-based conversion |
+| **radar** | Radar chart | Multi-variable comparison |
 
 ---
 
@@ -179,6 +180,99 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
 }
 ```
 
+### Indicator (KPI)
+
+```json
+{
+  "type": "indicator",
+  "title": "Total Revenue",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_amount",
+  "aggregation": "sum"
+}
+```
+
+### Gauge
+
+```json
+{
+  "type": "gauge",
+  "title": "Completion Rate",
+  "cubeCode": "form_uuid",
+  "kpiField": "numberField_rate",
+  "aggregation": "avg"
+}
+```
+
+### Radar
+
+```json
+{
+  "type": "radar",
+  "title": "Performance Overview",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_score1", "aggregateType": "AVG" },
+    { "fieldCode": "numberField_score2", "aggregateType": "AVG" }
+  ]
+}
+```
+
+---
+
+## Field codes in reports
+
+When referencing form fields in report chart definitions, most field types use their field ID directly (e.g. `textField_abc123`). However, select-like fields — such as `SelectField`, `RadioField`, `CheckboxField`, `EmployeeField`, and `DepartmentSelectField` — require a `_value` suffix appended to the field ID.
+
+| Field type | Field ID example | Report field code |
+|------------|------------------|-------------------|
+| TextField | textField_abc123 | textField_abc123 |
+| NumberField | numberField_abc123 | numberField_abc123 |
+| DateField | dateField_abc123 | dateField_abc123 |
+| SelectField | selectField_abc123 | selectField_abc123_value |
+| RadioField | radioField_abc123 | radioField_abc123_value |
+| CheckboxField | checkboxField_abc123 | checkboxField_abc123_value |
+| EmployeeField | employeeField_abc123 | employeeField_abc123_value |
+| DepartmentSelectField | departmentSelectField_abc123 | departmentSelectField_abc123_value |
+
+<Tip>
+Use `openyida get-schema` to retrieve the form schema and identify the correct field codes for your report charts.
+</Tip>
+
+<Warning>
+Using a field ID without the `_value` suffix for select-like fields will result in empty or incorrect data in the chart.
+</Warning>
+
+---
+
+## Alternative field format
+
+Instead of using `xField` and `yField` as strings, you can use a `fields` array to specify multiple measures with individual aggregation types:
+
+```json
+{
+  "type": "bar",
+  "title": "Multi-measure Chart",
+  "cubeCode": "form_uuid",
+  "xField": "selectField_category_value",
+  "yField": [
+    { "fieldCode": "numberField_amount", "aggregateType": "SUM" },
+    { "fieldCode": "numberField_count", "aggregateType": "COUNT" }
+  ]
+}
+```
+
+This format is especially useful for combo charts and radar charts that need to display multiple metrics on the same visualization.
+
+---
+
+## Filters
+
+Select-like fields (SelectField, RadioField, CheckboxField, etc.) automatically generate filters in the report. When a chart uses a select-like field as the `xField`, the report UI will display a filter dropdown allowing users to filter the chart data interactively.
+
+No additional configuration is needed — filters are generated based on the field type in the form schema.
+
 ---
 
 ## Aggregation functions
@@ -190,6 +284,7 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
 | **count** | Count of records |
 | **max** | Maximum value |
 | **min** | Minimum value |
+| **count_distinct** | Count of unique values |
 
 ---
 
@@ -248,9 +343,22 @@ openyida create-report APP_XXXXXX "Sales Analysis Report" ./sales-report-charts.
 
 ---
 
+## Configuration validation
+
+Before creating a report, validate your chart configuration to avoid common errors:
+
+1. **Check field codes** — Run `openyida get-schema` to verify field IDs and ensure select-like fields include the `_value` suffix.
+2. **Verify data source** — Ensure the `dataSource` or `cubeCode` matches a valid form UUID in your application.
+3. **Validate aggregation types** — Confirm that the aggregation function is compatible with the field type (e.g., `sum` only works on number fields).
+4. **Test with a single chart** — Start with one chart to verify the configuration before adding multiple charts.
+
+---
+
 ## Best practices
 
 1. **Choose appropriate chart types** - Use line charts for trends, bar charts for comparisons, pie charts for proportions
 2. **Limit chart count** - Keep reports to 6 or fewer charts
 3. **Include data tables** - Pair charts with tables for detailed data inspection
 4. **Set reasonable page sizes** - For data tables, use 10-20 rows per page
+5. **Use get-schema for field discovery** - Run `openyida get-schema` to retrieve correct field codes before building chart definitions
+6. **Leverage auto-filters** - Select-like fields automatically generate report filters, so use them as `xField` for interactive dashboards
