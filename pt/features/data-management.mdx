@@ -58,7 +58,26 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # Retornar apenas IDs
 openyida data query form <appType> <formUuid> --ids-only
+
+# Filtrar por criador e intervalo de datas
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### Parâmetros opcionais
+
+| Parâmetro | Descrição |
+|-----------|-----------|
+| `--page N` | Número da página (padrão `1`) |
+| `--size N` | Itens por página (padrão `20`, máx `100`) |
+| `--search-json JSON` | Condições de pesquisa (deve ser JSON válido) |
+| `--inst-id ID` | Consultar registro por ID de instância |
+| `--ids-only` | Retornar apenas IDs de instância |
+| `--originator-id ID` | Filtrar por criador |
+| `--create-from DATE` / `--create-to DATE` | Filtrar por data de criação |
+| `--modified-from DATE` / `--modified-to DATE` | Filtrar por data de modificação |
+| `--dynamic-order FIELD` | Ordenar por campo |
 
 ### Obter um único registro
 
@@ -99,7 +118,28 @@ openyida data query process <appType> <formUuid> \
 
 # Retornar apenas IDs
 openyida data query process <appType> <formUuid> --ids-only
+
+# Filtrar por criador e status
+openyida data query process <appType> <formUuid> \
+  --originator-id <userId> \
+  --instance-status COMPLETED \
+  --create-from "2026-01-01" --create-to "2026-06-30"
 ```
+
+#### Parâmetros opcionais
+
+| Parâmetro | Descrição |
+|-----------|-----------|
+| `--page N` | Número da página (padrão `1`) |
+| `--size N` | Itens por página (padrão `20`, máx `100`) |
+| `--search-json JSON` | Condições de pesquisa (deve ser JSON válido) |
+| `--instance-status STATUS` | Filtrar por status: `RUNNING`, `COMPLETED`, `TERMINATED` |
+| `--task-id ID` | Filtrar por ID de tarefa |
+| `--approved-result RESULT` | Filtrar por resultado de aprovação |
+| `--ids-only` | Retornar apenas IDs de instância |
+| `--originator-id ID` | Filtrar por criador |
+| `--create-from DATE` / `--create-to DATE` | Filtrar por data de criação |
+| `--modified-from DATE` / `--modified-to DATE` | Filtrar por data de modificação |
 
 ### Obter detalhes do fluxo
 
@@ -153,7 +193,23 @@ openyida data query tasks <appType> --type submitted
 
 # CC para mim
 openyida data query tasks <appType> --type cc
+
+# Pesquisar tarefas por palavra-chave
+openyida data query tasks <appType> --type todo \
+  --keyword "aprovação" \
+  --page 1 --size 50
 ```
+
+#### Parâmetros opcionais
+
+| Parâmetro | Descrição |
+|-----------|-----------|
+| `--type TYPE` | **(obrigatório)** Tipo de tarefa: `todo`, `done`, `submitted`, `cc` |
+| `--page N` | Número da página (padrão `1`) |
+| `--size N` | Itens por página (padrão `20`, máx `100`) |
+| `--keyword TEXT` | Pesquisar tarefas por palavra-chave |
+| `--process-codes CODES` | Filtrar por códigos de processo |
+| `--instance-status STATUS` | Filtrar por status da instância |
 
 ### Executar tarefa
 
@@ -166,9 +222,16 @@ openyida data execute task <appType> \
   --data-json '{"comment": "Aprovação aprovada"}'
 ```
 
-**Opções de out-result:**
-- `AGREE` - Aprovar
-- `DISAGREE` - Não aprovar
+#### Parâmetros
+
+| Parâmetro | Obrigatório | Descrição |
+|-----------|:-----------:|-----------|
+| `--task-id ID` | Sim | ID da tarefa a executar |
+| `--process-inst-id ID` | Sim | ID da instância de fluxo |
+| `--out-result RESULT` | Sim | Resultado da execução: `AGREE` (aprovar) ou `DISAGREE` (não aprovar) |
+| `--remark TEXT` | Sim | Comentário da execução |
+| `--data-json JSON` | Não | Dados adicionais em formato JSON |
+| `--no-execute-expressions` | Não | Não executar expressões ao salvar |
 
 ---
 
@@ -190,6 +253,10 @@ openyida data query subform <appType> <formUuid> \
 ### Formato de condições de consulta
 
 O parâmetro `--search-json` aceita um formato de consulta baseado em array. Cada condição é um objeto com os seguintes campos:
+
+<Note>
+  O valor de `--search-json` deve ser um JSON válido. Use aspas simples ao redor do JSON no terminal para evitar problemas de escape. Você pode validar o JSON antes de usar com ferramentas como `jq` ou validadores online.
+</Note>
 
 | Campo | Descrição |
 |-------|-----------|
