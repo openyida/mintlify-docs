@@ -58,7 +58,26 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # केवल ID लौटाएं
 openyida data query form <appType> <formUuid> --ids-only
+
+# निर्माता और तिथि सीमा से फ़िल्टर करें
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### वैकल्पिक पैरामीटर
+
+| पैरामीटर | विवरण |
+|----------|--------|
+| `--page N` | पृष्ठ संख्या (डिफ़ॉल्ट `1`) |
+| `--size N` | प्रति पृष्ठ आइटम (डिफ़ॉल्ट `20`, अधिकतम `100`) |
+| `--search-json JSON` | खोज शर्तें (वैध JSON होना चाहिए) |
+| `--inst-id ID` | इंस्टेंस ID से एकल रिकॉर्ड क्वेरी |
+| `--ids-only` | केवल इंस्टेंस ID लौटाएं |
+| `--originator-id ID` | निर्माता से फ़िल्टर करें |
+| `--create-from DATE` / `--create-to DATE` | निर्माण तिथि से फ़िल्टर |
+| `--modified-from DATE` / `--modified-to DATE` | संशोधन तिथि से फ़िल्टर |
+| `--dynamic-order FIELD` | फ़ील्ड के अनुसार क्रमबद्ध करें |
 
 ### एकल रिकॉर्ड प्राप्त करें
 
@@ -99,7 +118,27 @@ openyida data query process <appType> <formUuid> \
 
 # केवल ID लौटाएं
 openyida data query process <appType> <formUuid> --ids-only
+
+# निर्माता और तिथि सीमा से फ़िल्टर करें
+openyida data query process <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### वैकल्पिक पैरामीटर
+
+| पैरामीटर | विवरण |
+|----------|--------|
+| `--page N` | पृष्ठ संख्या (डिफ़ॉल्ट `1`) |
+| `--size N` | प्रति पृष्ठ आइटम (डिफ़ॉल्ट `20`, अधिकतम `100`) |
+| `--search-json JSON` | खोज शर्तें (वैध JSON होना चाहिए) |
+| `--instance-status STATUS` | प्रक्रिया स्थिति: `RUNNING`, `COMPLETED`, `TERMINATED` |
+| `--task-id ID` | कार्य ID से फ़िल्टर करें |
+| `--approved-result RESULT` | अनुमोदन परिणाम से फ़िल्टर करें |
+| `--ids-only` | केवल इंस्टेंस ID लौटाएं |
+| `--originator-id ID` | निर्माता से फ़िल्टर करें |
+| `--create-from DATE` / `--create-to DATE` | निर्माण तिथि से फ़िल्टर |
+| `--modified-from DATE` / `--modified-to DATE` | संशोधन तिथि से फ़िल्टर |
 
 ### प्रक्रिया विवरण प्राप्त करें
 
@@ -153,7 +192,23 @@ openyida data query tasks <appType> --type submitted
 
 # मुझे CC किए गए
 openyida data query tasks <appType> --type cc
+
+# कीवर्ड और प्रक्रिया कोड से फ़िल्टर करें
+openyida data query tasks <appType> --type todo \
+  --keyword "अनुमोदन" \
+  --process-codes "PROC-001,PROC-002"
 ```
+
+#### वैकल्पिक पैरामीटर
+
+| पैरामीटर | विवरण |
+|----------|--------|
+| `--type TYPE` | **(आवश्यक)** कार्य प्रकार: `todo`, `done`, `submitted`, `cc` |
+| `--page N` | पृष्ठ संख्या (डिफ़ॉल्ट `1`) |
+| `--size N` | प्रति पृष्ठ आइटम (डिफ़ॉल्ट `20`, अधिकतम `100`) |
+| `--keyword TEXT` | कीवर्ड से खोजें |
+| `--process-codes CODES` | प्रक्रिया कोड से फ़िल्टर करें (कॉमा-पृथक) |
+| `--instance-status STATUS` | प्रक्रिया स्थिति: `RUNNING`, `COMPLETED`, `TERMINATED` |
 
 ### कार्य निष्पादित करें
 
@@ -166,9 +221,16 @@ openyida data execute task <appType> \
   --data-json '{"comment": "अनुमोदन पारित"}'
 ```
 
-**out-result विकल्प:**
-- `AGREE` - सहमत
-- `DISAGREE` - असहमत
+#### पैरामीटर
+
+| पैरामीटर | विवरण |
+|----------|--------|
+| `--task-id ID` | **(आवश्यक)** कार्य ID |
+| `--process-inst-id ID` | **(आवश्यक)** प्रक्रिया इंस्टेंस ID |
+| `--out-result RESULT` | **(आवश्यक)** निर्णय परिणाम: `AGREE` (सहमत), `DISAGREE` (असहमत) |
+| `--remark TEXT` | **(आवश्यक)** टिप्पणी संदेश |
+| `--data-json JSON` | अतिरिक्त फॉर्म डेटा (वैध JSON होना चाहिए) |
+| `--no-execute-expressions y` | कार्य पूरा होने के बाद अभिव्यक्ति निष्पादन छोड़ें |
 
 ---
 
@@ -190,6 +252,10 @@ openyida data query subform <appType> <formUuid> \
 ### क्वेरी शर्त प्रारूप
 
 `--search-json` पैरामीटर ऐरे-आधारित क्वेरी प्रारूप स्वीकार करता है। प्रत्येक शर्त निम्न फ़ील्ड वाली एक ऑब्जेक्ट है:
+
+<Warning>
+  `--search-json` का मान वैध JSON होना चाहिए। अमान्य JSON प्रदान करने पर कमांड विफल हो जाएगी। JSON को सत्यापित करने के लिए `jq` जैसे टूल का उपयोग करें: `echo '<json>' | jq .`
+</Warning>
 
 | फ़ील्ड | विवरण |
 |--------|--------|
