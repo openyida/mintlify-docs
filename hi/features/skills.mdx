@@ -170,13 +170,13 @@ openyida data <कार्य> <संसाधन> [args]
 # फॉर्म डेटा
 openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
 openyida data get form <appType> --inst-id <id>
-openyida data create form <appType> <formUuid> --data <JSON>  # JSON कुंजियाँ फ़ील्ड ID या फ़ील्ड लेबल हो सकती हैं
-openyida data update form <appType> --inst-id <id> --data <JSON>
+openyida data create form <appType> <formUuid> --data-json <JSON>  # JSON कुंजियाँ फ़ील्ड ID या फ़ील्ड लेबल हो सकती हैं
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
 
 # प्रक्रिया डेटा
 openyida data query process <appType> <formUuid> [--instance-status स्थिति]
 openyida data get process <appType> --process-inst-id <id>
-openyida data create process <appType> <formUuid> --process-code <कोड> --data <JSON>
+openyida data create process <appType> <formUuid> --process-code <कोड> --data-json <JSON>
 
 # कार्य प्रबंधन
 openyida data query tasks <appType> --type <todo|done|submitted|cc>
