@@ -322,6 +322,52 @@ openyida cdn-refresh <đường_dẫn>
 
 ---
 
+## Ghi chú nhanh sang PRD
+
+Chuyển đổi ghi chú nhanh DingTalk (bản ghi cuộc họp) thành tài liệu PRD có cấu trúc bằng AI.
+
+```bash
+# Từ tệp
+openyida flash-to-prd --file <đường_dẫn> [--name <tên dự án>] [--max-tokens <số>]
+
+# Từ đầu vào tiêu chuẩn
+cat meeting.txt | openyida flash-to-prd --name <tên dự án> [--max-tokens <số>]
+```
+
+### Tham số
+
+| Tham số | Viết tắt | Mô tả | Mặc định |
+|---------|----------|-------|----------|
+| `--file` | `-f` | Đường dẫn đến tệp ghi chú nhanh | — |
+| `--name` | `-n` | Tên dự án (tự động phát hiện nếu bỏ qua) | — |
+| `--max-tokens` | — | Số token tối đa cho phản hồi AI | `8000` |
+
+Lệnh đọc nội dung ghi chú nhanh từ tệp được chỉ định hoặc từ đầu vào tiêu chuẩn, tiền xử lý văn bản (bao gồm trích xuất siêu dữ liệu cuộc họp và nhận dạng người nói), sau đó gọi dịch vụ AI Yida để tạo PRD có cấu trúc. Tệp PRD được lưu vào thư mục `prd/` trong dự án của bạn.
+
+### Đầu ra
+
+Lệnh in kết quả JSON ra stdout:
+
+```json
+{
+  "success": true,
+  "projectName": "Dự án của tôi",
+  "prdFile": "/path/to/prd/Dự-án-của-tôi.md",
+  "contentLength": 4096,
+  "meetingRecognition": {
+    "metaFields": 3,
+    "a1Sections": 2,
+    "speakers": 5
+  }
+}
+```
+
+<Info>
+  Bạn cần đăng nhập trước khi chạy lệnh này. Chạy `openyida login` trước nếu bạn chưa xác thực.
+</Info>
+
+---
+
 ## Tùy chọn toàn cục
 
 | Tùy chọn | Mô tả |

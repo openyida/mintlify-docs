@@ -322,6 +322,52 @@ openyida cdn-refresh <chemin>
 
 ---
 
+## Note flash vers PRD
+
+Convertit les notes flash DingTalk (transcriptions de réunions) en documents PRD structurés à l'aide de l'IA.
+
+```bash
+# Depuis un fichier
+openyida flash-to-prd --file <chemin> [--name <nom du projet>] [--max-tokens <nombre>]
+
+# Depuis l'entrée standard
+cat meeting.txt | openyida flash-to-prd --name <nom du projet> [--max-tokens <nombre>]
+```
+
+### Paramètres
+
+| Paramètre | Alias | Description | Par défaut |
+|-----------|-------|-------------|------------|
+| `--file` | `-f` | Chemin vers le fichier de note flash | — |
+| `--name` | `-n` | Nom du projet (détecté automatiquement si omis) | — |
+| `--max-tokens` | — | Nombre maximal de tokens pour la réponse IA | `8000` |
+
+La commande lit le contenu de la note flash depuis le fichier spécifié ou depuis l'entrée standard, prétraite le texte (y compris l'extraction des métadonnées de réunion et l'identification des intervenants), puis appelle le service IA Yida pour générer un PRD structuré. Le fichier PRD est enregistré dans le répertoire `prd/` de votre projet.
+
+### Sortie
+
+La commande affiche un résultat JSON sur stdout :
+
+```json
+{
+  "success": true,
+  "projectName": "Mon Projet",
+  "prdFile": "/path/to/prd/Mon-Projet.md",
+  "contentLength": 4096,
+  "meetingRecognition": {
+    "metaFields": 3,
+    "a1Sections": 2,
+    "speakers": 5
+  }
+}
+```
+
+<Info>
+  Vous devez être connecté avant d'exécuter cette commande. Exécutez `openyida login` au préalable si vous n'êtes pas authentifié.
+</Info>
+
+---
+
 ## Options globales
 
 | Option | Description |

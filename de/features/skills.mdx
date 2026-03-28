@@ -322,6 +322,52 @@ openyida cdn-refresh <Pfad>
 
 ---
 
+## Flash-Notiz zu PRD
+
+Konvertiert DingTalk-Flash-Notizen (Besprechungstranskripte) mithilfe von KI in strukturierte PRD-Dokumente.
+
+```bash
+# Aus Datei lesen
+openyida flash-to-prd --file <Dateipfad> [--name <Projektname>] [--max-tokens <Anzahl>]
+
+# Aus Standardeingabe lesen
+cat meeting.txt | openyida flash-to-prd --name <Projektname> [--max-tokens <Anzahl>]
+```
+
+### Parameter
+
+| Parameter | Kurzform | Beschreibung | Standard |
+|-----------|----------|--------------|----------|
+| `--file` | `-f` | Pfad zur Flash-Notiz-Datei | — |
+| `--name` | `-n` | Projektname (wird automatisch erkannt, wenn nicht angegeben) | — |
+| `--max-tokens` | — | Maximale Tokenanzahl für die KI-Antwort | `8000` |
+
+Der Befehl liest den Inhalt der Flash-Notiz aus der angegebenen Datei oder der Standardeingabe, verarbeitet den Text vor (einschließlich Extraktion von Besprechungsmetadaten und Sprecheridentifikation) und ruft den Yida-KI-Dienst auf, um ein strukturiertes PRD zu generieren. Die PRD-Datei wird im `prd/`-Verzeichnis Ihres Projekts gespeichert.
+
+### Ausgabe
+
+Der Befehl gibt ein JSON-Ergebnis auf stdout aus:
+
+```json
+{
+  "success": true,
+  "projectName": "Mein Projekt",
+  "prdFile": "/path/to/prd/Mein-Projekt.md",
+  "contentLength": 4096,
+  "meetingRecognition": {
+    "metaFields": 3,
+    "a1Sections": 2,
+    "speakers": 5
+  }
+}
+```
+
+<Info>
+  Sie müssen angemeldet sein, bevor Sie diesen Befehl ausführen. Führen Sie zuerst `openyida login` aus, wenn Sie noch nicht authentifiziert sind.
+</Info>
+
+---
+
 ## Globale Optionen
 
 | Option | Beschreibung |
