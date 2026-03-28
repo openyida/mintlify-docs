@@ -188,52 +188,6 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
-## Trung tâm tác vụ toàn cục
-
-Truy vấn dữ liệu trung tâm tác vụ toàn cục của người dùng hiện tại mà không cần chỉ định `appType`.
-
-```bash
-# Tác vụ cần làm
-openyida task-center todo [--page N] [--size N] [--keyword TEXT]
-
-# Do tôi tạo
-openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
-
-# Đã xử lý
-openyida task-center done [--page N] [--size N] [--keyword TEXT]
-
-# Được CC
-openyida task-center cc [--page N] [--size N] [--keyword TEXT]
-
-# Gửi thay
-openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
-```
-
-### Loại tác vụ
-
-| Loại | Mô tả | Endpoint API |
-|------|-------|-------------|
-| `todo` | Tác vụ đang chờ xử lý | `getTodoTasksInCorp` |
-| `created` | Quy trình bạn đã khởi tạo | `getMyCreateInCorp` |
-| `done` | Tác vụ đã xử lý | `getDoneTasksInCorp` |
-| `cc` | Tác vụ được CC | `getNotifyMeInCorp` |
-| `proxy` | Quy trình gửi thay | `getSubmitAgentInCorp` |
-
-### Tham số tùy chọn
-
-| Tham số | Mô tả | Mặc định |
-|---------|-------|----------|
-| `--page N` | Số trang | `1` |
-| `--size N` | Số mục mỗi trang (tối đa 100) | `20` |
-| `--keyword TEXT` | Từ khóa tìm kiếm | — |
-| `--no-detail` | Bỏ qua chi tiết (chỉ hỗ trợ loại `created`) | — |
-
-<Info>
-  Khác với `openyida data query tasks`, lệnh `task-center` truy vấn dữ liệu trung tâm tác vụ toàn cục và không yêu cầu tham số `appType`.
-</Info>
-
----
-
 ## Quản lý quy trình
 
 ```bash
@@ -318,6 +272,76 @@ openyida cdn-upload <đường_dẫn_tệp>
 
 # Làm mới bộ nhớ đệm
 openyida cdn-refresh <đường_dẫn>
+```
+
+---
+
+## Tích hợp DingTalk CLI
+
+```bash
+# Chuyển tiếp lệnh đến DingTalk CLI (dws)
+openyida dws <command> [args]
+
+# Cài đặt DingTalk CLI
+openyida dws install
+
+# Hiển thị trợ giúp dws
+openyida dws help
+
+# Ví dụ
+openyida dws contact user search --keyword "tên"     # Tìm kiếm liên hệ
+openyida dws calendar event list                      # Liệt kê sự kiện lịch
+openyida dws todo task create --title "công việc"     # Tạo việc cần làm
+openyida dws approval instance list                   # Liệt kê phiên bản phê duyệt
+openyida dws attendance record list                   # Truy vấn hồ sơ chấm công
+openyida dws chat robot send --content "tin nhắn"     # Gửi tin nhắn robot
+```
+
+Thêm `-f json` để xuất dạng JSON (hữu ích cho AI agent).
+
+<Note>
+DingTalk CLI (`dws`) cần được cài đặt riêng. Chạy `openyida dws install` để cài đặt có hướng dẫn, hoặc truy cập [kho DingTalk CLI](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli) để thiết lập thủ công.
+</Note>
+
+### Dịch vụ được hỗ trợ
+
+| Dịch vụ | Tiền tố lệnh | Mô tả |
+|---------|--------------|-------|
+| Danh bạ | `contact` | Quản lý người dùng/phòng ban |
+| Lịch | `calendar` | Tạo sự kiện, truy vấn lịch rảnh |
+| Việc cần làm | `todo` | Tạo và phân công công việc |
+| Phê duyệt | `approval` | Quản lý phiên bản quy trình |
+| Chấm công | `attendance` | Truy vấn hồ sơ chấm công |
+| Trò chuyện | `chat` | Gửi tin nhắn robot |
+| DING | `ding` | Gửi tin nhắn DING |
+| Báo cáo | `report` | Quản lý báo cáo |
+| Bàn làm việc | `workbench` | Truy vấn ứng dụng |
+| Tài liệu dev | `devdoc` | Tìm kiếm tài liệu |
+
+---
+
+## Trung tâm công việc
+
+```bash
+# Truy vấn trung tâm công việc
+openyida task-center <type> [--page N] [--size N] [--keyword TEXT]
+```
+
+Các loại được hỗ trợ: `todo` (cần làm), `created` (tôi tạo), `done` (đã xử lý), `cc` (bản sao), `pre-submit` (gửi thay).
+
+---
+
+## Xuất cuộc hội thoại
+
+```bash
+# Xuất bản ghi cuộc hội thoại AI
+openyida export-conversation [tùy chọn]
+
+# Tùy chọn
+openyida export-conversation --output <path>       # Chỉ định đường dẫn tệp đầu ra
+openyida export-conversation --input <file>        # Chỉ định tệp cuộc hội thoại đầu vào
+openyida export-conversation --latest              # Chỉ xuất cuộc hội thoại mới nhất (mặc định)
+openyida export-conversation --list                # Liệt kê các cuộc hội thoại có sẵn
 ```
 
 ---

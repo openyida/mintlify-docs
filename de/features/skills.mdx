@@ -188,52 +188,6 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
-## Globales Aufgabenzentrum
-
-Fragen Sie die globalen Aufgabenzentrumsdaten des aktuellen Benutzers ab, ohne einen `appType` anzugeben.
-
-```bash
-# Offene Aufgaben
-openyida task-center todo [--page N] [--size N] [--keyword TEXT]
-
-# Von mir erstellt
-openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
-
-# Erledigt
-openyida task-center done [--page N] [--size N] [--keyword TEXT]
-
-# In Kopie
-openyida task-center cc [--page N] [--size N] [--keyword TEXT]
-
-# Stellvertretend eingereicht
-openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
-```
-
-### Aufgabentypen
-
-| Typ | Beschreibung | API-Endpunkt |
-|-----|-------------|-------------|
-| `todo` | Ausstehende Aufgaben | `getTodoTasksInCorp` |
-| `created` | Von Ihnen gestartete Prozesse | `getMyCreateInCorp` |
-| `done` | Bereits bearbeitete Aufgaben | `getDoneTasksInCorp` |
-| `cc` | Aufgaben in Kopie | `getNotifyMeInCorp` |
-| `proxy` | Stellvertretend eingereichte Prozesse | `getSubmitAgentInCorp` |
-
-### Optionale Parameter
-
-| Parameter | Beschreibung | Standardwert |
-|-----------|-------------|-------------|
-| `--page N` | Seitennummer | `1` |
-| `--size N` | Einträge pro Seite (max. 100) | `20` |
-| `--keyword TEXT` | Suchbegriff | — |
-| `--no-detail` | Details weglassen (nur für Typ `created`) | — |
-
-<Info>
-  Im Gegensatz zu `openyida data query tasks` fragt der Befehl `task-center` globale Aufgabenzentrumsdaten ab und benötigt keinen `appType`-Parameter.
-</Info>
-
----
-
 ## Prozessverwaltung
 
 ```bash
@@ -318,6 +272,76 @@ openyida cdn-upload <Dateipfad>
 
 # Cache aktualisieren
 openyida cdn-refresh <Pfad>
+```
+
+---
+
+## DingTalk CLI-Integration
+
+```bash
+# DingTalk CLI (dws) Befehle durchreichen
+openyida dws <command> [args]
+
+# DingTalk CLI installieren
+openyida dws install
+
+# dws-Hilfe anzeigen
+openyida dws help
+
+# Beispiele
+openyida dws contact user search --keyword "Name"    # Kontakte suchen
+openyida dws calendar event list                      # Kalendertermine auflisten
+openyida dws todo task create --title "Aufgabe"       # Aufgabe erstellen
+openyida dws approval instance list                   # Genehmigungsinstanzen auflisten
+openyida dws attendance record list                   # Anwesenheitsdaten abfragen
+openyida dws chat robot send --content "Nachricht"    # Roboter-Nachricht senden
+```
+
+Fügen Sie `-f json` für JSON-Ausgabe hinzu (nützlich für KI-Agenten).
+
+<Note>
+DingTalk CLI (`dws`) muss separat installiert werden. Führen Sie `openyida dws install` für eine geführte Installation aus, oder besuchen Sie das [DingTalk CLI-Repository](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli) für die manuelle Einrichtung.
+</Note>
+
+### Unterstützte Dienste
+
+| Dienst | Befehlspräfix | Beschreibung |
+|--------|--------------|--------------|
+| Kontakte | `contact` | Benutzer-/Abteilungsverwaltung |
+| Kalender | `calendar` | Terminerstellung, Verfügbarkeitsabfragen |
+| Aufgaben | `todo` | Aufgabenerstellung und -zuweisung |
+| Genehmigung | `approval` | Prozessinstanzverwaltung |
+| Anwesenheit | `attendance` | Stempeluhr-Abfragen |
+| Chat | `chat` | Roboter-Nachrichtenversand |
+| DING | `ding` | DING-Nachrichtenversand |
+| Berichte | `report` | Berichtsverwaltung |
+| Arbeitsbereich | `workbench` | Anwendungsabfragen |
+| Entwickler-Docs | `devdoc` | Dokumentationssuche |
+
+---
+
+## Aufgabenzentrum
+
+```bash
+# Aufgabenzentrum abfragen
+openyida task-center <type> [--page N] [--size N] [--keyword TEXT]
+```
+
+Unterstützte Typen: `todo` (zu erledigen), `created` (von mir erstellt), `done` (erledigt), `cc` (in Kopie), `pre-submit` (Stellvertretende Einreichung).
+
+---
+
+## Konversationsexport
+
+```bash
+# KI-Konversationsaufzeichnungen exportieren
+openyida export-conversation [Optionen]
+
+# Optionen
+openyida export-conversation --output <path>       # Ausgabedateipfad angeben
+openyida export-conversation --input <file>        # Eingabe-Konversationsdatei angeben
+openyida export-conversation --latest              # Nur neueste Konversation exportieren (Standard)
+openyida export-conversation --list                # Verfügbare Konversationen auflisten
 ```
 
 ---

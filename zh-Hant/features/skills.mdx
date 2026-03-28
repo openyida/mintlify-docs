@@ -188,52 +188,6 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
-## 全域任務中心
-
-查詢當前使用者的全域任務中心資料，無需指定 `appType`。
-
-```bash
-# 待辦任務
-openyida task-center todo [--page N] [--size N] [--keyword TEXT]
-
-# 我創建的
-openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
-
-# 我已處理
-openyida task-center done [--page N] [--size N] [--keyword TEXT]
-
-# 抄送我的
-openyida task-center cc [--page N] [--size N] [--keyword TEXT]
-
-# 我代提交的
-openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
-```
-
-### 任務類型
-
-| 類型 | 說明 | API 介面 |
-|------|------|----------|
-| `todo` | 待辦任務（需要我處理的） | `getTodoTasksInCorp` |
-| `created` | 我創建的（我發起的流程） | `getMyCreateInCorp` |
-| `done` | 我已處理（我已經處理過的） | `getDoneTasksInCorp` |
-| `cc` | 抄送我的 | `getNotifyMeInCorp` |
-| `proxy` | 我代提交的（代理提交的流程） | `getSubmitAgentInCorp` |
-
-### 可選參數
-
-| 參數 | 說明 | 預設值 |
-|------|------|--------|
-| `--page N` | 頁碼 | `1` |
-| `--size N` | 每頁筆數（最大 100） | `20` |
-| `--keyword TEXT` | 搜尋關鍵詞 | — |
-| `--no-detail` | 不回傳詳情（僅 `created` 類型支援） | — |
-
-<Info>
-  與 `openyida data query tasks` 不同，`task-center` 命令查詢的是全域任務中心資料，不需要傳入 `appType` 參數。
-</Info>
-
----
-
 ## 流程管理
 
 ```bash
@@ -318,6 +272,76 @@ openyida cdn-upload <文件路徑>
 
 # 刷新緩存
 openyida cdn-refresh <路徑>
+```
+
+---
+
+## 釘釘 CLI 整合
+
+```bash
+# 透傳釘釘 CLI (dws) 命令
+openyida dws <command> [args]
+
+# 安裝釘釘 CLI
+openyida dws install
+
+# 顯示 dws 幫助
+openyida dws help
+
+# 範例
+openyida dws contact user search --keyword "悟空"    # 搜尋聯絡人
+openyida dws calendar event list                      # 列出日曆事件
+openyida dws todo task create --title "任務"          # 建立待辦
+openyida dws approval instance list                   # 列出審批實例
+openyida dws attendance record list                   # 查詢考勤記錄
+openyida dws chat robot send --content "訊息"         # 發送機器人訊息
+```
+
+添加 `-f json` 參數使用 JSON 輸出（適合 AI Agent）。
+
+<Note>
+釘釘 CLI (`dws`) 需要單獨安裝。執行 `openyida dws install` 進行引導安裝，或訪問 [釘釘 CLI 倉庫](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli) 手動安裝。
+</Note>
+
+### 支援的服務
+
+| 服務 | 命令前綴 | 說明 |
+|------|---------|------|
+| 通訊錄 | `contact` | 用戶/部門管理 |
+| 日曆 | `calendar` | 日程建立/閒忙查詢 |
+| 待辦 | `todo` | 任務建立/分配 |
+| 審批 | `approval` | 流程實例管理 |
+| 考勤 | `attendance` | 打卡記錄查詢 |
+| 群聊 | `chat` | 機器人訊息發送 |
+| DING | `ding` | DING 訊息發送 |
+| 日誌 | `report` | 日誌管理 |
+| 工作台 | `workbench` | 應用查詢 |
+| 開發者文件 | `devdoc` | 文件搜尋 |
+
+---
+
+## 任務中心
+
+```bash
+# 查詢任務中心
+openyida task-center <type> [--page N] [--size N] [--keyword TEXT]
+```
+
+支援的類型：`todo`（待辦）、`created`（我建立的）、`done`（我已處理）、`cc`（抄送）、`pre-submit`（代提交）。
+
+---
+
+## 對話匯出
+
+```bash
+# 匯出 AI 對話記錄
+openyida export-conversation [選項]
+
+# 選項
+openyida export-conversation --output <path>       # 指定輸出檔案路徑
+openyida export-conversation --input <file>        # 指定輸入對話檔案
+openyida export-conversation --latest              # 只匯出最新對話（預設）
+openyida export-conversation --list                # 列出可用的對話記錄
 ```
 
 ---

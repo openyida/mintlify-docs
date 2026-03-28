@@ -188,52 +188,6 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
-## Centro de tareas global
-
-Consulte los datos del centro de tareas global del usuario actual sin especificar un `appType`.
-
-```bash
-# Tareas pendientes
-openyida task-center todo [--page N] [--size N] [--keyword TEXT]
-
-# Creadas por mí
-openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
-
-# Procesadas
-openyida task-center done [--page N] [--size N] [--keyword TEXT]
-
-# Con copia
-openyida task-center cc [--page N] [--size N] [--keyword TEXT]
-
-# Enviadas por delegación
-openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
-```
-
-### Tipos de tareas
-
-| Tipo | Descripción | Endpoint API |
-|------|-------------|-------------|
-| `todo` | Tareas pendientes de acción | `getTodoTasksInCorp` |
-| `created` | Procesos que usted inició | `getMyCreateInCorp` |
-| `done` | Tareas ya procesadas | `getDoneTasksInCorp` |
-| `cc` | Tareas en copia | `getNotifyMeInCorp` |
-| `proxy` | Procesos enviados por delegación | `getSubmitAgentInCorp` |
-
-### Parámetros opcionales
-
-| Parámetro | Descripción | Valor predeterminado |
-|-----------|-------------|---------------------|
-| `--page N` | Número de página | `1` |
-| `--size N` | Elementos por página (máx. 100) | `20` |
-| `--keyword TEXT` | Palabra clave de búsqueda | — |
-| `--no-detail` | Omitir detalles (solo para tipo `created`) | — |
-
-<Info>
-  A diferencia de `openyida data query tasks`, el comando `task-center` consulta datos del centro de tareas global y no requiere un parámetro `appType`.
-</Info>
-
----
-
 ## Gestión de procesos
 
 ```bash
@@ -318,6 +272,76 @@ openyida cdn-upload <ruta_archivo>
 
 # Actualizar caché
 openyida cdn-refresh <ruta>
+```
+
+---
+
+## Integración de DingTalk CLI
+
+```bash
+# Pasar comandos al DingTalk CLI (dws)
+openyida dws <command> [args]
+
+# Instalar DingTalk CLI
+openyida dws install
+
+# Mostrar ayuda de dws
+openyida dws help
+
+# Ejemplos
+openyida dws contact user search --keyword "nombre"  # Buscar contactos
+openyida dws calendar event list                      # Listar eventos del calendario
+openyida dws todo task create --title "tarea"         # Crear una tarea pendiente
+openyida dws approval instance list                   # Listar instancias de aprobación
+openyida dws attendance record list                   # Consultar registros de asistencia
+openyida dws chat robot send --content "mensaje"      # Enviar mensaje de robot
+```
+
+Agregue `-f json` para salida JSON (útil para agentes de IA).
+
+<Note>
+DingTalk CLI (`dws`) debe instalarse por separado. Ejecute `openyida dws install` para una instalación guiada, o visite el [repositorio de DingTalk CLI](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli) para la configuración manual.
+</Note>
+
+### Servicios soportados
+
+| Servicio | Prefijo de comando | Descripción |
+|----------|-------------------|-------------|
+| Contactos | `contact` | Gestión de usuarios/departamentos |
+| Calendario | `calendar` | Creación de eventos, consultas de disponibilidad |
+| Pendientes | `todo` | Creación y asignación de tareas |
+| Aprobación | `approval` | Gestión de instancias de proceso |
+| Asistencia | `attendance` | Consulta de registros de fichaje |
+| Chat | `chat` | Envío de mensajes de robot |
+| DING | `ding` | Envío de mensajes DING |
+| Informes | `report` | Gestión de informes |
+| Espacio de trabajo | `workbench` | Consultas de aplicaciones |
+| Docs de desarrollo | `devdoc` | Búsqueda de documentación |
+
+---
+
+## Centro de tareas
+
+```bash
+# Consultar el centro de tareas
+openyida task-center <type> [--page N] [--size N] [--keyword TEXT]
+```
+
+Tipos soportados: `todo` (pendientes), `created` (creadas por mí), `done` (procesadas), `cc` (en copia), `pre-submit` (envío por delegación).
+
+---
+
+## Exportación de conversaciones
+
+```bash
+# Exportar registros de conversaciones de IA
+openyida export-conversation [opciones]
+
+# Opciones
+openyida export-conversation --output <path>       # Especificar ruta del archivo de salida
+openyida export-conversation --input <file>        # Especificar archivo de conversación de entrada
+openyida export-conversation --latest              # Exportar solo la última conversación (predeterminado)
+openyida export-conversation --list                # Listar conversaciones disponibles
 ```
 
 ---

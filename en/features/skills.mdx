@@ -188,52 +188,6 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
-## Global task center
-
-Query the current user's global task center data without specifying an `appType`.
-
-```bash
-# Todo tasks
-openyida task-center todo [--page N] [--size N] [--keyword TEXT]
-
-# Created by me
-openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
-
-# Done tasks
-openyida task-center done [--page N] [--size N] [--keyword TEXT]
-
-# CC'd to me
-openyida task-center cc [--page N] [--size N] [--keyword TEXT]
-
-# Submitted by proxy
-openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
-```
-
-### Task types
-
-| Type | Description | API endpoint |
-|------|-------------|--------------|
-| `todo` | Tasks pending your action | `getTodoTasksInCorp` |
-| `created` | Tasks you initiated | `getMyCreateInCorp` |
-| `done` | Tasks you have processed | `getDoneTasksInCorp` |
-| `cc` | Tasks CC'd to you | `getNotifyMeInCorp` |
-| `proxy` | Tasks submitted on your behalf | `getSubmitAgentInCorp` |
-
-### Optional parameters
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `--page N` | Page number | `1` |
-| `--size N` | Items per page (max 100) | `20` |
-| `--keyword TEXT` | Search keyword | — |
-| `--no-detail` | Omit detail data (only supported for `created` type) | — |
-
-<Info>
-  Unlike `openyida data query tasks`, the `task-center` command queries global task center data and does not require an `appType` parameter.
-</Info>
-
----
-
 ## Process management
 
 ```bash
@@ -318,6 +272,76 @@ openyida cdn-upload <filePath>
 
 # Refresh cache
 openyida cdn-refresh <path>
+```
+
+---
+
+## DingTalk CLI integration
+
+```bash
+# Pass-through to DingTalk CLI (dws)
+openyida dws <command> [args]
+
+# Install DingTalk CLI
+openyida dws install
+
+# Show dws help
+openyida dws help
+
+# Examples
+openyida dws contact user search --keyword "name"    # Search contacts
+openyida dws calendar event list                      # List calendar events
+openyida dws todo task create --title "task"          # Create a todo
+openyida dws approval instance list                   # List approval instances
+openyida dws attendance record list                   # Query attendance records
+openyida dws chat robot send --content "message"      # Send robot message
+```
+
+Use `-f json` for JSON output (useful for AI agents).
+
+<Note>
+DingTalk CLI (`dws`) must be installed separately. Run `openyida dws install` for guided installation, or visit the [DingTalk CLI repository](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli) for manual setup.
+</Note>
+
+### Supported services
+
+| Service | Command prefix | Description |
+|---------|---------------|-------------|
+| Contacts | `contact` | User and department management |
+| Calendar | `calendar` | Event creation, availability queries |
+| Todo | `todo` | Task creation and assignment |
+| Approval | `approval` | Process instance management |
+| Attendance | `attendance` | Clock-in record queries |
+| Chat | `chat` | Robot message sending |
+| DING | `ding` | DING message sending |
+| Report | `report` | Report management |
+| Workbench | `workbench` | Application queries |
+| Dev docs | `devdoc` | Documentation search |
+
+---
+
+## Task center
+
+```bash
+# Query task center
+openyida task-center <type> [--page N] [--size N] [--keyword TEXT]
+```
+
+Supported types: `todo`, `created`, `done`, `cc`, `pre-submit`.
+
+---
+
+## Conversation export
+
+```bash
+# Export AI conversation records
+openyida export-conversation [options]
+
+# Options
+openyida export-conversation --output <path>       # Specify output file path
+openyida export-conversation --input <file>        # Specify input conversation file
+openyida export-conversation --latest              # Export latest conversation only (default)
+openyida export-conversation --list                # List available conversations
 ```
 
 ---

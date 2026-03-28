@@ -188,52 +188,6 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
-## 全局任务中心
-
-查询当前用户的全局任务中心数据，无需指定 `appType`。
-
-```bash
-# 待办任务
-openyida task-center todo [--page N] [--size N] [--keyword TEXT]
-
-# 我创建的
-openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
-
-# 我已处理
-openyida task-center done [--page N] [--size N] [--keyword TEXT]
-
-# 抄送我的
-openyida task-center cc [--page N] [--size N] [--keyword TEXT]
-
-# 我代提交的
-openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
-```
-
-### 任务类型
-
-| 类型 | 说明 | API 接口 |
-|------|------|----------|
-| `todo` | 待办任务（需要我处理的） | `getTodoTasksInCorp` |
-| `created` | 我创建的（我发起的流程） | `getMyCreateInCorp` |
-| `done` | 我已处理（我已经处理过的） | `getDoneTasksInCorp` |
-| `cc` | 抄送我的 | `getNotifyMeInCorp` |
-| `proxy` | 我代提交的（代理提交的流程） | `getSubmitAgentInCorp` |
-
-### 可选参数
-
-| 参数 | 说明 | 默认值 |
-|------|------|--------|
-| `--page N` | 页码 | `1` |
-| `--size N` | 每页条数（最大 100） | `20` |
-| `--keyword TEXT` | 搜索关键词 | — |
-| `--no-detail` | 不返回详情（仅 `created` 类型支持） | — |
-
-<Info>
-  与 `openyida data query tasks` 不同，`task-center` 命令查询的是全局任务中心数据，不需要传入 `appType` 参数。
-</Info>
-
----
-
 ## 流程管理
 
 ```bash
@@ -318,6 +272,76 @@ openyida cdn-upload <文件路径>
 
 # 刷新缓存
 openyida cdn-refresh <路径>
+```
+
+---
+
+## 钉钉 CLI 集成
+
+```bash
+# 透传钉钉 CLI (dws) 命令
+openyida dws <command> [args]
+
+# 安装钉钉 CLI
+openyida dws install
+
+# 显示 dws 帮助
+openyida dws help
+
+# 示例
+openyida dws contact user search --keyword "悟空"    # 搜索联系人
+openyida dws calendar event list                      # 列出日历事件
+openyida dws todo task create --title "任务"          # 创建待办
+openyida dws approval instance list                   # 列出审批实例
+openyida dws attendance record list                   # 查询考勤记录
+openyida dws chat robot send --content "消息"         # 发送机器人消息
+```
+
+添加 `-f json` 参数使用 JSON 输出（适合 AI Agent）。
+
+<Note>
+钉钉 CLI (`dws`) 需要单独安装。运行 `openyida dws install` 进行引导安装，或访问 [钉钉 CLI 仓库](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli) 手动安装。
+</Note>
+
+### 支持的服务
+
+| 服务 | 命令前缀 | 说明 |
+|------|---------|------|
+| 通讯录 | `contact` | 用户/部门管理 |
+| 日历 | `calendar` | 日程创建/闲忙查询 |
+| 待办 | `todo` | 任务创建/分配 |
+| 审批 | `approval` | 流程实例管理 |
+| 考勤 | `attendance` | 打卡记录查询 |
+| 群聊 | `chat` | 机器人消息发送 |
+| DING | `ding` | DING 消息发送 |
+| 日志 | `report` | 日志管理 |
+| 工作台 | `workbench` | 应用查询 |
+| 开发者文档 | `devdoc` | 文档搜索 |
+
+---
+
+## 任务中心
+
+```bash
+# 查询任务中心
+openyida task-center <type> [--page N] [--size N] [--keyword TEXT]
+```
+
+支持的类型：`todo`（待办）、`created`（我创建的）、`done`（我已处理）、`cc`（抄送）、`pre-submit`（代提交）。
+
+---
+
+## 对话导出
+
+```bash
+# 导出 AI 对话记录
+openyida export-conversation [选项]
+
+# 选项
+openyida export-conversation --output <path>       # 指定输出文件路径
+openyida export-conversation --input <file>        # 指定输入对话文件
+openyida export-conversation --latest              # 只导出最新对话（默认）
+openyida export-conversation --list                # 列出可用的对话记录
 ```
 
 ---

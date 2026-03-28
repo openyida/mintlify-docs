@@ -188,52 +188,6 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
-## वैश्विक कार्य केंद्र
-
-`appType` निर्दिष्ट किए बिना वर्तमान उपयोगकर्ता के वैश्विक कार्य केंद्र डेटा की क्वेरी करें।
-
-```bash
-# लंबित कार्य
-openyida task-center todo [--page N] [--size N] [--keyword TEXT]
-
-# मेरे द्वारा बनाए गए
-openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
-
-# पूर्ण किए गए
-openyida task-center done [--page N] [--size N] [--keyword TEXT]
-
-# CC किए गए
-openyida task-center cc [--page N] [--size N] [--keyword TEXT]
-
-# प्रतिनिधि प्रस्तुतिकरण
-openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
-```
-
-### कार्य प्रकार
-
-| प्रकार | विवरण | API एंडपॉइंट |
-|--------|-------|--------------|
-| `todo` | लंबित कार्य | `getTodoTasksInCorp` |
-| `created` | आपके द्वारा शुरू की गई प्रक्रियाएं | `getMyCreateInCorp` |
-| `done` | पहले से संसाधित कार्य | `getDoneTasksInCorp` |
-| `cc` | CC किए गए कार्य | `getNotifyMeInCorp` |
-| `proxy` | प्रतिनिधि द्वारा प्रस्तुत प्रक्रियाएं | `getSubmitAgentInCorp` |
-
-### वैकल्पिक पैरामीटर
-
-| पैरामीटर | विवरण | डिफ़ॉल्ट |
-|----------|-------|---------|
-| `--page N` | पृष्ठ संख्या | `1` |
-| `--size N` | प्रति पृष्ठ आइटम (अधिकतम 100) | `20` |
-| `--keyword TEXT` | खोज कीवर्ड | — |
-| `--no-detail` | विवरण छोड़ें (केवल `created` प्रकार के लिए) | — |
-
-<Info>
-  `openyida data query tasks` के विपरीत, `task-center` कमांड वैश्विक कार्य केंद्र डेटा की क्वेरी करता है और `appType` पैरामीटर की आवश्यकता नहीं है।
-</Info>
-
----
-
 ## प्रक्रिया प्रबंधन
 
 ```bash
@@ -318,6 +272,76 @@ openyida cdn-upload <फ़ाइल_पथ>
 
 # कैश रीफ्रेश करें
 openyida cdn-refresh <पथ>
+```
+
+---
+
+## DingTalk CLI एकीकरण
+
+```bash
+# DingTalk CLI (dws) कमांड पास-थ्रू
+openyida dws <command> [args]
+
+# DingTalk CLI इंस्टॉल करें
+openyida dws install
+
+# dws सहायता दिखाएं
+openyida dws help
+
+# उदाहरण
+openyida dws contact user search --keyword "नाम"     # संपर्क खोजें
+openyida dws calendar event list                      # कैलेंडर इवेंट सूचीबद्ध करें
+openyida dws todo task create --title "कार्य"         # टू-डू बनाएं
+openyida dws approval instance list                   # अनुमोदन इंस्टेंस सूचीबद्ध करें
+openyida dws attendance record list                   # उपस्थिति रिकॉर्ड क्वेरी करें
+openyida dws chat robot send --content "संदेश"        # रोबोट संदेश भेजें
+```
+
+JSON आउटपुट के लिए `-f json` जोड़ें (AI एजेंट के लिए उपयोगी)।
+
+<Note>
+DingTalk CLI (`dws`) को अलग से इंस्टॉल करना होगा। गाइडेड इंस्टॉलेशन के लिए `openyida dws install` चलाएं, या मैनुअल सेटअप के लिए [DingTalk CLI रिपॉजिटरी](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli) पर जाएं।
+</Note>
+
+### समर्थित सेवाएं
+
+| सेवा | कमांड प्रीफ़िक्स | विवरण |
+|------|----------------|-------|
+| संपर्क | `contact` | उपयोगकर्ता/विभाग प्रबंधन |
+| कैलेंडर | `calendar` | इवेंट निर्माण, उपलब्धता क्वेरी |
+| टू-डू | `todo` | कार्य निर्माण और असाइनमेंट |
+| अनुमोदन | `approval` | प्रक्रिया इंस्टेंस प्रबंधन |
+| उपस्थिति | `attendance` | पंचिंग रिकॉर्ड क्वेरी |
+| चैट | `chat` | रोबोट संदेश भेजना |
+| DING | `ding` | DING संदेश भेजना |
+| रिपोर्ट | `report` | रिपोर्ट प्रबंधन |
+| वर्कबेंच | `workbench` | एप्लिकेशन क्वेरी |
+| डेव डॉक्स | `devdoc` | दस्तावेज़ खोज |
+
+---
+
+## कार्य केंद्र
+
+```bash
+# कार्य केंद्र क्वेरी करें
+openyida task-center <type> [--page N] [--size N] [--keyword TEXT]
+```
+
+समर्थित प्रकार: `todo` (लंबित), `created` (मेरे द्वारा बनाए गए), `done` (संसाधित), `cc` (कॉपी), `pre-submit` (प्रतिनिधि सबमिशन)।
+
+---
+
+## वार्तालाप निर्यात
+
+```bash
+# AI वार्तालाप रिकॉर्ड निर्यात करें
+openyida export-conversation [विकल्प]
+
+# विकल्प
+openyida export-conversation --output <path>       # आउटपुट फ़ाइल पथ निर्दिष्ट करें
+openyida export-conversation --input <file>        # इनपुट वार्तालाप फ़ाइल निर्दिष्ट करें
+openyida export-conversation --latest              # केवल नवीनतम वार्तालाप निर्यात करें (डिफ़ॉल्ट)
+openyida export-conversation --list                # उपलब्ध वार्तालाप सूचीबद्ध करें
 ```
 
 ---

@@ -188,52 +188,6 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
-## グローバルタスクセンター
-
-`appType` を指定せずに、現在のユーザーのグローバルタスクセンターデータを照会します。
-
-```bash
-# 未処理タスク
-openyida task-center todo [--page N] [--size N] [--keyword TEXT]
-
-# 自分が作成した
-openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
-
-# 処理済み
-openyida task-center done [--page N] [--size N] [--keyword TEXT]
-
-# CC されたタスク
-openyida task-center cc [--page N] [--size N] [--keyword TEXT]
-
-# 代理提出
-openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
-```
-
-### タスクタイプ
-
-| タイプ | 説明 | API エンドポイント |
-|--------|------|-------------------|
-| `todo` | 未処理タスク（対応が必要なもの） | `getTodoTasksInCorp` |
-| `created` | 自分が作成した（自分が開始したプロセス） | `getMyCreateInCorp` |
-| `done` | 処理済み（既に処理したもの） | `getDoneTasksInCorp` |
-| `cc` | CC されたタスク | `getNotifyMeInCorp` |
-| `proxy` | 代理提出（代理で提出したプロセス） | `getSubmitAgentInCorp` |
-
-### オプションパラメータ
-
-| パラメータ | 説明 | デフォルト |
-|-----------|------|-----------|
-| `--page N` | ページ番号 | `1` |
-| `--size N` | 1ページあたりの件数（最大 100） | `20` |
-| `--keyword TEXT` | 検索キーワード | — |
-| `--no-detail` | 詳細を返さない（`created` タイプのみ対応） | — |
-
-<Info>
-  `openyida data query tasks` とは異なり、`task-center` コマンドはグローバルタスクセンターデータを照会し、`appType` パラメータは不要です。
-</Info>
-
----
-
 ## プロセス管理
 
 ```bash
@@ -318,6 +272,76 @@ openyida cdn-upload <文件路径>
 
 # キャッシュ更新
 openyida cdn-refresh <路径>
+```
+
+---
+
+## DingTalk CLI統合
+
+```bash
+# DingTalk CLI (dws) コマンドのパススルー
+openyida dws <command> [args]
+
+# DingTalk CLIのインストール
+openyida dws install
+
+# dwsヘルプの表示
+openyida dws help
+
+# 例
+openyida dws contact user search --keyword "悟空"    # 連絡先を検索
+openyida dws calendar event list                      # カレンダーイベント一覧
+openyida dws todo task create --title "タスク"        # ToDoを作成
+openyida dws approval instance list                   # 承認インスタンス一覧
+openyida dws attendance record list                   # 勤怠記録を照会
+openyida dws chat robot send --content "メッセージ"   # ロボットメッセージを送信
+```
+
+`-f json` を追加するとJSON出力になります（AIエージェント向け）。
+
+<Note>
+DingTalk CLI (`dws`) は別途インストールが必要です。`openyida dws install` でガイド付きインストールを実行するか、[DingTalk CLIリポジトリ](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)から手動でセットアップしてください。
+</Note>
+
+### サポートされるサービス
+
+| サービス | コマンドプレフィックス | 説明 |
+|---------|---------------------|------|
+| 連絡先 | `contact` | ユーザー/部門管理 |
+| カレンダー | `calendar` | イベント作成/空き状況照会 |
+| ToDo | `todo` | タスク作成/割り当て |
+| 承認 | `approval` | プロセスインスタンス管理 |
+| 勤怠 | `attendance` | 打刻記録照会 |
+| チャット | `chat` | ロボットメッセージ送信 |
+| DING | `ding` | DINGメッセージ送信 |
+| レポート | `report` | レポート管理 |
+| ワークベンチ | `workbench` | アプリケーション照会 |
+| 開発者ドキュメント | `devdoc` | ドキュメント検索 |
+
+---
+
+## タスクセンター
+
+```bash
+# タスクセンターを照会
+openyida task-center <type> [--page N] [--size N] [--keyword TEXT]
+```
+
+サポートされるタイプ：`todo`（未処理）、`created`（作成済み）、`done`（処理済み）、`cc`（CC）、`pre-submit`（代理提出）。
+
+---
+
+## 会話エクスポート
+
+```bash
+# AI会話記録をエクスポート
+openyida export-conversation [オプション]
+
+# オプション
+openyida export-conversation --output <path>       # 出力ファイルパスを指定
+openyida export-conversation --input <file>        # 入力会話ファイルを指定
+openyida export-conversation --latest              # 最新の会話のみエクスポート（デフォルト）
+openyida export-conversation --list                # 利用可能な会話を一覧表示
 ```
 
 ---
