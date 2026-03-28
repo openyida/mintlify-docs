@@ -58,7 +58,28 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # Retourner uniquement les ID
 openyida data query form <appType> <formUuid> --ids-only
+
+# Filtrer par créateur et plage de dates
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### Paramètres optionnels
+
+| Paramètre | Description |
+|-----------|-------------|
+| `--page N` | Numéro de page (par défaut `1`) |
+| `--size N` | Éléments par page (par défaut `20`, max `100`) |
+| `--search-json JSON` | Conditions de recherche (doit être un JSON valide) |
+| `--inst-id ID` | Rechercher un enregistrement par ID d'instance |
+| `--ids-only` | Retourner uniquement les ID d'instance |
+| `--originator-id ID` | Filtrer par créateur |
+| `--create-from DATE` | Filtrer les enregistrements créés après cette date |
+| `--create-to DATE` | Filtrer les enregistrements créés avant cette date |
+| `--modified-from DATE` | Filtrer les enregistrements modifiés après cette date |
+| `--modified-to DATE` | Filtrer les enregistrements modifiés avant cette date |
+| `--dynamic-order FIELD` | Trier par champ |
 
 ### Obtenir une seule donnée
 
@@ -99,7 +120,27 @@ openyida data query process <appType> <formUuid> \
 
 # Retourner uniquement les ID
 openyida data query process <appType> <formUuid> --ids-only
+
+# Filtrer par tâche et résultat d'approbation
+openyida data query process <appType> <formUuid> \
+  --task-id <taskId> \
+  --approved-result AGREE
 ```
+
+#### Paramètres optionnels
+
+| Paramètre | Description |
+|-----------|-------------|
+| `--page N` | Numéro de page (par défaut `1`) |
+| `--size N` | Éléments par page (par défaut `10`, max `100`) |
+| `--search-json JSON` | Conditions de recherche (doit être un JSON valide) |
+| `--instance-status STATUS` | Filtrer par statut : `RUNNING`, `COMPLETED`, `TERMINATED` |
+| `--task-id ID` | Filtrer par ID de tâche |
+| `--approved-result RESULT` | Filtrer par résultat : `AGREE`, `DISAGREE` |
+| `--ids-only` | Retourner uniquement les ID d'instance |
+| `--originator-id ID` | Filtrer par créateur |
+| `--create-from DATE` / `--create-to DATE` | Filtrer par date de création |
+| `--modified-from DATE` / `--modified-to DATE` | Filtrer par date de modification |
 
 ### Obtenir les détails du processus
 
@@ -153,7 +194,21 @@ openyida data query tasks <appType> --type submitted
 
 # En copie
 openyida data query tasks <appType> --type cc
+
+# Avec pagination et filtre par mot-clé
+openyida data query tasks <appType> --type todo --page 1 --size 20 --keyword "urgent"
 ```
+
+#### Paramètres optionnels
+
+| Paramètre | Description |
+|-----------|-------------|
+| `--type TYPE` | **Obligatoire.** Type: `todo`, `done`, `submitted`, `cc` |
+| `--page N` | Numéro de page (par défaut `1`) |
+| `--size N` | Éléments par page (par défaut `10`, max `100`) |
+| `--keyword TEXT` | Mot-clé de recherche |
+| `--process-codes JSON` | Filtrer par codes de processus (tableau JSON) |
+| `--instance-status STATUS` | Filtrer par statut d'instance |
 
 ### Exécuter une tâche
 
@@ -166,9 +221,16 @@ openyida data execute task <appType> \
   --data-json '{"comment": "Approbation réussie"}'
 ```
 
-**Options out-result :**
-- `AGREE` - D'accord
-- `DISAGREE` - Pas d'accord
+#### Paramètres
+
+| Paramètre | Description |
+|-----------|-------------|
+| `--task-id ID` | **Obligatoire.** ID de tâche |
+| `--process-inst-id ID` | **Obligatoire.** ID d'instance de processus |
+| `--out-result RESULT` | **Obligatoire.** `AGREE` (approuver) ou `DISAGREE` (rejeter) |
+| `--remark TEXT` | **Obligatoire.** Commentaire d'approbation |
+| `--data-json JSON` | Données de formulaire à mettre à jour lors de l'approbation |
+| `--no-execute-expressions y` | Ignorer l'exécution des expressions après la complétion |
 
 ---
 
@@ -189,7 +251,7 @@ openyida data query subform <appType> <formUuid> \
 
 ### Format des conditions de requête
 
-Le paramètre `--search-json` accepte un format de requête basé sur un tableau. Chaque condition est un objet avec les champs suivants :
+Le paramètre `--search-json` accepte un format de requête basé sur un tableau. La valeur doit être un JSON valide — le CLI valide l'entrée avant l'envoi et rejette tout JSON malformé avec une erreur. Chaque condition est un objet avec les champs suivants :
 
 | Champ | Description |
 |-------|-------------|
