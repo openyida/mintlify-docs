@@ -170,13 +170,13 @@ openyida data <action> <resource> [args]
 # بيانات النموذج
 openyida data query form <appType> <formUuid> [--page N] [--size N] [--search-json JSON]
 openyida data get form <appType> --inst-id <id>
-openyida data create form <appType> <formUuid> --data <JSON>  # مفاتيح JSON يمكن أن تكون معرّفات حقول أو تسميات حقول
-openyida data update form <appType> --inst-id <id> --data <JSON>
+openyida data create form <appType> <formUuid> --data-json <JSON>  # مفاتيح JSON يمكن أن تكون معرّفات حقول أو تسميات حقول
+openyida data update form <appType> --inst-id <id> --data-json <JSON>
 
 # بيانات العملية
 openyida data query process <appType> <formUuid> [--instance-status STATUS]
 openyida data get process <appType> --process-inst-id <id>
-openyida data create process <appType> <formUuid> --process-code <code> --data <JSON>
+openyida data create process <appType> <formUuid> --process-code <code> --data-json <JSON>
 
 # إدارة المهام
 openyida data query tasks <appType> --type <todo|done|submitted|cc>

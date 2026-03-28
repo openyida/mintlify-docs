@@ -58,7 +58,28 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # Nur IDs zurückgeben
 openyida data query form <appType> <formUuid> --ids-only
+
+# Nach Ersteller und Datumsbereich filtern
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### Optionale Parameter
+
+| Parameter | Beschreibung |
+|-----------|-------------|
+| `--page N` | Seitennummer (Standard `1`) |
+| `--size N` | Einträge pro Seite (Standard `20`, max `100`) |
+| `--search-json JSON` | Suchbedingungen (muss gültiges JSON sein) |
+| `--inst-id ID` | Einzelnen Datensatz nach Instanz-ID abfragen |
+| `--ids-only` | Nur Instanz-IDs zurückgeben |
+| `--originator-id ID` | Nach Ersteller filtern |
+| `--create-from DATE` | Nach Erstellungsdatum filtern (ab) |
+| `--create-to DATE` | Nach Erstellungsdatum filtern (bis) |
+| `--modified-from DATE` | Nach Änderungsdatum filtern (ab) |
+| `--modified-to DATE` | Nach Änderungsdatum filtern (bis) |
+| `--dynamic-order FIELD` | Nach Feld sortieren |
 
 ### Einzelne Daten abrufen
 
@@ -99,7 +120,29 @@ openyida data query process <appType> <formUuid> \
 
 # Nur IDs zurückgeben
 openyida data query process <appType> <formUuid> --ids-only
+
+# Nach Aufgabe und Genehmigungsergebnis filtern
+openyida data query process <appType> <formUuid> \
+  --task-id <taskId> \
+  --approved-result AGREE
 ```
+
+#### Optionale Parameter
+
+| Parameter | Beschreibung |
+|-----------|-------------|
+| `--page N` | Seitennummer (Standard `1`) |
+| `--size N` | Einträge pro Seite (Standard `20`, max `100`) |
+| `--search-json JSON` | Suchbedingungen (muss gültiges JSON sein) |
+| `--instance-status STATUS` | Instanzstatus: `RUNNING`, `COMPLETED`, `TERMINATED` |
+| `--task-id ID` | Nach Aufgaben-ID filtern |
+| `--approved-result RESULT` | Genehmigungsergebnis: `AGREE`, `DISAGREE` |
+| `--ids-only` | Nur Instanz-IDs zurückgeben |
+| `--originator-id ID` | Nach Ersteller filtern |
+| `--create-from DATE` | Nach Erstellungsdatum filtern (ab) |
+| `--create-to DATE` | Nach Erstellungsdatum filtern (bis) |
+| `--modified-from DATE` | Nach Änderungsdatum filtern (ab) |
+| `--modified-to DATE` | Nach Änderungsdatum filtern (bis) |
 
 ### Prozessdetails abrufen
 
@@ -153,7 +196,21 @@ openyida data query tasks <appType> --type submitted
 
 # In Kopie
 openyida data query tasks <appType> --type cc
+
+# Mit Paginierung und Schlüsselwort-Filter
+openyida data query tasks <appType> --type todo --page 1 --size 20 --keyword "dringend"
 ```
+
+#### Optionale Parameter
+
+| Parameter | Beschreibung |
+|-----------|-------------|
+| `--type TYPE` | **(Erforderlich)** Aufgabentyp: `todo`, `done`, `submitted`, `cc` |
+| `--page N` | Seitennummer (Standard `1`) |
+| `--size N` | Einträge pro Seite (Standard `20`, max `100`) |
+| `--keyword TEXT` | Nach Schlüsselwort filtern |
+| `--process-codes CODES` | Nach Prozesscodes filtern |
+| `--instance-status STATUS` | Instanzstatus: `RUNNING`, `COMPLETED`, `TERMINATED` |
 
 ### Aufgabe ausführen
 
@@ -166,9 +223,16 @@ openyida data execute task <appType> \
   --data-json '{"comment": "Genehmigung erfolgreich"}'
 ```
 
-**out-result-Optionen:**
-- `AGREE` - Zustimmen
-- `DISAGREE` - Nicht zustimmen
+#### Parameter
+
+| Parameter | Erforderlich | Beschreibung |
+|-----------|:------------:|-------------|
+| `--task-id ID` | Ja | Aufgaben-ID |
+| `--process-inst-id ID` | Ja | Prozessinstanz-ID |
+| `--out-result RESULT` | Ja | Ergebnis: `AGREE` (Zustimmen), `DISAGREE` (Nicht zustimmen) |
+| `--remark TEXT` | Ja | Bemerkung zur Aufgabenausführung |
+| `--data-json JSON` | Nein | Zusätzliche Daten im JSON-Format |
+| `--no-execute-expressions` | Nein | Ausdrücke bei der Ausführung nicht auswerten |
 
 ---
 
@@ -189,7 +253,7 @@ openyida data query subform <appType> <formUuid> \
 
 ### Abfragebedingungsformat
 
-Der `--search-json` Parameter akzeptiert ein Array-basiertes Abfrageformat. Jede Bedingung ist ein Objekt mit folgenden Feldern:
+Der `--search-json` Parameter akzeptiert ein Array-basiertes Abfrageformat. Der Wert muss gültiges JSON sein — die CLI validiert die Eingabe vor dem Senden der Anfrage. Jede Bedingung ist ein Objekt mit folgenden Feldern:
 
 | Feld | Beschreibung |
 |------|-------------|
