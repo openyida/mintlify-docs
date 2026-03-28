@@ -188,6 +188,52 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
+## Global task center
+
+Query the current user's global task center data without specifying an `appType`.
+
+```bash
+# Todo tasks
+openyida task-center todo [--page N] [--size N] [--keyword TEXT]
+
+# Created by me
+openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
+
+# Done tasks
+openyida task-center done [--page N] [--size N] [--keyword TEXT]
+
+# CC'd to me
+openyida task-center cc [--page N] [--size N] [--keyword TEXT]
+
+# Submitted by proxy
+openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
+```
+
+### Task types
+
+| Type | Description | API endpoint |
+|------|-------------|--------------|
+| `todo` | Tasks pending your action | `getTodoTasksInCorp` |
+| `created` | Tasks you initiated | `getMyCreateInCorp` |
+| `done` | Tasks you have processed | `getDoneTasksInCorp` |
+| `cc` | Tasks CC'd to you | `getNotifyMeInCorp` |
+| `proxy` | Tasks submitted on your behalf | `getSubmitAgentInCorp` |
+
+### Optional parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `--page N` | Page number | `1` |
+| `--size N` | Items per page (max 100) | `20` |
+| `--keyword TEXT` | Search keyword | — |
+| `--no-detail` | Omit detail data (only supported for `created` type) | — |
+
+<Info>
+  Unlike `openyida data query tasks`, the `task-center` command queries global task center data and does not require an `appType` parameter.
+</Info>
+
+---
+
 ## Process management
 
 ```bash

@@ -188,6 +188,52 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
+## Centro de tareas global
+
+Consulte los datos del centro de tareas global del usuario actual sin especificar un `appType`.
+
+```bash
+# Tareas pendientes
+openyida task-center todo [--page N] [--size N] [--keyword TEXT]
+
+# Creadas por mí
+openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
+
+# Procesadas
+openyida task-center done [--page N] [--size N] [--keyword TEXT]
+
+# Con copia
+openyida task-center cc [--page N] [--size N] [--keyword TEXT]
+
+# Enviadas por delegación
+openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
+```
+
+### Tipos de tareas
+
+| Tipo | Descripción | Endpoint API |
+|------|-------------|-------------|
+| `todo` | Tareas pendientes de acción | `getTodoTasksInCorp` |
+| `created` | Procesos que usted inició | `getMyCreateInCorp` |
+| `done` | Tareas ya procesadas | `getDoneTasksInCorp` |
+| `cc` | Tareas en copia | `getNotifyMeInCorp` |
+| `proxy` | Procesos enviados por delegación | `getSubmitAgentInCorp` |
+
+### Parámetros opcionales
+
+| Parámetro | Descripción | Valor predeterminado |
+|-----------|-------------|---------------------|
+| `--page N` | Número de página | `1` |
+| `--size N` | Elementos por página (máx. 100) | `20` |
+| `--keyword TEXT` | Palabra clave de búsqueda | — |
+| `--no-detail` | Omitir detalles (solo para tipo `created`) | — |
+
+<Info>
+  A diferencia de `openyida data query tasks`, el comando `task-center` consulta datos del centro de tareas global y no requiere un parámetro `appType`.
+</Info>
+
+---
+
 ## Gestión de procesos
 
 ```bash

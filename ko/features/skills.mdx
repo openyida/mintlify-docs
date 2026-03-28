@@ -188,6 +188,52 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
+## 글로벌 작업 센터
+
+`appType`을 지정하지 않고 현재 사용자의 글로벌 작업 센터 데이터를 조회합니다.
+
+```bash
+# 할 일 작업
+openyida task-center todo [--page N] [--size N] [--keyword TEXT]
+
+# 내가 생성한 작업
+openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
+
+# 처리 완료
+openyida task-center done [--page N] [--size N] [--keyword TEXT]
+
+# 참조로 받은 작업
+openyida task-center cc [--page N] [--size N] [--keyword TEXT]
+
+# 대리 제출
+openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
+```
+
+### 작업 유형
+
+| 유형 | 설명 | API 엔드포인트 |
+|------|------|---------------|
+| `todo` | 처리 대기 작업 | `getTodoTasksInCorp` |
+| `created` | 내가 시작한 프로세스 | `getMyCreateInCorp` |
+| `done` | 이미 처리한 작업 | `getDoneTasksInCorp` |
+| `cc` | 참조로 받은 작업 | `getNotifyMeInCorp` |
+| `proxy` | 대리 제출한 프로세스 | `getSubmitAgentInCorp` |
+
+### 선택적 매개변수
+
+| 매개변수 | 설명 | 기본값 |
+|----------|------|--------|
+| `--page N` | 페이지 번호 | `1` |
+| `--size N` | 페이지당 항목 수 (최대 100) | `20` |
+| `--keyword TEXT` | 검색 키워드 | — |
+| `--no-detail` | 상세 정보 생략 (`created` 유형만 지원) | — |
+
+<Info>
+  `openyida data query tasks`와 달리 `task-center` 명령은 글로벌 작업 센터 데이터를 조회하며 `appType` 매개변수가 필요하지 않습니다.
+</Info>
+
+---
+
 ## 프로세스 관리
 
 ```bash

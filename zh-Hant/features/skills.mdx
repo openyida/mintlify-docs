@@ -188,6 +188,52 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
+## 全域任務中心
+
+查詢當前使用者的全域任務中心資料，無需指定 `appType`。
+
+```bash
+# 待辦任務
+openyida task-center todo [--page N] [--size N] [--keyword TEXT]
+
+# 我創建的
+openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
+
+# 我已處理
+openyida task-center done [--page N] [--size N] [--keyword TEXT]
+
+# 抄送我的
+openyida task-center cc [--page N] [--size N] [--keyword TEXT]
+
+# 我代提交的
+openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
+```
+
+### 任務類型
+
+| 類型 | 說明 | API 介面 |
+|------|------|----------|
+| `todo` | 待辦任務（需要我處理的） | `getTodoTasksInCorp` |
+| `created` | 我創建的（我發起的流程） | `getMyCreateInCorp` |
+| `done` | 我已處理（我已經處理過的） | `getDoneTasksInCorp` |
+| `cc` | 抄送我的 | `getNotifyMeInCorp` |
+| `proxy` | 我代提交的（代理提交的流程） | `getSubmitAgentInCorp` |
+
+### 可選參數
+
+| 參數 | 說明 | 預設值 |
+|------|------|--------|
+| `--page N` | 頁碼 | `1` |
+| `--size N` | 每頁筆數（最大 100） | `20` |
+| `--keyword TEXT` | 搜尋關鍵詞 | — |
+| `--no-detail` | 不回傳詳情（僅 `created` 類型支援） | — |
+
+<Info>
+  與 `openyida data query tasks` 不同，`task-center` 命令查詢的是全域任務中心資料，不需要傳入 `appType` 參數。
+</Info>
+
+---
+
 ## 流程管理
 
 ```bash

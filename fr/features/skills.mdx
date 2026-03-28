@@ -188,6 +188,52 @@ openyida data query subform <appType> <formUuid> --inst-id <id> --table-field-id
 
 ---
 
+## Centre de tâches global
+
+Interrogez les données du centre de tâches global de l'utilisateur actuel sans spécifier d'`appType`.
+
+```bash
+# Tâches à faire
+openyida task-center todo [--page N] [--size N] [--keyword TEXT]
+
+# Créées par moi
+openyida task-center created [--page N] [--size N] [--keyword TEXT] [--no-detail]
+
+# Traitées
+openyida task-center done [--page N] [--size N] [--keyword TEXT]
+
+# En copie
+openyida task-center cc [--page N] [--size N] [--keyword TEXT]
+
+# Soumises par délégation
+openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
+```
+
+### Types de tâches
+
+| Type | Description | Point de terminaison API |
+|------|-------------|------------------------|
+| `todo` | Tâches en attente de traitement | `getTodoTasksInCorp` |
+| `created` | Processus que vous avez initiés | `getMyCreateInCorp` |
+| `done` | Tâches que vous avez traitées | `getDoneTasksInCorp` |
+| `cc` | Tâches en copie | `getNotifyMeInCorp` |
+| `proxy` | Processus soumis par délégation | `getSubmitAgentInCorp` |
+
+### Paramètres optionnels
+
+| Paramètre | Description | Valeur par défaut |
+|-----------|-------------|-------------------|
+| `--page N` | Numéro de page | `1` |
+| `--size N` | Éléments par page (max 100) | `20` |
+| `--keyword TEXT` | Mot-clé de recherche | — |
+| `--no-detail` | Omettre les détails (uniquement pour le type `created`) | — |
+
+<Info>
+  Contrairement à `openyida data query tasks`, la commande `task-center` interroge les données du centre de tâches global et ne nécessite pas de paramètre `appType`.
+</Info>
+
+---
+
 ## Gestion des processus
 
 ```bash
