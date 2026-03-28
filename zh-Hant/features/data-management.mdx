@@ -58,7 +58,28 @@ openyida data query form <appType> <formUuid> --inst-id <formInstId>
 
 # 僅返回實例 ID
 openyida data query form <appType> <formUuid> --ids-only
+
+# 按建立者和日期範圍過濾
+openyida data query form <appType> <formUuid> \
+  --originator-id <userId> \
+  --create-from "2026-01-01" --create-to "2026-12-31"
 ```
+
+#### 可選參數
+
+| 參數 | 說明 |
+|------|------|
+| `--page N` | 頁碼（預設 `1`） |
+| `--size N` | 每頁筆數（預設 `20`，最大 `100`） |
+| `--search-json JSON` | 查詢條件（必須是合法 JSON，詳見[查詢條件格式](#查詢條件格式)） |
+| `--inst-id ID` | 按實例 ID 查詢單筆記錄 |
+| `--ids-only` | 僅回傳實例 ID |
+| `--originator-id ID` | 按建立者過濾 |
+| `--create-from DATE` | 過濾指定日期之後建立的記錄 |
+| `--create-to DATE` | 過濾指定日期之前建立的記錄 |
+| `--modified-from DATE` | 過濾指定日期之後修改的記錄 |
+| `--modified-to DATE` | 過濾指定日期之前修改的記錄 |
+| `--dynamic-order FIELD` | 按欄位排序 |
 
 ### 獲取單條數據
 
@@ -99,7 +120,29 @@ openyida data query process <appType> <formUuid> \
 
 # 僅返回實例 ID
 openyida data query process <appType> <formUuid> --ids-only
+
+# 按任務和審批結果過濾
+openyida data query process <appType> <formUuid> \
+  --task-id <taskId> \
+  --approved-result AGREE
 ```
+
+#### 可選參數
+
+| 參數 | 說明 |
+|------|------|
+| `--page N` | 頁碼（預設 `1`） |
+| `--size N` | 每頁筆數（預設 `10`，最大 `100`） |
+| `--search-json JSON` | 查詢條件（必須是合法 JSON） |
+| `--instance-status STATUS` | 按狀態過濾：`RUNNING`、`COMPLETED`、`TERMINATED` |
+| `--task-id ID` | 按任務 ID 過濾 |
+| `--approved-result RESULT` | 按審批結果過濾：`AGREE`、`DISAGREE` |
+| `--ids-only` | 僅回傳實例 ID |
+| `--originator-id ID` | 按建立者過濾 |
+| `--create-from DATE` | 過濾指定日期之後建立的實例 |
+| `--create-to DATE` | 過濾指定日期之前建立的實例 |
+| `--modified-from DATE` | 過濾指定日期之後修改的實例 |
+| `--modified-to DATE` | 過濾指定日期之前修改的實例 |
 
 ### 獲取流程詳情
 
@@ -153,7 +196,21 @@ openyida data query tasks <appType> --type submitted
 
 # 抄送我的
 openyida data query tasks <appType> --type cc
+
+# 帶分頁和關鍵詞過濾
+openyida data query tasks <appType> --type todo --page 1 --size 20 --keyword "緊急"
 ```
+
+#### 可選參數
+
+| 參數 | 說明 |
+|------|------|
+| `--type TYPE` | **必填。** 任務類型：`todo`、`done`、`submitted`、`cc` |
+| `--page N` | 頁碼（預設 `1`） |
+| `--size N` | 每頁筆數（預設 `10`，最大 `100`） |
+| `--keyword TEXT` | 搜尋關鍵詞 |
+| `--process-codes JSON` | 按流程編碼過濾（JSON 陣列） |
+| `--instance-status STATUS` | 按流程實例狀態過濾 |
 
 ### 執行任務
 
@@ -166,9 +223,14 @@ openyida data execute task <appType> \
   --data-json '{"comment": "審批通過"}'
 ```
 
-**out-result 選項：**
-- `AGREE` - 同意
-- `DISAGREE` - 不同意
+| 參數 | 說明 |
+|------|------|
+| `--task-id ID` | **必填。** 任務 ID |
+| `--process-inst-id ID` | **必填。** 流程實例 ID |
+| `--out-result RESULT` | **必填。** `AGREE`（同意）或 `DISAGREE`（不同意） |
+| `--remark TEXT` | **必填。** 審批意見 |
+| `--data-json JSON` | 審批時同步更新的表單資料 |
+| `--no-execute-expressions y` | 任務完成後跳過表達式執行 |
 
 ---
 
@@ -189,7 +251,9 @@ openyida data query subform <appType> <formUuid> \
 
 ### 查詢條件格式
 
-`--search-json` 參數接受數組格式的查詢條件。每個條件是一個包含以下欄位的物件：
+`--search-json` 參數接受數組格式的查詢條件。該值必須是合法 JSON——CLI 會在傳送請求前驗證輸入，格式錯誤的 JSON 會被拒絕並報錯。
+
+每個條件是一個包含以下欄位的物件：
 
 | 欄位 | 說明 |
 |------|------|
