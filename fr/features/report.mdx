@@ -91,6 +91,34 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **table** | Tableau de données | Vue détaillée des données |
 | **area** | Graphique de zone | Tendances cumulatives |
 | **scatter** | Graphique de dispersion | Analyse de corrélation |
+| **indicator** | Carte d'indicateur | Affichage des métriques clés |
+| **combo** | Graphique combiné (barres + lignes) | Comparaisons à double axe |
+| **pivot** | Tableau croisé dynamique | Analyse multidimensionnelle |
+| **gauge** | Jauge | Suivi de progression ou d'objectifs |
+| **funnel** | Graphique en entonnoir | Conversion par étapes |
+
+---
+
+## Dimensionnement de la disposition des graphiques
+
+Vous pouvez contrôler la largeur et la hauteur de chaque graphique dans la grille du rapport à l'aide des propriétés `w` et `h`. Le rapport utilise un système de grille à 6 colonnes.
+
+- **`w`** — largeur de la grille (1-6 colonnes). Lorsqu'un graphique dépasse l'espace restant sur la ligne actuelle, il passe à la ligne suivante.
+- **`h`** — hauteur de la grille (en unités de grille).
+
+Définir `w` ou `h` à `0` est valide et sera respecté. Si omis, les valeurs par défaut ci-dessous sont utilisées.
+
+| Type de graphique | `w` par défaut | `h` par défaut |
+|-------------------|----------------|----------------|
+| **indicator** | 6 | 6 |
+| **pie** | 3 | 22 |
+| **bar** | 3 | 22 |
+| **line** | 3 | 22 |
+| **combo** | 6 | 22 |
+| **table** | 6 | 38 |
+| **pivot** | 6 | 30 |
+| **gauge** | 2 | 18 |
+| Autres types | 3 | 22 |
 
 ---
 
@@ -105,7 +133,9 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "dataSource": "form_uuid",
   "xField": "region",
   "yField": "amount",
-  "aggregation": "sum"
+  "aggregation": "sum",
+  "w": 6,
+  "h": 22
 }
 ```
 

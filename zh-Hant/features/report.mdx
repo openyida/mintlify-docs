@@ -91,6 +91,34 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **table** | 數據表格 | 詳細數據查看 |
 | **area** | 面積圖 | 累積趨勢 |
 | **scatter** | 散點圖 | 相關性分析 |
+| **indicator** | 指標卡 | 關鍵指標展示 |
+| **combo** | 柱線混合圖 | 雙軸對比 |
+| **pivot** | 交叉透視表 | 多維分析 |
+| **gauge** | 儀表盤 | 進度或目標追蹤 |
+| **funnel** | 漏斗圖 | 階段轉化分析 |
+
+---
+
+## 圖表佈局尺寸
+
+你可以透過 `w` 和 `h` 屬性控制報表中每個圖表的寬度和高度。報表使用 6 欄柵格系統。
+
+- **`w`** — 柵格寬度（1-6 欄）。當圖表超出當前行剩餘空間時，會自動換行。
+- **`h`** — 柵格高度（以柵格單位計）。
+
+`w` 或 `h` 設置為 `0` 是有效的。如果省略，則使用以下預設值。
+
+| 圖表類型 | 預設 `w` | 預設 `h` |
+|----------|----------|----------|
+| **indicator** | 6 | 6 |
+| **pie** | 3 | 22 |
+| **bar** | 3 | 22 |
+| **line** | 3 | 22 |
+| **combo** | 6 | 22 |
+| **table** | 6 | 38 |
+| **pivot** | 6 | 30 |
+| **gauge** | 2 | 18 |
+| 其他類型 | 3 | 22 |
 
 ---
 
@@ -105,7 +133,9 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "dataSource": "form_uuid",
   "xField": "region",
   "yField": "amount",
-  "aggregation": "sum"
+  "aggregation": "sum",
+  "w": 6,
+  "h": 22
 }
 ```
 

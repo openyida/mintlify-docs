@@ -91,6 +91,34 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **table** | Datentabelle | Detaillierte Datenansicht |
 | **area** | Flächendiagramm | Kumulative Trends |
 | **scatter** | Streudiagramm | Korrelationsanalyse |
+| **indicator** | Indikatorkarte | Anzeige wichtiger Kennzahlen |
+| **combo** | Kombi-Diagramm (Balken + Linie) | Vergleiche mit Doppelachse |
+| **pivot** | Kreuz-Pivottabelle | Mehrdimensionale Analyse |
+| **gauge** | Messgerät-Diagramm | Fortschritts- oder Zielverfolgung |
+| **funnel** | Trichterdiagramm | Stufenweise Konversion |
+
+---
+
+## Diagramm-Layoutgröße
+
+Sie können die Breite und Höhe jedes Diagramms im Berichtsraster mit den Eigenschaften `w` und `h` steuern. Der Bericht verwendet ein 6-Spalten-Rastersystem.
+
+- **`w`** — Rasterbreite (1-6 Spalten). Wenn ein Diagramm den verbleibenden Platz in der aktuellen Zeile überschreitet, wird es in die nächste Zeile umgebrochen.
+- **`h`** — Rasterhöhe (in Rastereinheiten).
+
+Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Auslassung werden die folgenden Standardwerte verwendet.
+
+| Diagrammtyp | Standard `w` | Standard `h` |
+|-------------|--------------|--------------|
+| **indicator** | 6 | 6 |
+| **pie** | 3 | 22 |
+| **bar** | 3 | 22 |
+| **line** | 3 | 22 |
+| **combo** | 6 | 22 |
+| **table** | 6 | 38 |
+| **pivot** | 6 | 30 |
+| **gauge** | 2 | 18 |
+| Andere Typen | 3 | 22 |
 
 ---
 
@@ -105,7 +133,9 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "dataSource": "form_uuid",
   "xField": "region",
   "yField": "amount",
-  "aggregation": "sum"
+  "aggregation": "sum",
+  "w": 6,
+  "h": 22
 }
 ```
 

@@ -91,6 +91,34 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **table** | Bảng dữ liệu | Xem dữ liệu chi tiết |
 | **area** | Biểu đồ vùng | Xu hướng tích lũy |
 | **scatter** | Biểu đồ phân tán | Phân tích tương quan |
+| **indicator** | Thẻ chỉ số | Hiển thị các chỉ số chính |
+| **combo** | Biểu đồ kết hợp (cột + đường) | So sánh hai trục |
+| **pivot** | Bảng pivot chéo | Phân tích đa chiều |
+| **gauge** | Biểu đồ đồng hồ đo | Theo dõi tiến độ hoặc mục tiêu |
+| **funnel** | Biểu đồ phễu | Chuyển đổi theo giai đoạn |
+
+---
+
+## Kích thước bố cục biểu đồ
+
+Bạn có thể kiểm soát chiều rộng và chiều cao của mỗi biểu đồ trong lưới báo cáo bằng thuộc tính `w` và `h`. Báo cáo sử dụng hệ thống lưới 6 cột.
+
+- **`w`** — chiều rộng lưới (1-6 cột). Khi biểu đồ vượt quá không gian còn lại trên hàng hiện tại, nó sẽ xuống hàng tiếp theo.
+- **`h`** — chiều cao lưới (tính theo đơn vị lưới).
+
+Đặt `w` hoặc `h` thành `0` là hợp lệ. Nếu bỏ qua, các giá trị mặc định bên dưới sẽ được sử dụng.
+
+| Loại biểu đồ | `w` mặc định | `h` mặc định |
+|---------------|--------------|--------------|
+| **indicator** | 6 | 6 |
+| **pie** | 3 | 22 |
+| **bar** | 3 | 22 |
+| **line** | 3 | 22 |
+| **combo** | 6 | 22 |
+| **table** | 6 | 38 |
+| **pivot** | 6 | 30 |
+| **gauge** | 2 | 18 |
+| Loại khác | 3 | 22 |
 
 ---
 
@@ -105,7 +133,9 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "dataSource": "form_uuid",
   "xField": "region",
   "yField": "amount",
-  "aggregation": "sum"
+  "aggregation": "sum",
+  "w": 6,
+  "h": 22
 }
 ```
 

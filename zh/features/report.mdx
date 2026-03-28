@@ -91,6 +91,34 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **table** | 数据表格 | 详细数据查看 |
 | **area** | 面积图 | 累积趋势 |
 | **scatter** | 散点图 | 相关性分析 |
+| **indicator** | 指标卡 | 关键指标展示 |
+| **combo** | 柱线混合图 | 双轴对比 |
+| **pivot** | 交叉透视表 | 多维分析 |
+| **gauge** | 仪表盘 | 进度或目标跟踪 |
+| **funnel** | 漏斗图 | 阶段转化分析 |
+
+---
+
+## 图表布局尺寸
+
+你可以通过 `w` 和 `h` 属性控制报表中每个图表的宽度和高度。报表使用 6 列栅格系统。
+
+- **`w`** — 栅格宽度（1-6 列）。当图表超出当前行剩余空间时，会自动换行。
+- **`h`** — 栅格高度（以栅格单位计）。
+
+`w` 或 `h` 设置为 `0` 是有效的。如果省略，则使用以下默认值。
+
+| 图表类型 | 默认 `w` | 默认 `h` |
+|----------|----------|----------|
+| **indicator** | 6 | 6 |
+| **pie** | 3 | 22 |
+| **bar** | 3 | 22 |
+| **line** | 3 | 22 |
+| **combo** | 6 | 22 |
+| **table** | 6 | 38 |
+| **pivot** | 6 | 30 |
+| **gauge** | 2 | 18 |
+| 其他类型 | 3 | 22 |
 
 ---
 
@@ -105,7 +133,9 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "dataSource": "form_uuid",
   "xField": "region",
   "yField": "amount",
-  "aggregation": "sum"
+  "aggregation": "sum",
+  "w": 6,
+  "h": 22
 }
 ```
 

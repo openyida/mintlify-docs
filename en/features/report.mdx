@@ -91,6 +91,34 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **table** | Data table | Detailed data view |
 | **area** | Area chart | Cumulative trends |
 | **scatter** | Scatter chart | Correlation analysis |
+| **indicator** | Indicator card | Key metrics display |
+| **combo** | Combo chart (bar + line) | Dual-axis comparisons |
+| **pivot** | Cross pivot table | Multi-dimensional analysis |
+| **gauge** | Gauge chart | Progress or target tracking |
+| **funnel** | Funnel chart | Stage-based conversion |
+
+---
+
+## Chart layout sizing
+
+You can control the width and height of each chart in the report grid using the `w` and `h` properties. The report uses a 6-column grid system.
+
+- **`w`** — grid width (1-6 columns). When a chart exceeds the remaining space on the current row, it wraps to the next row.
+- **`h`** — grid height (in grid units).
+
+Setting `w` or `h` to `0` is valid and will be respected. If omitted, the default values below are used.
+
+| Chart type | Default `w` | Default `h` |
+|------------|-------------|-------------|
+| **indicator** | 6 | 6 |
+| **pie** | 3 | 22 |
+| **bar** | 3 | 22 |
+| **line** | 3 | 22 |
+| **combo** | 6 | 22 |
+| **table** | 6 | 38 |
+| **pivot** | 6 | 30 |
+| **gauge** | 2 | 18 |
+| Other types | 3 | 22 |
 
 ---
 
@@ -105,7 +133,9 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "dataSource": "form_uuid",
   "xField": "region",
   "yField": "amount",
-  "aggregation": "sum"
+  "aggregation": "sum",
+  "w": 6,
+  "h": 22
 }
 ```
 

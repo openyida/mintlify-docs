@@ -91,6 +91,34 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **table** | Tabela de dados | Visualização detalhada de dados |
 | **area** | Gráfico de área | Tendências cumulativas |
 | **scatter** | Gráfico de dispersão | Análise de correlação |
+| **indicator** | Cartão de indicador | Exibição de métricas-chave |
+| **combo** | Gráfico combinado (barras + linhas) | Comparações de eixo duplo |
+| **pivot** | Tabela dinâmica cruzada | Análise multidimensional |
+| **gauge** | Gráfico de medidor | Acompanhamento de progresso ou metas |
+| **funnel** | Gráfico de funil | Conversão por etapas |
+
+---
+
+## Dimensionamento do layout de gráficos
+
+Você pode controlar a largura e a altura de cada gráfico na grade do relatório usando as propriedades `w` e `h`. O relatório usa um sistema de grade de 6 colunas.
+
+- **`w`** — largura da grade (1-6 colunas). Quando um gráfico excede o espaço restante na linha atual, ele é movido para a próxima linha.
+- **`h`** — altura da grade (em unidades de grade).
+
+Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valores padrão abaixo são usados.
+
+| Tipo de gráfico | `w` padrão | `h` padrão |
+|-----------------|------------|------------|
+| **indicator** | 6 | 6 |
+| **pie** | 3 | 22 |
+| **bar** | 3 | 22 |
+| **line** | 3 | 22 |
+| **combo** | 6 | 22 |
+| **table** | 6 | 38 |
+| **pivot** | 6 | 30 |
+| **gauge** | 2 | 18 |
+| Outros tipos | 3 | 22 |
 
 ---
 
@@ -105,7 +133,9 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "dataSource": "form_uuid",
   "xField": "region",
   "yField": "amount",
-  "aggregation": "sum"
+  "aggregation": "sum",
+  "w": 6,
+  "h": 22
 }
 ```
 

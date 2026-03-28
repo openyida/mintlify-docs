@@ -91,6 +91,34 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **table** | Tabla de datos | Vista detallada de datos |
 | **area** | Gráfico de área | Tendencias acumulativas |
 | **scatter** | Gráfico de dispersión | Análisis de correlación |
+| **indicator** | Tarjeta de indicador | Visualización de métricas clave |
+| **combo** | Gráfico combinado (barras + líneas) | Comparaciones de doble eje |
+| **pivot** | Tabla dinámica cruzada | Análisis multidimensional |
+| **gauge** | Gráfico de velocímetro | Seguimiento de progreso u objetivos |
+| **funnel** | Gráfico de embudo | Conversión por etapas |
+
+---
+
+## Tamaño del diseño de gráficos
+
+Puedes controlar el ancho y alto de cada gráfico en la cuadrícula del informe usando las propiedades `w` y `h`. El informe usa un sistema de cuadrícula de 6 columnas.
+
+- **`w`** — ancho de cuadrícula (1-6 columnas). Cuando un gráfico excede el espacio restante en la fila actual, se ajusta a la siguiente fila.
+- **`h`** — altura de cuadrícula (en unidades de cuadrícula).
+
+Establecer `w` o `h` en `0` es válido y será respetado. Si se omite, se usan los valores predeterminados a continuación.
+
+| Tipo de gráfico | `w` predeterminado | `h` predeterminado |
+|-----------------|--------------------|--------------------|
+| **indicator** | 6 | 6 |
+| **pie** | 3 | 22 |
+| **bar** | 3 | 22 |
+| **line** | 3 | 22 |
+| **combo** | 6 | 22 |
+| **table** | 6 | 38 |
+| **pivot** | 6 | 30 |
+| **gauge** | 2 | 18 |
+| Otros tipos | 3 | 22 |
 
 ---
 
@@ -105,7 +133,9 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "dataSource": "form_uuid",
   "xField": "region",
   "yField": "amount",
-  "aggregation": "sum"
+  "aggregation": "sum",
+  "w": 6,
+  "h": 22
 }
 ```
 
