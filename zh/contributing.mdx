@@ -1,12 +1,12 @@
 ---
-title: "Contributing"
-description: "How to contribute to OpenYiDA — bug reports, features, docs, and skills."
+title: "贡献指南"
+description: "了解如何为 OpenYiDA 做出贡献，包括错误报告、功能提案、文档改善、技能扩展和开发环境设置指南。"
 icon: "handshake"
 ---
 
-Welcome to OpenYiDA! 🎉 We're excited you're interested in contributing. This guide covers everything you need to get started.
+欢迎来到 OpenYiDA！我们很高兴您有兴趣参与贡献。本指南涵盖了您需要的一切入门信息。
 
-## Quick Links
+## 快速链接
 
 - **GitHub:** https://github.com/openyida/openyida
 - **Issues:** https://github.com/openyida/openyida/issues
@@ -14,72 +14,72 @@ Welcome to OpenYiDA! 🎉 We're excited you're interested in contributing. This 
 
 ---
 
-## Maintainers
+## 维护者
 
-| Name | Role | GitHub |
+| 名称 | 角色 | GitHub |
 |------|------|--------|
-| **九神 (yize)** | Core architecture, CLI design | [@yize](https://github.com/yize) |
-| **alex-mm** | Feature development, testing | [@alex-mm](https://github.com/alex-mm) |
-| **nicky1108** | OpenClaw integration, skill extensions | [@nicky1108](https://github.com/nicky1108) |
+| **九神 (yize)** | 核心架构、CLI 设计 | [@yize](https://github.com/yize) |
+| **alex-mm** | 功能开发、测试 | [@alex-mm](https://github.com/alex-mm) |
+| **nicky1108** | OpenClaw 集成、技能扩展 | [@nicky1108](https://github.com/nicky1108) |
 
 ---
 
-## Ways to Contribute
+## 贡献方式
 
-1. **Report a Bug** → Open an Issue with reproduction steps and environment info
-2. **Suggest a Feature** → Start a Discussion or Issue first, then implement
-3. **Improve Docs** → PRs for documentation are always welcome
-4. **Add Skills** → Extend the skill pack under `yida-skills/`
-5. **Fix Bugs / New Features** → Follow the development workflow below
+1. **报告错误** → 开启 Issue 并附上复现步骤和环境信息
+2. **建议功能** → 先发起 Discussion 或 Issue，然后实现
+3. **改进文档** → 欢迎提交文档相关的 PR
+4. **添加技能** → 在 `yida-skills/` 下扩展技能包
+5. **修复错误 / 新功能** → 遵循下方的开发工作流
 
 ---
 
-## Development Setup
+## 开发环境设置
 
 ```bash
-# 1. Fork and clone the repo
+# 1. Fork 并克隆仓库
 git clone git@github.com:your-username/openyida.git
 cd openyida
 
-# 2. Install dependencies
+# 2. 安装依赖
 npm install
 
-# 3. Link globally for local debugging
+# 3. 全局链接以便本地调试
 npm link
 
-# 4. Run tests
+# 4. 运行测试
 npm test
 ```
 
 ---
 
-## PR Checklist
+## PR 检查清单
 
-Before submitting a pull request, verify:
+提交 pull request 前，请确认：
 
-- [ ] Tested the relevant feature with a real Yida account locally
-- [ ] All tests pass: `npm test`
-- [ ] JS syntax check passes:
+- [ ] 已使用真实的 Yida 账号在本地测试相关功能
+- [ ] 所有测试通过：`npm test`
+- [ ] JS 语法检查通过：
   ```bash
   node --check bin/yida.js && for f in lib/*.js lib/locales/*.js; do node --check "$f"; done
   ```
-- [ ] PR description clearly explains what changed and why
-- [ ] Screenshots or recordings attached if there are UI/behavior changes
+- [ ] PR 描述清楚说明了变更内容和原因
+- [ ] 若有 UI/行为变更，附上截图或录制画面
 
 ---
 
-## PR Guidelines
+## PR 规范
 
-- **One PR, one thing** — don't mix unrelated changes
-- **PR title format:** `feat: add xxx` / `fix: fix xxx` / `docs: update xxx`
-- **Description** should cover: what, why, and how to test
-- If the PR closes an Issue, add `Closes #123` in the description
+- **一个 PR 做一件事** — 勿混合不相关的变更
+- **PR 标题格式：** `feat: add xxx` / `fix: fix xxx` / `docs: update xxx`
+- **描述** 应涵盖：做了什么、为何、如何测试
+- 若 PR 关闭了 Issue，请在描述中加上 `Closes #123`
 
 ---
 
-## Commit Convention
+## 提交规范
 
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
+遵循 [Conventional Commits](https://www.conventionalcommits.org/)：
 
 ```
 feat: add export-app command
@@ -92,21 +92,21 @@ chore: upgrade dependencies
 
 ---
 
-## Code Style
+## 代码风格
 
-- Follow the existing code style (CommonJS modules, prefer Node.js native APIs)
-- Use meaningful English names for variables and functions; avoid abbreviations
-- Handle errors completely — don't silently swallow exceptions
-- When adding a new command, update the CLI command table in `README.md`
-
----
-
-## AI / Vibe-Coded PRs Welcome! 🤖
-
-PRs assisted by Claude Code, Cursor, Aone Copilot, or any other AI tool are fully welcome! Please mention which AI tool you used in the PR description — it helps maintainers understand the generation context.
+- 遵循现有代码风格（CommonJS 模块，优先使用 Node.js 原生 API）
+- 变量和函数使用有意义的英文名称；避免缩写
+- 完整处理错误 — 勿静默吞掉异常
+- 添加新命令时，更新 `README.md` 中的 CLI 命令表格
 
 ---
 
-## License
+## 欢迎 AI / Vibe-Coded PR！
 
-By contributing, you agree to license your contribution under the [MIT License](https://github.com/openyida/openyida/blob/main/LICENSE).
+完全欢迎由 Claude Code、Cursor、Aone Copilot 或任何其他 AI 工具辅助的 PR！请在 PR 描述中注明您使用的 AI 工具 — 这有助于维护者理解生成背景。
+
+---
+
+## 许可协议
+
+通过贡献，您同意将您的贡献依据 [MIT License](https://github.com/openyida/openyida/blob/main/LICENSE) 授权。
