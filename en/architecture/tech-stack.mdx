@@ -55,21 +55,16 @@ OpenYida adopts a modular architecture with three core layers: CLI entry, core m
 | Component | Version | Purpose |
 |-----------|---------|---------|
 | Node.js | >= 18.0.0 | Runtime environment |
-| TypeScript | >= 5.0 | Type-safe development |
 | npm | >= 9.0 | Package management |
 
 ### Core Dependencies
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| commander | ^11.x | CLI framework |
-| axios | ^1.x | HTTP client |
-| chalk | ^5.x | Terminal colors |
-| inquirer | ^9.x | Interactive prompts |
-| ora | ^7.x | Loading spinners |
-| fs-extra | ^11.x | File operations |
-| glob | ^10.x | File globbing |
-| babel | ^7.x | Code compilation |
+| @babel/standalone | ^7.15.1 | Code compilation |
+| playwright | ^1.58.2 | Browser automation/testing |
+| qrcode | ^1.5.4 | QR code generation |
+| uglify-js | ^3.19.3 | Code minification |
 
 ### AI Integration
 
@@ -82,13 +77,11 @@ OpenYida adopts a modular architecture with three core layers: CLI entry, core m
 
 ### Development Tools
 
-| Tool | Purpose |
-|------|---------|
-| ESLint | Code linting |
-| Prettier | Code formatting |
-| Jest | Unit testing |
-| TypeScript | Type checking |
-| Husky | Git hooks |
+| Tool | Version | Purpose |
+|------|---------|---------|
+| eslint | ^8.50.0 | Code linting |
+| eslint-plugin-import | ^2.32.0 | Import linting rules |
+| jest | ^29.7.0 | Unit testing |
 
 ---
 

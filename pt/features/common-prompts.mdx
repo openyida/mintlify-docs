@@ -4,6 +4,262 @@ description: "Coleção de prompts em linguagem natural suportados pelo OpenYida
 icon: "comments"
 ---
 
+O OpenYida é projetado para interação em linguagem natural. Os seguintes prompts foram verificados e funcionam em todas as ferramentas de IA suportadas.
+
+---
+
+## Criação de Aplicativos
+
+```
+Ajude-me a criar um aplicativo xxx
+```
+```
+Ajude-me a criar um CRM
+```
+```
+Ajude-me a criar um aplicativo de calculadora de salário pessoal
+```
+```
+Ajude-me a criar um sistema IPD no Yida para gerenciar todo o processo de produção de chips
+```
+```
+Gerar um aplicativo baseado no documento de requisitos: [colar PRD]
+```
+```
+Criar um minijogo de felicitação de aniversário no Yida
+```
+```
+Criar um jogo de adivinhação de lanternas para o Festival das Lanternas
+```
+
+---
+
+## Operações de Formulários e Páginas
+
+### Criar Página de Formulário
+
+```
+Ajude-me a criar uma página de formulário xxx
+```
+```
+Criar um formulário de solicitação de licença incluindo: nome do funcionário, departamento, data de início, data de término, motivo
+```
+
+### Adicionar Campos de Formulário
+
+```
+Adicionar um campo [nome do campo] a [nome da página], tipo de campo: [TextField/NumberField/DateField/SelectField/...]
+```
+```
+Adicionar um campo suspenso "Departamento" ao formulário de informações do funcionário, opções: Engenharia, Marketing, Vendas, RH
+```
+
+<Note>
+Apenas [tipos de campos suportados](/pt/features/skills#tipos-de-campos-suportados) são aceitos. Tipos não suportados (por exemplo, `MobileField`, `EmailField`) serão rejeitados.
+</Note>
+
+### Modificar Propriedades do Campo
+
+```
+Tornar o campo [nome do campo] em [nome da página] obrigatório
+```
+```
+Tornar o campo [nome do campo] em [nome da página] somente leitura
+```
+```
+Alterar o rótulo do campo [nome do campo] em [nome da página] para [novo rótulo]
+```
+
+### Páginas de Exibição Personalizadas
+
+```
+Criar uma página de exibição personalizada para [nome da página]
+```
+```
+Gerar uma landing page para um produto de colaboração empresarial
+```
+
+---
+
+## Publicar e Compartilhar
+
+```
+Publicar a página [nome da página]
+```
+```
+Tornar a página [nome da página] acessível publicamente
+```
+```
+Configurar permissões de acesso público para a página [nome da página] — qualquer pessoa pode acessar via link
+```
+
+---
+
+## Flash Note para PRD
+
+```
+Converter notas flash do DingTalk em documentos PRD
+```
+
+```
+Gerar um PRD desta transcrição de reunião: [colar notas]
+```
+
+```
+Criar um documento de requisitos de projeto da nota flash anexada
+```
+
+```
+Converter notas de reunião em um documento de requisitos de produto estruturado
+```
+
+<Note>
+Requer login. O comando lê transcrições de reuniões e usa IA para gerar documentos PRD estruturados. A saída é salva no diretório `prd/`.
+</Note>
+
+---
+
+## Gerenciamento de Dados
+
+```
+Consultar todos os registros de [nome do formulário]
+```
+```
+Exportar dados de [nome do formulário] para Excel
+```
+```
+Excluir todos os dados de teste de [nome do formulário]
+```
+
+---
+
+## Integração e Automação
+
+### Criar Fluxo de Integração
+
+```
+Criar um fluxo de integração que envia notificações quando novos registros são enviados
+```
+
+```
+Configurar uma automação em [nome do formulário] para notificar [equipe/usuário] sobre novos envios
+```
+
+```
+Criar um fluxo de trabalho de [nome do formulário] que dispara notificações por e-mail para [destinatários]
+```
+
+### Adicionar Ações Automatizadas
+
+```
+Adicionar uma ação de pesquisa de dados à integração [nome do fluxo]
+```
+
+```
+Adicionar uma ação de criação de registro para criar automaticamente entradas em [formulário de destino]
+```
+
+<Note>
+Fluxos de integração são acionados em eventos de formulário (inserção, atualização, exclusão) e podem executar notificações, pesquisas de dados e criação de registros. Use a CLI para criar e configurar fluxos.
+</Note>
+
+---
+
+## Conectores (Integração HTTP)
+
+```
+Criar um conector HTTP para [nome da API], URL base: [url]
+```
+```
+Adicionar uma ação POST a [nome do conector] para criar registros
+```
+```
+Criar inteligentemente um conector a partir deste comando curl: [colar curl]
+```
+
+---
+
+## Relatórios e Gráficos
+
+```
+Criar um relatório Yida para [nome do aplicativo] com um gráfico de barras mostrando envios mensais
+```
+```
+Adicionar um gráfico de pizza a [nome do relatório] mostrando a distribuição de status
+```
+
+---
+
+## Conta e Ambiente
+
+```
+Fazer login novamente / Sair
+```
+```
+Mudar para a organização [nome da organização]
+```
+```
+Verificar o status de login atual
+```
+```
+Executar diagnóstico do ambiente
+```
+
+---
+
+## Integração DingTalk
+
+### Pesquisar e Consultar
+
+```
+Pesquisar um contato chamado [nome]
+```
+
+```
+Listar todos os eventos do calendário
+```
+
+```
+Consultar minhas solicitações de aprovação
+```
+
+### Criar e Gerenciar
+
+```
+Criar uma tarefa pendente: [descrição da tarefa]
+```
+
+```
+Enviar uma mensagem: [conteúdo da mensagem]
+```
+
+### Consultar Presença
+
+```
+Listar registros de presença
+```
+
+```
+Verificar meu status de presença
+```
+
+<Info>
+O comando `dws` requer que a CLI do DingTalk seja instalada separadamente. Execute `openyida dws install` se ainda não estiver instalado. A saída é por padrão em formato de tabela; adicione `-f json` para saída JSON.
+</Info>
+
+---
+
+## CDN e Recursos
+
+```
+Configurar upload de imagens CDN para [nome do aplicativo]
+```
+```
+Fazer upload de [arquivo de imagem] para o CDN
+```
+
+---
+
 <Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/common-prompts) or [Chinese version](/zh/features/common-prompts) for complete content.
+**Dica:** Quanto mais contexto você fornecer, melhores serão os resultados. Em vez de dizer "criar um formulário", diga "Criar um formulário de aprovação de licença com nome do funcionário, departamento, tipo de licença (dropdown: anual/doente/pessoal), datas de início e término, motivo — tornar obrigatórios o nome do funcionário e as datas".
 </Tip>

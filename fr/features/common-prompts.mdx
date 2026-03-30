@@ -95,6 +95,30 @@ Configurer les permissions d'accès public pour la page [nom de la page] — n'i
 
 ---
 
+## Flash Note vers PRD
+
+```
+Convertir les notes flash DingTalk en documents PRD
+```
+
+```
+Générer un PRD à partir de cette transcription de réunion : [coller les notes]
+```
+
+```
+Créer un document d'exigences de projet à partir de la note flash jointe
+```
+
+```
+Convertir les notes de réunion en un document d'exigences produit structuré
+```
+
+<Note>
+Nécessite une connexion. La commande lit les transcriptions de réunions et utilise l'IA pour générer des documents PRD structurés. La sortie est enregistrée dans le répertoire `prd/`.
+</Note>
+
+---
+
 ## Gestion des données
 
 ```
@@ -106,6 +130,38 @@ Exporter les données du formulaire [nom du formulaire] vers Excel
 ```
 Supprimer toutes les données de test du formulaire [nom du formulaire]
 ```
+
+---
+
+## Intégration et automatisation
+
+### Créer un flux d'intégration
+
+```
+Créer un flux d'intégration qui envoie des notifications lorsque de nouveaux enregistrements sont soumis
+```
+
+```
+Configurer une automatisation sur [nom du formulaire] pour notifier [équipe/utilisateur] lors des nouvelles soumissions
+```
+
+```
+Créer un workflow [nom du formulaire] qui déclenche des notifications par e-mail aux [destinataires]
+```
+
+### Ajouter des actions automatisées
+
+```
+Ajouter une action de recherche de données à l'intégration [nom du flux]
+```
+
+```
+Ajouter une action de création d'enregistrement pour créer automatiquement des entrées dans [formulaire cible]
+```
+
+<Note>
+Les flux d'intégration se déclenchent sur les événements de formulaire (insertion, mise à jour, suppression) et peuvent exécuter des notifications, des recherches de données et des créations d'enregistrements. Utilisez la CLI pour créer et configurer les flux.
+</Note>
 
 ---
 
@@ -148,6 +204,48 @@ Voir l'état de connexion actuel
 ```
 Exécuter un diagnostic de l'environnement
 ```
+
+---
+
+## Intégration DingTalk
+
+### Recherche et requête
+
+```
+Rechercher un contact nommé [nom]
+```
+
+```
+Lister tous les événements du calendrier
+```
+
+```
+Interroger mes demandes d'approbation
+```
+
+### Créer et gérer
+
+```
+Créer une tâche à faire : [description de la tâche]
+```
+
+```
+Envoyer un message : [contenu du message]
+```
+
+### Interroger les présences
+
+```
+Lister les enregistrements de présence
+```
+
+```
+Vérifier mon statut de présence
+```
+
+<Info>
+La commande `dws` nécessite l'installation séparée de la CLI DingTalk. Exécutez `openyida dws install` si ce n'est pas déjà installé. La sortie est par défaut au format tableau ; ajoutez `-f json` pour une sortie JSON.
+</Info>
 
 ---
 

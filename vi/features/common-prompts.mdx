@@ -4,6 +4,262 @@ description: "Bộ sưu tập các câu lệnh ngôn ngữ tự nhiên được 
 icon: "comments"
 ---
 
+OpenYida được thiết kế để tương tác bằng ngôn ngữ tự nhiên. Các câu lệnh sau đã được xác minh và hoạt động trên tất cả các công cụ AI được hỗ trợ.
+
+---
+
+## Tạo Ứng dụng
+
+```
+Giúp tôi xây dựng một ứng dụng xxx
+```
+```
+Giúp tôi xây dựng một CRM
+```
+```
+Giúp tôi xây dựng ứng dụng máy tính lương cá nhân
+```
+```
+Giúp tôi tạo hệ thống IPD trên Yida để quản lý toàn bộ quy trình sản xuất chip
+```
+```
+Tạo ứng dụng dựa trên tài liệu yêu cầu: [dán PRD]
+```
+```
+Tạo trò chơi mini chúc mừng sinh nhật trên Yida
+```
+```
+Xây dựng trò chơi đố đèn lồng cho lễ hội đèn lồng
+```
+
+---
+
+## Thao tác Biểu mẫu và Trang
+
+### Tạo Trang Biểu mẫu
+
+```
+Giúp tôi tạo một trang biểu mẫu xxx
+```
+```
+Tạo biểu mẫu đơn xin nghỉ phép bao gồm: tên nhân viên, phòng ban, ngày bắt đầu, ngày kết thúc, lý do
+```
+
+### Thêm Trường Biểu mẫu
+
+```
+Thêm trường [tên trường] vào [tên trang], loại trường: [TextField/NumberField/DateField/SelectField/...]
+```
+```
+Thêm trường dropdown "Phòng ban" vào biểu mẫu thông tin nhân viên, tùy chọn: Kỹ thuật, Marketing, Bán hàng, Nhân sự
+```
+
+<Note>
+Chỉ chấp nhận [các loại trường được hỗ trợ](/vi/features/skills#các-loại-trường-được-hỗ-trợ). Các loại không được hỗ trợ (ví dụ: `MobileField`, `EmailField`) sẽ bị từ chối.
+</Note>
+
+### Sửa đổi Thuộc tính Trường
+
+```
+Đặt trường [tên trường] trong [tên trang] thành bắt buộc
+```
+```
+Đặt trường [tên trường] trong [tên trang] thành chỉ đọc
+```
+```
+Thay đổi nhãn trường [tên trường] trong [tên trang] thành [nhãn mới]
+```
+
+### Trang Hiển thị Tùy chỉnh
+
+```
+Tạo trang hiển thị tùy chỉnh cho [tên trang]
+```
+```
+Tạo trang đích cho sản phẩm hợp tác doanh nghiệp
+```
+
+---
+
+## Xuất bản và Chia sẻ
+
+```
+Xuất bản trang [tên trang]
+```
+```
+Đặt trang [tên trang] thành công khai
+```
+```
+Cấu hình quyền truy cập công khai cho trang [tên trang] — bất kỳ ai cũng có thể truy cập qua liên kết
+```
+
+---
+
+## Flash Note sang PRD
+
+```
+Chuyển đổi ghi chú nhanh DingTalk thành tài liệu PRD
+```
+
+```
+Tạo PRD từ bản ghi cuộc họp này: [dán ghi chú]
+```
+
+```
+Tạo tài liệu yêu cầu dự án từ ghi chú nhanh đính kèm
+```
+
+```
+Chuyển đổi ghi chú cuộc họp thành tài liệu yêu cầu sản phẩm có cấu trúc
+```
+
+<Note>
+Yêu cầu đăng nhập. Lệnh đọc bản ghi cuộc họp và sử dụng AI để tạo tài liệu PRD có cấu trúc. Đầu ra được lưu vào thư mục `prd/`.
+</Note>
+
+---
+
+## Quản lý Dữ liệu
+
+```
+Truy vấn tất cả bản ghi từ [tên biểu mẫu]
+```
+```
+Xuất dữ liệu [tên biểu mẫu] sang Excel
+```
+```
+Xóa tất cả dữ liệu thử nghiệm từ [tên biểu mẫu]
+```
+
+---
+
+## Tích hợp và Tự động hóa
+
+### Tạo Luồng Tích hợp
+
+```
+Tạo luồng tích hợp gửi thông báo khi có bản ghi mới được gửi
+```
+
+```
+Thiết lập tự động hóa trên [tên biểu mẫu] để thông báo [nhóm/người dùng] khi có gửi mới
+```
+
+```
+Tạo quy trình làm việc [tên biểu mẫu] kích hoạt thông báo email đến [người nhận]
+```
+
+### Thêm Hành động Tự động
+
+```
+Thêm hành động tra cứu dữ liệu vào tích hợp [tên luồng]
+```
+
+```
+Thêm hành động tạo bản ghi để tự động tạo mục trong [biểu mẫu đích]
+```
+
+<Note>
+Các luồng tích hợp được kích hoạt trên sự kiện biểu mẫu (chèn, cập nhật, xóa) và có thể thực hiện thông báo, tra cứu dữ liệu và tạo bản ghi. Sử dụng CLI để tạo và cấu hình luồng.
+</Note>
+
+---
+
+## Bộ Kết nối (Tích hợp HTTP)
+
+```
+Tạo bộ kết nối HTTP cho [tên API], URL cơ sở: [url]
+```
+```
+Thêm hành động POST vào [tên bộ kết nối] để tạo bản ghi
+```
+```
+Tạo thông minh bộ kết nối từ lệnh curl này: [dán curl]
+```
+
+---
+
+## Báo cáo và Biểu đồ
+
+```
+Tạo báo cáo Yida cho [tên ứng dụng] với biểu đồ cột hiển thị số lượng gửi hàng tháng
+```
+```
+Thêm biểu đồ tròn vào [tên báo cáo] hiển thị phân phối trạng thái
+```
+
+---
+
+## Tài khoản và Môi trường
+
+```
+Đăng nhập lại / Đăng xuất
+```
+```
+Chuyển sang tổ chức [tên tổ chức]
+```
+```
+Kiểm tra trạng thái đăng nhập hiện tại
+```
+```
+Chạy chẩn đoán môi trường
+```
+
+---
+
+## Tích hợp DingTalk
+
+### Tìm kiếm và Truy vấn
+
+```
+Tìm kiếm liên hệ tên [tên]
+```
+
+```
+Liệt kê tất cả sự kiện lịch
+```
+
+```
+Truy vấn yêu cầu phê duyệt của tôi
+```
+
+### Tạo và Quản lý
+
+```
+Tạo nhiệm vụ cần làm: [mô tả nhiệm vụ]
+```
+
+```
+Gửi tin nhắn: [nội dung tin nhắn]
+```
+
+### Truy vấn Chấm công
+
+```
+Liệt kê bản ghi chấm công
+```
+
+```
+Kiểm tra trạng thái chấm công của tôi
+```
+
+<Info>
+Lệnh `dws` yêu cầu cài đặt riêng CLI DingTalk. Chạy `openyida dws install` nếu chưa được cài đặt. Đầu ra mặc định ở định dạng bảng; thêm `-f json` để xuất JSON.
+</Info>
+
+---
+
+## CDN và Tài nguyên
+
+```
+Cấu hình tải lên hình ảnh CDN cho [tên ứng dụng]
+```
+```
+Tải lên [tệp hình ảnh] lên CDN
+```
+
+---
+
 <Tip>
-This page is available in English and Chinese. Please refer to the [English version](/en/features/common-prompts) or [Chinese version](/zh/features/common-prompts) for complete content.
+**Mẹo:** Bạn cung cấp càng nhiều ngữ cảnh, kết quả càng tốt. Thay vì nói "tạo biểu mẫu", hãy nói "Tạo biểu mẫu phê duyệt nghỉ phép bao gồm tên nhân viên, phòng ban, loại nghỉ phép (dropdown: năm/ốm/cá nhân), ngày bắt đầu và kết thúc, lý do — đặt tên nhân viên và ngày tháng thành bắt buộc".
 </Tip>

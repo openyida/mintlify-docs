@@ -95,6 +95,30 @@ Konfigurieren Sie die öffentlichen Zugriffsrechte für die Seite [Seitenname] �
 
 ---
 
+## Flash Note zu PRD
+
+```
+DingTalk-Flash-Notizen in PRD-Dokumente umwandeln
+```
+
+```
+Ein PRD aus diesem Meeting-Transkript generieren: [Notizen einfügen]
+```
+
+```
+Ein Projektanforderungsdokument aus der angehängten Flash-Notiz erstellen
+```
+
+```
+Meeting-Notizen in ein strukturiertes Produktanforderungsdokument umwandeln
+```
+
+<Note>
+Erfordert Anmeldung. Der Befehl liest Meeting-Transkripte und verwendet KI, um strukturierte PRD-Dokumente zu generieren. Die Ausgabe wird im Verzeichnis `prd/` gespeichert.
+</Note>
+
+---
+
 ## Datenverwaltung
 
 ```
@@ -106,6 +130,38 @@ Exportieren Sie die Daten des Formulars [Formularname] nach Excel
 ```
 Löschen Sie alle Testdaten des Formulars [Formularname]
 ```
+
+---
+
+## Integration & Automatisierung
+
+### Integrationsfluss erstellen
+
+```
+Einen Integrationsfluss erstellen, der Benachrichtigungen sendet, wenn neue Datensätze eingereicht werden
+```
+
+```
+Eine Automatisierung auf [Formularname] einrichten, um [Team/Benutzer] bei neuen Einreichungen zu benachrichtigen
+```
+
+```
+Einen [Formularname]-Workflow erstellen, der E-Mail-Benachrichtigungen an [Empfänger] auslöst
+```
+
+### Automatisierte Aktionen hinzufügen
+
+```
+Eine Datenabfrage-Aktion zur Integration [Flussname] hinzufügen
+```
+
+```
+Eine Datensatzerstellungsaktion hinzufügen, um automatisch Einträge in [Zielformular] zu erstellen
+```
+
+<Note>
+Integrationsflüsse werden bei Formularereignissen (Einfügen, Aktualisieren, Löschen) ausgelöst und können Benachrichtigungen, Datenabfragen und Datensatzerstellungen ausführen. Verwenden Sie die CLI, um Flüsse zu erstellen und zu konfigurieren.
+</Note>
 
 ---
 
@@ -148,6 +204,48 @@ Aktuellen Anmeldestatus anzeigen
 ```
 Umgebungsdiagnose ausführen
 ```
+
+---
+
+## DingTalk-Integration
+
+### Suchen & Abfragen
+
+```
+Nach einem Kontakt mit dem Namen [Name] suchen
+```
+
+```
+Alle Kalenderereignisse auflisten
+```
+
+```
+Meine Genehmigungsanfragen abfragen
+```
+
+### Erstellen & Verwalten
+
+```
+Eine Aufgabe erstellen: [Aufgabenbeschreibung]
+```
+
+```
+Eine Nachricht senden: [Nachrichteninhalt]
+```
+
+### Anwesenheit abfragen
+
+```
+Anwesenheitsdatensätze auflisten
+```
+
+```
+Meinen Anwesenheitsstatus überprüfen
+```
+
+<Info>
+Der Befehl `dws` erfordert eine separate Installation der DingTalk-CLI. Führen Sie `openyida dws install` aus, falls noch nicht installiert. Die Ausgabe erfolgt standardmäßig im Tabellenformat; fügen Sie `-f json` für JSON-Ausgabe hinzu.
+</Info>
 
 ---
 

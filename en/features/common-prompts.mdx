@@ -95,6 +95,30 @@ Configure public access for [page name] — anyone with link can access
 
 ---
 
+## Flash Note to PRD
+
+```
+Convert DingTalk flash notes to PRD documents
+```
+
+```
+Generate a PRD from this meeting transcript: [paste notes]
+```
+
+```
+Create a project requirements document from the attached flash note
+```
+
+```
+Convert meeting notes into a structured product requirements document
+```
+
+<Note>
+Requires login. The command reads meeting transcripts and uses AI to generate structured PRD documents. Output is saved to the `prd/` directory.
+</Note>
+
+---
+
 ## Data Management
 
 ```
@@ -106,6 +130,38 @@ Export [form name] data to Excel
 ```
 Delete all test data from [form name]
 ```
+
+---
+
+## Integration & Automation
+
+### Create Integration Flow
+
+```
+Create an integration flow that sends notifications when new records are submitted
+```
+
+```
+Set up an automation on [form name] to notify [team/user] on new submissions
+```
+
+```
+Create a [form name] workflow that triggers email notifications to [recipients]
+```
+
+### Add Automated Actions
+
+```
+Add a data lookup action to the [flow name] integration
+```
+
+```
+Add a record creation action to automatically create entries in [target form]
+```
+
+<Note>
+Integration flows trigger on form events (insert, update, delete) and can execute notifications, data lookups, and record creation. Use the CLI to create and configure flows.
+</Note>
 
 ---
 
@@ -148,6 +204,48 @@ Check current login status
 ```
 Run environment diagnostics
 ```
+
+---
+
+## DingTalk Integration
+
+### Search & Query
+
+```
+Search for a contact named [name]
+```
+
+```
+List all calendar events
+```
+
+```
+Query my approval requests
+```
+
+### Create & Manage
+
+```
+Create a todo task: [task description]
+```
+
+```
+Send a message: [message content]
+```
+
+### Query Attendance
+
+```
+List attendance records
+```
+
+```
+Check my attendance status
+```
+
+<Info>
+The `dws` command requires DingTalk CLI to be installed separately. Run `openyida dws install` if not already installed. Output defaults to table format; add `-f json` for JSON output.
+</Info>
 
 ---
 

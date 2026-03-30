@@ -55,6 +55,10 @@ openyida doctor --report html
 openyida doctor --monitor
 ```
 
+<Warning>
+The health monitoring feature is currently in beta. API and output formats may change in future releases.
+</Warning>
+
 ---
 
 ## Environment Checks
@@ -162,6 +166,10 @@ openyida doctor --fix --interactive
 
 ## Health Monitoring
 
+<Warning>
+The `--duration` parameter and metric-specific monitoring (`--metric` flag) are experimental features. Their behavior and syntax may change in upcoming releases.
+</Warning>
+
 ### Start Monitoring
 
 ```bash
@@ -191,6 +199,10 @@ openyida doctor --monitor --report --duration 24h
 
 ## Report Formats
 
+<Note>
+Report generation with custom output formats is experimental. The HTML and JSON output schemas may be refined in future updates.
+</Note>
+
 ### Markdown Report
 
 ```bash
@@ -212,6 +224,10 @@ openyida doctor --report html --output diagnosis.html
 ---
 
 ## CI/CD Integration
+
+<Warning>
+CI/CD integration with OpenYida doctor is in beta. The command syntax, output formats, and integration points may change. Test thoroughly before deploying to production pipelines.
+</Warning>
 
 ### GitHub Actions
 
