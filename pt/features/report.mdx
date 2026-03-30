@@ -45,7 +45,7 @@ openyida create-report APP_XXXXXX "Sales Dashboard" '{
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "sales_form",
+      "cubeCode": "FORM_XXXXXX",
       "xField": "month",
       "yField": "amount"
     }
@@ -73,11 +73,55 @@ openyida append-chart <appType> <reportId> '<JSON-definição-ou-arquivo>'
 openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "type": "line",
   "title": "Growth Trend",
-  "dataSource": "form_sales",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "month",
   "yField": "growth_rate"
 }'
 ```
+
+---
+
+## Configuração de filtros
+
+Os relatórios suportam filtros vinculados a gráficos, permitindo que os usuários filtrem dinamicamente os dados exibidos. Os filtros são definidos no nível do relatório e aplicados aos gráficos correspondentes.
+
+```json
+{
+  "filters": [
+    {
+      "label": "Região",
+      "field": "region",
+      "type": "dropdown",
+      "options": ["Norte", "Sul", "Leste", "Oeste"]
+    },
+    {
+      "label": "Período",
+      "field": "date",
+      "type": "dateRange"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bar",
+      "title": "Vendas por Região",
+      "cubeCode": "FORM_XXXXXX",
+      "xField": "region",
+      "yField": "amount"
+    }
+  ]
+}
+```
+
+| Campo | Descrição |
+|-------|-----------|
+| **label** | Rótulo exibido para o filtro |
+| **field** | Campo do formulário vinculado ao filtro |
+| **type** | Tipo de filtro (`dropdown`, `dateRange`, `text`, `number`) |
+| **options** | Lista de opções disponíveis (apenas para `dropdown`) |
+
+<Info>
+Quando o tipo de filtro é `dropdown` e nenhuma opção é fornecida, as opções são geradas automaticamente a partir dos valores distintos do campo no formulário vinculado.
+</Info>
 
 ---
 
@@ -95,6 +139,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **combo** | Gráfico combinado (barras + linhas) | Comparações de eixo duplo |
 | **pivot** | Tabela dinâmica cruzada | Análise multidimensional |
 | **gauge** | Gráfico de medidor | Acompanhamento de progresso ou metas |
+| **radar** | Gráfico de radar | Comparações multidimensionais |
 | **funnel** | Gráfico de funil | Conversão por etapas |
 
 ---
@@ -130,7 +175,7 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
 {
   "type": "bar",
   "title": "Sales by Region",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "region",
   "yField": "amount",
   "aggregation": "sum",
@@ -145,7 +190,7 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
 {
   "type": "line",
   "title": "Traffic Trend",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "date",
   "yField": "visitors",
   "aggregation": "sum"
@@ -158,7 +203,7 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
 {
   "type": "pie",
   "title": "Market Share",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "categoryField": "product",
   "valueField": "share"
 }
@@ -170,7 +215,7 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
 {
   "type": "table",
   "title": "Detail View",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "columns": [
     { "field": "name", "title": "Name" },
     { "field": "amount", "title": "Amount" },
@@ -178,6 +223,22 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
   ]
 }
 ```
+
+---
+
+## Formato do cubeCode
+
+O `cubeCode` identifica a fonte de dados do formulário vinculada ao gráfico. O formato segue o padrão:
+
+```
+FORM_<IDENTIFICADOR>
+```
+
+- O prefixo `FORM_` é obrigatório e indica que a fonte de dados é um formulário.
+- O `<IDENTIFICADOR>` corresponde ao código único do formulário, geralmente em letras maiúsculas e separado por underscores (por exemplo, `FORM_MONTHLY_SALES`, `FORM_DAILY_SALES`).
+- Para formulários genéricos ou quando o identificador exato não é relevante, utilize o placeholder `FORM_XXXXXX`.
+
+Você pode encontrar o `cubeCode` de um formulário nas configurações do formulário ou na resposta da API ao listar formulários.
 
 ---
 
@@ -203,7 +264,7 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "form_monthly_sales",
+      "cubeCode": "FORM_MONTHLY_SALES",
       "xField": "month",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -211,14 +272,14 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
     {
       "type": "pie",
       "title": "Product Categories",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "categoryField": "product_category",
       "valueField": "sales_amount"
     },
     {
       "type": "line",
       "title": "Sales Trend",
-      "dataSource": "form_daily_sales",
+      "cubeCode": "FORM_DAILY_SALES",
       "xField": "date",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -226,7 +287,7 @@ Definir `w` ou `h` como `0` é válido e será respeitado. Se omitido, os valore
     {
       "type": "table",
       "title": "Sales Detail",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "columns": [
         { "field": "order_no", "title": "Order No.", "width": 150 },
         { "field": "customer_name", "title": "Customer", "width": 200 },

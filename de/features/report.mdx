@@ -45,7 +45,7 @@ openyida create-report APP_XXXXXX "Sales Dashboard" '{
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "sales_form",
+      "cubeCode": "FORM_XXXXXX",
       "xField": "month",
       "yField": "amount"
     }
@@ -73,11 +73,51 @@ openyida append-chart <appType> <reportId> '<Diagrammdefinition-JSON-oder-Datei>
 openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "type": "line",
   "title": "Growth Trend",
-  "dataSource": "form_sales",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "month",
   "yField": "growth_rate"
 }'
 ```
+
+---
+
+## Filterkonfiguration
+
+Berichte unterstützen Filter, die mit Diagrammen verknüpft werden können. Über die `filters`-Eigenschaft in der Berichtskonfiguration definieren Sie Filtersteuerungen, die auf ein oder mehrere Diagramme angewendet werden.
+
+```json
+{
+  "charts": [...],
+  "filters": [
+    {
+      "label": "Region",
+      "field": "region",
+      "type": "dropdown",
+      "cubeCode": "FORM_SALES",
+      "chartIds": ["chart_1", "chart_2"]
+    },
+    {
+      "label": "Zeitraum",
+      "field": "date",
+      "type": "dateRange",
+      "cubeCode": "FORM_DAILY_SALES",
+      "chartIds": ["chart_3"]
+    }
+  ]
+}
+```
+
+| Feld | Beschreibung |
+|------|-------------|
+| **label** | Anzeigetext des Filters |
+| **field** | Feldname in der Datenquelle |
+| **type** | Filtertyp (`dropdown`, `dateRange`, `text`, `number`) |
+| **cubeCode** | CubeCode des verknüpften Formulars |
+| **chartIds** | Liste der Diagramm-IDs, auf die der Filter angewendet wird |
+
+<Info>
+Wenn der Filtertyp `dropdown` ist und keine Optionen angegeben werden, werden die Dropdown-Werte automatisch aus den Daten der verknüpften Datenquelle generiert.
+</Info>
 
 ---
 
@@ -95,6 +135,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **combo** | Kombi-Diagramm (Balken + Linie) | Vergleiche mit Doppelachse |
 | **pivot** | Kreuz-Pivottabelle | Mehrdimensionale Analyse |
 | **gauge** | Messgerät-Diagramm | Fortschritts- oder Zielverfolgung |
+| **radar** | Radar-Diagramm | Mehrdimensionale Vergleiche |
 | **funnel** | Trichterdiagramm | Stufenweise Konversion |
 
 ---
@@ -130,7 +171,7 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
 {
   "type": "bar",
   "title": "Sales by Region",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "region",
   "yField": "amount",
   "aggregation": "sum",
@@ -145,7 +186,7 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
 {
   "type": "line",
   "title": "Traffic Trend",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "date",
   "yField": "visitors",
   "aggregation": "sum"
@@ -158,7 +199,7 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
 {
   "type": "pie",
   "title": "Market Share",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "categoryField": "product",
   "valueField": "share"
 }
@@ -170,7 +211,7 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
 {
   "type": "table",
   "title": "Detail View",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "columns": [
     { "field": "name", "title": "Name" },
     { "field": "amount", "title": "Amount" },
@@ -178,6 +219,18 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
   ]
 }
 ```
+
+---
+
+## CubeCode-Format
+
+Der `cubeCode` identifiziert die Formular-Datenquelle für ein Diagramm. Er folgt dem Format `FORM_` gefolgt von einem eindeutigen Bezeichner.
+
+- **Standardformat**: `FORM_XXXXXX` — wobei `XXXXXX` die eindeutige Formular-ID ist (z. B. `FORM_A1B2C3`).
+- **Benannte Formulare**: Wenn das Formular einen aussagekräftigen Namen hat, kann der cubeCode diesen widerspiegeln, z. B. `FORM_MONTHLY_SALES` oder `FORM_DAILY_SALES`.
+- Der cubeCode muss immer mit dem Präfix `FORM_` beginnen und in Großbuchstaben geschrieben sein.
+
+Sie finden den cubeCode eines Formulars in den Formulareinstellungen oder über die Yida-Verwaltungsoberfläche.
 
 ---
 
@@ -203,7 +256,7 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "form_monthly_sales",
+      "cubeCode": "FORM_MONTHLY_SALES",
       "xField": "month",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -211,14 +264,14 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
     {
       "type": "pie",
       "title": "Product Categories",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "categoryField": "product_category",
       "valueField": "sales_amount"
     },
     {
       "type": "line",
       "title": "Sales Trend",
-      "dataSource": "form_daily_sales",
+      "cubeCode": "FORM_DAILY_SALES",
       "xField": "date",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -226,7 +279,7 @@ Das Setzen von `w` oder `h` auf `0` ist gültig und wird berücksichtigt. Bei Au
     {
       "type": "table",
       "title": "Sales Detail",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "columns": [
         { "field": "order_no", "title": "Order No.", "width": 150 },
         { "field": "customer_name", "title": "Customer", "width": 200 },
