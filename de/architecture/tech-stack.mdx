@@ -31,6 +31,43 @@ Die technische Stack von OpenYida ist in zwei Teile unterteilt: Entwicklungsumge
 | `doctor.ts` | Diagnosetool |
 | `login.ts` | Anmeldeauthentifizierung |
 
+## Technologie-Stack
+
+### Laufzeitumgebung
+
+| Komponente | Version | Zweck |
+|-----------|---------|---------|
+| Node.js | >= 18.0.0 | Laufzeitumgebung |
+| npm | >= 9.0 | Paketverwaltung |
+
+### Kernabhängigkeiten
+
+| Paket | Version | Zweck |
+|---------|---------|---------|
+| @babel/standalone | ^7.15.1 | Codekompilierung |
+| playwright | ^1.58.2 | Browserautomatisierung/-tests |
+| qrcode | ^1.5.4 | QR-Code-Generierung |
+| uglify-js | ^3.19.3 | Code-Minifizierung |
+
+### KI-Integration
+
+| Anbieter | SDK | Modelle |
+|----------|-----|--------|
+| OpenAI | openai | GPT-4, GPT-3.5 |
+| Anthropic | @anthropic-ai/sdk | Claude 3.5 |
+| Alibaba | @alicloud/dingtalk | Tongyi Qianwen |
+| DeepSeek | deepseek-sdk | DeepSeek-V2 |
+
+### Entwicklungswerkzeuge
+
+| Werkzeug | Version | Zweck |
+|------|---------|---------|
+| eslint | ^8.50.0 | Code-Linting |
+| eslint-plugin-import | ^2.32.0 | Import-Linting-Regeln |
+| jest | ^29.7.0 | Unit-Tests |
+
+---
+
 ### src/core/
 
 Kerngeschäftslogik-Module:

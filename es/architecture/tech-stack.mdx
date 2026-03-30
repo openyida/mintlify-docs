@@ -61,6 +61,43 @@ OpenYida adopta un diseño arquitectónico modular, dividido en tres capas: entr
 
 ---
 
+## Stack Tecnológico
+
+### Entorno de Ejecución
+
+| Componente | Versión | Propósito |
+|-----------|---------|---------|
+| Node.js | >= 18.0.0 | Entorno de ejecución |
+| npm | >= 9.0 | Gestión de paquetes |
+
+### Dependencias Principales
+
+| Paquete | Versión | Propósito |
+|---------|---------|---------|
+| @babel/standalone | ^7.15.1 | Compilación de código |
+| playwright | ^1.58.2 | Automatización/pruebas de navegador |
+| qrcode | ^1.5.4 | Generación de códigos QR |
+| uglify-js | ^3.19.3 | Minificación de código |
+
+### Integración de IA
+
+| Proveedor | SDK | Modelos |
+|----------|-----|--------|
+| OpenAI | openai | GPT-4, GPT-3.5 |
+| Anthropic | @anthropic-ai/sdk | Claude 3.5 |
+| Alibaba | @alicloud/dingtalk | Tongyi Qianwen |
+| DeepSeek | deepseek-sdk | DeepSeek-V2 |
+
+### Herramientas de Desarrollo
+
+| Herramienta | Versión | Propósito |
+|------|---------|---------|
+| eslint | ^8.50.0 | Análisis de código |
+| eslint-plugin-import | ^2.32.0 | Reglas de análisis de importaciones |
+| jest | ^29.7.0 | Pruebas unitarias |
+
+---
+
 ## Detalles de Módulos Centrales
 
 ### Internacionalización (i18n.js)
