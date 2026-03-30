@@ -61,6 +61,43 @@ OpenYida áp dụng thiết kế kiến trúc mô-đun, chia thành ba lớp: đ
 
 ---
 
+## Stack Công Nghệ
+
+### Môi Trường Runtime
+
+| Thành phần | Phiên bản | Mục đích |
+|-----------|---------|---------|
+| Node.js | >= 18.0.0 | Môi trường runtime |
+| npm | >= 9.0 | Quản lý gói |
+
+### Phụ Thuộc Cốt Lõi
+
+| Gói | Phiên bản | Mục đích |
+|---------|---------|---------|
+| @babel/standalone | ^7.15.1 | Biên dịch mã |
+| playwright | ^1.58.2 | Tự động hóa/kiểm thử trình duyệt |
+| qrcode | ^1.5.4 | Tạo mã QR |
+| uglify-js | ^3.19.3 | Nén mã |
+
+### Tích Hợp AI
+
+| Nhà cung cấp | SDK | Mô hình |
+|----------|-----|--------|
+| OpenAI | openai | GPT-4, GPT-3.5 |
+| Anthropic | @anthropic-ai/sdk | Claude 3.5 |
+| Alibaba | @alicloud/dingtalk | Tongyi Qianwen |
+| DeepSeek | deepseek-sdk | DeepSeek-V2 |
+
+### Công Cụ Phát Triển
+
+| Công cụ | Phiên bản | Mục đích |
+|------|---------|---------|
+| eslint | ^8.50.0 | Phân tích mã |
+| eslint-plugin-import | ^2.32.0 | Quy tắc phân tích import |
+| jest | ^29.7.0 | Kiểm thử đơn vị |
+
+---
+
 ## Chi Tiết Mô-đun Cốt Lõi
 
 ### Quốc Tế Hóa (i18n.js)
