@@ -587,6 +587,11 @@
           "anchor": "npm",
           "href": "https://www.npmjs.com/package/openyida",
           "icon": "npm"
+        },
+        {
+          "anchor": "Showcase",
+          "href": "https://www.aliwork.com/s/OpenYidaAppShowcase",
+          "icon": "sparkles"
         }
       ]
     }
