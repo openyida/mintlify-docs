@@ -12,7 +12,7 @@ O OpenYida inclui uma poderosa ferramenta de diagnóstico `doctor` que ajuda os 
 
 <CardGroup cols={2}>
   <Card title="Verificação de Ambiente" icon="laptop-code">
-    Verifica dependências do ambiente como Node.js, Python, Playwright, estado de login, etc.
+    Verifica dependências do ambiente como Node.js, Playwright, estado de login, etc.
   </Card>
   <Card title="Diagnóstico de Aplicativo" icon="magnifying-glass">
     Verifica PRD, código fonte de páginas, cache de Schema, normas de React Hooks.
@@ -61,7 +61,6 @@ openyida doctor --report html
 | Item | Descrição | Reparo Automático |
 |--------|------|----------|
 | Versão do Node.js | Verifica se ≥ 16 |❌
-| Versão do Python | Verifica se ≥ 3.10 |❌
 | Playwright | Verifica se está instalado | ✅ |
 | Chromium | Verifica se o navegador está instalado | ✅ |
 | gh CLI | Verifica GitHub CLI |❌
@@ -158,7 +157,6 @@ openyida doctor --auto-submit
 ificando dependências do ambiente do OpenYida...
 
 ✅ Node.js v18.19.0 (requer ≥ 16)
-✅ Python 3.11.4 (requer ≥ 3.10)
 ✅ Playwright instalado
 ✅ Playwright Chromium instalado
 ✅ gh version 2.40.1

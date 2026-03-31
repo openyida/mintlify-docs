@@ -12,7 +12,7 @@ OpenYida includes a powerful diagnostic tool `doctor` to help developers check e
 
 <CardGroup cols={2}>
   <Card title="Environment Check" icon="laptop-code">
-    Check Node.js, Python, Playwright, login status, and other dependencies.
+    Check Node.js, Playwright, login status, and other dependencies.
   </Card>
   <Card title="App Diagnostics" icon="magnifying-glass">
     Check PRD, page source, schema cache, React Hooks compliance.
@@ -75,9 +75,6 @@ openyida doctor env
 # Node.js version
 openyida doctor env --check node
 
-# Python installation
-openyida doctor env --check python
-
 # Playwright browsers
 openyida doctor env --check playwright
 
@@ -93,7 +90,6 @@ openyida doctor env --check network
 | Component | Minimum Version | Required |
 |-----------|-----------------|----------|
 | Node.js | 18.x | Yes |
-| Python | 3.8+ | Optional |
 | Playwright | Latest | Optional |
 
 ---

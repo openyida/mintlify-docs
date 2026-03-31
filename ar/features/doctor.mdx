@@ -12,7 +12,7 @@ icon: "stethoscope"
 
 <CardGroup cols={2}>
   <Card title="فحص البيئة" icon="laptop-code">
-    فحص تبعيات البيئة مثل Node.js و Python و Playwright وحالة تسجيل الدخول وما إلى ذلك.
+    فحص تبعيات البيئة مثل Node.js و Playwright وحالة تسجيل الدخول وما إلى ذلك.
   </Card>
   <Card title="تشخيص التطبيق" icon="magnifying-glass">
     فحص PRD وكود مصدر الصفحات وذاكرة Schema المؤقتة ومعايير React Hooks.
@@ -61,7 +61,6 @@ openyida doctor --report html
 | العنصر | الوصف | الإصلاح التلقائي |
 |--------|------|----------|
 | إصدار Node.js | تحقق إذا ≥ 16 |❌
-| إصدار Python | تحقق إذا ≥ 3.10 |❌
 | Playwright | تحقق إذا تم التثبيت | ✅ |
 | Chromium | تحقق إذا تم تثبيت المتصفح | ✅ |
 | gh CLI | تحقق من GitHub CLI |❌
@@ -158,7 +157,6 @@ openyida doctor --auto-submit
  تبعيات بيئة OpenYida...
 
 ✅ Node.js v18.19.0 (مطلوب ≥ 16)
-✅ Python 3.11.4 (مطلوب ≥ 3.10)
 ✅ Playwright مثبت
 ✅ Playwright Chromium مثبت
 ✅ gh version 2.40.1
@@ -215,7 +213,7 @@ openyida create-app يشغل الفحص المسبق تلقائيًا
 | النوع | الوصف | مثال |
 |------|------|------|
 | `AUTO` | إصلاح تلقائي | إنشاء config.json، حذف الذاكرة المؤقتة التالفة |
-| `COMMAND` | إصلاح بالأمر | تشغيل `pip install playwright` |
+| `COMMAND` | إصلاح بالأمر | تشغيل `npx playwright install` |
 | `MANUAL` | إصلاح يدوي | تثبيت gh CLI، كتابة PRD |
 
 ---

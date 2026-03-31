@@ -12,7 +12,7 @@ OpenYida incluye una potente herramienta de diagnóstico `doctor` que ayuda a lo
 
 <CardGroup cols={2}>
   <Card title="Verificación de Entorno" icon="laptop-code">
-    Verifica dependencias del entorno como Node.js, Python, Playwright, estado de inicio de sesión, etc.
+    Verifica dependencias del entorno como Node.js, Playwright, estado de inicio de sesión, etc.
   </Card>
   <Card title="Diagnóstico de Aplicación" icon="magnifying-glass">
     Verifica PRD, código fuente de páginas, caché de Schema, normas de React Hooks.
@@ -61,7 +61,6 @@ openyida doctor --report html
 | Elemento | Descripción | Reparación Automática |
 |--------|------|----------|
 | Versión de Node.js | Verifica si ≥ 16 |❌
-| Versión de Python | Verifica si ≥ 3.10 |❌
 | Playwright | Verifica si está instalado | ✅ |
 | Chromium | Verifica si el navegador está instalado | ✅ |
 | gh CLI | Verifica GitHub CLI |❌
@@ -158,7 +157,6 @@ openyida doctor --auto-submit
 ificando dependencias del entorno de OpenYida...
 
 ✅ Node.js v18.19.0 (requiere ≥ 16)
-✅ Python 3.11.4 (requiere ≥ 3.10)
 ✅ Playwright instalado
 ✅ Playwright Chromium instalado
 ✅ gh version 2.40.1
@@ -215,7 +213,7 @@ openyida create-app ejecuta automáticamente pre-verificación
 | Tipo | Descripción | Ejemplo |
 |------|------|------|
 | `AUTO` | Reparación automática | Crear config.json, eliminar caché dañada |
-| `COMMAND` | Reparación por comando | Ejecutar `pip install playwright` |
+| `COMMAND` | Reparación por comando | Ejecutar `npx playwright install` |
 | `MANUAL` | Reparación manual | Instalar gh CLI, escribir PRD |
 
 ---

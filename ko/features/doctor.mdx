@@ -12,7 +12,7 @@ OpenYida에는 강력한 진단 도구 `doctor`가 내장되어 있으며 개발
 
 <CardGroup cols={2}>
   <Card title="환경 확인" icon="laptop-code">
-    Node.js, Python, Playwright, 로그인 상태 등 환경 종속성을 확인합니다.
+    Node.js, Playwright, 로그인 상태 등 환경 종속성을 확인합니다.
   </Card>
   <Card title="앱 진단" icon="magnifying-glass">
     PRD, 페이지 소스 코드, Schema 캐시, React Hooks 규범을 확인합니다.
@@ -61,7 +61,6 @@ openyida doctor --report html
 | 확인 항목 | 설명 | 자동 복구 |
 |--------|------|----------|
 | Node.js 버전 | ≥ 16인지 확인 | ❌ |
-| Python 버전 | ≥ 3.10인지 확인 | ❌ |
 | Playwright | 설치되어 있는지 확인 | ✅ |
 | Chromium | 브라우저가 설치되어 있는지 확인 | ✅ |
 | gh CLI | GitHub CLI 확인 | ❌ |
@@ -159,7 +158,6 @@ openyida doctor --auto-submit
 🔍 OpenYida 환경 종속성 확인 중...
 
 ✅ Node.js v18.19.0（요구사항 ≥ 16）
-✅ Python 3.11.4（요구사항 ≥ 3.10）
 ✅ Playwright가 설치되어 있습니다
 ✅ Playwright Chromium이 설치되어 있습니다
 ✅ gh version 2.40.1
@@ -216,7 +214,7 @@ openyida create-app 전에 자동으로 사전 확인이 실행됩니다
 | 유형 | 설명 | 예 |
 |------|------|------|
 | `AUTO` | 자동 복구 | config.json 생성, 손상된 캐시 삭제 |
-| `COMMAND` | 명령 복구 | `pip install playwright` 실행 |
+| `COMMAND` | 명령 복구 | `npx playwright install` 실행 |
 | `MANUAL` | 수동 복구 | gh CLI 설치, PRD 작성 |
 
 ---
