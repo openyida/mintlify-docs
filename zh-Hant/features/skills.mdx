@@ -237,11 +237,14 @@ openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
 ## 流程管理
 
 ```bash
-# 創建流程表單
-openyida create-process <appType> "<表單名>" <字段JSON> --process-code <code>
+# 創建流程表單（一體化）- 新建表單並配置流程
+openyida create-process <appType> <formTitle> <fieldsJsonFile> <processDefinitionFile>
 
-# 配置流程規則
-openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+# 複用已有表單創建流程
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+
+# 配置並發佈流程
+openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
 ---

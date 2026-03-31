@@ -237,11 +237,14 @@ openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
 ## Gestión de procesos
 
 ```bash
-# Crear formulario de proceso
-openyida create-process <appType> "<nombre>" <camposJSON> --process-code <código>
+# Crear formulario de proceso (integrado) - Nuevo formulario con proceso
+openyida create-process <appType> <formTitle> <fieldsJsonFile> <processDefinitionFile>
 
-# Configurar reglas de proceso
-openyida configure-process <appType> <formUuid> --rules <reglasJSON>
+# Reutilizar formulario existente para crear proceso
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+
+# Configurar y publicar proceso
+openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
 ---

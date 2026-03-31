@@ -237,11 +237,14 @@ openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
 ## Quản lý quy trình
 
 ```bash
-# Tạo biểu mẫu quy trình
-openyida create-process <appType> "<tên>" <trườngJSON> --process-code <mã>
+# Tạo biểu mẫu quy trình (tích hợp) - Biểu mẫu mới với quy trình
+openyida create-process <appType> <formTitle> <fieldsJsonFile> <processDefinitionFile>
 
-# Cấu hình quy tắc quy trình
-openyida configure-process <appType> <formUuid> --rules <quy_tắcJSON>
+# Tái sử dụng biểu mẫu hiện có để tạo quy trình
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+
+# Cấu hình và xuất bản quy trình
+openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
 ---

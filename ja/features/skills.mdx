@@ -237,11 +237,14 @@ openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
 ## プロセス管理
 
 ```bash
-# プロセスフォーム作成
-openyida create-process <appType> "<表单名>" <字段JSON> --process-code <code>
+# プロセスフォーム作成（統合）- 新規フォームとプロセスを作成
+openyida create-process <appType> <formTitle> <fieldsJsonFile> <processDefinitionFile>
 
-# プロセスルール設定
-openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+# 既存フォームを再利用してプロセスを作成
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+
+# プロセスを設定して公開
+openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
 ---

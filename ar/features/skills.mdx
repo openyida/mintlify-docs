@@ -237,11 +237,14 @@ openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
 ## إدارة العمليات
 
 ```bash
-# إنشاء نموذج العملية
-openyida create-process <appType> "<اسم النموذج>" <JSON الحقول> --process-code <code>
+# إنشاء نموذج العملية (متكامل) - نموذج جديد مع العملية
+openyida create-process <appType> <formTitle> <fieldsJsonFile> <processDefinitionFile>
 
-# تكوين قواعد العملية
-openyida configure-process <appType> <formUuid> --rules <JSON القواعد>
+# إعادة استخدام نموذج موجود لإنشاء عملية
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+
+# تكوين ونشر العملية
+openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
 ---

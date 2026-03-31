@@ -237,11 +237,14 @@ openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
 ## 프로세스 관리
 
 ```bash
-# 프로세스 양식 생성
-openyida create-process <appType> "<表单名>" <字段JSON> --process-code <code>
+# 프로세스 양식 생성(통합) - 새 양식과 프로세스 생성
+openyida create-process <appType> <formTitle> <fieldsJsonFile> <processDefinitionFile>
 
-# 프로세스 규칙 구성
-openyida configure-process <appType> <formUuid> --rules <rulesJSON>
+# 기존 양식을 재사용하여 프로세스 생성
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+
+# 프로세스 구성 및 배포
+openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
 ---

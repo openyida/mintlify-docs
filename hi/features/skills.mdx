@@ -237,11 +237,14 @@ openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
 ## प्रक्रिया प्रबंधन
 
 ```bash
-# प्रक्रिया फॉर्म बनाएं
-openyida create-process <appType> "<नाम>" <फ़ील्डJSON> --process-code <कोड>
+# प्रक्रिया फॉर्म बनाएं (एकीकृत) - प्रक्रिया के साथ नया फॉर्म
+openyida create-process <appType> <formTitle> <fieldsJsonFile> <processDefinitionFile>
 
-# प्रक्रिया नियम कॉन्फ़िगर करें
-openyida configure-process <appType> <formUuid> --rules <नियमJSON>
+# प्रक्रिया बनाने के लिए मौजूदा फॉर्म का पुनरुपयोग करें
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+
+# प्रक्रिया कॉन्फ़िगर और प्रकाशित करें
+openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
 ---
