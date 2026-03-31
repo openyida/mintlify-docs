@@ -6,8 +6,8 @@ icon: "circle-question"
 
 <AccordionGroup>
 
-  <Accordion title="Preciso de uma conta YiDa para usar o OpenYida?">
-    Sim. O OpenYida cria e gerencia aplicativos na plataforma low-code [YiDa](https://www.aliwork.com), exigindo uma conta Alibaba/DingTalk com YiDa habilitado. Execute `openyida login` para autenticar.
+  <Accordion title="Preciso de uma conta Yida para usar o OpenYida?">
+    Sim. O OpenYida cria e gerencia aplicativos na plataforma low-code [Yida](https://www.aliwork.com), exigindo uma conta Alibaba/DingTalk com Yida habilitado. Execute `openyida login` para autenticar.
   </Accordion>
 
   <Accordion title="Quais ferramentas de IA são suportadas?">
@@ -26,7 +26,7 @@ icon: "circle-question"
     Execute `openyida auth refresh` para renovar a sessão sem passar pelo fluxo de login completo. Se falhar, execute `openyida login` para reautenticar.
   </Accordion>
 
-  <Accordion title="Como alternar entre várias organizações YiDa?">
+  <Accordion title="Como alternar entre várias organizações Yida?">
     ```bash
     openyida org list       # Listar todas as organizações e corpIds
     openyida org switch --corp-id <corpId>   # Alternar para a organização alvo
@@ -42,8 +42,8 @@ icon: "circle-question"
     O OpenYida chamará `openyida create-form` com o Schema atualizado, mesclando novos campos sem sobrescrever os existentes. Apenas [tipos de campo suportados](/pt/features/skills#tipos-de-campo-suportados) são aceitos — tipos não suportados serão rejeitados com erro.
   </Accordion>
 
-  <Accordion title="Posso editar aplicativos gerados no editor visual do YiDa?">
-    Absolutamente. A saída é um aplicativo YiDa padrão — você pode abri-lo no editor visual da plataforma YiDa a qualquer momento e fazer modificações manuais. O OpenYida gera aplicativos, não configurações bloqueadas.
+  <Accordion title="Posso editar aplicativos gerados no editor visual do Yida?">
+    Absolutamente. A saída é um aplicativo Yida padrão — você pode abri-lo no editor visual da plataforma Yida a qualquer momento e fazer modificações manuais. O OpenYida gera aplicativos, não configurações bloqueadas.
   </Accordion>
 
   <Accordion title="Como tornar um aplicativo acessível publicamente?">
@@ -57,12 +57,12 @@ icon: "circle-question"
     Configure as configurações de compartilhamento de página para que qualquer pessoa possa acessar via link sem login.
   </Accordion>
 
-  <Accordion title="Posso migrar aplicativos YiDa existentes com o OpenYida?">
+  <Accordion title="Posso migrar aplicativos Yida existentes com o OpenYida?">
     Sim. Use `openyida export` para gerar um pacote de migração de um aplicativo existente, e `openyida import` para reconstruí-lo em outra organização ou ambiente.
   </Accordion>
 
   <Accordion title="Qual é a diferença entre `create-form` e `create-page`?">
-    - **`create-form`**: Cria uma **página de formulário** YiDa — um formulário de entrada de dados usando o armazenamento de dados integrado do YiDa por baixo. Usado para coleta de dados estruturados (registros, solicitações, registros).
+    - **`create-form`**: Cria uma **página de formulário** Yida — um formulário de entrada de dados usando o armazenamento de dados integrado do Yida por baixo. Usado para coleta de dados estruturados (registros, solicitações, registros).
     - **`create-page`**: Cria uma **página de exibição personalizada** — uma página baseada em JSX para dashboards, landing pages, UI interativa. Compilada e publicada via `openyida publish`.
   </Accordion>
 

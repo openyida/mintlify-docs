@@ -19,7 +19,7 @@ El stack tecnológico de OpenYida se divide en dos partes: entorno de desarrollo
 - Pruebas de extremo a extremo
 - Comparación de capturas de pantalla de páginas
 
-### Plataforma en la Nube Yida (YiDa Cloud Platform)
+### Plataforma en la Nube Yida (Yida Cloud Platform)
 - **App** - Gestión de aplicaciones
 - **Form** - Páginas de formulario
 - **Custom Page** - Páginas personalizadas
@@ -29,34 +29,42 @@ El stack tecnológico de OpenYida se divide en dos partes: entorno de desarrollo
 OpenYida adopta un diseño arquitectónico modular, dividido en tres capas: entrada CLI, módulos centrales y módulos funcionales.
 
 ```
-┌─────────────────────────────────────────────────────┐│                      Capa de Entrada CLI (bin/)                       │
-│                      yida.js - Enrutamiento de comandos                       │
-└─────────────────────────────────────────────────────┘                              │
+┌─────────────────────────────────────────────────────────────┐
+│                    CLI Entry Layer (bin/)                   │
+│                    yida.js - Command Routing                │
+└─────────────────────────────────────────────────────────────┘
+                              │
                               ▼
-┌─────────────────────────────────────────────────────┐│                      Módulos Centrales (lib/core/)                     │
-│ ┌──┐┌──┐┌──┐┌──┐ │
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Modules (lib/core/)                 │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
 │  │   i18n   │ │   env    │ │  utils   │ │  doctor  │       │
-│  │  Internacionalización   │ │ Detección de entorno │ │ Funciones de utilidad │ │ Herramienta de diagnóstico │       │
-│ └──┘└──┘└──┘└──┘ │
-│ ┌──┐┌──┐┌──┐┌──┐ │
+│  │  i18n    │ │env check │ │ utilities│ │diagnostic│       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
 │  │  check   │ │   copy   │ │  babel   │ │  locales │       │
-│  │ Verificación de actualización │ │Copia de directorio  │ │ Compilador   │ │  Paquete de idiomas  │       │
-│ └──┘└──┘└──┘└──┘ │
-└─────────────────────────────────────────────────────┘                              │
+│  │update chk│ │dir copy  │ │ compiler │ │ locales  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
                               ▼
-┌─────────────────────────────────────────────────────┐│                      Módulos Funcionales (lib/)                          │
-│ ┌──┐┌──┐┌──┐┌──┐ │
+┌─────────────────────────────────────────────────────────────┐
+│                    Functional Modules (lib/)                │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
 │  │   auth   │ │   app    │ │   data   │ │  report  │       │
-│  │ Módulo de autenticación │ │Gestión de aplicaciones  │ │ Gestión de datos │ │  Informes    │       │
-│ └──┘└──┘└──┘└──┘ │
-│ ┌──┐┌──┐┌──┐┌──┐ │
+│  │   auth   │ │  app mgmt│ │data mgmt │ │ reports  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
 │  │ connector│ │  process │ │permission│ │   cdn    │       │
-│  │ Conector   │ │ Gestión de procesos │ │  Permisos    │ │ Gestión de CDN  │       │
-│ └──┘└──┘└──┘└──┘ │
-└─────────────────────────────────────────────────────┘                              │
+│  │connector │ │ process  │ │permission│ │  cdn     │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
                               ▼
-┌─────────────────────────────────────────────────────┐│                    API de Plataforma Yida (aliwork.com)                  │
-└─────────────────────────────────────────────────────┘```
+┌─────────────────────────────────────────────────────────────┐
+│                 Yida Platform API (aliwork.com)             │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ---
 

@@ -6,8 +6,8 @@ icon: "circle-question"
 
 <AccordionGroup>
 
-  <Accordion title="هل أحتاج إلى حساب YiDa لاستخدام OpenYida؟">
-    نعم. ينشئ OpenYida ويدير التطبيقات على منصة low-code [YiDa](https://www.aliwork.com)، مما يتطلب حساب Alibaba/DingTalk مع تمكين YiDa. قم بتشغيل `openyida login` للمصادقة.
+  <Accordion title="هل أحتاج إلى حساب Yida لاستخدام OpenYida؟">
+    نعم. ينشئ OpenYida ويدير التطبيقات على منصة low-code [Yida](https://www.aliwork.com)، مما يتطلب حساب Alibaba/DingTalk مع تمكين Yida. قم بتشغيل `openyida login` للمصادقة.
   </Accordion>
 
   <Accordion title="ما هي أدوات AI المدعومة؟">
@@ -26,7 +26,7 @@ icon: "circle-question"
     قم بتشغيل `openyida auth refresh` لتجديد الجلسة دون المرور بتدفق تسجيل الدخول الكامل. إذا فشل، قم بتشغيل `openyida login` لإعادة المصادقة.
   </Accordion>
 
-  <Accordion title="كيف التبديل بين مؤسسات YiDa المتعددة؟">
+  <Accordion title="كيف التبديل بين مؤسسات Yida المتعددة؟">
     ```bash
     openyida org list       # سرد جميع المؤسسات و corpIds
     openyida org switch --corp-id <corpId>   # التبديل إلى المؤسسة المستهدفة
@@ -42,8 +42,8 @@ icon: "circle-question"
     سيستدعي OpenYida `openyida create-form` مع Schema المحدث، دمج الحقول الجديدة دون الكتابة فوق الموجودة. يتم قبول [أنواع الحقول المدعومة](/ar/features/skills#أنواع-الحقول-المدعومة) فقط — الأنواع غير المدعومة سيتم رفضها مع خطأ.
   </Accordion>
 
-  <Accordion title="هل يمكنني تحرير التطبيقات المُنشأة في محرر YiDa المرئي؟">
-    بالتأكيد. المخرجات هي تطبيق YiDa قياسي — يمكنك فتحه في المحرر المرئي لمنصة YiDa في أي وقت وإجراء تعديلات يدوية. ينشئ OpenYida تطبيقات، ليس تكوينات مقفلة.
+  <Accordion title="هل يمكنني تحرير التطبيقات المُنشأة في محرر Yida المرئي؟">
+    بالتأكيد. المخرجات هي تطبيق Yida قياسي — يمكنك فتحه في المحرر المرئي لمنصة Yida في أي وقت وإجراء تعديلات يدوية. ينشئ OpenYida تطبيقات، ليس تكوينات مقفلة.
   </Accordion>
 
   <Accordion title="كيف أجعل التطبيق متاحًا للجمهور؟">
@@ -57,12 +57,12 @@ icon: "circle-question"
     قم بتكوين إعدادات مشاركة الصفحة حتى يتمكن أي شخص من الوصول إليها عبر رابط دون تسجيل دخول.
   </Accordion>
 
-  <Accordion title="هل يمكنني ترحيل تطبيقات YiDa الحالية مع OpenYida؟">
+  <Accordion title="هل يمكنني ترحيل تطبيقات Yida الحالية مع OpenYida؟">
     نعم. استخدم `openyida export` لإنشاء حزمة ترحيل من تطبيق موجود، و `openyida import` لإعادة بنائه في مؤسسة أو بيئة أخرى.
   </Accordion>
 
   <Accordion title="ما الفرق بين `create-form` و `create-page`؟">
-    - **`create-form`**: ينشئ **صفحة نموذج** YiDa — نموذج إدخال بيانات يستخدم تخزين البيانات المدمج في YiDa تحته. يُستخدم لجمع البيانات المنظمة (التسجيلات، الطلبات، السجلات).
+    - **`create-form`**: ينشئ **صفحة نموذج** Yida — نموذج إدخال بيانات يستخدم تخزين البيانات المدمج في Yida تحته. يُستخدم لجمع البيانات المنظمة (التسجيلات، الطلبات، السجلات).
     - **`create-page`**: ينشئ **صفحة عرض مخصصة** — صفحة قائمة على JSX للوحات المعلومات، صفحات الهبوط، واجهة المستخدم التفاعلية. يتم تجميعها ونشرها عبر `openyida publish`.
   </Accordion>
 

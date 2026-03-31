@@ -19,7 +19,7 @@ Stack công nghệ của OpenYida được chia thành hai phần: môi trườn
 - Kiểm thử end-to-end
 - So sánh ảnh chụp màn hình trang
 
-### Nền Tảng Đám Mây Yida (YiDa Cloud Platform)
+### Nền Tảng Đám Mây Yida (Yida Cloud Platform)
 - **App** - Quản lý ứng dụng
 - **Form** - Trang biểu mẫu
 - **Custom Page** - Trang tùy chỉnh
@@ -29,34 +29,42 @@ Stack công nghệ của OpenYida được chia thành hai phần: môi trườn
 OpenYida áp dụng thiết kế kiến trúc mô-đun, chia thành ba lớp: đầu vào CLI, mô-đun cốt lõi và mô-đun chức năng.
 
 ```
-┌─────────────────────────────────────────────┐                      Lớp Đầu Vào CLI (bin/)                       │
-│                      yida.js - Định tuyến lệnh                       │
-└─────────────────────────────────────────────┘ │
+┌─────────────────────────────────────────────────────────────┐
+│                    CLI Entry Layer (bin/)                   │
+│                    yida.js - Command Routing                │
+└─────────────────────────────────────────────────────────────┘
+                              │
                               ▼
-┌─────────────────────────────────────────────┐                      Mô-đun Cốt Lõi (lib/core/)                     │
-│┌┐┌┐┌┐┌┐
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Modules (lib/core/)                 │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
 │  │   i18n   │ │   env    │ │  utils   │ │  doctor  │       │
-│  │  Quốc tế hóa   │ │ Phát hiện môi trường │ │ Hàm tiện ích │ │ Công cụ chẩn đoán │       │
-│└┘└┘└┘└┘
-│┌┐┌┐┌┐┌┐
+│  │  i18n    │ │env check │ │ utilities│ │diagnostic│       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
 │  │  check   │ │   copy   │ │  babel   │ │  locales │       │
-│  │ Kiểm tra cập nhật │ │Sao chép thư mục  │ │ Trình biên dịch   │ │  Gói ngôn ngữ  │       │
-│└┘└┘└┘└┘
-└─────────────────────────────────────────────┘ │
+│  │update chk│ │dir copy  │ │ compiler │ │ locales  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
                               ▼
-┌─────────────────────────────────────────────┐                      Mô-đun Chức Năng (lib/)                          │
-│┌┐┌┐┌┐┌┐
+┌─────────────────────────────────────────────────────────────┐
+│                    Functional Modules (lib/)                │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
 │  │   auth   │ │   app    │ │   data   │ │  report  │       │
-│  │ Mô-đun xác thực │ │Quản lý ứng dụng  │ │ Quản lý dữ liệu │ │  Báo cáo    │       │
-│└┘└┘└┘└┘
-│┌┐┌┐┌┐┌┐
+│  │   auth   │ │  app mgmt│ │data mgmt │ │ reports  │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
 │  │ connector│ │  process │ │permission│ │   cdn    │       │
-│  │ Connector   │ │ Quản lý quy trình │ │  Quyền    │ │ Quản lý CDN  │       │
-│└┘└┘└┘└┘
-└─────────────────────────────────────────────┘ │
+│  │connector │ │ process  │ │permission│ │  cdn     │       │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │
+└─────────────────────────────────────────────────────────────┘
+                              │
                               ▼
-┌─────────────────────────────────────────────┐                    API Nền Tảng Yida (aliwork.com)                  │
-└─────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                 Yida Platform API (aliwork.com)             │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ---
 
