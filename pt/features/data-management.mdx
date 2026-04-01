@@ -38,6 +38,10 @@ openyida data <action> <resource> [args]
 
 ---
 
+<Warning>
+  Os IDs de campo no Yida são gerados aleatoriamente pela plataforma (ex: `textField_eftt1aa5m`) e não podem ser adivinhados. Antes de criar ou atualizar um registro, você **deve** executar `openyida get-schema <appType> <formUuid>` e registrar o mapeamento nome→ID em `.cache/<nome-projeto>-schema.json`. Após a escrita, consulte pelo menos um registro (`--size 1`) e confirme que os campos de `formData` contêm valores reais. Valores vazios indicam IDs de campo incorretos.
+</Warning>
+
 ## Gerenciamento de dados do formulário
 
 ### Consultar dados do formulário

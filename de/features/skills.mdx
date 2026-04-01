@@ -70,11 +70,16 @@ openyida create-form create <appType> "<Formularname>" <FelderJSON> \
 openyida create-form update <appType> <formUuid> <ÄnderungenJSON>
 
 # Formular-Schema abrufen
-openyida get-schema <appType> <formUuid>
+openyida get-schema <appType> <formUuid>  # Pflicht vor jeder Operation mit Feld-IDs
 
 # Formularkonfiguration aktualisieren
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
+
+
+<Warning>
+  Yida-Feld-IDs werden zufällig von der Plattform generiert (z.B. `textField_eftt1aa5m`, `selectField_fix024y92`) und können nicht aus Feldnamen abgeleitet werden. Vor jeder Operation mit Feld-IDs (Daten erstellen/aktualisieren, Abfragebedingungen konfigurieren, benutzerdefinierte Seiten schreiben) **müssen** Sie `openyida get-schema` ausführen, um die echten Feld-IDs zu erhalten.
+</Warning>
 
 ### Unterstützte Feldtypen
 
@@ -162,6 +167,10 @@ openyida verify-short-url <appType> <formUuid> <url>
 ---
 
 ## Datenverwaltung
+
+<Warning>
+  Vor dem Erstellen oder Aktualisieren von Daten **müssen** Sie `openyida get-schema` ausführen, um die echten Feld-IDs zu erhalten. Nach dem Schreiben prüfen Sie mit `openyida data query form <appType> <formUuid> --size 1`, ob die `formData`-Felder tatsächliche Werte enthalten. Sind alle Felder leer, sind die Feld-IDs falsch und müssen über `get-schema` erneut abgerufen werden.
+</Warning>
 
 ```bash
 # Einheitliche Datenverwaltung

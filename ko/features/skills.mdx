@@ -70,11 +70,15 @@ openyida create-form create <appType> "<表单名>" <字段JSON> \
 openyida create-form update <appType> <formUuid> <修改JSON>
 
 # 양식 Schema 가져오기
-openyida get-schema <appType> <formUuid>
+openyida get-schema <appType> <formUuid>  # 필드 ID를 사용하는 모든 작업 전에 반드시 실행
 
 # 양식 구성 업데이트
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
+
+<Warning>
+  Yida 필드 ID는 플랫폼에서 무작위로 생성됩니다(예: `textField_eftt1aa5m`, `selectField_fix024y92`). 필드 이름으로는 추측할 수 없습니다. 필드 ID를 사용하는 모든 작업(데이터 생성/수정, 쿼리 조건 설정, 커스텀 페이지 작성 등) 전에 **반드시** `openyida get-schema`를 실행하여 실제 필드 ID를 가져와야 합니다.
+</Warning>
 
 ### 지원되는 필드 유형
 
@@ -162,6 +166,10 @@ openyida verify-short-url <appType> <formUuid> <url>
 ---
 
 ## 데이터 관리
+
+<Warning>
+  데이터 생성 또는 수정 전에 **반드시** `openyida get-schema`를 실행하여 실제 필드 ID를 가져와야 합니다. 데이터 작성 후 `openyida data query form <appType> <formUuid> --size 1`로 1건을 조회하여 `formData` 필드에 실제 값이 있는지 확인하세요. 모든 필드 값이 비어 있으면 필드 ID가 잘못된 것이므로 `get-schema`를 다시 실행해야 합니다.
+</Warning>
 
 ```bash
 # 통합 데이터 관리

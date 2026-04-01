@@ -53,7 +53,25 @@ Bước 5: Xuất bản bảng điều khiển dưới dạng trang công khai
 
 ---
 
-## 4. Xác minh mỗi bước
+## 4. Luôn chạy get-schema trước các thao tác dữ liệu
+
+Field ID trong Yida được tạo ngẫu nhiên bởi nền tảng (ví dụ: `textField_eftt1aa5m`) và không thể suy ra từ tên trường. Trước khi tạo, cập nhật hoặc truy vấn dữ liệu với điều kiện trường, luôn chạy:
+
+```bash
+openyida get-schema <appType> <formUuid>
+```
+
+Sau khi ghi dữ liệu, kiểm tra kết quả bằng cách truy vấn ít nhất 1 bản ghi:
+
+```bash
+openyida data query form <appType> <formUuid> --size 1
+```
+
+Xác nhận các trường `formData` có giá trị thực. Nếu tất cả đều trống, field ID không chính xác — chạy lại `get-schema` và sửa.
+
+---
+
+## 5. Xác minh mỗi bước
 
 Sau khi AI tạo mỗi thành phần, hãy để nó xác minh:
 
@@ -66,13 +84,13 @@ Phát hiện vấn đề sớm trước khi chúng tích lũy thành vấn đề
 
 ---
 
-## 5. Tái sử dụng thư mục làm việc dự án
+## 6. Tái sử dụng thư mục làm việc dự án
 
 Chỉ chạy `openyida copy` một lần cho mỗi dự án, không chạy mỗi phiên. Tệp `project/config.json` lưu trữ `appId` và `corpId` — AI sử dụng điều này để biết ứng dụng mục tiêu. Đừng xóa tệp này giữa chừng dự án.
 
 ---
 
-## 6. Đăng nhập cụ thể theo môi trường
+## 7. Đăng nhập cụ thể theo môi trường
 
 Các công cụ AI khác nhau yêu cầu các phương pháp đăng nhập khác nhau:
 
@@ -86,7 +104,7 @@ Khi chuyển đổi công cụ, hãy chạy `openyida env` trước để xác n
 
 ---
 
-## 7. Sử dụng CDN cho hình ảnh trang tùy chỉnh
+## 8. Sử dụng CDN cho hình ảnh trang tùy chỉnh
 
 Khi trang tùy chỉnh chứa hình ảnh, hãy tải chúng lên CDN trước để đảm bảo kết xuất đáng tin cậy:
 
@@ -102,7 +120,7 @@ Thêm hình ảnh banner hero vào trang đích bằng URL CDN này: https://cdn
 
 ---
 
-## 8. Xử lý cài đặt đa tổ chức
+## 9. Xử lý cài đặt đa tổ chức
 
 Khi bạn có thể truy cập nhiều tổ chức Yida:
 
@@ -116,7 +134,7 @@ Luôn xác minh tổ chức đang hoạt động trước khi tạo ứng dụng
 
 ---
 
-## 9. Chạy Doctor trước khi gỡ lỗi
+## 10. Chạy Doctor trước khi gỡ lỗi
 
 Trước khi dành thời gian gỡ lỗi các lệnh thất bại, hãy chạy:
 
@@ -128,6 +146,6 @@ Tự động phát hiện và giải quyết các vấn đề phổ biến nhấ
 
 ---
 
-## 10. PR được hỗ trợ bởi AI được chào đón
+## 11. PR được hỗ trợ bởi AI được chào đón
 
 Khi đóng góp cho chính OpenYida, hãy chấp nhận hoàn toàn mã được tạo bởi AI. Ghi chú công cụ AI được sử dụng trong mô tả PR — điều này giúp người bảo trì hiểu ngữ cảnh tạo và xem xét hiệu quả hơn.

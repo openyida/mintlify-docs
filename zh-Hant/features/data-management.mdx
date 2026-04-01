@@ -38,6 +38,10 @@ openyida data <action> <resource> [args]
 
 ---
 
+<Warning>
+  宜搭欄位 ID 由平台隨機生成（如 `textField_eftt1aa5m`），無法猜測或從欄位名稱推斷。建立或更新任何記錄前，**必須**先執行 `openyida get-schema <appType> <formUuid>` 取得真實欄位 ID，並將欄位名→ID 映射記錄到 `.cache/<專案名>-schema.json`。寫入資料後，查詢至少一筆記錄（`--size 1`）確認 `formData` 中欄位有實際值——若值為空則表示欄位 ID 有誤。
+</Warning>
+
 ## 表單數據管理
 
 ### 查詢表單數據

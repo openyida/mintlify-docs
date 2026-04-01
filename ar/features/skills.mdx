@@ -70,11 +70,16 @@ openyida create-form create <appType> "<اسم النموذج>" <JSON الحقو
 openyida create-form update <appType> <formUuid> <JSON التعديلات>
 
 # الحصول على Schema النموذج
-openyida get-schema <appType> <formUuid>
+openyida get-schema <appType> <formUuid>  # إلزامي قبل أي عملية تستخدم معرّفات الحقول
 
 # تحديث تكوين النموذج
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
+
+
+<Warning>
+  معرّفات الحقول في Yida يتم إنشاؤها عشوائيًا بواسطة المنصة (مثال: `textField_eftt1aa5m`، `selectField_fix024y92`) ولا يمكن استنتاجها من أسماء الحقول. قبل أي عملية تستخدم معرّفات الحقول (إنشاء/تحديث البيانات، تكوين شروط الاستعلام، كتابة صفحات مخصصة)، **يجب** تشغيل `openyida get-schema` للحصول على المعرّفات الحقيقية.
+</Warning>
 
 ### أنواع الحقول المدعومة
 
@@ -162,6 +167,10 @@ openyida verify-short-url <appType> <formUuid> <url>
 ---
 
 ## إدارة البيانات
+
+<Warning>
+  قبل إنشاء أو تحديث البيانات، **يجب** تشغيل `openyida get-schema` للحصول على معرّفات الحقول الحقيقية. بعد الكتابة، تحقق باستخدام `openyida data query form <appType> <formUuid> --size 1` من أن حقول `formData` تحتوي على قيم فعلية. إذا كانت جميع الحقول فارغة، فإن معرّفات الحقول غير صحيحة ويجب إعادة الحصول عليها عبر `get-schema`.
+</Warning>
 
 ```bash
 # إدارة البيانات الموحدة

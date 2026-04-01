@@ -70,11 +70,16 @@ openyida create-form create <appType> "<表单名>" <字段JSON> \
 openyida create-form update <appType> <formUuid> <修改JSON>
 
 # フォームSchema取得
-openyida get-schema <appType> <formUuid>
+openyida get-schema <appType> <formUuid>  # フィールドIDを使用する操作の前に必ず実行
 
 # フォーム設定更新
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
+
+
+<Warning>
+  YidaのフィールドIDはプラットフォームによりランダムに生成されます（例: `textField_eftt1aa5m`、`selectField_fix024y92`）。フィールド名からは推測できません。フィールドIDを使用する操作（データの作成・更新、クエリ条件の設定、カスタムページの作成など）の前に、**必ず** `openyida get-schema` を実行して実際のフィールドIDを取得してください。
+</Warning>
 
 ### サポートされているフィールドタイプ
 
@@ -162,6 +167,10 @@ openyida verify-short-url <appType> <formUuid> <url>
 ---
 
 ## データ管理
+
+<Warning>
+  データの作成・更新前に、**必ず** `openyida get-schema` を実行して実際のフィールドIDを取得してください。データ書き込み後、`openyida data query form <appType> <formUuid> --size 1` で1件抽出し、`formData` のフィールドに実際の値があることを確認してください。すべてのフィールド値が空の場合、フィールドIDが正しくないため `get-schema` で再取得が必要です。
+</Warning>
 
 ```bash
 # 統一データ管理

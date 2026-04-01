@@ -70,11 +70,16 @@ openyida create-form create <appType> "<nome>" <camposJSON> \
 openyida create-form update <appType> <formUuid> <modificaçõesJSON>
 
 # Obter Schema do formulário
-openyida get-schema <appType> <formUuid>
+openyida get-schema <appType> <formUuid>  # Obrigatório antes de qualquer operação com IDs de campo
 
 # Atualizar configuração do formulário
 openyida update-form-config <appType> <formUuid> <isRenderNav> <título>
 ```
+
+
+<Warning>
+  Os IDs de campo no Yida são gerados aleatoriamente pela plataforma (ex: `textField_eftt1aa5m`, `selectField_fix024y92`) e não podem ser deduzidos dos nomes dos campos. Antes de qualquer operação que use IDs de campo (criar/atualizar dados, configurar condições de consulta, escrever páginas personalizadas), você **deve** executar `openyida get-schema` para obter os IDs reais.
+</Warning>
 
 ### Tipos de campo suportados
 
@@ -162,6 +167,10 @@ openyida verify-short-url <appType> <formUuid> <url>
 ---
 
 ## Gestão de dados
+
+<Warning>
+  Antes de criar ou atualizar dados, você **deve** executar `openyida get-schema` para obter os IDs de campo reais. Após a escrita, verifique com `openyida data query form <appType> <formUuid> --size 1` se os campos de `formData` contêm valores reais. Se todos estiverem vazios, os IDs de campo estão incorretos e devem ser obtidos novamente via `get-schema`.
+</Warning>
 
 ```bash
 # Gestão unificada de dados

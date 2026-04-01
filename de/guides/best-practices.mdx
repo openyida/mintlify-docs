@@ -53,7 +53,25 @@ Schritt 5: Veröffentliche das Dashboard als öffentliche Seite
 
 ---
 
-## 4. Jeden Schritt überprüfen
+## 4. Vor Datenoperationen immer get-schema ausführen
+
+Yida-Feld-IDs werden zufällig von der Plattform generiert (z.B. `textField_eftt1aa5m`) und können nicht aus Feldnamen abgeleitet werden. Vor dem Erstellen, Aktualisieren oder Abfragen von Daten mit Feldbedingungen führen Sie immer aus:
+
+```bash
+openyida get-schema <appType> <formUuid>
+```
+
+Nach dem Schreiben von Daten überprüfen Sie das Ergebnis:
+
+```bash
+openyida data query form <appType> <formUuid> --size 1
+```
+
+Bestätigen Sie, dass die `formData`-Felder tatsächliche Werte enthalten. Wenn alle Werte leer sind, sind die Feld-IDs falsch — führen Sie `get-schema` erneut aus.
+
+---
+
+## 5. Jeden Schritt überprüfen
 
 Nachdem die KI jede Komponente erstellt hat, lassen Sie sie überprüfen:
 
@@ -66,13 +84,13 @@ Erkennen Sie Probleme frühzeitig, bevor sie sich zu größeren Problemen ansamm
 
 ---
 
-## 5. Projektarbeitsverzeichnis wiederverwenden
+## 6. Projektarbeitsverzeichnis wiederverwenden
 
 Führen Sie `openyida copy` nur einmal pro Projekt aus, nicht bei jeder Sitzung. Die Datei `project/config.json` speichert `appId` und `corpId` — die KI verwendet dies, um die Ziel-App zu kennen. Löschen Sie diese Datei nicht mitten im Projekt.
 
 ---
 
-## 6. Umgebungsspezifische Anmeldung
+## 7. Umgebungsspezifische Anmeldung
 
 Verschiedene KI-Tools erfordern unterschiedliche Anmeldeverfahren:
 
@@ -86,7 +104,7 @@ Beim Wechsel des Tools führen Sie zuerst `openyida env` aus, um die aktive Umge
 
 ---
 
-## 7. CDN für benutzerdefinierte Seitenbilder verwenden
+## 8. CDN für benutzerdefinierte Seitenbilder verwenden
 
 Wenn benutzerdefinierte Seiten Bilder enthalten, laden Sie sie zuerst auf CDN hoch, um zuverlässiges Rendering zu gewährleisten:
 
@@ -102,7 +120,7 @@ Füge ein Hero-Banner-Bild zur Landingpage mit dieser CDN-URL hinzu: https://cdn
 
 ---
 
-## 8. Multi-Organisations-Setup verarbeiten
+## 9. Multi-Organisations-Setup verarbeiten
 
 Wenn Sie auf mehrere Yida-Organisationen zugreifen können:
 
@@ -116,7 +134,7 @@ openyida env               # Wechsel bestätigen
 
 ---
 
-## 9. Doctor vor dem Debugging ausführen
+## 10. Doctor vor dem Debugging ausführen
 
 Bevor Sie Zeit mit dem Debugging fehlgeschlagener Befehle verbringen, führen Sie aus:
 
@@ -128,6 +146,6 @@ Erkennt und löst automatisch die häufigsten Probleme: abgelaufene Sitzungen, f
 
 ---
 
-## 10. KI-unterstützte PRs willkommen
+## 11. KI-unterstützte PRs willkommen
 
 Bei Beiträgen zu OpenYida selbst akzeptieren Sie vollständig KI-generierten Code. Geben Sie das verwendete KI-Tool in der PR-Beschreibung an — dies hilft Maintainern, den Generierungskontext zu verstehen und effizienter zu überprüfen.

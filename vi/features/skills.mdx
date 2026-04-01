@@ -70,11 +70,16 @@ openyida create-form create <appType> "<tên>" <trườngJSON> \
 openyida create-form update <appType> <formUuid> <sửa_đổiJSON>
 
 # Lấy Schema biểu mẫu
-openyida get-schema <appType> <formUuid>
+openyida get-schema <appType> <formUuid>  # Bắt buộc trước mọi thao tác sử dụng field ID
 
 # Cập nhật cấu hình biểu mẫu
 openyida update-form-config <appType> <formUuid> <isRenderNav> <tiêu_đề>
 ```
+
+
+<Warning>
+  Field ID trong Yida được tạo ngẫu nhiên bởi nền tảng (ví dụ: `textField_eftt1aa5m`, `selectField_fix024y92`) và không thể suy ra từ tên trường. Trước mọi thao tác sử dụng field ID (tạo/cập nhật dữ liệu, cấu hình điều kiện truy vấn, viết trang tùy chỉnh), bạn **phải** chạy `openyida get-schema` để lấy field ID thực tế.
+</Warning>
 
 ### Các loại trường được hỗ trợ
 
@@ -162,6 +167,10 @@ openyida verify-short-url <appType> <formUuid> <url>
 ---
 
 ## Quản lý dữ liệu
+
+<Warning>
+  Trước khi tạo hoặc cập nhật dữ liệu, bạn **phải** chạy `openyida get-schema` để lấy field ID thực tế. Sau khi ghi dữ liệu, kiểm tra bằng `openyida data query form <appType> <formUuid> --size 1` để xác nhận các trường trong `formData` có giá trị thực. Nếu tất cả đều trống, field ID không chính xác và cần lấy lại qua `get-schema`.
+</Warning>
 
 ```bash
 # Quản lý dữ liệu thống nhất

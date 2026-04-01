@@ -38,6 +38,10 @@ openyida data <action> <resource> [args]
 
 ---
 
+<Warning>
+  宜搭字段 ID 由平台随机生成（如 `textField_eftt1aa5m`），无法猜测或从字段名称推断。创建或更新任何记录前，**必须**先运行 `openyida get-schema <appType> <formUuid>` 获取真实字段 ID，并将字段名→ID 映射记录到 `.cache/<项目名>-schema.json`。写入数据后，查询至少一条记录（`--size 1`）确认 `formData` 中字段有实际值——若值为空则说明字段 ID 有误。
+</Warning>
+
 ## 表单数据管理
 
 ### 查询表单数据

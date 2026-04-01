@@ -70,11 +70,15 @@ openyida create-form create <appType> "<表單名>" <字段JSON> \
 openyida create-form update <appType> <formUuid> <修改JSON>
 
 # 獲取表單 Schema
-openyida get-schema <appType> <formUuid>
+openyida get-schema <appType> <formUuid>  # 任何涉及欄位 ID 的操作前必須執行
 
 # 更新表單配置
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
+
+<Warning>
+  宜搭欄位 ID 由平台隨機生成（如 `textField_eftt1aa5m`、`selectField_fix024y92`），無法從欄位名稱推斷。在執行任何涉及欄位 ID 的操作前（包括建立/更新資料、設定查詢條件、撰寫自訂頁面），**必須**先執行 `openyida get-schema` 取得真實欄位 ID。
+</Warning>
 
 ### 支援的欄位類型
 
@@ -162,6 +166,10 @@ openyida verify-short-url <appType> <formUuid> <url>
 ---
 
 ## 數據管理
+
+<Warning>
+  建立或更新資料前，**必須**先執行 `openyida get-schema` 取得真實欄位 ID。寫入資料後，使用 `openyida data query form <appType> <formUuid> --size 1` 抽查一筆記錄，確認 `formData` 中欄位有實際值。若所有欄位值為空，表示欄位 ID 有誤，需透過 `get-schema` 重新取得。
+</Warning>
 
 ```bash
 # 統一數據管理
