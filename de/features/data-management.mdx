@@ -38,6 +38,10 @@ openyida data <aktion> <ressource> [args]
 
 ---
 
+<Warning>
+  Yida-Feld-IDs werden zufällig von der Plattform generiert (z.B. `textField_eftt1aa5m`) und können nicht erraten werden. Vor dem Erstellen oder Aktualisieren eines Datensatzes **müssen** Sie `openyida get-schema <appType> <formUuid>` ausführen und das Feldname→ID-Mapping in `.cache/<Projektname>-schema.json` speichern. Nach dem Schreiben fragen Sie mindestens einen Datensatz ab (`--size 1`) und bestätigen, dass die `formData`-Felder tatsächliche Werte enthalten. Leere Werte bedeuten falsche Feld-IDs.
+</Warning>
+
 ## Formulardatenverwaltung
 
 ### Formulardaten abfragen

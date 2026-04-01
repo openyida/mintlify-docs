@@ -70,11 +70,16 @@ openyida create-form create <appType> "<नाम>" <फ़ील्डJSON> \
 openyida create-form update <appType> <formUuid> <संशोधनJSON>
 
 # फॉर्म Schema प्राप्त करें
-openyida get-schema <appType> <formUuid>
+openyida get-schema <appType> <formUuid>  # फ़ील्ड ID का उपयोग करने वाले किसी भी ऑपरेशन से पहले अनिवार्य
 
 # फॉर्म कॉन्फ़िगरेशन अपडेट करें
 openyida update-form-config <appType> <formUuid> <isRenderNav> <शीर्षक>
 ```
+
+
+<Warning>
+  Yida फ़ील्ड ID प्लेटफ़ॉर्म द्वारा यादृच्छिक रूप से जनरेट किए जाते हैं (उदा: `textField_eftt1aa5m`, `selectField_fix024y92`) और फ़ील्ड नामों से अनुमान नहीं लगाया जा सकता। फ़ील्ड ID का उपयोग करने वाले किसी भी ऑपरेशन (डेटा बनाना/अपडेट करना, क्वेरी शर्तें कॉन्फ़िगर करना, कस्टम पेज लिखना) से पहले आपको **अवश्य** `openyida get-schema` चलाकर वास्तविक फ़ील्ड ID प्राप्त करना होगा।
+</Warning>
 
 ### समर्थित फ़ील्ड प्रकार
 
@@ -162,6 +167,10 @@ openyida verify-short-url <appType> <formUuid> <url>
 ---
 
 ## डेटा प्रबंधन
+
+<Warning>
+  डेटा बनाने या अपडेट करने से पहले, आपको **अवश्य** `openyida get-schema` चलाकर वास्तविक फ़ील्ड ID प्राप्त करना होगा। डेटा लिखने के बाद, `openyida data query form <appType> <formUuid> --size 1` से सत्यापित करें कि `formData` फ़ील्ड में वास्तविक मान हैं। यदि सभी फ़ील्ड खाली हैं, तो फ़ील्ड ID गलत हैं और `get-schema` से पुनः प्राप्त करने होंगे।
+</Warning>
 
 ```bash
 # एकीकृत डेटा प्रबंधन

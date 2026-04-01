@@ -38,6 +38,10 @@ openyida data <action> <ressource> [args]
 
 ---
 
+<Warning>
+  Les ID de champs Yida sont générés aléatoirement par la plateforme (ex : `textField_eftt1aa5m`) et ne peuvent pas être devinés. Avant de créer ou mettre à jour un enregistrement, vous **devez** exécuter `openyida get-schema <appType> <formUuid>` pour obtenir les vrais ID de champs et enregistrer le mapping nom→ID dans `.cache/<nom-projet>-schema.json`. Après l'écriture, interrogez au moins un enregistrement (`--size 1`) pour confirmer que les champs de `formData` contiennent des valeurs réelles. Des valeurs vides indiquent des ID de champs incorrects.
+</Warning>
+
 ## Gestion des données de formulaire
 
 ### Interroger les données de formulaire

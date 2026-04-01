@@ -70,11 +70,16 @@ openyida create-form create <appType> "<表单名>" <字段JSON> \
 openyida create-form update <appType> <formUuid> <修改JSON>
 
 # 获取表单 Schema
-openyida get-schema <appType> <formUuid>
+openyida get-schema <appType> <formUuid>  # 任何涉及字段 ID 的操作前必须执行
 
 # 更新表单配置
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 ```
+
+
+<Warning>
+  宜搭字段 ID 由平台随机生成（如 `textField_eftt1aa5m`、`selectField_fix024y92`），无法从字段名称推断。在执行任何涉及字段 ID 的操作前（包括创建/更新数据、配置查询条件、编写自定义页面），**必须**先运行 `openyida get-schema` 获取真实字段 ID。
+</Warning>
 
 ### 支持的字段类型
 
@@ -162,6 +167,10 @@ openyida verify-short-url <appType> <formUuid> <url>
 ---
 
 ## 数据管理
+
+<Warning>
+  创建或更新数据前，**必须**先运行 `openyida get-schema` 获取真实字段 ID。写入数据后，使用 `openyida data query form <appType> <formUuid> --size 1` 抽查一条记录，确认 `formData` 中字段有实际值。若所有字段值为空，说明字段 ID 有误，需通过 `get-schema` 重新获取。
+</Warning>
 
 ```bash
 # 统一数据管理

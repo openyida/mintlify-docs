@@ -53,7 +53,25 @@ icon: "star"
 
 ---
 
-## 4. 每步验证
+## 4. 数据操作前必须执行 get-schema
+
+宜搭字段 ID 由平台随机生成（如 `textField_eftt1aa5m`），无法从字段名称猜测。在创建、更新或按字段条件查询数据前，务必先执行：
+
+```bash
+openyida get-schema <appType> <formUuid>
+```
+
+写入数据后，查询至少一条记录验证结果：
+
+```bash
+openyida data query form <appType> <formUuid> --size 1
+```
+
+确认 `formData` 中字段有实际值。若所有值为空，说明字段 ID 有误，需重新运行 `get-schema` 并修正。
+
+---
+
+## 5. 每步验证
 
 AI 创建每个组件后，让它验证：
 
@@ -66,13 +84,13 @@ AI 创建每个组件后，让它验证：
 
 ---
 
-## 5. 复用项目工作目录
+## 6. 复用项目工作目录
 
 每个项目只运行一次 `openyida copy`，不要每会话都运行。`project/config.json` 文件存储 `appId` 和 `corpId` —— AI 用它知道目标应用。项目中途不要删除此文件。
 
 ---
 
-## 6. 环境特定登录
+## 7. 环境特定登录
 
 不同 AI 工具需要不同登录方式：
 
@@ -86,7 +104,7 @@ AI 创建每个组件后，让它验证：
 
 ---
 
-## 7. 自定义页面图片使用 CDN
+## 8. 自定义页面图片使用 CDN
 
 自定义页面含图片时，先上传到 CDN 确保可靠渲染：
 
@@ -102,7 +120,7 @@ openyida cdn-upload ./my-image.png   # 获取稳定 CDN URL
 
 ---
 
-## 8. 处理多组织设置
+## 9. 处理多组织设置
 
 可访问多个宜搭组织时：
 
@@ -116,7 +134,7 @@ openyida env               # 确认切换
 
 ---
 
-## 9. 调试前先运行 Doctor
+## 10. 调试前先运行 Doctor
 
 花时间调试失败命令前，先运行：
 
@@ -128,6 +146,6 @@ openyida doctor --fix
 
 ---
 
-## 10. AI 辅助 PR 欢迎
+## 11. AI 辅助 PR 欢迎
 
 向 OpenYida 本身贡献时，完全接受 AI 生成的代码。在 PR 描述中注明使用的 AI 工具 —— 帮助维护者理解生成上下文，更高效地 review。

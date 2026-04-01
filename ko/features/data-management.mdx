@@ -38,6 +38,10 @@ openyida data <action> <resource> [args]
 
 ---
 
+<Warning>
+  Yida 필드 ID는 플랫폼에서 무작위로 생성됩니다(예: `textField_eftt1aa5m`). 추측하거나 필드 이름으로 추론할 수 없습니다. 레코드 생성 또는 수정 전에 **반드시** `openyida get-schema <appType> <formUuid>`를 실행하여 실제 필드 ID를 가져오고, 필드 이름→ID 매핑을 `.cache/<프로젝트명>-schema.json`에 기록하세요. 데이터 작성 후 최소 1건의 레코드를 조회(`--size 1`)하여 `formData` 필드에 실제 값이 있는지 확인하세요. 값이 비어 있으면 필드 ID가 잘못된 것입니다.
+</Warning>
+
 ## 양식 데이터 관리
 
 ### 양식 데이터 쿼리

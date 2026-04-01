@@ -53,7 +53,25 @@ Paso 5: Publicar el panel como página pública
 
 ---
 
-## 4. Verificar cada paso
+## 4. Siempre ejecutar get-schema antes de operaciones de datos
+
+Los IDs de campo en Yida son generados aleatoriamente por la plataforma (ej: `textField_eftt1aa5m`) y no se pueden deducir de los nombres. Antes de crear, actualizar o consultar datos con condiciones de campo, ejecute siempre:
+
+```bash
+openyida get-schema <appType> <formUuid>
+```
+
+Después de escribir datos, verifique el resultado consultando al menos un registro:
+
+```bash
+openyida data query form <appType> <formUuid> --size 1
+```
+
+Confirme que los campos `formData` contienen valores reales. Si todos están vacíos, los IDs son incorrectos — ejecute `get-schema` nuevamente.
+
+---
+
+## 5. Verificar cada paso
 
 Después de que la IA cree cada componente, hágalo verificar:
 
@@ -66,13 +84,13 @@ Detecte problemas temprano antes de que se acumulen en problemas mayores.
 
 ---
 
-## 5. Reutilizar directorio de trabajo del proyecto
+## 6. Reutilizar directorio de trabajo del proyecto
 
 Ejecute `openyida copy` solo una vez por proyecto, no en cada sesión. El archivo `project/config.json` almacena `appId` y `corpId` — la IA lo usa para conocer la aplicación objetivo. No elimine este archivo a mitad del proyecto.
 
 ---
 
-## 6. Inicio de sesión específico del entorno
+## 7. Inicio de sesión específico del entorno
 
 Diferentes herramientas de IA requieren diferentes métodos de inicio de sesión:
 
@@ -86,7 +104,7 @@ Al cambiar de herramienta, ejecute primero `openyida env` para confirmar el ento
 
 ---
 
-## 7. Usar CDN para imágenes de páginas personalizadas
+## 8. Usar CDN para imágenes de páginas personalizadas
 
 Cuando las páginas personalizadas contienen imágenes, cárguelas primero en CDN para garantizar un renderizado confiable:
 
@@ -102,7 +120,7 @@ Agregar una imagen de banner hero a la página de destino usando esta URL de CDN
 
 ---
 
-## 8. Manejar configuración multi-organización
+## 9. Manejar configuración multi-organización
 
 Cuando puede acceder a múltiples organizaciones Yida:
 
@@ -116,7 +134,7 @@ Siempre verifique la organización activa antes de crear aplicaciones para evita
 
 ---
 
-## 9. Ejecutar Doctor antes de depurar
+## 10. Ejecutar Doctor antes de depurar
 
 Antes de dedicar tiempo a depurar comandos fallidos, ejecute:
 
@@ -128,6 +146,6 @@ Detecta y resuelve automáticamente los problemas más comunes: sesiones expirad
 
 ---
 
-## 10. PR asistidas por IA bienvenidas
+## 11. PR asistidas por IA bienvenidas
 
 Al contribuir a OpenYida en sí, acepte completamente el código generado por IA. Indique la herramienta de IA utilizada en la descripción del PR — esto ayuda a los mantenedores a comprender el contexto de generación y revisar de manera más eficiente.

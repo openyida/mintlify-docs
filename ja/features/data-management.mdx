@@ -38,6 +38,10 @@ openyida data <action> <resource> [args]
 
 ---
 
+<Warning>
+  Yidaのフィールドid はプラットフォームによりランダムに生成されます（例: `textField_eftt1aa5m`）。推測やフィールド名からの推定はできません。レコードの作成・更新前に、**必ず** `openyida get-schema <appType> <formUuid>` を実行して実際のフィールドIDを取得し、フィールド名→IDマッピングを `.cache/<プロジェクト名>-schema.json` に記録してください。データ書き込み後、少なくとも1件のレコードを照会（`--size 1`）し、`formData` のフィールドに実際の値があることを確認してください。値が空の場合、フィールドIDが正しくありません。
+</Warning>
+
 ## フォームデータ管理
 
 ### フォームデータのクエリ
