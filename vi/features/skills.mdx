@@ -16,7 +16,7 @@ openyida env
 
 # Đăng nhập
 openyida login [--qr]              # --qr sử dụng mã QR trong terminal
-openyida login --wukong            # Dành riêng cho môi trường Wukong
+openyida login --check-only        # Chỉ kiểm tra trạng thái đăng nhập
 
 # Đăng xuất
 openyida logout
@@ -32,13 +32,18 @@ openyida org list                  # Liệt kê các tổ chức có thể truy 
 openyida org switch --corp-id <id> # Chuyển tổ chức
 
 # Khởi tạo thư mục làm việc
-openyida copy [--force]            # Sao chép thư mục project (trải nội dung vào thư mục trống)
+openyida copy [--force]            # Sao chép thư mục project (--force ghi đè)
 openyida copy -skills              # Sao chép yida-skills vào thư mục skills của công cụ AI
+openyida copy -project [--force]   # Sao chép thư mục project một cách rõ ràng
 
 # Công cụ chẩn đoán
-openyida doctor [--fix]            # Chẩn đoán môi trường
+openyida doctor [--fix]            # Chẩn đoán (--repair là bí danh của --fix)
+openyida doctor --production --app <appId>  # Chẩn đoán ứng dụng sản xuất
 openyida doctor --monitor          # Giám sát sức khỏe
 openyida doctor --report <format>  # Tạo báo cáo (json|markdown|html)
+openyida doctor --create-ticket    # Tạo ticket từ kết quả chẩn đoán
+openyida doctor --create-voc       # Tạo yêu cầu tính năng (VOC)
+openyida doctor --auto-submit      # Tự động gửi ticket hoặc VOC
 ```
 
 ---
@@ -47,7 +52,7 @@ openyida doctor --report <format>  # Tạo báo cáo (json|markdown|html)
 
 ```bash
 # Tạo ứng dụng
-openyida create-app "<tên>" [desc] [icon] [color] [themeColor]
+openyida create-app "<tên>" [desc] [icon] [iconColor] [colour] [navTheme] [layoutDirection]
 
 # Xuất ứng dụng
 openyida export <appType> [output] # Tạo gói di chuyển

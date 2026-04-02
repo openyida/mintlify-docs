@@ -16,7 +16,7 @@ openyida env
 
 # Login
 openyida login [--qr]              # --qr usa QR code no terminal
-openyida login --wukong            # Exclusivo para ambiente Wukong
+openyida login --check-only        # Apenas verificar status de login
 
 # Logout
 openyida logout
@@ -32,13 +32,18 @@ openyida org list                  # Listar organizações acessíveis
 openyida org switch --corp-id <id> # Trocar organização
 
 # Inicializar diretório de trabalho
-openyida copy [--force]            # Copiar diretório project (aplaina em diretórios vazios)
+openyida copy [--force]            # Copiar diretório project (--force sobrescreve)
 openyida copy -skills              # Copiar yida-skills para o diretório skills da ferramenta AI
+openyida copy -project [--force]   # Copiar diretório project explicitamente
 
 # Ferramenta de diagnóstico
-openyida doctor [--fix]            # Diagnóstico de ambiente
+openyida doctor [--fix]            # Diagnóstico (--repair é alias de --fix)
+openyida doctor --production --app <appId>  # Diagnóstico de app em produção
 openyida doctor --monitor          # Monitoramento de saúde
 openyida doctor --report <format>  # Gerar relatório (json|markdown|html)
+openyida doctor --create-ticket    # Criar ticket a partir do diagnóstico
+openyida doctor --create-voc       # Criar solicitação de recurso (VOC)
+openyida doctor --auto-submit      # Enviar automaticamente ticket ou VOC
 ```
 
 ---
@@ -47,7 +52,7 @@ openyida doctor --report <format>  # Gerar relatório (json|markdown|html)
 
 ```bash
 # Criar aplicativo
-openyida create-app "<nome>" [desc] [icon] [color] [themeColor]
+openyida create-app "<nome>" [desc] [icon] [iconColor] [colour] [navTheme] [layoutDirection]
 
 # Exportar aplicativo
 openyida export <appType> [output] # Gerar pacote de migração

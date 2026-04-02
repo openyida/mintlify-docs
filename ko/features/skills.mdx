@@ -16,7 +16,7 @@ openyida env
 
 # 로그인
 openyida login [--qr]              # --qr은 터미널 QR 코드 사용
-openyida login --wukong            # Wukong 환경 전용
+openyida login --check-only        # 로그인 상태만 확인 (로그인 실행 안 함)
 
 # 로그아웃
 openyida logout
@@ -32,13 +32,18 @@ openyida org list                  # 액세스 가능한 조직 나열
 openyida org switch --corp-id <id> # 조직 전환
 
 # 작업 디렉터리 초기화
-openyida copy [--force]            # project 디렉터리 복사 (빈 디렉터리에는 내용을 직접 복사)
+openyida copy [--force]            # project 디렉터리 복사 (--force로 덮어쓰기)
 openyida copy -skills              # yida-skills를 AI 도구 skills 디렉터리에 복사
+openyida copy -project [--force]   # project 디렉터리 명시적 복사 (기본 동작과 동일)
 
 # 진단 도구
-openyida doctor [--fix]            # 환경 진단
+openyida doctor [--fix]            # 환경 진단 (--repair는 --fix의 별칭)
+openyida doctor --production --app <appId>  # 프로덕션 앱 진단
 openyida doctor --monitor          # 헬스 모니터링
 openyida doctor --report <format>  # 보고서 생성 (json|markdown|html)
+openyida doctor --create-ticket    # 진단 결과로 티켓 생성
+openyida doctor --create-voc       # VOC (기능 요청) 생성
+openyida doctor --auto-submit      # 자동 판단하여 티켓 또는 VOC 제출
 ```
 
 ---
@@ -47,7 +52,7 @@ openyida doctor --report <format>  # 보고서 생성 (json|markdown|html)
 
 ```bash
 # 앱 생성
-openyida create-app "<名称>" [desc] [icon] [color] [themeColor]
+openyida create-app "<名称>" [desc] [icon] [iconColor] [colour] [navTheme] [layoutDirection]
 
 # 앱 내보내기
 openyida export <appType> [output] # 마이그레이션 패키지 생성

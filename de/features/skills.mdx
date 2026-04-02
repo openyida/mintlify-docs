@@ -16,7 +16,7 @@ openyida env
 
 # Anmeldung
 openyida login [--qr]              # --qr verwendet Terminal-QR-Code
-openyida login --wukong            # Spezifisch für Wukong-Umgebung
+openyida login --check-only        # Nur Anmeldestatus prüfen (ohne Anmeldung)
 
 # Abmeldung
 openyida logout
@@ -32,13 +32,18 @@ openyida org list                  # Zugängliche Organisationen auflisten
 openyida org switch --corp-id <id> # Zur Organisation wechseln
 
 # Arbeitsverzeichnis initialisieren
-openyida copy [--force]            # project-Verzeichnis kopieren (leere Verzeichnisse werden direkt befüllt)
+openyida copy [--force]            # project-Verzeichnis kopieren (--force überschreibt)
 openyida copy -skills              # yida-skills in das AI-Tool skills-Verzeichnis kopieren
+openyida copy -project [--force]   # project-Verzeichnis explizit kopieren
 
 # Diagnosetool
-openyida doctor [--fix]            # Umgebungsdiagnose
+openyida doctor [--fix]            # Umgebungsdiagnose (--repair ist ein Alias für --fix)
+openyida doctor --production --app <appId>  # Produktions-App-Diagnose
 openyida doctor --monitor          # Gesundheitsüberwachung
 openyida doctor --report <format>  # Bericht generieren (json|markdown|html)
+openyida doctor --create-ticket    # Ticket aus Diagnoseergebnissen erstellen
+openyida doctor --create-voc       # VOC (Feature-Anfrage) erstellen
+openyida doctor --auto-submit      # Automatisch Ticket oder VOC einreichen
 ```
 
 ---
@@ -47,7 +52,7 @@ openyida doctor --report <format>  # Bericht generieren (json|markdown|html)
 
 ```bash
 # Anwendung erstellen
-openyida create-app "<Name>" [desc] [icon] [color] [themeColor]
+openyida create-app "<Name>" [desc] [icon] [iconColor] [colour] [navTheme] [layoutDirection]
 
 # Anwendung exportieren
 openyida export <appType> [output] # Migrationspaket generieren

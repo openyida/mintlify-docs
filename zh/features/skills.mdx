@@ -16,7 +16,7 @@ openyida env
 
 # 登录
 openyida login [--qr]              # --qr 使用终端二维码
-openyida login --wukong            # 悟空环境专用
+openyida login --check-only        # 仅检查登录态，不触发登录
 
 # 退出登录
 openyida logout
@@ -32,13 +32,18 @@ openyida org list                  # 列出可访问的组织
 openyida org switch --corp-id <id> # 切换组织
 
 # 初始化工作目录
-openyida copy [--force]            # 复制 project 目录（空目录时直接铺入内容）
+openyida copy [--force]            # 复制 project 目录（--force 覆盖已有文件）
 openyida copy -skills              # 复制 yida-skills 到 AI 工具 skills 目录
+openyida copy -project [--force]   # 显式复制 project 目录（与默认行为相同）
 
 # 诊断工具
-openyida doctor [--fix]            # 环境诊断
+openyida doctor [--fix]            # 环境诊断（--repair 是 --fix 的别名）
+openyida doctor --production --app <appId>  # 线上应用诊断
 openyida doctor --monitor          # 健康监控
 openyida doctor --report <format>  # 生成报告 (json|markdown|html)
+openyida doctor --create-ticket    # 根据诊断结果创建工单
+openyida doctor --create-voc       # 创建 VOC（需求反馈）
+openyida doctor --auto-submit      # 自动判断并提交工单或 VOC
 ```
 
 ---
@@ -47,7 +52,7 @@ openyida doctor --report <format>  # 生成报告 (json|markdown|html)
 
 ```bash
 # 创建应用
-openyida create-app "<名称>" [desc] [icon] [color] [themeColor]
+openyida create-app "<名称>" [desc] [icon] [iconColor] [colour] [navTheme] [layoutDirection]
 
 # 导出应用
 openyida export <appType> [output] # 生成迁移包

@@ -16,7 +16,7 @@ openyida env
 
 # 登錄
 openyida login [--qr]              # --qr 使用終端二維碼
-openyida login --wukong            # 悟空環境專用
+openyida login --check-only        # 僅檢查登入狀態，不觸發登入
 
 # 退出登錄
 openyida logout
@@ -32,13 +32,18 @@ openyida org list                  # 列出可訪問的組織
 openyida org switch --corp-id <id> # 切換組織
 
 # 初始化工作目錄
-openyida copy [--force]            # 複製 project 目錄（空目錄時直接鋪入內容）
+openyida copy [--force]            # 複製 project 目錄（--force 覆蓋已有檔案）
 openyida copy -skills              # 複製 yida-skills 到 AI 工具 skills 目錄
+openyida copy -project [--force]   # 顯式複製 project 目錄（與預設行為相同）
 
 # 診斷工具
-openyida doctor [--fix]            # 環境診斷
+openyida doctor [--fix]            # 環境診斷（--repair 是 --fix 的別名）
+openyida doctor --production --app <appId>  # 線上應用診斷
 openyida doctor --monitor          # 健康監控
 openyida doctor --report <format>  # 生成報告 (json|markdown|html)
+openyida doctor --create-ticket    # 根據診斷結果建立工單
+openyida doctor --create-voc       # 建立 VOC（需求回饋）
+openyida doctor --auto-submit      # 自動判斷並提交工單或 VOC
 ```
 
 ---
@@ -47,7 +52,7 @@ openyida doctor --report <format>  # 生成報告 (json|markdown|html)
 
 ```bash
 # 創建應用
-openyida create-app "<名稱>" [desc] [icon] [color] [themeColor]
+openyida create-app "<名稱>" [desc] [icon] [iconColor] [colour] [navTheme] [layoutDirection]
 
 # 導出應用
 openyida export <appType> [output] # 生成遷移包
