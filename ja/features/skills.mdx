@@ -32,7 +32,8 @@ openyida org list                  # アクセス可能な組織を一覧表示
 openyida org switch --corp-id <id> # 組織を切り替え
 
 # 作業ディレクトリの初期化
-openyida copy [--force]            # projectディレクトリをコピー
+openyida copy [--force]            # projectディレクトリをコピー（空ディレクトリの場合は内容を直接展開）
+openyida copy -skills              # yida-skillsをAIツールのskillsディレクトリにコピー
 
 # 診断ツール
 openyida doctor [--fix]            # 環境診断
@@ -525,6 +526,7 @@ openyida export-conversation -i conversation.json -o result.md
 |------|------|------|
 | `OPENYIDA_LANG` | 言語を設定 | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | システム言語 | `zh_CN.UTF-8` |
+| `AGENT_WORK_ROOT` | 悟空ワークスペースルートパス（動的UUID） | `~/.real/users/user-xxx/` |
 
 ---
 

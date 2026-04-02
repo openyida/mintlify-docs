@@ -60,15 +60,13 @@ openyida doctor --report html
 
 | Elemento | Descripción | Reparación Automática |
 |--------|------|----------|
-| Versión de Node.js | Verifica si ≥ 16 |❌
+| Versión CLI | Verifica que la versión de openyida coincida con SKILL.md | ✅ |
+| Inicialización project/ | Verifica que el directorio de trabajo project/ exista | ✅ |
+| Versión de Node.js | Verifica si ≥ 16 | ❌ |
 | Playwright | Verifica si está instalado | ✅ |
-| Chromium | Verifica si el navegador está instalado | ✅ |
-| gh CLI | Verifica GitHub CLI |❌
-| Inicio de sesión gh | Verifica estado de inicio de sesión de gh CLI | ✅ |
 | config.json | Verifica archivo de configuración | ✅ |
-| Skills | Verifica instalación de paquetes de habilidades |❌
 | Inicio de sesión Yida | Verifica estado de inicio de sesión | ✅ |
-| Conectividad de red | Verifica conectividad de aliwork.com |❌
+| Conectividad de red | Verifica conectividad de aliwork.com | ❌ |
 
 ---
 
@@ -154,16 +152,13 @@ openyida doctor --auto-submit
 ### Salida de Consola
 
 ```
-ificando dependencias del entorno de OpenYida...
+🔍 Verificando dependencias del entorno de OpenYida...
 
+✅ Versión openyida: 2026.04.02 (SKILL esperado: 2026.04.02)
+✅ Directorio de trabajo project/ inicializado
 ✅ Node.js v18.19.0 (requiere ≥ 16)
 ✅ Playwright instalado
-✅ Playwright Chromium instalado
-✅ gh version 2.40.1
-✅ gh CLI iniciado sesión
 ✅ config.json existe y formato correcto
-  Detección de instalación de Skills
-   Skills no instalados, ejecuta bash install-skills.sh para instalar
 ✅ Estado de inicio de sesión de Yida: Iniciado sesión
 ✅ Conectividad de red (aliwork.com)
 ✅ Archivos PRD (2 archivos)
@@ -171,7 +166,7 @@ ificando dependencias del entorno de OpenYida...
 ✅ Caché de Schema (5 archivos)
 ✅ Normas de React Hooks
 
-Se encontraron 1 problema (0 errores, 1 advertencia)
+11 verificaciones aprobadas, no se encontraron problemas
 ```
 
 <Note>

@@ -32,7 +32,8 @@ openyida org list                  # List accessible organizations
 openyida org switch --corp-id <id> # Switch organization
 
 # Initialize workspace
-openyida copy [--force]            # Copy project directory
+openyida copy [--force]            # Copy project directory (flattens into empty dirs)
+openyida copy -skills              # Copy yida-skills to AI tool skills directory
 
 # Diagnostic tools
 openyida doctor [--fix]            # Environment diagnosis
@@ -524,6 +525,7 @@ openyida export-conversation -i conversation.json -o result.md
 |----------|-------------|---------|
 | `OPENYIDA_LANG` | Set language | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | System language | `zh_CN.UTF-8` |
+| `AGENT_WORK_ROOT` | Wukong workspace root path (dynamic UUID) | `~/.real/users/user-xxx/` |
 
 ---
 

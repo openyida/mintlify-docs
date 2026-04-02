@@ -85,12 +85,19 @@ openyida doctor env --check auth
 openyida doctor env --check network
 ```
 
-### Environment Requirements
+### Environment requirements
 
-| Component | Minimum Version | Required |
-|-----------|-----------------|----------|
-| Node.js | 18.x | Yes |
-| Playwright | Latest | Optional |
+The doctor command runs the following checks in order:
+
+| Check | Description | Auto-fixable |
+|-------|-------------|--------------|
+| CLI version | Compares installed version with SKILL.md metadata | Yes |
+| project/ init | Verifies the project/ working directory exists | Yes |
+| Node.js version | Requires ≥ 18 | No |
+| Playwright | Checks if Playwright is installed | Yes |
+| config.json | Validates configuration file | Yes |
+| Login status | Checks Yida authentication | Yes |
+| Network | Tests connectivity to aliwork.com | No |
 
 ---
 
@@ -122,8 +129,9 @@ openyida doctor app --check hooks
 
 | Issue | Severity | Auto-fixable |
 |-------|----------|--------------|
+| CLI version mismatch | Warning | Yes |
+| Missing project/ directory | High | Yes |
 | Missing dependencies | High | Yes |
-| Outdated CLI version | Medium | Yes |
 | Invalid page config | High | No |
 | Schema cache stale | Medium | Yes |
 | React Hooks errors | High | No |
