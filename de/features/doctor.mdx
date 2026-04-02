@@ -60,13 +60,11 @@ openyida doctor --report html
 
 | Prüfelement | Beschreibung | Automatische Reparatur |
 |--------|------|----------|
+| CLI-Version | Prüfen, ob die openyida-Version mit SKILL.md übereinstimmt | ✅ |
+| project/-Initialisierung | Prüfen, ob das project/-Arbeitsverzeichnis existiert | ✅ |
 | Node.js-Version | Prüfen, ob ≥ 16 | ❌ |
 | Playwright | Installation prüfen | ✅ |
-| Chromium | Browserinstallation prüfen | ✅ |
-| gh CLI | GitHub CLI prüfen | ❌ |
-| gh login | gh CLI-Verbindungsstatus prüfen | ✅ |
 | config.json | Konfigurationsdatei prüfen | ✅ |
-| Skills | Skill-Paket-Installation prüfen | ❌ |
 | Yida-Verbindung | Verbindungsstatus prüfen | ✅ |
 | Netzwerkkonnektivität | aliwork.com-Konnektivität prüfen | ❌ |
 
@@ -157,14 +155,11 @@ openyida doctor --auto-submit
 ```
 🔍 Überprüfung der OpenYida-Umgebungsabhängigkeiten...
 
+✅ openyida-Version: 2026.04.02 (SKILL erwartet: 2026.04.02)
+✅ project/-Arbeitsverzeichnis initialisiert
 ✅ Node.js v18.19.0 (erforderlich ≥ 16)
 ✅ Playwright installiert
-✅ Playwright Chromium installiert
-✅ gh version 2.40.1
-✅ gh CLI verbunden
 ✅ config.json vorhanden und Format korrekt
-⚠️  Skills-Installationserkennung
-   Skills nicht installiert, führen Sie bash install-skills.sh zur Installation aus
 ✅ Yida-Verbindungsstatus: verbunden
 ✅ Netzwerkkonnektivität (aliwork.com)
 ✅ PRD-Datei (2)
@@ -172,7 +167,7 @@ openyida doctor --auto-submit
 ✅ Schema-Cache (5)
 ✅ React Hooks-Standards
 
-1 Problem gefunden (0 Fehler, 1 Warnung)
+11 Prüfungen bestanden, keine Probleme gefunden
 ```
 
 <Note>

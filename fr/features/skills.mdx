@@ -32,7 +32,8 @@ openyida org list                  # Lister les organisations accessibles
 openyida org switch --corp-id <id> # Basculer vers une organisation
 
 # Initialiser le répertoire de travail
-openyida copy [--force]            # Copier le répertoire project
+openyida copy [--force]            # Copier le répertoire project (aplatit dans les répertoires vides)
+openyida copy -skills              # Copier yida-skills dans le répertoire skills de l'outil AI
 
 # Outil de diagnostic
 openyida doctor [--fix]            # Diagnostic de l'environnement
@@ -524,6 +525,7 @@ openyida export-conversation -i conversation.json -o result.md
 |------|------|------|
 | `OPENYIDA_LANG` | Définir la langue | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | Langue du système | `zh_CN.UTF-8` |
+| `AGENT_WORK_ROOT` | Chemin racine de l'espace de travail Wukong (UUID dynamique) | `~/.real/users/user-xxx/` |
 
 ---
 

@@ -32,7 +32,8 @@ openyida org list                  # Liệt kê các tổ chức có thể truy 
 openyida org switch --corp-id <id> # Chuyển tổ chức
 
 # Khởi tạo thư mục làm việc
-openyida copy [--force]            # Sao chép thư mục project
+openyida copy [--force]            # Sao chép thư mục project (trải nội dung vào thư mục trống)
+openyida copy -skills              # Sao chép yida-skills vào thư mục skills của công cụ AI
 
 # Công cụ chẩn đoán
 openyida doctor [--fix]            # Chẩn đoán môi trường
@@ -525,6 +526,7 @@ openyida export-conversation -i conversation.json -o result.md
 |------|------|------|
 | `OPENYIDA_LANG` | Cài đặt ngôn ngữ | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | Ngôn ngữ hệ thống | `zh_CN.UTF-8` |
+| `AGENT_WORK_ROOT` | Đường dẫn gốc không gian làm việc Wukong (UUID động) | `~/.real/users/user-xxx/` |
 
 ---
 

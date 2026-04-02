@@ -32,7 +32,8 @@ openyida org list                  # 액세스 가능한 조직 나열
 openyida org switch --corp-id <id> # 조직 전환
 
 # 작업 디렉터리 초기화
-openyida copy [--force]            # project 디렉터리 복사
+openyida copy [--force]            # project 디렉터리 복사 (빈 디렉터리에는 내용을 직접 복사)
+openyida copy -skills              # yida-skills를 AI 도구 skills 디렉터리에 복사
 
 # 진단 도구
 openyida doctor [--fix]            # 환경 진단
@@ -524,6 +525,7 @@ openyida export-conversation -i conversation.json -o result.md
 |------|------|------|
 | `OPENYIDA_LANG` | 언어 설정 | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | 시스템 언어 | `zh_CN.UTF-8` |
+| `AGENT_WORK_ROOT` | Wukong 작업 영역 루트 경로 (동적 UUID) | `~/.real/users/user-xxx/` |
 
 ---
 

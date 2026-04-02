@@ -32,7 +32,8 @@ openyida org list                  # سرد المنظمات القابلة لل
 openyida org switch --corp-id <id> # التبديل إلى المنظمة
 
 # تهيئة دليل العمل
-openyida copy [--force]            # نسخ دليل project
+openyida copy [--force]            # نسخ دليل project (ينسخ المحتوى مباشرة في الأدلة الفارغة)
+openyida copy -skills              # نسخ yida-skills إلى دليل skills لأداة AI
 
 # أدوات التشخيص
 openyida doctor [--fix]            # تشخيص البيئة
@@ -525,6 +526,7 @@ openyida export-conversation -i conversation.json -o result.md
 |------|------|------|
 | `OPENYIDA_LANG` | تعيين اللغة | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | لغة النظام | `zh_CN.UTF-8` |
+| `AGENT_WORK_ROOT` | مسار جذر مساحة عمل Wukong (UUID ديناميكي) | `~/.real/users/user-xxx/` |
 
 ---
 

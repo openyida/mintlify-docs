@@ -60,15 +60,13 @@ openyida doctor --report html
 
 | العنصر | الوصف | الإصلاح التلقائي |
 |--------|------|----------|
-| إصدار Node.js | تحقق إذا ≥ 16 |❌
+| إصدار CLI | تحقق من تطابق إصدار openyida مع SKILL.md | ✅ |
+| تهيئة project/ | تحقق من وجود دليل عمل project/ | ✅ |
+| إصدار Node.js | تحقق إذا ≥ 16 | ❌ |
 | Playwright | تحقق إذا تم التثبيت | ✅ |
-| Chromium | تحقق إذا تم تثبيت المتصفح | ✅ |
-| gh CLI | تحقق من GitHub CLI |❌
-| تسجيل دخول gh | تحقق من حالة تسجيل دخول gh CLI | ✅ |
 | config.json | تحقق من ملف التكوين | ✅ |
-| Skills | تحقق من تثبيت حزم المهارات |❌
 | تسجيل دخول Yida | تحقق من حالة تسجيل الدخول | ✅ |
-| اتصال الشبكة | تحقق من اتصال aliwork.com |❌
+| اتصال الشبكة | تحقق من اتصال aliwork.com | ❌ |
 
 ---
 
@@ -154,16 +152,13 @@ openyida doctor --auto-submit
 ### إخراج وحدة التحكم
 
 ```
- تبعيات بيئة OpenYida...
+🔍 فحص تبعيات بيئة OpenYida...
 
+✅ إصدار openyida: 2026.04.02 (SKILL المتوقع: 2026.04.02)
+✅ دليل عمل project/ تم تهيئته
 ✅ Node.js v18.19.0 (مطلوب ≥ 16)
 ✅ Playwright مثبت
-✅ Playwright Chromium مثبت
-✅ gh version 2.40.1
-✅ gh CLI مسجل الدخول
 ✅ config.json موجود والتنسيق صحيح
-  فحص تثبيت Skills
-   Skills غير مثبت، قم بتشغيل bash install-skills.sh للتثبيت
 ✅ حالة تسجيل دخول Yida: مسجل الدخول
 ✅ اتصال الشبكة (aliwork.com)
 ✅ ملفات PRD (ملفان)
@@ -171,7 +166,7 @@ openyida doctor --auto-submit
 ✅ ذاكرة Schema المؤقتة (5 ملفات)
 ✅ معايير React Hooks
 
-تم العثور على مشكلة واحدة (0 أخطاء، 1 تحذير)
+11 فحص ناجح، لم يتم العثور على مشاكل
 ```
 
 <Note>

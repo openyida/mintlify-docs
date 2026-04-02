@@ -60,13 +60,11 @@ openyida doctor --report html
 
 | 檢查項 | 說明 | 自動修復 |
 |--------|------|----------|
+| CLI 版本 | 檢查 openyida 版本是否與 SKILL.md 一致 | ✅ |
+| project/ 初始化 | 檢查 project/ 工作目錄是否存在 | ✅ |
 | Node.js 版本 | 檢查是否 ≥ 16 | ❌ |
 | Playwright | 檢查是否安裝 | ✅ |
-| Chromium | 檢查瀏覽器是否安裝 | ✅ |
-| gh CLI | 檢查 GitHub CLI | ❌ |
-| gh 登錄 | 檢查 gh CLI 登錄態 | ✅ |
 | config.json | 檢查配置文件 | ✅ |
-| Skills | 檢查技能包安裝 | ❌ |
 | 宜搭登錄 | 檢查登錄態 | ✅ |
 | 網絡連通 | 檢查 aliwork.com 連通性 | ❌ |
 
@@ -157,14 +155,11 @@ openyida doctor --auto-submit
 ```
 🔍 檢查 OpenYida 環境依賴...
 
+✅ openyida 版本：2026.04.02（SKILL 期望：2026.04.02）
+✅ project/ 工作目錄已初始化
 ✅ Node.js v18.19.0（要求 ≥ 16）
 ✅ Playwright 已安裝
-✅ Playwright Chromium 已安裝
-✅ gh version 2.40.1
-✅ gh CLI 已登錄
 ✅ config.json 存在且格式正確
-⚠️  Skills 安裝檢測
-   Skills 未安裝，運行 bash install-skills.sh 安裝
 ✅ 宜搭登錄態：已登錄
 ✅ 網絡連通性（aliwork.com）
 ✅ PRD 文件（2 個）
@@ -172,7 +167,7 @@ openyida doctor --auto-submit
 ✅ Schema 緩存（5 個）
 ✅ React Hooks 規範
 
-發現 1 個問題（0 個錯誤，1 個警告）
+通過 11 項檢查，未發現問題
 ```
 
 <Note>

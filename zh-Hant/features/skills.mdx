@@ -32,7 +32,8 @@ openyida org list                  # 列出可訪問的組織
 openyida org switch --corp-id <id> # 切換組織
 
 # 初始化工作目錄
-openyida copy [--force]            # 複製 project 目錄
+openyida copy [--force]            # 複製 project 目錄（空目錄時直接鋪入內容）
+openyida copy -skills              # 複製 yida-skills 到 AI 工具 skills 目錄
 
 # 診斷工具
 openyida doctor [--fix]            # 環境診斷
@@ -524,6 +525,7 @@ openyida export-conversation -i conversation.json -o result.md
 |------|------|------|
 | `OPENYIDA_LANG` | 設置語言 | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | 系統語言 | `zh_CN.UTF-8` |
+| `AGENT_WORK_ROOT` | 悟空工作區根路徑（動態 UUID） | `~/.real/users/user-xxx/` |
 
 ---
 

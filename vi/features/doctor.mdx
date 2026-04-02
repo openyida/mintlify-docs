@@ -60,15 +60,13 @@ openyida doctor --report html
 
 | Mục | Mô Tả | Sửa Chữa Tự Động |
 |--------|------|----------|
-| Phiên bản Node.js | Kiểm tra nếu ≥ 16 |❌
+| Phiên bản CLI | Kiểm tra phiên bản openyida khớp với SKILL.md | ✅ |
+| Khởi tạo project/ | Kiểm tra thư mục làm việc project/ có tồn tại | ✅ |
+| Phiên bản Node.js | Kiểm tra nếu ≥ 16 | ❌ |
 | Playwright | Kiểm tra nếu đã cài đặt | ✅ |
-| Chromium | Kiểm tra nếu trình duyệt đã cài đặt | ✅ |
-| gh CLI | Kiểm tra GitHub CLI |❌
-| Đăng nhập gh | Kiểm tra trạng thái đăng nhập gh CLI | ✅ |
 | config.json | Kiểm tra tệp cấu hình | ✅ |
-| Skills | Kiểm tra cài đặt gói kỹ năng |❌
 | Đăng nhập Yida | Kiểm tra trạng thái đăng nhập | ✅ |
-| Kết nối mạng | Kiểm tra kết nối aliwork.com |❌
+| Kết nối mạng | Kiểm tra kết nối aliwork.com | ❌ |
 
 ---
 
@@ -154,16 +152,13 @@ openyida doctor --auto-submit
 ### Đầu Ra Console
 
 ```
- tra phụ thuộc môi trường OpenYida...
+🔍 Kiểm tra phụ thuộc môi trường OpenYida...
 
+✅ Phiên bản openyida: 2026.04.02 (SKILL mong đợi: 2026.04.02)
+✅ Thư mục làm việc project/ đã khởi tạo
 ✅ Node.js v18.19.0 (yêu cầu ≥ 16)
 ✅ Playwright đã cài đặt
-✅ Playwright Chromium đã cài đặt
-✅ gh version 2.40.1
-✅ gh CLI đã đăng nhập
 ✅ config.json tồn tại và định dạng đúng
-  Kiểm tra cài đặt Skills
-   Skills chưa cài đặt, chạy bash install-skills.sh để cài đặt
 ✅ Trạng thái đăng nhập Yida: Đã đăng nhập
 ✅ Kết nối mạng (aliwork.com)
 ✅ Tệp PRD (2 tệp)
@@ -171,7 +166,7 @@ openyida doctor --auto-submit
 ✅ Bộ nhớ đệm Schema (5 tệp)
 ✅ Quy chuẩn React Hooks
 
-Phát hiện 1 vấn đề (0 lỗi, 1 cảnh báo)
+11 kiểm tra đã vượt qua, không phát hiện vấn đề
 ```
 
 <Note>
