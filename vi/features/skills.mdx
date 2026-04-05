@@ -267,6 +267,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### URL trang chi tiết tùy chỉnh
+
+Bạn có thể tùy chỉnh URL trang chi tiết mà thông báo công việc DingTalk liên kết đến. JSON định nghĩa quy trình hỗ trợ nhiều cách để cấu hình điều này:
+
+| Thuộc tính | Mô tả |
+|----------|-------------|
+| `processDetailUrl` | URL đầy đủ cho trang chi tiết web. |
+| `processMobileDetailUrl` | URL đầy đủ cho trang chi tiết di động. |
+| `customDetailPageUrl` | Viết tắt: được sử dụng làm URL web, và được nối thêm `?procInsId=` cho di động. |
+| `detailUrls` | Đối tượng với các khóa `web` (hoặc `pc`) và `mobile` để kiểm soát URL riêng biệt. |
+
+Thứ tự ưu tiên là: `processDetailUrl` > `detailUrls.web` > `customDetailPageUrl` > mặc định. Cho di động: `processMobileDetailUrl` > `detailUrls.mobile` > `customDetailPageUrl?procInsId=` > mặc định.
+
+```json title="Example using detailUrls"
+{
+  "detailUrls": {
+    "web": "https://example.com/web/detail",
+    "mobile": "https://example.com/mobile/detail"
+  },
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
+```json title="Example using customDetailPageUrl"
+{
+  "customDetailPageUrl": "https://example.com/custom/detail",
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
 ---
 
 ## Quản lý quyền hạn

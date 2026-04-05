@@ -266,6 +266,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### 사용자 지정 상세 페이지 URL
+
+DingTalk 업무 알림이 연결하는 상세 페이지 URL을 사용자 지정할 수 있습니다. 프로세스 정의 JSON은 이를 구성하는 여러 가지 방법을 지원합니다:
+
+| 속성 | 설명 |
+|----------|-------------|
+| `processDetailUrl` | 웹 상세 페이지의 전체 URL. |
+| `processMobileDetailUrl` | 모바일 상세 페이지의 전체 URL. |
+| `customDetailPageUrl` | 약식: 웹 URL로 사용되며, 모바일에서는 `?procInsId=`가 추가됩니다. |
+| `detailUrls` | 개별 URL 제어를 위한 `web`(또는 `pc`)과 `mobile` 키가 있는 객체. |
+
+해석 순서는: `processDetailUrl` > `detailUrls.web` > `customDetailPageUrl` > 기본값. 모바일의 경우: `processMobileDetailUrl` > `detailUrls.mobile` > `customDetailPageUrl?procInsId=` > 기본값.
+
+```json title="Example using detailUrls"
+{
+  "detailUrls": {
+    "web": "https://example.com/web/detail",
+    "mobile": "https://example.com/mobile/detail"
+  },
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
+```json title="Example using customDetailPageUrl"
+{
+  "customDetailPageUrl": "https://example.com/custom/detail",
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
 ---
 
 ## 권한 관리

@@ -267,6 +267,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### عناوين URL مخصصة لصفحة التفاصيل
+
+يمكنك تخصيص عنوان URL لصفحة التفاصيل التي ترتبط بها إشعارات عمل DingTalk. يدعم ملف JSON لتعريف العملية عدة طرق لتكوين ذلك:
+
+| الخاصية | الوصف |
+|----------|-------------|
+| `processDetailUrl` | عنوان URL الكامل لصفحة تفاصيل الويب. |
+| `processMobileDetailUrl` | عنوان URL الكامل لصفحة تفاصيل الهاتف المحمول. |
+| `customDetailPageUrl` | اختصار: يُستخدم كعنوان URL للويب، ويُلحق بـ `?procInsId=` للهاتف المحمول. |
+| `detailUrls` | كائن يحتوي على مفاتيح `web` (أو `pc`) و `mobile` للتحكم المنفصل في العناوين. |
+
+ترتيب الأولوية هو: `processDetailUrl` > `detailUrls.web` > `customDetailPageUrl` > الافتراضي. للهاتف المحمول: `processMobileDetailUrl` > `detailUrls.mobile` > `customDetailPageUrl?procInsId=` > الافتراضي.
+
+```json title="Example using detailUrls"
+{
+  "detailUrls": {
+    "web": "https://example.com/web/detail",
+    "mobile": "https://example.com/mobile/detail"
+  },
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
+```json title="Example using customDetailPageUrl"
+{
+  "customDetailPageUrl": "https://example.com/custom/detail",
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
 ---
 
 ## إدارة الأذونات

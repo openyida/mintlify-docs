@@ -267,6 +267,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### 自定义详情页 URL
+
+您可以自定义钉钉工作通知链接到的详情页 URL。流程定义 JSON 支持多种配置方式：
+
+| 属性 | 描述 |
+|----------|-------------|
+| `processDetailUrl` | Web 详情页的完整 URL。 |
+| `processMobileDetailUrl` | 移动端详情页的完整 URL。 |
+| `customDetailPageUrl` | 简写形式：用作 Web URL，移动端会自动追加 `?procInsId=`。 |
+| `detailUrls` | 包含 `web`（或 `pc`）和 `mobile` 键的对象，用于分别控制 URL。 |
+
+解析优先级为：`processDetailUrl` > `detailUrls.web` > `customDetailPageUrl` > 默认值。移动端：`processMobileDetailUrl` > `detailUrls.mobile` > `customDetailPageUrl?procInsId=` > 默认值。
+
+```json title="Example using detailUrls"
+{
+  "detailUrls": {
+    "web": "https://example.com/web/detail",
+    "mobile": "https://example.com/mobile/detail"
+  },
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
+```json title="Example using customDetailPageUrl"
+{
+  "customDetailPageUrl": "https://example.com/custom/detail",
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
 ---
 
 ## 权限管理

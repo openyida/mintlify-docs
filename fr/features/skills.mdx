@@ -266,6 +266,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### URLs personnalisées de la page de détail
+
+Vous pouvez personnaliser l'URL de la page de détail vers laquelle les notifications de travail DingTalk renvoient. Le JSON de définition de processus prend en charge plusieurs façons de configurer ceci :
+
+| Propriété | Description |
+|----------|-------------|
+| `processDetailUrl` | URL complète de la page de détail web. |
+| `processMobileDetailUrl` | URL complète de la page de détail mobile. |
+| `customDetailPageUrl` | Raccourci : utilisé comme URL web, et complété par `?procInsId=` pour le mobile. |
+| `detailUrls` | Objet avec les clés `web` (ou `pc`) et `mobile` pour un contrôle séparé des URLs. |
+
+L'ordre de résolution est : `processDetailUrl` > `detailUrls.web` > `customDetailPageUrl` > par défaut. Pour le mobile : `processMobileDetailUrl` > `detailUrls.mobile` > `customDetailPageUrl?procInsId=` > par défaut.
+
+```json title="Example using detailUrls"
+{
+  "detailUrls": {
+    "web": "https://example.com/web/detail",
+    "mobile": "https://example.com/mobile/detail"
+  },
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
+```json title="Example using customDetailPageUrl"
+{
+  "customDetailPageUrl": "https://example.com/custom/detail",
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
 ---
 
 ## Gestion des permissions

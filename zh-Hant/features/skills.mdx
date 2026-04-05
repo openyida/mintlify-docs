@@ -266,6 +266,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### 自訂詳情頁 URL
+
+您可以自訂釘釘工作通知連結到的詳情頁 URL。流程定義 JSON 支援多種配置方式：
+
+| 屬性 | 描述 |
+|----------|-------------|
+| `processDetailUrl` | Web 詳情頁的完整 URL。 |
+| `processMobileDetailUrl` | 行動端詳情頁的完整 URL。 |
+| `customDetailPageUrl` | 簡寫形式：用作 Web URL，行動端會自動追加 `?procInsId=`。 |
+| `detailUrls` | 包含 `web`（或 `pc`）和 `mobile` 鍵的物件，用於分別控制 URL。 |
+
+解析優先順序為：`processDetailUrl` > `detailUrls.web` > `customDetailPageUrl` > 預設值。行動端：`processMobileDetailUrl` > `detailUrls.mobile` > `customDetailPageUrl?procInsId=` > 預設值。
+
+```json title="Example using detailUrls"
+{
+  "detailUrls": {
+    "web": "https://example.com/web/detail",
+    "mobile": "https://example.com/mobile/detail"
+  },
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
+```json title="Example using customDetailPageUrl"
+{
+  "customDetailPageUrl": "https://example.com/custom/detail",
+  "nodes": [
+    { "type": "approval", "name": "Manager approval", "approver": "originator" }
+  ]
+}
+```
+
 ---
 
 ## 權限管理
