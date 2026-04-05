@@ -121,6 +121,108 @@ openyida connector delete-action <connector-id> <operation-id> --force
 
 ---
 
+## Operations JSON フォーマット
+
+`--operations` フラグは、アクション構成を定義する JSON ファイルを受け取ります。配列内の各アクションには、パラメータの送信場所ごとにグループ化されたリクエストパラメータを記述する `inputs` が含まれます。
+
+### 入力グループ
+
+| グループ名 | `paramLocation` 値 | 説明 |
+|---|---|---|
+| `Headers` | `header` | HTTP リクエストヘッダー |
+| `Body` | `body` | リクエストボディフィールド（POST/PUT） |
+| `Query` | `query` | URL クエリパラメータ |
+
+### `paramLocation` フィールド
+
+各入力グループとその `childList` の各項目には、HTTP リクエストでパラメータが送信される場所を示す `paramLocation` フィールドが必要です。有効な値は `"header"`、`"body"`、`"query"` です。
+
+### Operations JSON の例
+
+```json
+[
+  {
+    "operationId": "queryUsers",
+    "summary": "ユーザー検索",
+    "description": "ページネーション付きユーザーデータ検索",
+    "url": "v1/users",
+    "method": "post",
+    "inputs": [
+      {
+        "name": "Headers",
+        "paramType": "Object",
+        "desc": "リクエストヘッダー",
+        "required": false,
+        "paramLocation": "header",
+        "childList": [
+          {
+            "name": "Content-Type",
+            "paramType": "String",
+            "desc": "Content-Type",
+            "required": false,
+            "defaultValue": "application/json",
+            "paramLocation": "header"
+          }
+        ]
+      },
+      {
+        "name": "Body",
+        "paramType": "Object",
+        "desc": "リクエストボディ",
+        "required": false,
+        "paramLocation": "body",
+        "childList": [
+          {
+            "name": "pageSize",
+            "paramType": "Number",
+            "desc": "pageSize",
+            "required": false,
+            "paramLocation": "body"
+          }
+        ]
+      },
+      {
+        "name": "Query",
+        "paramType": "Object",
+        "desc": "クエリパラメータ",
+        "required": false,
+        "paramLocation": "query",
+        "childList": [
+          {
+            "name": "appType",
+            "paramType": "String",
+            "desc": "appType",
+            "required": false,
+            "paramLocation": "query"
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "header": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": { "default": "{\"pageSize\": 20}" },
+      "query": [{ "name": "appType", "value": "" }]
+    },
+    "responses": { "type": "object", "properties": {} },
+    "outputs": [
+      {
+        "name": "Response",
+        "paramType": "Object",
+        "desc": "レスポンスボディ構造",
+        "required": false,
+        "childList": []
+      }
+    ]
+  }
+]
+```
+
+<Warning>
+`paramLocation` フィールドは入力グループ（`Headers`、`Body`、`Query`）とその `childList` の各項目の両方に必要です。このフィールドが欠けると、コネクタアクションエディターのレンダリング失敗やコネクタ呼び出しの失敗を引き起こす可能性があります。
+</Warning>
+
+---
+
 ## 認証アカウント管理
 
 ### 認証アカウント一覧

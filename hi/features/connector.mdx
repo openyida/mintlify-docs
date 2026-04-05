@@ -121,6 +121,108 @@ openyida connector delete-action <connector-id> <operation-id> --force
 
 ---
 
+## Operations JSON प्रारूप
+
+`--operations` फ़्लैग एक JSON फ़ाइल स्वीकार करता है जो एक्शन कॉन्फ़िगरेशन को परिभाषित करती है। ऐरे में प्रत्येक एक्शन में `inputs` शामिल होते हैं जो स्थान के अनुसार समूहीकृत अनुरोध पैरामीटर का वर्णन करते हैं।
+
+### इनपुट समूह
+
+| समूह नाम | `paramLocation` मान | विवरण |
+|---|---|---|
+| `Headers` | `header` | HTTP अनुरोध हेडर |
+| `Body` | `body` | अनुरोध बॉडी फ़ील्ड (POST/PUT) |
+| `Query` | `query` | URL क्वेरी पैरामीटर |
+
+### `paramLocation` फ़ील्ड
+
+प्रत्येक इनपुट समूह और उसकी `childList` के प्रत्येक आइटम में एक `paramLocation` फ़ील्ड शामिल होनी चाहिए जो दर्शाती है कि HTTP अनुरोध में पैरामीटर कहाँ भेजा जाता है। मान्य मान `"header"`, `"body"` और `"query"` हैं।
+
+### उदाहरण operations JSON
+
+```json
+[
+  {
+    "operationId": "queryUsers",
+    "summary": "उपयोगकर्ता क्वेरी",
+    "description": "पेजिनेशन के साथ उपयोगकर्ता डेटा क्वेरी",
+    "url": "v1/users",
+    "method": "post",
+    "inputs": [
+      {
+        "name": "Headers",
+        "paramType": "Object",
+        "desc": "अनुरोध हेडर",
+        "required": false,
+        "paramLocation": "header",
+        "childList": [
+          {
+            "name": "Content-Type",
+            "paramType": "String",
+            "desc": "Content-Type",
+            "required": false,
+            "defaultValue": "application/json",
+            "paramLocation": "header"
+          }
+        ]
+      },
+      {
+        "name": "Body",
+        "paramType": "Object",
+        "desc": "अनुरोध बॉडी",
+        "required": false,
+        "paramLocation": "body",
+        "childList": [
+          {
+            "name": "pageSize",
+            "paramType": "Number",
+            "desc": "pageSize",
+            "required": false,
+            "paramLocation": "body"
+          }
+        ]
+      },
+      {
+        "name": "Query",
+        "paramType": "Object",
+        "desc": "क्वेरी पैरामीटर",
+        "required": false,
+        "paramLocation": "query",
+        "childList": [
+          {
+            "name": "appType",
+            "paramType": "String",
+            "desc": "appType",
+            "required": false,
+            "paramLocation": "query"
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "header": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": { "default": "{\"pageSize\": 20}" },
+      "query": [{ "name": "appType", "value": "" }]
+    },
+    "responses": { "type": "object", "properties": {} },
+    "outputs": [
+      {
+        "name": "Response",
+        "paramType": "Object",
+        "desc": "प्रतिक्रिया बॉडी संरचना",
+        "required": false,
+        "childList": []
+      }
+    ]
+  }
+]
+```
+
+<Warning>
+`paramLocation` फ़ील्ड इनपुट समूह (जैसे `Headers`, `Body`, `Query`) और उसकी `childList` के प्रत्येक आइटम दोनों पर आवश्यक है। इसे छोड़ने से कनेक्टर एक्शन एडिटर रेंडरिंग विफल हो सकती है या कनेक्टर इनवोकेशन विफल हो सकता है।
+</Warning>
+
+---
+
 ## प्रमाणीकरण खाता प्रबंधन
 
 ### प्रमाणीकरण खाते सूची

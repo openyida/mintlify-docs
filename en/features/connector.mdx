@@ -132,6 +132,108 @@ openyida connector delete-action <connector-id> <operation-id> --force
 
 ---
 
+## Operations JSON format
+
+The `--operations` flag accepts a JSON file defining the action configuration. Each action in the array includes `inputs` that describe request parameters grouped by location.
+
+### Input groups
+
+| Group name | `paramLocation` value | Description |
+|---|---|---|
+| `Headers` | `header` | HTTP request headers |
+| `Body` | `body` | Request body fields (POST/PUT) |
+| `Query` | `query` | URL query parameters |
+
+### The `paramLocation` field
+
+Each input group and its `childList` items must include a `paramLocation` field that indicates where the parameter is sent in the HTTP request. Valid values are `"header"`, `"body"`, and `"query"`.
+
+### Example operations JSON
+
+```json
+[
+  {
+    "operationId": "queryUsers",
+    "summary": "Query users",
+    "description": "Query user data with pagination",
+    "url": "v1/users",
+    "method": "post",
+    "inputs": [
+      {
+        "name": "Headers",
+        "paramType": "Object",
+        "desc": "Request headers",
+        "required": false,
+        "paramLocation": "header",
+        "childList": [
+          {
+            "name": "Content-Type",
+            "paramType": "String",
+            "desc": "Content-Type",
+            "required": false,
+            "defaultValue": "application/json",
+            "paramLocation": "header"
+          }
+        ]
+      },
+      {
+        "name": "Body",
+        "paramType": "Object",
+        "desc": "Request body",
+        "required": false,
+        "paramLocation": "body",
+        "childList": [
+          {
+            "name": "pageSize",
+            "paramType": "Number",
+            "desc": "pageSize",
+            "required": false,
+            "paramLocation": "body"
+          }
+        ]
+      },
+      {
+        "name": "Query",
+        "paramType": "Object",
+        "desc": "Query parameters",
+        "required": false,
+        "paramLocation": "query",
+        "childList": [
+          {
+            "name": "appType",
+            "paramType": "String",
+            "desc": "appType",
+            "required": false,
+            "paramLocation": "query"
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "header": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": { "default": "{\"pageSize\": 20}" },
+      "query": [{ "name": "appType", "value": "" }]
+    },
+    "responses": { "type": "object", "properties": {} },
+    "outputs": [
+      {
+        "name": "Response",
+        "paramType": "Object",
+        "desc": "Response body",
+        "required": false,
+        "childList": []
+      }
+    ]
+  }
+]
+```
+
+<Warning>
+The `paramLocation` field is required on both the input group (e.g., `Headers`, `Body`, `Query`) and each item in its `childList`. Omitting it may cause the connector action editor to fail to render or the connector invocation to fail.
+</Warning>
+
+---
+
 ## Auth account management
 
 ### List auth accounts

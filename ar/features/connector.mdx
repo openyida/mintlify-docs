@@ -121,6 +121,108 @@ openyida connector delete-action <connector-id> <operation-id> --force
 
 ---
 
+## تنسيق JSON للعمليات
+
+يقبل العلم `--operations` ملف JSON يحدد تكوين الإجراء. يتضمن كل إجراء في المصفوفة `inputs` تصف معلمات الطلب مجمعة حسب الموقع.
+
+### مجموعات الإدخال
+
+| اسم المجموعة | قيمة `paramLocation` | الوصف |
+|---|---|---|
+| `Headers` | `header` | رؤوس طلب HTTP |
+| `Body` | `body` | حقول جسم الطلب (POST/PUT) |
+| `Query` | `query` | معلمات استعلام URL |
+
+### حقل `paramLocation`
+
+يجب أن تتضمن كل مجموعة إدخال وكل عنصر في `childList` الخاصة بها حقل `paramLocation` يشير إلى مكان إرسال المعلمة في طلب HTTP. القيم الصالحة هي `"header"` و `"body"` و `"query"`.
+
+### مثال JSON للعمليات
+
+```json
+[
+  {
+    "operationId": "queryUsers",
+    "summary": "استعلام المستخدمين",
+    "description": "استعلام بيانات المستخدمين مع ترقيم الصفحات",
+    "url": "v1/users",
+    "method": "post",
+    "inputs": [
+      {
+        "name": "Headers",
+        "paramType": "Object",
+        "desc": "رؤوس الطلب",
+        "required": false,
+        "paramLocation": "header",
+        "childList": [
+          {
+            "name": "Content-Type",
+            "paramType": "String",
+            "desc": "Content-Type",
+            "required": false,
+            "defaultValue": "application/json",
+            "paramLocation": "header"
+          }
+        ]
+      },
+      {
+        "name": "Body",
+        "paramType": "Object",
+        "desc": "جسم الطلب",
+        "required": false,
+        "paramLocation": "body",
+        "childList": [
+          {
+            "name": "pageSize",
+            "paramType": "Number",
+            "desc": "pageSize",
+            "required": false,
+            "paramLocation": "body"
+          }
+        ]
+      },
+      {
+        "name": "Query",
+        "paramType": "Object",
+        "desc": "معلمات الاستعلام",
+        "required": false,
+        "paramLocation": "query",
+        "childList": [
+          {
+            "name": "appType",
+            "paramType": "String",
+            "desc": "appType",
+            "required": false,
+            "paramLocation": "query"
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "header": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": { "default": "{\"pageSize\": 20}" },
+      "query": [{ "name": "appType", "value": "" }]
+    },
+    "responses": { "type": "object", "properties": {} },
+    "outputs": [
+      {
+        "name": "Response",
+        "paramType": "Object",
+        "desc": "هيكل جسم الاستجابة",
+        "required": false,
+        "childList": []
+      }
+    ]
+  }
+]
+```
+
+<Warning>
+حقل `paramLocation` مطلوب على كل من مجموعة الإدخال (مثل `Headers` و `Body` و `Query`) وكل عنصر في `childList` الخاصة بها. قد يؤدي حذفه إلى فشل عرض محرر إجراءات الموصل أو فشل استدعاء الموصل.
+</Warning>
+
+---
+
 ## إدارة حسابات المصادقة
 
 ### سرد حسابات المصادقة
