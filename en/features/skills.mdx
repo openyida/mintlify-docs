@@ -54,7 +54,17 @@ openyida export <appType> [output] # Generate migration package
 
 # Import application
 openyida import <file> [name]      # Rebuild app from migration package
+
+# Update application info
+openyida update-app <appType> --name "<name>" [--desc "<description>"] [--icon "<icon>"] [--icon-color "<color>"]
 ```
+
+| Option | Alias | Description |
+|--------|-------|-------------|
+| `--name` | `-n` | App name (at least one update field required) |
+| `--desc` | `-d` | App description |
+| `--icon` | | Icon name (e.g. `xian-yingyong`) |
+| `--icon-color` | | Icon color (default: `#0089FF`) |
 
 ---
 

@@ -54,7 +54,17 @@ openyida export <appType> [output] # Gerar pacote de migração
 
 # Importar aplicativo
 openyida import <file> [name]      # Reconstruir aplicativo a partir do pacote
+
+# Atualizar informações do aplicativo
+openyida update-app <appType> --name "<nome>" [--desc "<descrição>"] [--icon "<ícone>"] [--icon-color "<cor>"]
 ```
+
+| Opção | Alias | Descrição |
+|-------|-------|-----------|
+| `--name` | `-n` | Nome do aplicativo (pelo menos um campo de atualização obrigatório) |
+| `--desc` | `-d` | Descrição do aplicativo |
+| `--icon` | | Nome do ícone (ex: `xian-yingyong`) |
+| `--icon-color` | | Cor do ícone (padrão: `#0089FF`) |
 
 ---
 

@@ -54,7 +54,17 @@ openyida export <appType> [output] # 移行パッケージを生成
 
 # アプリインポート
 openyida import <file> [name]      # 移行パッケージからアプリを再構築
+
+# アプリ情報を更新
+openyida update-app <appType> --name "<名前>" [--desc "<説明>"] [--icon "<アイコン>"] [--icon-color "<色>"]
 ```
+
+| オプション | エイリアス | 説明 |
+|------------|------------|------|
+| `--name` | `-n` | アプリ名（少なくとも1つの更新フィールドが必要） |
+| `--desc` | `-d` | アプリの説明 |
+| `--icon` | | アイコン名（例：`xian-yingyong`） |
+| `--icon-color` | | アイコンの色（デフォルト：`#0089FF`） |
 
 ---
 

@@ -54,7 +54,17 @@ openyida export <appType> [output] # 마이그레이션 패키지 생성
 
 # 앱 가져오기
 openyida import <file> [name]      # 마이그레이션 패키지에서 앱 재구축
+
+# 앱 정보 업데이트
+openyida update-app <appType> --name "<이름>" [--desc "<설명>"] [--icon "<아이콘>"] [--icon-color "<색상>"]
 ```
+
+| 옵션 | 별칭 | 설명 |
+|------|------|------|
+| `--name` | `-n` | 앱 이름 (최소 하나의 업데이트 필드 필요) |
+| `--desc` | `-d` | 앱 설명 |
+| `--icon` | | 아이콘 이름 (예: `xian-yingyong`) |
+| `--icon-color` | | 아이콘 색상 (기본값: `#0089FF`) |
 
 ---
 
