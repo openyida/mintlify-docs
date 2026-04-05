@@ -54,6 +54,35 @@ openyida export <appType> [output] # Migrationspaket generieren
 
 # Anwendung importieren
 openyida import <file> [name]      # Anwendung aus Migrationspaket wiederherstellen
+
+# Anwendungsinformationen aktualisieren
+openyida update-app <appType> --name "<neuer Name>" [--desc "<Beschreibung>"] [--icon "<Symbol>"] [--icon-color "<Farbe>"]
+```
+
+### update-app Parameter
+
+| Parameter | Alias | Erforderlich | Beschreibung |
+|-----------|-------|-------------|--------------|
+| `<appType>` | — | Ja | Die zu aktualisierende Anwendungs-ID |
+| `--name` | `-n` | Nein | Neuer Anwendungsname (wird auf alle Sprachen angewendet) |
+| `--desc` | `-d` | Nein | Neue Anwendungsbeschreibung |
+| `--icon` | — | Nein | Neuer Anwendungssymbol-Bezeichner |
+| `--icon-color` | — | Nein | Symbolfarbe im Hex-Format (Standard `#0089FF`) |
+
+Mindestens einer der Parameter `--name`, `--desc` oder `--icon` muss angegeben werden.
+
+**Ausgabe:**
+
+```json
+{
+  "success": true,
+  "appType": "APP_XXX",
+  "updatedFields": {
+    "name": "Neuer Name",
+    "desc": "Neue Beschreibung",
+    "icon": "icon-name"
+  }
+}
 ```
 
 ---

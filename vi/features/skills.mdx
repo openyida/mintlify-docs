@@ -54,6 +54,35 @@ openyida export <appType> [output] # Tạo gói di chuyển
 
 # Nhập ứng dụng
 openyida import <file> [name]      # Tái tạo ứng dụng từ gói
+
+# Cập nhật thông tin ứng dụng
+openyida update-app <appType> --name "<tên mới>" [--desc "<mô tả>"] [--icon "<biểu tượng>"] [--icon-color "<màu>"]
+```
+
+### Tham số update-app
+
+| Tham số | Bí danh | Bắt buộc | Mô tả |
+|---------|---------|----------|-------|
+| `<appType>` | — | Có | ID ứng dụng cần cập nhật |
+| `--name` | `-n` | Không | Tên ứng dụng mới (áp dụng cho tất cả ngôn ngữ) |
+| `--desc` | `-d` | Không | Mô tả ứng dụng mới |
+| `--icon` | — | Không | Mã biểu tượng mới |
+| `--icon-color` | — | Không | Màu biểu tượng dạng hex (mặc định `#0089FF`) |
+
+Phải cung cấp ít nhất một trong các tham số `--name`, `--desc` hoặc `--icon`.
+
+**Kết quả:**
+
+```json
+{
+  "success": true,
+  "appType": "APP_XXX",
+  "updatedFields": {
+    "name": "Tên mới",
+    "desc": "Mô tả mới",
+    "icon": "icon-name"
+  }
+}
 ```
 
 ---

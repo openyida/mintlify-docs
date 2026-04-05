@@ -54,6 +54,35 @@ openyida export <appType> [output] # Generate migration package
 
 # Import application
 openyida import <file> [name]      # Rebuild app from migration package
+
+# Update application info
+openyida update-app <appType> --name "<new name>" [--desc "<description>"] [--icon "<icon>"] [--icon-color "<color>"]
+```
+
+### update-app parameters
+
+| Parameter | Alias | Required | Description |
+|-----------|-------|----------|-------------|
+| `<appType>` | — | Yes | The application ID to update |
+| `--name` | `-n` | No | New application name (applied to all locales) |
+| `--desc` | `-d` | No | New application description |
+| `--icon` | — | No | New application icon identifier |
+| `--icon-color` | — | No | Icon color in hex format (defaults to `#0089FF`) |
+
+At least one of `--name`, `--desc`, or `--icon` must be provided.
+
+**Output:**
+
+```json
+{
+  "success": true,
+  "appType": "APP_XXX",
+  "updatedFields": {
+    "name": "New App Name",
+    "desc": "New description",
+    "icon": "icon-name"
+  }
+}
 ```
 
 ---

@@ -54,6 +54,35 @@ openyida export <appType> [output] # 마이그레이션 패키지 생성
 
 # 앱 가져오기
 openyida import <file> [name]      # 마이그레이션 패키지에서 앱 재구축
+
+# 앱 정보 업데이트
+openyida update-app <appType> --name "<새 이름>" [--desc "<설명>"] [--icon "<아이콘>"] [--icon-color "<색상>"]
+```
+
+### update-app 매개변수
+
+| 매개변수 | 별칭 | 필수 | 설명 |
+|----------|------|------|------|
+| `<appType>` | — | 예 | 업데이트할 앱 ID |
+| `--name` | `-n` | 아니오 | 새 앱 이름 (모든 로케일에 적용) |
+| `--desc` | `-d` | 아니오 | 새 앱 설명 |
+| `--icon` | — | 아니오 | 새 앱 아이콘 식별자 |
+| `--icon-color` | — | 아니오 | 아이콘 색상 (16진수 형식, 기본값 `#0089FF`) |
+
+`--name`, `--desc`, `--icon` 중 하나 이상을 제공해야 합니다.
+
+**출력:**
+
+```json
+{
+  "success": true,
+  "appType": "APP_XXX",
+  "updatedFields": {
+    "name": "새 앱 이름",
+    "desc": "새 설명",
+    "icon": "icon-name"
+  }
+}
 ```
 
 ---

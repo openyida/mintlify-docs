@@ -54,6 +54,35 @@ openyida export <appType> [output] # 生成遷移包
 
 # 導入應用
 openyida import <file> [name]      # 從遷移包重建應用
+
+# 更新應用資訊
+openyida update-app <appType> --name "<新名稱>" [--desc "<描述>"] [--icon "<圖示>"] [--icon-color "<顏色>"]
+```
+
+### update-app 參數
+
+| 參數 | 別名 | 必填 | 描述 |
+|------|------|------|------|
+| `<appType>` | — | 是 | 要更新的應用 ID |
+| `--name` | `-n` | 否 | 新應用名稱（套用至所有語言） |
+| `--desc` | `-d` | 否 | 新應用描述 |
+| `--icon` | — | 否 | 新應用圖示標識 |
+| `--icon-color` | — | 否 | 圖示顏色，十六進位格式（預設 `#0089FF`） |
+
+必須提供 `--name`、`--desc` 或 `--icon` 中的至少一個。
+
+**輸出：**
+
+```json
+{
+  "success": true,
+  "appType": "APP_XXX",
+  "updatedFields": {
+    "name": "新名稱",
+    "desc": "新描述",
+    "icon": "icon-name"
+  }
+}
 ```
 
 ---

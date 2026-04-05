@@ -54,6 +54,35 @@ openyida export <appType> [output] # 移行パッケージを生成
 
 # アプリインポート
 openyida import <file> [name]      # 移行パッケージからアプリを再構築
+
+# アプリ情報を更新
+openyida update-app <appType> --name "<新しい名前>" [--desc "<説明>"] [--icon "<アイコン>"] [--icon-color "<色>"]
+```
+
+### update-app パラメータ
+
+| パラメータ | エイリアス | 必須 | 説明 |
+|-----------|-----------|------|------|
+| `<appType>` | — | はい | 更新するアプリ ID |
+| `--name` | `-n` | いいえ | 新しいアプリ名（すべてのロケールに適用） |
+| `--desc` | `-d` | いいえ | 新しいアプリの説明 |
+| `--icon` | — | いいえ | 新しいアプリアイコン識別子 |
+| `--icon-color` | — | いいえ | アイコンの色（16進数形式、デフォルト `#0089FF`） |
+
+`--name`、`--desc`、`--icon` のいずれかを少なくとも1つ指定する必要があります。
+
+**出力：**
+
+```json
+{
+  "success": true,
+  "appType": "APP_XXX",
+  "updatedFields": {
+    "name": "新しいアプリ名",
+    "desc": "新しい説明",
+    "icon": "icon-name"
+  }
+}
 ```
 
 ---
