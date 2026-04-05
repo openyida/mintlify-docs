@@ -267,6 +267,50 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### خصائص عنوان URL لصفحة التفاصيل في تعريف العملية
+
+يدعم ملف JSON لتعريف العملية الخصائص الاختيارية التالية لتخصيص عنوان URL لصفحة التفاصيل التي يراها المستخدم عند عرض نسخة العملية.
+
+| الخاصية | النوع | الوصف |
+|---------|-------|-------|
+| `processDetailUrl` | `string` | عنوان URL مخصص لصفحة تفاصيل العملية على الويب/الكمبيوتر. يتجاوز جميع إعدادات عنوان URL للتفاصيل الأخرى للويب. |
+| `processMobileDetailUrl` | `string` | عنوان URL مخصص لصفحة تفاصيل العملية على الجوال. يتجاوز جميع إعدادات عنوان URL للتفاصيل الأخرى للجوال. |
+| `customDetailPageUrl` | `string` | عنوان URL مخصص واحد لصفحة التفاصيل يُستخدم لكل من الويب والجوال. على الجوال، يُضاف `?procInsId=` تلقائيًا. |
+| `detailUrls` | `object` | كائن يحتوي على عناوين URL للتفاصيل حسب المنصة. يدعم المفاتيح `web` (أو `pc`) و `mobile`. |
+
+ترتيب الأولوية لـ **عنوان URL لتفاصيل الويب**:
+
+1. `processDetailUrl`
+2. `detailUrls.web` أو `detailUrls.pc`
+3. `customDetailPageUrl`
+4. القيمة الافتراضية للمنصة
+
+ترتيب الأولوية لـ **عنوان URL لتفاصيل الجوال**:
+
+1. `processMobileDetailUrl`
+2. `detailUrls.mobile`
+3. `customDetailPageUrl` (مع إضافة `?procInsId=` تلقائيًا)
+4. القيمة الافتراضية للمنصة
+
+**مثال** باستخدام `detailUrls`:
+
+```json
+{
+  "detailUrls": {
+    "web": "https://example.com/process/detail",
+    "mobile": "https://m.example.com/process/detail"
+  }
+}
+```
+
+**مثال** باستخدام `customDetailPageUrl` (نفس العنوان لكلا المنصتين):
+
+```json
+{
+  "customDetailPageUrl": "https://example.com/custom-detail"
+}
+```
+
 ---
 
 ## إدارة الأذونات

@@ -267,6 +267,50 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### 流程定义详情页 URL 属性
+
+流程定义 JSON 文件支持以下可选属性，用于自定义用户查看流程实例时的详情页 URL。
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `processDetailUrl` | `string` | 自定义 Web/PC 端流程详情页 URL。优先级最高，覆盖其他 Web 端详情 URL 设置。 |
+| `processMobileDetailUrl` | `string` | 自定义移动端流程详情页 URL。优先级最高，覆盖其他移动端详情 URL 设置。 |
+| `customDetailPageUrl` | `string` | 统一的自定义详情页 URL，同时适用于 Web 和移动端。移动端会自动追加 `?procInsId=`。 |
+| `detailUrls` | `object` | 按平台区分的详情页 URL 对象。支持 `web`（或 `pc`）和 `mobile` 键。 |
+
+**Web 端详情 URL** 的解析顺序：
+
+1. `processDetailUrl`
+2. `detailUrls.web` 或 `detailUrls.pc`
+3. `customDetailPageUrl`
+4. 平台默认值
+
+**移动端详情 URL** 的解析顺序：
+
+1. `processMobileDetailUrl`
+2. `detailUrls.mobile`
+3. `customDetailPageUrl`（自动追加 `?procInsId=`）
+4. 平台默认值
+
+**示例** — 使用 `detailUrls`：
+
+```json
+{
+  "detailUrls": {
+    "web": "https://example.com/process/detail",
+    "mobile": "https://m.example.com/process/detail"
+  }
+}
+```
+
+**示例** — 使用 `customDetailPageUrl`（Web 和移动端共用同一 URL）：
+
+```json
+{
+  "customDetailPageUrl": "https://example.com/custom-detail"
+}
+```
+
 ---
 
 ## 权限管理

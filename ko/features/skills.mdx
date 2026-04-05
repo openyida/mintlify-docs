@@ -266,6 +266,50 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### 프로세스 정의 상세 페이지 URL 속성
+
+프로세스 정의 JSON 파일은 사용자가 프로세스 인스턴스를 조회할 때 표시되는 상세 페이지 URL을 커스터마이징하기 위한 다음 선택적 속성을 지원합니다.
+
+| 속성 | 타입 | 설명 |
+|------|------|------|
+| `processDetailUrl` | `string` | 웹/PC 프로세스 상세 페이지의 커스텀 URL. 웹에 대한 다른 모든 상세 URL 설정을 재정의합니다. |
+| `processMobileDetailUrl` | `string` | 모바일 프로세스 상세 페이지의 커스텀 URL. 모바일에 대한 다른 모든 상세 URL 설정을 재정의합니다. |
+| `customDetailPageUrl` | `string` | 웹과 모바일 상세 페이지 모두에 사용되는 단일 커스텀 페이지 URL. 모바일에서는 `?procInsId=`가 자동으로 추가됩니다. |
+| `detailUrls` | `object` | 플랫폼별 상세 URL이 포함된 객체. `web` (또는 `pc`) 및 `mobile` 키를 지원합니다. |
+
+**웹 상세 URL** 해석 순서:
+
+1. `processDetailUrl`
+2. `detailUrls.web` 또는 `detailUrls.pc`
+3. `customDetailPageUrl`
+4. 플랫폼 기본값
+
+**모바일 상세 URL** 해석 순서:
+
+1. `processMobileDetailUrl`
+2. `detailUrls.mobile`
+3. `customDetailPageUrl` (`?procInsId=` 자동 추가)
+4. 플랫폼 기본값
+
+**예시** — `detailUrls` 사용:
+
+```json
+{
+  "detailUrls": {
+    "web": "https://example.com/process/detail",
+    "mobile": "https://m.example.com/process/detail"
+  }
+}
+```
+
+**예시** — `customDetailPageUrl` 사용 (양쪽 플랫폼에서 동일한 URL):
+
+```json
+{
+  "customDetailPageUrl": "https://example.com/custom-detail"
+}
+```
+
 ---
 
 ## 권한 관리

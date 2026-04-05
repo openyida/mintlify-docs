@@ -267,6 +267,50 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### प्रक्रिया परिभाषा विवरण पृष्ठ URL गुण
+
+प्रक्रिया परिभाषा JSON फ़ाइल निम्नलिखित वैकल्पिक गुणों का समर्थन करती है, जो उपयोगकर्ता द्वारा प्रक्रिया इंस्टेंस देखते समय विवरण पृष्ठ URL को अनुकूलित करने के लिए हैं।
+
+| गुण | प्रकार | विवरण |
+|-----|--------|-------|
+| `processDetailUrl` | `string` | वेब/PC प्रक्रिया विवरण पृष्ठ के लिए कस्टम URL। वेब के लिए अन्य सभी विवरण URL सेटिंग्स को ओवरराइड करता है। |
+| `processMobileDetailUrl` | `string` | मोबाइल प्रक्रिया विवरण पृष्ठ के लिए कस्टम URL। मोबाइल के लिए अन्य सभी विवरण URL सेटिंग्स को ओवरराइड करता है। |
+| `customDetailPageUrl` | `string` | वेब और मोबाइल दोनों विवरण पृष्ठों के लिए उपयोग किया जाने वाला एकल कस्टम पृष्ठ URL। मोबाइल पर `?procInsId=` स्वचालित रूप से जोड़ा जाता है। |
+| `detailUrls` | `object` | प्लेटफ़ॉर्म-विशिष्ट विवरण URL वाला ऑब्जेक्ट। `web` (या `pc`) और `mobile` कुंजियों का समर्थन करता है। |
+
+**वेब विवरण URL** का समाधान क्रम:
+
+1. `processDetailUrl`
+2. `detailUrls.web` या `detailUrls.pc`
+3. `customDetailPageUrl`
+4. प्लेटफ़ॉर्म डिफ़ॉल्ट
+
+**मोबाइल विवरण URL** का समाधान क्रम:
+
+1. `processMobileDetailUrl`
+2. `detailUrls.mobile`
+3. `customDetailPageUrl` (`?procInsId=` स्वचालित रूप से जोड़ा जाता है)
+4. प्लेटफ़ॉर्म डिफ़ॉल्ट
+
+**उदाहरण** — `detailUrls` का उपयोग:
+
+```json
+{
+  "detailUrls": {
+    "web": "https://example.com/process/detail",
+    "mobile": "https://m.example.com/process/detail"
+  }
+}
+```
+
+**उदाहरण** — `customDetailPageUrl` का उपयोग (दोनों प्लेटफ़ॉर्म के लिए समान URL):
+
+```json
+{
+  "customDetailPageUrl": "https://example.com/custom-detail"
+}
+```
+
 ---
 
 ## अनुमति प्रबंधन
