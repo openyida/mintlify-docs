@@ -121,6 +121,108 @@ openyida connector delete-action <connector-id> <operation-id> --force
 
 ---
 
+## Định dạng JSON operations
+
+Flag `--operations` nhận một tệp JSON định nghĩa cấu hình action. Mỗi action trong mảng bao gồm `inputs` mô tả các tham số yêu cầu được nhóm theo vị trí gửi.
+
+### Nhóm đầu vào
+
+| Tên nhóm | Giá trị `paramLocation` | Mô tả |
+|---|---|---|
+| `Headers` | `header` | Header yêu cầu HTTP |
+| `Body` | `body` | Trường body yêu cầu (POST/PUT) |
+| `Query` | `query` | Tham số truy vấn URL |
+
+### Trường `paramLocation`
+
+Mỗi nhóm đầu vào và mỗi mục trong `childList` của nó phải bao gồm trường `paramLocation` cho biết tham số được gửi ở đâu trong yêu cầu HTTP. Các giá trị hợp lệ là `"header"`, `"body"` và `"query"`.
+
+### Ví dụ JSON operations
+
+```json
+[
+  {
+    "operationId": "queryUsers",
+    "summary": "Truy vấn người dùng",
+    "description": "Truy vấn dữ liệu người dùng với phân trang",
+    "url": "v1/users",
+    "method": "post",
+    "inputs": [
+      {
+        "name": "Headers",
+        "paramType": "Object",
+        "desc": "Header yêu cầu",
+        "required": false,
+        "paramLocation": "header",
+        "childList": [
+          {
+            "name": "Content-Type",
+            "paramType": "String",
+            "desc": "Content-Type",
+            "required": false,
+            "defaultValue": "application/json",
+            "paramLocation": "header"
+          }
+        ]
+      },
+      {
+        "name": "Body",
+        "paramType": "Object",
+        "desc": "Body yêu cầu",
+        "required": false,
+        "paramLocation": "body",
+        "childList": [
+          {
+            "name": "pageSize",
+            "paramType": "Number",
+            "desc": "pageSize",
+            "required": false,
+            "paramLocation": "body"
+          }
+        ]
+      },
+      {
+        "name": "Query",
+        "paramType": "Object",
+        "desc": "Tham số truy vấn",
+        "required": false,
+        "paramLocation": "query",
+        "childList": [
+          {
+            "name": "appType",
+            "paramType": "String",
+            "desc": "appType",
+            "required": false,
+            "paramLocation": "query"
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "header": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": { "default": "{\"pageSize\": 20}" },
+      "query": [{ "name": "appType", "value": "" }]
+    },
+    "responses": { "type": "object", "properties": {} },
+    "outputs": [
+      {
+        "name": "Response",
+        "paramType": "Object",
+        "desc": "Cấu trúc body phản hồi",
+        "required": false,
+        "childList": []
+      }
+    ]
+  }
+]
+```
+
+<Warning>
+Trường `paramLocation` là bắt buộc trên cả nhóm đầu vào (ví dụ: `Headers`, `Body`, `Query`) và mỗi mục trong `childList` của nó. Thiếu trường này có thể khiến trình chỉnh sửa action của trình kết nối không hiển thị hoặc việc gọi trình kết nối thất bại.
+</Warning>
+
+---
+
 ## Quản Lý Tài Khoản Xác Thực
 
 ### Liệt Kê Tài Khoản Xác Thực

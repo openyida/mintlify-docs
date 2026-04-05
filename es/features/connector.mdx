@@ -121,6 +121,108 @@ openyida connector delete-action <connector-id> <operation-id> --force
 
 ---
 
+## Formato JSON de operations
+
+El flag `--operations` acepta un archivo JSON que define la configuración de la acción. Cada acción en el array incluye `inputs` que describen los parámetros de solicitud agrupados por ubicación.
+
+### Grupos de entrada
+
+| Nombre del grupo | Valor de `paramLocation` | Descripción |
+|---|---|---|
+| `Headers` | `header` | Encabezados de solicitud HTTP |
+| `Body` | `body` | Campos del cuerpo de solicitud (POST/PUT) |
+| `Query` | `query` | Parámetros de consulta URL |
+
+### El campo `paramLocation`
+
+Cada grupo de entrada y cada elemento en su `childList` debe incluir un campo `paramLocation` que indica dónde se envía el parámetro en la solicitud HTTP. Los valores válidos son `"header"`, `"body"` y `"query"`.
+
+### Ejemplo de JSON de operations
+
+```json
+[
+  {
+    "operationId": "queryUsers",
+    "summary": "Consultar usuarios",
+    "description": "Consultar datos de usuarios con paginación",
+    "url": "v1/users",
+    "method": "post",
+    "inputs": [
+      {
+        "name": "Headers",
+        "paramType": "Object",
+        "desc": "Encabezados de solicitud",
+        "required": false,
+        "paramLocation": "header",
+        "childList": [
+          {
+            "name": "Content-Type",
+            "paramType": "String",
+            "desc": "Content-Type",
+            "required": false,
+            "defaultValue": "application/json",
+            "paramLocation": "header"
+          }
+        ]
+      },
+      {
+        "name": "Body",
+        "paramType": "Object",
+        "desc": "Cuerpo de solicitud",
+        "required": false,
+        "paramLocation": "body",
+        "childList": [
+          {
+            "name": "pageSize",
+            "paramType": "Number",
+            "desc": "pageSize",
+            "required": false,
+            "paramLocation": "body"
+          }
+        ]
+      },
+      {
+        "name": "Query",
+        "paramType": "Object",
+        "desc": "Parámetros de consulta",
+        "required": false,
+        "paramLocation": "query",
+        "childList": [
+          {
+            "name": "appType",
+            "paramType": "String",
+            "desc": "appType",
+            "required": false,
+            "paramLocation": "query"
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "header": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": { "default": "{\"pageSize\": 20}" },
+      "query": [{ "name": "appType", "value": "" }]
+    },
+    "responses": { "type": "object", "properties": {} },
+    "outputs": [
+      {
+        "name": "Response",
+        "paramType": "Object",
+        "desc": "Estructura del cuerpo de respuesta",
+        "required": false,
+        "childList": []
+      }
+    ]
+  }
+]
+```
+
+<Warning>
+El campo `paramLocation` es obligatorio tanto en el grupo de entrada (por ejemplo, `Headers`, `Body`, `Query`) como en cada elemento de su `childList`. Su omisión puede causar que el editor de acciones del conector no se renderice o que la invocación del conector falle.
+</Warning>
+
+---
+
 ## Gestión de Cuentas de Autenticación
 
 ### Listar Cuentas de Autenticación

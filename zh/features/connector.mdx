@@ -121,6 +121,108 @@ openyida connector delete-action <connector-id> <operation-id> --force
 
 ---
 
+## Operations JSON 格式
+
+`--operations` 参数接受一个 JSON 文件，用于定义执行动作配置。数组中的每个动作包含 `inputs`，按参数位置分组描述请求参数。
+
+### 输入分组
+
+| 分组名称 | `paramLocation` 值 | 说明 |
+|---|---|---|
+| `Headers` | `header` | HTTP 请求头 |
+| `Body` | `body` | 请求体字段（POST/PUT） |
+| `Query` | `query` | URL 查询参数 |
+
+### `paramLocation` 字段
+
+每个输入分组及其 `childList` 子项都必须包含 `paramLocation` 字段，用于指示参数在 HTTP 请求中的发送位置。有效值为 `"header"`、`"body"` 和 `"query"`。
+
+### 示例 operations JSON
+
+```json
+[
+  {
+    "operationId": "queryUsers",
+    "summary": "查询用户",
+    "description": "分页查询用户数据",
+    "url": "v1/users",
+    "method": "post",
+    "inputs": [
+      {
+        "name": "Headers",
+        "paramType": "Object",
+        "desc": "请求头",
+        "required": false,
+        "paramLocation": "header",
+        "childList": [
+          {
+            "name": "Content-Type",
+            "paramType": "String",
+            "desc": "Content-Type",
+            "required": false,
+            "defaultValue": "application/json",
+            "paramLocation": "header"
+          }
+        ]
+      },
+      {
+        "name": "Body",
+        "paramType": "Object",
+        "desc": "请求体",
+        "required": false,
+        "paramLocation": "body",
+        "childList": [
+          {
+            "name": "pageSize",
+            "paramType": "Number",
+            "desc": "pageSize",
+            "required": false,
+            "paramLocation": "body"
+          }
+        ]
+      },
+      {
+        "name": "Query",
+        "paramType": "Object",
+        "desc": "查询参数",
+        "required": false,
+        "paramLocation": "query",
+        "childList": [
+          {
+            "name": "appType",
+            "paramType": "String",
+            "desc": "appType",
+            "required": false,
+            "paramLocation": "query"
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "header": [{ "name": "Content-Type", "value": "application/json" }],
+      "body": { "default": "{\"pageSize\": 20}" },
+      "query": [{ "name": "appType", "value": "" }]
+    },
+    "responses": { "type": "object", "properties": {} },
+    "outputs": [
+      {
+        "name": "Response",
+        "paramType": "Object",
+        "desc": "响应体结构",
+        "required": false,
+        "childList": []
+      }
+    ]
+  }
+]
+```
+
+<Warning>
+`paramLocation` 字段在输入分组（如 `Headers`、`Body`、`Query`）和其 `childList` 中的每个子项上都是必需的。缺少此字段可能导致连接器动作编辑器无法渲染或连接器调用失败。
+</Warning>
+
+---
+
 ## 鉴权账号管理
 
 ### 列出鉴权账号
