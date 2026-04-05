@@ -54,7 +54,17 @@ openyida export <appType> [output] # Migrationspaket generieren
 
 # Anwendung importieren
 openyida import <file> [name]      # Anwendung aus Migrationspaket wiederherstellen
+
+# Anwendungsinformationen aktualisieren
+openyida update-app <appType> --name "<Name>" [--desc "<Beschreibung>"] [--icon "<Symbol>"] [--icon-color "<Farbe>"]
 ```
+
+| Option | Alias | Beschreibung |
+|--------|-------|--------------|
+| `--name` | `-n` | Anwendungsname (mindestens ein Aktualisierungsfeld erforderlich) |
+| `--desc` | `-d` | Anwendungsbeschreibung |
+| `--icon` | | Symbolname (z.B. `xian-yingyong`) |
+| `--icon-color` | | Symbolfarbe (Standard: `#0089FF`) |
 
 ---
 

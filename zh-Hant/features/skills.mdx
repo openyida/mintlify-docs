@@ -54,7 +54,17 @@ openyida export <appType> [output] # 生成遷移包
 
 # 導入應用
 openyida import <file> [name]      # 從遷移包重建應用
+
+# 更新應用資訊
+openyida update-app <appType> --name "<名稱>" [--desc "<描述>"] [--icon "<圖標>"] [--icon-color "<顏色>"]
 ```
+
+| 選項 | 縮寫 | 說明 |
+|------|------|------|
+| `--name` | `-n` | 應用名稱（至少需要一個更新欄位） |
+| `--desc` | `-d` | 應用描述 |
+| `--icon` | | 圖標名稱（如 `xian-yingyong`） |
+| `--icon-color` | | 圖標顏色（預設：`#0089FF`） |
 
 ---
 

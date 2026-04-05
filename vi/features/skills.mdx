@@ -54,7 +54,17 @@ openyida export <appType> [output] # Tạo gói di chuyển
 
 # Nhập ứng dụng
 openyida import <file> [name]      # Tái tạo ứng dụng từ gói
+
+# Cập nhật thông tin ứng dụng
+openyida update-app <appType> --name "<tên>" [--desc "<mô tả>"] [--icon "<biểu tượng>"] [--icon-color "<màu>"]
 ```
+
+| Tùy chọn | Viết tắt | Mô tả |
+|-----------|----------|-------|
+| `--name` | `-n` | Tên ứng dụng (cần ít nhất một trường cập nhật) |
+| `--desc` | `-d` | Mô tả ứng dụng |
+| `--icon` | | Tên biểu tượng (ví dụ: `xian-yingyong`) |
+| `--icon-color` | | Màu biểu tượng (mặc định: `#0089FF`) |
 
 ---
 
