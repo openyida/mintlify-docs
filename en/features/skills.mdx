@@ -266,6 +266,50 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### Process definition detail URL properties
+
+The process definition JSON file supports the following optional properties for customizing the detail page URL that users see when viewing a process instance.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `processDetailUrl` | `string` | Custom URL for the web/PC process detail page. Overrides all other detail URL settings for web. |
+| `processMobileDetailUrl` | `string` | Custom URL for the mobile process detail page. Overrides all other detail URL settings for mobile. |
+| `customDetailPageUrl` | `string` | A single custom page URL used for both web and mobile detail pages. On mobile, `?procInsId=` is appended automatically. |
+| `detailUrls` | `object` | An object with platform-specific detail URLs. Supports `web` (or `pc`) and `mobile` keys. |
+
+The resolution order for the **web detail URL** is:
+
+1. `processDetailUrl`
+2. `detailUrls.web` or `detailUrls.pc`
+3. `customDetailPageUrl`
+4. Platform default
+
+The resolution order for the **mobile detail URL** is:
+
+1. `processMobileDetailUrl`
+2. `detailUrls.mobile`
+3. `customDetailPageUrl` (with `?procInsId=` appended)
+4. Platform default
+
+**Example** using `detailUrls`:
+
+```json
+{
+  "detailUrls": {
+    "web": "https://example.com/process/detail",
+    "mobile": "https://m.example.com/process/detail"
+  }
+}
+```
+
+**Example** using `customDetailPageUrl` (same URL for both platforms):
+
+```json
+{
+  "customDetailPageUrl": "https://example.com/custom-detail"
+}
+```
+
 ---
 
 ## Permission management

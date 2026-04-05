@@ -267,6 +267,50 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### Thuộc tính URL trang chi tiết trong định nghĩa quy trình
+
+Tệp JSON định nghĩa quy trình hỗ trợ các thuộc tính tùy chọn sau để tùy chỉnh URL trang chi tiết khi người dùng xem một phiên bản quy trình.
+
+| Thuộc tính | Kiểu | Mô tả |
+|------------|------|-------|
+| `processDetailUrl` | `string` | URL tùy chỉnh cho trang chi tiết quy trình trên web/PC. Ghi đè tất cả các cài đặt URL chi tiết khác cho web. |
+| `processMobileDetailUrl` | `string` | URL tùy chỉnh cho trang chi tiết quy trình trên di động. Ghi đè tất cả các cài đặt URL chi tiết khác cho di động. |
+| `customDetailPageUrl` | `string` | Một URL trang tùy chỉnh dùng cho cả web và di động. Trên di động, `?procInsId=` được tự động thêm vào. |
+| `detailUrls` | `object` | Đối tượng chứa URL chi tiết theo nền tảng. Hỗ trợ các khóa `web` (hoặc `pc`) và `mobile`. |
+
+Thứ tự ưu tiên cho **URL chi tiết web**:
+
+1. `processDetailUrl`
+2. `detailUrls.web` hoặc `detailUrls.pc`
+3. `customDetailPageUrl`
+4. Giá trị mặc định của nền tảng
+
+Thứ tự ưu tiên cho **URL chi tiết di động**:
+
+1. `processMobileDetailUrl`
+2. `detailUrls.mobile`
+3. `customDetailPageUrl` (tự động thêm `?procInsId=`)
+4. Giá trị mặc định của nền tảng
+
+**Ví dụ** sử dụng `detailUrls`:
+
+```json
+{
+  "detailUrls": {
+    "web": "https://example.com/process/detail",
+    "mobile": "https://m.example.com/process/detail"
+  }
+}
+```
+
+**Ví dụ** sử dụng `customDetailPageUrl` (cùng URL cho cả hai nền tảng):
+
+```json
+{
+  "customDetailPageUrl": "https://example.com/custom-detail"
+}
+```
+
 ---
 
 ## Quản lý quyền hạn

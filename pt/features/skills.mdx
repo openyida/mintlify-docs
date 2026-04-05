@@ -267,6 +267,50 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
 ```
 
+### Propriedades de URL da página de detalhes na definição de processo
+
+O arquivo JSON de definição de processo suporta as seguintes propriedades opcionais para personalizar a URL da página de detalhes exibida ao visualizar uma instância de processo.
+
+| Propriedade | Tipo | Descrição |
+|-------------|------|-----------|
+| `processDetailUrl` | `string` | URL personalizada para a página de detalhes do processo na web/PC. Sobrescreve todas as outras configurações de URL de detalhes para web. |
+| `processMobileDetailUrl` | `string` | URL personalizada para a página de detalhes do processo no celular. Sobrescreve todas as outras configurações de URL de detalhes para celular. |
+| `customDetailPageUrl` | `string` | Uma URL de página personalizada usada tanto para web quanto para celular. No celular, `?procInsId=` é adicionado automaticamente. |
+| `detailUrls` | `object` | Um objeto com URLs de detalhes específicas por plataforma. Suporta as chaves `web` (ou `pc`) e `mobile`. |
+
+A ordem de resolução para a **URL de detalhes web** é:
+
+1. `processDetailUrl`
+2. `detailUrls.web` ou `detailUrls.pc`
+3. `customDetailPageUrl`
+4. Padrão da plataforma
+
+A ordem de resolução para a **URL de detalhes mobile** é:
+
+1. `processMobileDetailUrl`
+2. `detailUrls.mobile`
+3. `customDetailPageUrl` (com `?procInsId=` adicionado)
+4. Padrão da plataforma
+
+**Exemplo** usando `detailUrls`:
+
+```json
+{
+  "detailUrls": {
+    "web": "https://example.com/process/detail",
+    "mobile": "https://m.example.com/process/detail"
+  }
+}
+```
+
+**Exemplo** usando `customDetailPageUrl` (mesma URL para ambas as plataformas):
+
+```json
+{
+  "customDetailPageUrl": "https://example.com/custom-detail"
+}
+```
+
 ---
 
 ## Gestão de permissões
