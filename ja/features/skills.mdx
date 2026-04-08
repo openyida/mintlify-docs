@@ -16,7 +16,7 @@ openyida env
 
 # ログイン
 openyida login [--qr]              # --qr はターミナルQRコードを使用
-openyida login --wukong            # 悟空環境専用
+openyida login --check-only        # ログイン状態の確認のみ（ログインは実行しない）
 
 # ログアウト
 openyida logout
@@ -32,13 +32,18 @@ openyida org list                  # アクセス可能な組織を一覧表示
 openyida org switch --corp-id <id> # 組織を切り替え
 
 # 作業ディレクトリの初期化
-openyida copy [--force]            # projectディレクトリをコピー（空ディレクトリの場合は内容を直接展開）
+openyida copy [--force]            # projectディレクトリをコピー（--forceで上書き）
 openyida copy -skills              # yida-skillsをAIツールのskillsディレクトリにコピー
+openyida copy -project [--force]   # projectディレクトリを明示的にコピー（デフォルトと同じ）
 
 # 診断ツール
-openyida doctor [--fix]            # 環境診断
+openyida doctor [--fix]            # 環境診断（--repairは--fixのエイリアス）
+openyida doctor --production --app <appId>  # 本番アプリ診断
 openyida doctor --monitor          # ヘルスモニタリング
 openyida doctor --report <format>  # レポート生成 (json|markdown|html)
+openyida doctor --create-ticket    # 診断結果からチケットを作成
+openyida doctor --create-voc       # VOC（機能リクエスト）を作成
+openyida doctor --auto-submit      # 自動判定してチケットまたはVOCを送信
 ```
 
 ---
@@ -47,7 +52,7 @@ openyida doctor --report <format>  # レポート生成 (json|markdown|html)
 
 ```bash
 # アプリ作成
-openyida create-app "<名称>" [desc] [icon] [color] [themeColor]
+openyida create-app "<名称>" [desc] [icon] [iconColor] [colour] [navTheme] [layoutDirection]
 
 # アプリエクスポート
 openyida export <appType> [output] # 移行パッケージを生成

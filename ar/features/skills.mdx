@@ -16,7 +16,7 @@ openyida env
 
 # تسجيل الدخول
 openyida login [--qr]              # --qr استخدام رمز QR في المحطة
-openyida login --wukong            # خاص ببيئة Wukong
+openyida login --check-only        # التحقق من حالة تسجيل الدخول فقط
 
 # تسجيل الخروج
 openyida logout
@@ -32,13 +32,18 @@ openyida org list                  # سرد المنظمات القابلة لل
 openyida org switch --corp-id <id> # التبديل إلى المنظمة
 
 # تهيئة دليل العمل
-openyida copy [--force]            # نسخ دليل project (ينسخ المحتوى مباشرة في الأدلة الفارغة)
+openyida copy [--force]            # نسخ دليل project (--force للكتابة فوق الملفات)
 openyida copy -skills              # نسخ yida-skills إلى دليل skills لأداة AI
+openyida copy -project [--force]   # نسخ دليل project بشكل صريح
 
 # أدوات التشخيص
-openyida doctor [--fix]            # تشخيص البيئة
+openyida doctor [--fix]            # تشخيص البيئة (--repair هو بديل لـ --fix)
+openyida doctor --production --app <appId>  # تشخيص التطبيق في الإنتاج
 openyida doctor --monitor          # مراقبة الصحة
 openyida doctor --report <format>  # إنشاء تقرير (json|markdown|html)
+openyida doctor --create-ticket    # إنشاء تذكرة من نتائج التشخيص
+openyida doctor --create-voc       # إنشاء طلب ميزة (VOC)
+openyida doctor --auto-submit      # إرسال تلقائي لتذكرة أو VOC
 ```
 
 ---
@@ -47,7 +52,7 @@ openyida doctor --report <format>  # إنشاء تقرير (json|markdown|html)
 
 ```bash
 # إنشاء تطبيق
-openyida create-app "<الاسم>" [desc] [icon] [color] [themeColor]
+openyida create-app "<الاسم>" [desc] [icon] [iconColor] [colour] [navTheme] [layoutDirection]
 
 # تصدير التطبيق
 openyida export <appType> [output] # إنشاء حزمة الترحيل

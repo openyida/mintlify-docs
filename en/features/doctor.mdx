@@ -1,55 +1,112 @@
 ---
-title: "Diagnostic Tools"
-description: "Environment checks, app diagnostics, auto-fix, and health monitoring."
+title: "Diagnostic tools"
+description: "Environment checks, app diagnostics, auto-fix, health monitoring, and ticket creation."
 icon: "stethoscope"
 ---
 
-OpenYida includes a powerful diagnostic tool `doctor` to help developers check environments, diagnose issues, auto-fix problems, and continuously monitor application health.
+OpenYida includes a diagnostic tool `doctor` to help you check environments, diagnose issues, auto-fix problems, and continuously monitor application health.
 
 ---
 
-## Feature Overview
+## Feature overview
 
 <CardGroup cols={2}>
-  <Card title="Environment Check" icon="laptop-code">
+  <Card title="Environment check" icon="laptop-code">
     Check Node.js, Playwright, login status, and other dependencies.
   </Card>
-  <Card title="App Diagnostics" icon="magnifying-glass">
+  <Card title="App diagnostics" icon="magnifying-glass">
     Check PRD, page source, schema cache, React Hooks compliance.
   </Card>
-  <Card title="Smart Fix" icon="wand-magic">
+  <Card title="Smart fix" icon="wand-magic">
     Auto-fix repairable issues with manual fix guidance.
   </Card>
-  <Card title="Health Monitor" icon="heart-pulse">
+  <Card title="Health monitor" icon="heart-pulse">
     Continuous health monitoring with trend reports.
   </Card>
 </CardGroup>
 
 ---
 
-## Basic Usage
+## Basic usage
 
-### Run Diagnostics
+### Run diagnostics
 
 ```bash
 openyida doctor
 ```
 
-### Auto Fix
+### Auto fix
 
 ```bash
 openyida doctor --fix
 ```
 
-### Generate Report
+You can also use `--repair` as an alias for `--fix`:
 
 ```bash
+openyida doctor --repair
+```
+
+### Generate report
+
+```bash
+# Markdown format
 openyida doctor --report markdown
+
+# JSON format
 openyida doctor --report json
+
+# HTML format
 openyida doctor --report html
 ```
 
-### Health Monitoring
+---
+
+## Environment checks
+
+The doctor command runs the following checks in order:
+
+| Check | Description | Auto-fixable |
+|-------|-------------|--------------|
+| CLI version | Compares installed version with SKILL.md metadata | Yes |
+| project/ init | Verifies the project/ working directory exists | Yes |
+| Node.js version | Requires >= 16 | No |
+| Playwright | Checks if Playwright is installed | Yes |
+| config.json | Validates configuration file | Yes |
+| Login status | Checks Yida authentication | Yes |
+| Network | Tests connectivity to aliwork.com | No |
+
+---
+
+## Application diagnostics
+
+| Check | Description |
+|-------|-------------|
+| PRD files | Checks if requirements documents exist |
+| Page source | Checks source files, console.log usage, empty files |
+| Schema cache | Checks cache file format |
+| React Hooks | Checks Hooks usage compliance |
+
+---
+
+## Production diagnostics
+
+Diagnose issues with a published application:
+
+```bash
+openyida doctor --production --app <appId>
+```
+
+This checks:
+- Application ID validity
+- Production error logs
+- Performance metrics
+
+---
+
+## Health monitoring
+
+Start continuous monitoring (checks every 60 seconds):
 
 ```bash
 openyida doctor --monitor
@@ -59,230 +116,125 @@ openyida doctor --monitor
 The health monitoring feature is currently in beta. API and output formats may change in future releases.
 </Warning>
 
----
+Example output:
 
-## Environment Checks
+```
+[14:32:01] Health: 95/100
+  Passed: 18/19 | Errors: 0 | Warnings: 1
 
-### Check All
-
-```bash
-openyida doctor env
+[14:33:01] Health: 100/100
+  Passed: 19/19 | Errors: 0 | Warnings: 0
 ```
 
-### Check Specific Items
-
-```bash
-# Node.js version
-openyida doctor env --check node
-
-# Playwright browsers
-openyida doctor env --check playwright
-
-# Login status
-openyida doctor env --check auth
-
-# Network connectivity
-openyida doctor env --check network
-```
-
-### Environment requirements
-
-The doctor command runs the following checks in order:
-
-| Check | Description | Auto-fixable |
-|-------|-------------|--------------|
-| CLI version | Compares installed version with SKILL.md metadata | Yes |
-| project/ init | Verifies the project/ working directory exists | Yes |
-| Node.js version | Requires ≥ 18 | No |
-| Playwright | Checks if Playwright is installed | Yes |
-| config.json | Validates configuration file | Yes |
-| Login status | Checks Yida authentication | Yes |
-| Network | Tests connectivity to aliwork.com | No |
+Press `Ctrl+C` to stop monitoring.
 
 ---
 
-## Application Diagnostics
+## Tickets and VOC
 
-### Full App Check
-
-```bash
-openyida doctor app --app <appId>
-```
-
-### Check Specific Areas
+### Create a ticket (bug report)
 
 ```bash
-# Check PRD files
-openyida doctor app --check prd
-
-# Check page source
-openyida doctor app --check pages
-
-# Check schema cache
-openyida doctor app --check schema
-
-# Check React Hooks
-openyida doctor app --check hooks
+openyida doctor --create-ticket
 ```
 
-### Common Issues Detected
+Interactively prompts for a title and description, then submits to GitHub Issues.
 
-| Issue | Severity | Auto-fixable |
-|-------|----------|--------------|
-| CLI version mismatch | Warning | Yes |
-| Missing project/ directory | High | Yes |
-| Missing dependencies | High | Yes |
-| Invalid page config | High | No |
-| Schema cache stale | Medium | Yes |
-| React Hooks errors | High | No |
-| Missing environment vars | High | No |
+### Create a VOC (feature request)
+
+```bash
+openyida doctor --create-voc
+```
+
+### Smart submit
+
+Automatically determines whether to file a bug ticket or a feature request:
+
+```bash
+openyida doctor --auto-submit
+```
 
 ---
 
-## Smart Fix
+## Smart fix
 
-### Auto-fix All
+### Auto-fix all
 
 ```bash
 openyida doctor --fix
 ```
 
-### Fix Specific Issues
+---
 
-```bash
-# Fix dependencies
-openyida doctor --fix --category deps
+## Pre-checks
 
-# Fix cache
-openyida doctor --fix --category cache
+The doctor automatically runs pre-checks before critical operations:
 
-# Fix config
-openyida doctor --fix --category config
-```
-
-### Fix with Confirmation
-
-```bash
-openyida doctor --fix --interactive
-```
+- Before `openyida publish` — validates environment and dependencies
+- Before `openyida create-app` — validates environment and dependencies
 
 ---
 
-## Health Monitoring
+## Fix types
 
-<Warning>
-The `--duration` parameter and metric-specific monitoring (`--metric` flag) are experimental features. Their behavior and syntax may change in upcoming releases.
-</Warning>
-
-### Start Monitoring
-
-```bash
-openyida doctor --monitor --interval 60
-```
-
-### Monitor Specific Metrics
-
-```bash
-# Monitor auth status
-openyida doctor --monitor --metric auth
-
-# Monitor API latency
-openyida doctor --monitor --metric api
-
-# Monitor page build
-openyida doctor --monitor --metric build
-```
-
-### Generate Health Report
-
-```bash
-openyida doctor --monitor --report --duration 24h
-```
+| Type | Description | Example |
+|------|-------------|---------|
+| `AUTO` | Automatic fix | Create config.json, delete corrupted cache |
+| `COMMAND` | Command fix | Run `pip install playwright` |
+| `MANUAL` | Manual fix | Install gh CLI, write PRD |
 
 ---
 
-## Report Formats
+## Health score
+
+Health score (0–100) formula:
+
+```
+Health = pass_rate × 100 - errors × 10 - warnings × 3
+```
+
+| Score | Status |
+|-------|--------|
+| 90–100 | Excellent |
+| 70–89 | Good |
+| 50–69 | Fair |
+| < 50 | Needs improvement |
+
+---
+
+## Console output example
+
+```
+🔍 Checking OpenYida environment...
+
+✅ Node.js v18.19.0 (requires >= 16)
+✅ Playwright installed
+✅ config.json exists and valid
+✅ Yida login: authenticated
+✅ Network connectivity (aliwork.com)
+✅ PRD files (2)
+✅ Page source (3 files)
+✅ Schema cache (5)
+✅ React Hooks compliance
+
+Found 0 issues (0 errors, 0 warnings)
+```
 
 <Note>
 Report generation with custom output formats is experimental. The HTML and JSON output schemas may be refined in future updates.
 </Note>
 
-### Markdown Report
-
-```bash
-openyida doctor --report markdown --output diagnosis.md
-```
-
-### JSON Report
-
-```bash
-openyida doctor --report json --output diagnosis.json
-```
-
-### HTML Report
-
-```bash
-openyida doctor --report html --output diagnosis.html
-```
-
 ---
 
-## CI/CD Integration
+## Complete flag reference
 
-<Warning>
-CI/CD integration with OpenYida doctor is in beta. The command syntax, output formats, and integration points may change. Test thoroughly before deploying to production pipelines.
-</Warning>
-
-### GitHub Actions
-
-```yaml
-- name: Run OpenYida Diagnostics
-  run: |
-    npx openyida doctor --report json
-    
-- name: Check for Critical Issues
-  run: |
-    if npx openyida doctor --check critical | grep -q "FAILED"; then
-      exit 1
-    fi
-```
-
-### Pre-commit Hook
-
-```bash
-#!/bin/bash
-# .git/hooks/pre-commit
-
-openyida doctor --check critical || exit 1
-```
-
----
-
-## Troubleshooting Guide
-
-### Login Issues
-
-```bash
-# Check auth status
-openyida doctor env --check auth
-
-# Refresh token if needed
-openyida auth refresh
-```
-
-### Build Failures
-
-```bash
-# Check environment
-openyida doctor env
-
-# Fix dependencies
-openyida doctor --fix --category deps
-```
-
-### Page Errors
-
-```bash
-# Diagnose page issues
-openyida doctor app --check pages --verbose
-```
+| Flag | Description |
+|------|-------------|
+| `--fix` | Diagnose and auto-fix repairable issues |
+| `--repair` | Alias for `--fix` |
+| `--production --app <appId>` | Run production diagnostics for a specific app |
+| `--monitor` | Start continuous health monitoring |
+| `--report <format>` | Generate report (`json`, `markdown`, or `html`) |
+| `--create-ticket` | Create a bug ticket from diagnosis results |
+| `--create-voc` | Create a VOC (feature request) |
+| `--auto-submit` | Automatically determine and submit a ticket or VOC |
