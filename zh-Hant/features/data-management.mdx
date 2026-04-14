@@ -74,7 +74,7 @@ openyida data query form <appType> <formUuid> \
 | 參數 | 說明 |
 |------|------|
 | `--page N` | 頁碼（預設 `1`） |
-| `--size N` | 每頁筆數（預設 `20`，最大 `100`） |
+| `--size N` | 每頁筆數（預設 `20`，最大 `100`）。超過 `100` 會導致 API 回傳 HTTP 500 錯誤，CLI 會自動截斷並發出警告 |
 | `--search-json JSON` | 查詢條件（必須是合法 JSON，詳見[查詢條件格式](#查詢條件格式)） |
 | `--inst-id ID` | 按實例 ID 查詢單筆記錄 |
 | `--ids-only` | 僅回傳實例 ID |
@@ -84,6 +84,23 @@ openyida data query form <appType> <formUuid> \
 | `--modified-from DATE` | 過濾指定日期之後修改的記錄 |
 | `--modified-to DATE` | 過濾指定日期之前修改的記錄 |
 | `--dynamic-order FIELD` | 按欄位排序 |
+
+<Note>
+  **appType 參數說明：** 在宜搭自訂頁面的 JS 程式碼中呼叫 `this.utils.yida.searchFormDatas` 時，不需要傳 `appType`（SDK 會自動從頁面上下文取得）。透過 CLI（`openyida data query form`）或外部 HTTP 請求呼叫時，`appType` 是必填參數，格式如 `APP_XXXXXXXX`。
+</Note>
+
+<Warning>
+  **searchFormDatas 回傳結構不一致：** 宜搭 API 在不同場景下可能回傳兩種回應結構：
+  - **直接結構**（常見）：`{ data: [...], totalCount, currentPage }`
+  - **巢狀結構**（部分場景）：`{ content: { data: [...], totalCount, currentPage } }`
+
+  如果你透過 JS API 直接呼叫，請使用相容寫法讀取資料：
+  ```javascript
+  var data = (res && res.data) || (res && res.content && res.content.data) || [];
+  var total = (res && res.totalCount) || (res && res.content && res.content.totalCount) || 0;
+  ```
+  使用 `openyida data query form` CLI 命令時無需處理此問題，CLI 已自動歸一化為直接結構。
+</Warning>
 
 ### 獲取單條數據
 
@@ -349,5 +366,5 @@ openyida data create form <appType> <formUuid> \
 </Warning>
 
 <Info>
-  分頁查詢默認每頁 20 條，最大支持 100 條。大量數據導出建議使用循環分頁獲取。
+  分頁查詢預設每頁 20 條，最大支持 100 條。設定超過 100 的 `pageSize` 會導致 API 回傳 HTTP 500 錯誤。CLI 會自動將超出值截斷為 100 並發出警告。大量數據導出建議使用迴圈分頁取得。
 </Info>

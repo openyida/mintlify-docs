@@ -74,7 +74,7 @@ openyida data query form <appType> <formUuid> \
 | المعلمة | الوصف |
 |---------|-------|
 | `--page N` | رقم الصفحة (افتراضي `1`) |
-| `--size N` | عناصر لكل صفحة (افتراضي `20`، الحد الأقصى `100`) |
+| `--size N` | عناصر لكل صفحة (افتراضي `20`، الحد الأقصى `100`). القيم فوق `100` تسبب خطأ HTTP 500 من الـ API؛ يقوم CLI بقص القيمة تلقائياً ويعرض تحذيراً |
 | `--search-json JSON` | شروط البحث (يجب أن يكون JSON صالح) |
 | `--inst-id ID` | استعلام سجل واحد بمعرّف المثيل |
 | `--ids-only` | إرجاع معرّفات المثيلات فقط |
@@ -82,6 +82,23 @@ openyida data query form <appType> <formUuid> \
 | `--create-from DATE` / `--create-to DATE` | التصفية حسب تاريخ الإنشاء |
 | `--modified-from DATE` / `--modified-to DATE` | التصفية حسب تاريخ التعديل |
 | `--dynamic-order FIELD` | الترتيب حسب الحقل |
+
+<Note>
+  **معلمة appType:** عند استدعاء `this.utils.yida.searchFormDatas` من داخل صفحة مخصصة في Yida، لا تحتاج إلى تمرير `appType` — يحصل عليه SDK تلقائياً من سياق الصفحة. عند الاستدعاء عبر CLI (`openyida data query form`) أو طلبات HTTP خارجية، `appType` مطلوب (الصيغة: `APP_XXXXXXXX`).
+</Note>
+
+<Warning>
+  **بنية استجابة searchFormDatas غير متسقة:** قد تُرجع API الخاصة بـ Yida بنيتي استجابة مختلفتين حسب السيناريو:
+  - **البنية المباشرة** (شائعة): `{ data: [...], totalCount, currentPage }`
+  - **البنية المتداخلة** (بعض السيناريوهات): `{ content: { data: [...], totalCount, currentPage } }`
+
+  إذا كنت تستدعي JS API مباشرة، استخدم نمطاً دفاعياً لقراءة البيانات:
+  ```javascript
+  var data = (res && res.data) || (res && res.content && res.content.data) || [];
+  var total = (res && res.totalCount) || (res && res.content && res.content.totalCount) || 0;
+  ```
+  عند استخدام أمر CLI `openyida data query form`، يتم التعامل مع هذا تلقائياً — يقوم CLI بتوحيد الاستجابات إلى البنية المباشرة.
+</Warning>
 
 ### الحصول على سجل واحد
 
@@ -349,5 +366,5 @@ openyida data create form <appType> <formUuid> \
 </Warning>
 
 <Info>
-  الاستعلام المقسم إلى صفحات افتراضيًا 20 سجلًا لكل صفحة، الحد الأقصى 100. لتصدير كميات كبيرة من البيانات، يُنصح باستخدام حلقة التقسيم إلى صفحات.
+  الاستعلام المقسم إلى صفحات افتراضيًا 20 سجلًا لكل صفحة، الحد الأقصى 100. قيم `pageSize` فوق 100 تسبب خطأ HTTP 500 من الـ API. يقوم CLI بقص القيم فوق 100 تلقائياً ويعرض تحذيراً. لتصدير كميات كبيرة من البيانات، يُنصح باستخدام حلقة التقسيم إلى صفحات.
 </Info>

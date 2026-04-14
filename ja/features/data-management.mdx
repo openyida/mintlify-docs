@@ -74,7 +74,7 @@ openyida data query form <appType> <formUuid> \
 | パラメータ | 説明 |
 |-----------|------|
 | `--page N` | ページ番号（デフォルト `1`） |
-| `--size N` | 1ページあたりの件数（デフォルト `20`、最大 `100`） |
+| `--size N` | 1ページあたりの件数（デフォルト `20`、最大 `100`）。`100` を超える値を指定すると API が HTTP 500 エラーを返します。CLI は自動的に値を切り詰めて警告を表示します |
 | `--search-json JSON` | 検索条件（有効なJSONである必要があります。[クエリ条件フォーマット](#クエリ条件フォーマット)を参照） |
 | `--inst-id ID` | インスタンスIDで単一レコードを検索 |
 | `--ids-only` | インスタンスIDのみを返す |
@@ -84,6 +84,23 @@ openyida data query form <appType> <formUuid> \
 | `--modified-from DATE` | 指定日以降に更新されたレコードをフィルタ |
 | `--modified-to DATE` | 指定日以前に更新されたレコードをフィルタ |
 | `--dynamic-order FIELD` | フィールドでソート |
+
+<Note>
+  **appType パラメータについて：** Yida カスタムページの JS コード内で `this.utils.yida.searchFormDatas` を呼び出す場合、`appType` を渡す必要はありません（SDK がページコンテキストから自動的に取得します）。CLI（`openyida data query form`）または外部 HTTP リクエストで呼び出す場合、`appType` は必須パラメータです（形式：`APP_XXXXXXXX`）。
+</Note>
+
+<Warning>
+  **searchFormDatas のレスポンス構造の不一致：** Yida API はシナリオによって2つの異なるレスポンス構造を返す場合があります：
+  - **直接構造**（一般的）：`{ data: [...], totalCount, currentPage }`
+  - **ネスト構造**（一部のシナリオ）：`{ content: { data: [...], totalCount, currentPage } }`
+
+  JS API を直接呼び出す場合は、防御的なパターンを使用してデータを読み取ってください：
+  ```javascript
+  var data = (res && res.data) || (res && res.content && res.content.data) || [];
+  var total = (res && res.totalCount) || (res && res.content && res.content.totalCount) || 0;
+  ```
+  `openyida data query form` CLI コマンドを使用する場合、この処理は自動的に行われます。CLI はレスポンスを直接構造に正規化します。
+</Warning>
 
 ### 単一データの取得
 
@@ -347,5 +364,5 @@ openyida data create form <appType> <formUuid> \
 </Warning>
 
 <Info>
-  ページネーションクエリはデフォルトで1ページあたり20件、最大100件をサポートします。大量のデータをエクスポートする場合は、ループページネーションを使用して取得することをお勧めします。
+  ページネーションクエリはデフォルトで1ページあたり20件、最大100件をサポートします。`pageSize` を 100 を超える値に設定すると、API は HTTP 500 エラーを返します。CLI は自動的に値を100に切り詰め、警告を表示します。大量のデータをエクスポートする場合は、ループページネーションを使用して取得することをお勧めします。
 </Info>

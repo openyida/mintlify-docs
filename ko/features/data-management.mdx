@@ -74,7 +74,7 @@ openyida data query form <appType> <formUuid> \
 | 매개변수 | 설명 |
 |---------|------|
 | `--page N` | 페이지 번호 (기본값 `1`) |
-| `--size N` | 페이지당 항목 수 (기본값 `20`, 최대 `100`) |
+| `--size N` | 페이지당 항목 수 (기본값 `20`, 최대 `100`). `100`을 초과하면 API가 HTTP 500 오류를 반환합니다. CLI는 자동으로 값을 잘라내고 경고를 표시합니다 |
 | `--search-json JSON` | 검색 조건 (유효한 JSON이어야 합니다, [쿼리 조건 형식](#쿼리-조건-형식) 참조) |
 | `--inst-id ID` | 인스턴스 ID로 단일 레코드 조회 |
 | `--ids-only` | 인스턴스 ID만 반환 |
@@ -84,6 +84,23 @@ openyida data query form <appType> <formUuid> \
 | `--modified-from DATE` | 지정 날짜 이후 수정된 레코드 필터링 |
 | `--modified-to DATE` | 지정 날짜 이전 수정된 레코드 필터링 |
 | `--dynamic-order FIELD` | 필드별 정렬 |
+
+<Note>
+  **appType 매개변수 참고:** Yida 커스텀 페이지의 JS 코드에서 `this.utils.yida.searchFormDatas`를 호출할 때는 `appType`을 전달할 필요가 없습니다 — SDK가 페이지 컨텍스트에서 자동으로 가져옵니다. CLI(`openyida data query form`) 또는 외부 HTTP 요청으로 호출할 때는 `appType`이 필수입니다 (형식: `APP_XXXXXXXX`).
+</Note>
+
+<Warning>
+  **searchFormDatas 응답 구조 불일치:** Yida API는 시나리오에 따라 두 가지 다른 응답 구조를 반환할 수 있습니다:
+  - **직접 구조** (일반적): `{ data: [...], totalCount, currentPage }`
+  - **중첩 구조** (일부 시나리오): `{ content: { data: [...], totalCount, currentPage } }`
+
+  JS API를 직접 호출하는 경우, 방어적 패턴으로 데이터를 읽으세요:
+  ```javascript
+  var data = (res && res.data) || (res && res.content && res.content.data) || [];
+  var total = (res && res.totalCount) || (res && res.content && res.content.totalCount) || 0;
+  ```
+  `openyida data query form` CLI 명령을 사용할 때는 자동으로 처리됩니다 — CLI가 응답을 직접 구조로 정규화합니다.
+</Warning>
 
 ### 단일 데이터 가져오기
 
@@ -347,5 +364,5 @@ openyida data create form <appType> <formUuid> \
 </Warning>
 
 <Info>
-  페이지네이션 쿼리는 기본적으로 페이지당 20개, 최대 100개를 지원합니다. 대량의 데이터를 내보낼 때는 루프 페이지네이션을 사용하여 가져오는 것이 좋습니다.
+  페이지네이션 쿼리는 기본적으로 페이지당 20개, 최대 100개를 지원합니다. `pageSize`를 100 이상으로 설정하면 API가 HTTP 500 오류를 반환합니다. CLI는 자동으로 값을 100으로 조정하고 경고를 표시합니다. 대량의 데이터를 내보낼 때는 루프 페이지네이션을 사용하여 가져오는 것이 좋습니다.
 </Info>
