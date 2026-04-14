@@ -78,7 +78,7 @@ openyida create-form create <appType> "<表單名>" <字段JSON> \
   [--label-align <對齊>]
 
 # 更新表單
-openyida create-form update <appType> <formUuid> <修改JSON>
+openyida create-form update <appType> <formUuid> <修改JSON> [--force]
 
 # 獲取表單 Schema
 openyida get-schema <appType> <formUuid>  # 任何涉及欄位 ID 的操作前必須執行
@@ -90,6 +90,22 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 <Warning>
   宜搭欄位 ID 由平台隨機生成（如 `textField_eftt1aa5m`、`selectField_fix024y92`），無法從欄位名稱推斷。在執行任何涉及欄位 ID 的操作前（包括建立/更新資料、設定查詢條件、撰寫自訂頁面），**必須**先執行 `openyida get-schema` 取得真實欄位 ID。
 </Warning>
+
+<Info>
+  更新已有資料的表單時，CLI 會在修改前進行安全檢查。如果偵測到已有記錄且未設定 `--force`，指令會輸出包含 `requiresConfirmation: true` 的 JSON 回應並退出，不會進行任何修改。傳入 `--force` 可跳過確認並繼續更新。
+
+  確認回應包含以下欄位：
+
+  | 欄位 | 類型 | 說明 |
+  |------|------|------|
+  | `success` | `boolean` | 需要確認時始終為 `false` |
+  | `requiresConfirmation` | `boolean` | 始終為 `true` |
+  | `formUuid` | `string` | 正在更新的表單 UUID |
+  | `appType` | `string` | 應用 ID |
+  | `existingDataCount` | `number` | 表單中已有的記錄數 |
+  | `message` | `string` | 可讀的確認訊息 |
+  | `hint` | `string` | 顯示 `--force` 用法的提示 |
+</Info>
 
 ### 支援的欄位類型
 

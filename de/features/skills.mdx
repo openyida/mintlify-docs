@@ -78,7 +78,7 @@ openyida create-form create <appType> "<Formularname>" <FelderJSON> \
   [--label-align <Ausrichtung>]
 
 # Formular aktualisieren
-openyida create-form update <appType> <formUuid> <ÄnderungenJSON>
+openyida create-form update <appType> <formUuid> <ÄnderungenJSON> [--force]
 
 # Formular-Schema abrufen
 openyida get-schema <appType> <formUuid>  # Pflicht vor jeder Operation mit Feld-IDs
@@ -91,6 +91,22 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 <Warning>
   Yida-Feld-IDs werden zufällig von der Plattform generiert (z.B. `textField_eftt1aa5m`, `selectField_fix024y92`) und können nicht aus Feldnamen abgeleitet werden. Vor jeder Operation mit Feld-IDs (Daten erstellen/aktualisieren, Abfragebedingungen konfigurieren, benutzerdefinierte Seiten schreiben) **müssen** Sie `openyida get-schema` ausführen, um die echten Feld-IDs zu erhalten.
 </Warning>
+
+<Info>
+  Beim Aktualisieren eines Formulars, das bereits Daten enthält, führt das CLI vor der Änderung eine Sicherheitsprüfung durch. Wenn vorhandene Datensätze erkannt werden und `--force` nicht gesetzt ist, gibt der Befehl eine JSON-Antwort mit `requiresConfirmation: true` aus und beendet sich ohne Änderungen. Übergeben Sie `--force`, um die Bestätigung zu überspringen und mit der Aktualisierung fortzufahren.
+
+  Die Bestätigungsantwort enthält:
+
+  | Feld | Typ | Beschreibung |
+  |------|-----|-------------|
+  | `success` | `boolean` | Immer `false`, wenn Bestätigung erforderlich ist |
+  | `requiresConfirmation` | `boolean` | Immer `true` |
+  | `formUuid` | `string` | Die UUID des zu aktualisierenden Formulars |
+  | `appType` | `string` | Die Anwendungs-ID |
+  | `existingDataCount` | `number` | Anzahl vorhandener Datensätze im Formular |
+  | `message` | `string` | Lesbare Bestätigungsnachricht |
+  | `hint` | `string` | Verwendungshinweis mit `--force`-Flag-Syntax |
+</Info>
 
 ### Unterstützte Feldtypen
 

@@ -78,7 +78,7 @@ openyida create-form create <appType> "<表单名>" <字段JSON> \
   [--label-align <对齐>]
 
 # 양식 업데이트
-openyida create-form update <appType> <formUuid> <修改JSON>
+openyida create-form update <appType> <formUuid> <修改JSON> [--force]
 
 # 양식 Schema 가져오기
 openyida get-schema <appType> <formUuid>  # 필드 ID를 사용하는 모든 작업 전에 반드시 실행
@@ -90,6 +90,22 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 <Warning>
   Yida 필드 ID는 플랫폼에서 무작위로 생성됩니다(예: `textField_eftt1aa5m`, `selectField_fix024y92`). 필드 이름으로는 추측할 수 없습니다. 필드 ID를 사용하는 모든 작업(데이터 생성/수정, 쿼리 조건 설정, 커스텀 페이지 작성 등) 전에 **반드시** `openyida get-schema`를 실행하여 실제 필드 ID를 가져와야 합니다.
 </Warning>
+
+<Info>
+  기존 데이터가 있는 양식을 업데이트할 때, CLI는 변경 전에 안전 검사를 수행합니다. 기존 레코드가 감지되고 `--force`가 설정되지 않은 경우, 명령은 `requiresConfirmation: true`가 포함된 JSON 응답을 출력하고 변경 없이 종료됩니다. `--force`를 전달하면 확인을 건너뛰고 업데이트를 계속합니다.
+
+  확인 응답에는 다음 필드가 포함됩니다:
+
+  | 필드 | 타입 | 설명 |
+  |------|------|------|
+  | `success` | `boolean` | 확인이 필요할 때 항상 `false` |
+  | `requiresConfirmation` | `boolean` | 항상 `true` |
+  | `formUuid` | `string` | 업데이트 대상 양식 UUID |
+  | `appType` | `string` | 애플리케이션 ID |
+  | `existingDataCount` | `number` | 양식의 기존 레코드 수 |
+  | `message` | `string` | 사람이 읽을 수 있는 확인 메시지 |
+  | `hint` | `string` | `--force` 플래그 사용법을 보여주는 힌트 |
+</Info>
 
 ### 지원되는 필드 유형
 

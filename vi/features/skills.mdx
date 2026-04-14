@@ -78,7 +78,7 @@ openyida create-form create <appType> "<tên>" <trườngJSON> \
   [--label-align <căn_chỉnh>]
 
 # Cập nhật biểu mẫu
-openyida create-form update <appType> <formUuid> <sửa_đổiJSON>
+openyida create-form update <appType> <formUuid> <sửa_đổiJSON> [--force]
 
 # Lấy Schema biểu mẫu
 openyida get-schema <appType> <formUuid>  # Bắt buộc trước mọi thao tác sử dụng field ID
@@ -91,6 +91,22 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <tiêu_đề>
 <Warning>
   Field ID trong Yida được tạo ngẫu nhiên bởi nền tảng (ví dụ: `textField_eftt1aa5m`, `selectField_fix024y92`) và không thể suy ra từ tên trường. Trước mọi thao tác sử dụng field ID (tạo/cập nhật dữ liệu, cấu hình điều kiện truy vấn, viết trang tùy chỉnh), bạn **phải** chạy `openyida get-schema` để lấy field ID thực tế.
 </Warning>
+
+<Info>
+  Khi cập nhật biểu mẫu đã có dữ liệu, CLI sẽ thực hiện kiểm tra an toàn trước khi áp dụng thay đổi. Nếu phát hiện bản ghi hiện có và `--force` chưa được đặt, lệnh sẽ xuất phản hồi JSON với `requiresConfirmation: true` và thoát mà không thực hiện thay đổi. Truyền `--force` để bỏ qua xác nhận và tiếp tục cập nhật.
+
+  Phản hồi xác nhận bao gồm:
+
+  | Trường | Kiểu | Mô tả |
+  |--------|------|-------|
+  | `success` | `boolean` | Luôn là `false` khi cần xác nhận |
+  | `requiresConfirmation` | `boolean` | Luôn là `true` |
+  | `formUuid` | `string` | UUID biểu mẫu đang được cập nhật |
+  | `appType` | `string` | ID ứng dụng |
+  | `existingDataCount` | `number` | Số bản ghi hiện có trong biểu mẫu |
+  | `message` | `string` | Thông báo xác nhận dễ đọc |
+  | `hint` | `string` | Gợi ý sử dụng hiển thị cú pháp cờ `--force` |
+</Info>
 
 ### Các loại trường được hỗ trợ
 

@@ -78,7 +78,7 @@ openyida create-form create <appType> "<nom du formulaire>" <champsJSON> \
   [--label-align <alignement>]
 
 # Mettre à jour un formulaire
-openyida create-form update <appType> <formUuid> <modificationsJSON>
+openyida create-form update <appType> <formUuid> <modificationsJSON> [--force]
 
 # Obtenir le Schema du formulaire
 openyida get-schema <appType> <formUuid>  # Obligatoire avant toute opération utilisant des ID de champs
@@ -90,6 +90,22 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 <Warning>
   Les ID de champs Yida sont générés aléatoirement par la plateforme (ex : `textField_eftt1aa5m`, `selectField_fix024y92`) et ne peuvent pas être déduits des noms de champs. Avant toute opération utilisant des ID de champs (création/mise à jour de données, configuration de conditions de requête, écriture de pages personnalisées), vous **devez** exécuter `openyida get-schema` pour obtenir les vrais ID de champs.
 </Warning>
+
+<Info>
+  Lors de la mise à jour d'un formulaire contenant déjà des données, le CLI effectue une vérification de sécurité avant d'appliquer les modifications. Si des enregistrements existants sont détectés et que `--force` n'est pas défini, la commande affiche une réponse JSON avec `requiresConfirmation: true` et se termine sans effectuer de modification. Passez `--force` pour ignorer la confirmation et procéder à la mise à jour.
+
+  La réponse de confirmation inclut :
+
+  | Champ | Type | Description |
+  |-------|------|-------------|
+  | `success` | `boolean` | Toujours `false` lorsque la confirmation est requise |
+  | `requiresConfirmation` | `boolean` | Toujours `true` |
+  | `formUuid` | `string` | L'UUID du formulaire en cours de mise à jour |
+  | `appType` | `string` | L'identifiant de l'application |
+  | `existingDataCount` | `number` | Nombre d'enregistrements existants dans le formulaire |
+  | `message` | `string` | Message de confirmation lisible |
+  | `hint` | `string` | Indication d'utilisation montrant la syntaxe du drapeau `--force` |
+</Info>
 
 ### Types de champs supportés
 

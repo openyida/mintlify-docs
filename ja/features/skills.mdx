@@ -78,7 +78,7 @@ openyida create-form create <appType> "<表单名>" <字段JSON> \
   [--label-align <对齐>]
 
 # フォーム更新
-openyida create-form update <appType> <formUuid> <修改JSON>
+openyida create-form update <appType> <formUuid> <修改JSON> [--force]
 
 # フォームSchema取得
 openyida get-schema <appType> <formUuid>  # フィールドIDを使用する操作の前に必ず実行
@@ -91,6 +91,22 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 <Warning>
   YidaのフィールドIDはプラットフォームによりランダムに生成されます（例: `textField_eftt1aa5m`、`selectField_fix024y92`）。フィールド名からは推測できません。フィールドIDを使用する操作（データの作成・更新、クエリ条件の設定、カスタムページの作成など）の前に、**必ず** `openyida get-schema` を実行して実際のフィールドIDを取得してください。
 </Warning>
+
+<Info>
+  既存データを持つフォームを更新する場合、CLIは変更前に安全チェックを実行します。既存レコードが検出され `--force` が設定されていない場合、コマンドは `requiresConfirmation: true` を含むJSONレスポンスを出力して終了し、変更は行われません。`--force` を渡すと確認をスキップして更新を続行します。
+
+  確認レスポンスには以下のフィールドが含まれます：
+
+  | フィールド | 型 | 説明 |
+  |-----------|------|------|
+  | `success` | `boolean` | 確認が必要な場合は常に `false` |
+  | `requiresConfirmation` | `boolean` | 常に `true` |
+  | `formUuid` | `string` | 更新対象のフォームUUID |
+  | `appType` | `string` | アプリケーションID |
+  | `existingDataCount` | `number` | フォーム内の既存レコード数 |
+  | `message` | `string` | 人が読める確認メッセージ |
+  | `hint` | `string` | `--force` フラグの使用法を示すヒント |
+</Info>
 
 ### サポートされているフィールドタイプ
 

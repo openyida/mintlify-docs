@@ -78,7 +78,7 @@ openyida create-form create <appType> "<nome>" <camposJSON> \
   [--label-align <alinhamento>]
 
 # Atualizar formulário
-openyida create-form update <appType> <formUuid> <modificaçõesJSON>
+openyida create-form update <appType> <formUuid> <modificaçõesJSON> [--force]
 
 # Obter Schema do formulário
 openyida get-schema <appType> <formUuid>  # Obrigatório antes de qualquer operação com IDs de campo
@@ -91,6 +91,22 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <título>
 <Warning>
   Os IDs de campo no Yida são gerados aleatoriamente pela plataforma (ex: `textField_eftt1aa5m`, `selectField_fix024y92`) e não podem ser deduzidos dos nomes dos campos. Antes de qualquer operação que use IDs de campo (criar/atualizar dados, configurar condições de consulta, escrever páginas personalizadas), você **deve** executar `openyida get-schema` para obter os IDs reais.
 </Warning>
+
+<Info>
+  Ao atualizar um formulário que já contém dados, o CLI realiza uma verificação de segurança antes de aplicar as alterações. Se registros existentes forem detectados e `--force` não estiver definido, o comando exibe uma resposta JSON com `requiresConfirmation: true` e encerra sem fazer alterações. Passe `--force` para pular a confirmação e prosseguir com a atualização.
+
+  A resposta de confirmação inclui:
+
+  | Campo | Tipo | Descrição |
+  |-------|------|-----------|
+  | `success` | `boolean` | Sempre `false` quando confirmação é necessária |
+  | `requiresConfirmation` | `boolean` | Sempre `true` |
+  | `formUuid` | `string` | O UUID do formulário sendo atualizado |
+  | `appType` | `string` | O ID da aplicação |
+  | `existingDataCount` | `number` | Número de registros existentes no formulário |
+  | `message` | `string` | Mensagem de confirmação legível |
+  | `hint` | `string` | Dica de uso mostrando a sintaxe do flag `--force` |
+</Info>
 
 ### Tipos de campo suportados
 
