@@ -287,7 +287,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # 프로세스 구성 및 배포
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# 프로세스 인스턴스 미리보기 (시각적 플로차트)
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### 프로세스 인스턴스 미리보기
+
+실행 중이거나 완료된 프로세스 인스턴스의 인터랙티브 HTML 플로차트를 생성합니다. 플로차트는 노드 상태를 강조 표시합니다 — 완료(녹색), 현재 노드(파란색 펄스), 미도달(회색), 건너뜀(점선) — 호버 시 승인자 세부 정보와 타임스탬프가 표시됩니다.
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| 인수 | 설명 |
+|------|------|
+| `<appType>` | 애플리케이션 ID (예: `APP_XXXXX`) |
+| `<processInstanceId>` | 시각화할 프로세스 인스턴스 ID |
+
+| 옵션 | 별칭 | 설명 | 기본값 |
+|------|------|------|--------|
+| `--output` | `-o` | 생성된 HTML 파일 출력 경로 | 현재 디렉토리에 자동 생성 |
+
+이 명령은 프로세스 인스턴스 세부 정보와 승인 작업 기록을 가져온 다음 SVG 기반 HTML 파일을 생성하여 기본 브라우저에서 엽니다.
+
+**예시:**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  이 명령을 실행하기 전에 로그인해야 합니다. 아직 인증하지 않았다면 먼저 `openyida login`을 실행하세요.
+</Info>
 
 ### 프로세스 정의 상세 페이지 URL 속성
 

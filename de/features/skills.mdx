@@ -288,7 +288,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # Prozess konfigurieren und veröffentlichen
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# Prozessinstanz-Vorschau (visuelles Flussdiagramm)
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### Prozessinstanz-Vorschau
+
+Erstellt ein interaktives HTML-Flussdiagramm für eine laufende oder abgeschlossene Prozessinstanz. Das Flussdiagramm hebt Knotenstatus hervor — abgeschlossen (grün), aktueller Knoten (blauer Puls), ausstehend (grau), übersprungen (gestrichelt) — und zeigt bei Hover Genehmiger-Details und Zeitstempel an.
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| Argument | Beschreibung |
+|----------|-------------|
+| `<appType>` | Anwendungs-ID (z.B. `APP_XXXXX`) |
+| `<processInstanceId>` | ID der zu visualisierenden Prozessinstanz |
+
+| Option | Alias | Beschreibung | Standard |
+|--------|-------|-------------|----------|
+| `--output` | `-o` | Ausgabepfad für die generierte HTML-Datei | Automatisch im aktuellen Verzeichnis generiert |
+
+Der Befehl ruft die Prozessinstanz-Details und Genehmigungsoperationsprotokolle ab, generiert dann eine SVG-basierte HTML-Datei und öffnet sie im Standardbrowser.
+
+**Beispiel:**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  Vor der Ausführung dieses Befehls müssen Sie angemeldet sein. Führen Sie zuerst `openyida login` aus, falls Sie sich noch nicht authentifiziert haben.
+</Info>
 
 ### URL-Eigenschaften der Detailseite in der Prozessdefinition
 

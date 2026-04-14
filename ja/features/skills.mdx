@@ -288,7 +288,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # プロセスを設定して公開
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# プロセスインスタンスをプレビュー（ビジュアルフローチャート）
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### プロセスインスタンスのプレビュー
+
+実行中または完了済みのプロセスインスタンスのインタラクティブな HTML フローチャートを生成します。フローチャートはノードのステータスをハイライト表示します — 完了（緑）、現在のノード（青のパルス）、未到達（グレー）、スキップ（破線） — ホバー時に承認者の詳細とタイムスタンプが表示されます。
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| 引数 | 説明 |
+|------|------|
+| `<appType>` | アプリケーション ID（例：`APP_XXXXX`） |
+| `<processInstanceId>` | 可視化するプロセスインスタンス ID |
+
+| オプション | エイリアス | 説明 | デフォルト |
+|------------|-----------|------|-----------|
+| `--output` | `-o` | 生成された HTML ファイルの出力パス | カレントディレクトリに自動生成 |
+
+このコマンドはプロセスインスタンスの詳細と承認操作記録を取得し、SVG ベースの HTML ファイルを生成してデフォルトブラウザで開きます。
+
+**例：**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  このコマンドを実行する前にログインが必要です。認証がまだの場合は、先に `openyida login` を実行してください。
+</Info>
 
 ### プロセス定義の詳細ページ URL プロパティ
 

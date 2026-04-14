@@ -288,7 +288,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # تكوين ونشر العملية
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# معاينة مثيل العملية (مخطط انسيابي مرئي)
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### معاينة مثيل العملية
+
+إنشاء مخطط انسيابي HTML تفاعلي لمثيل عملية قيد التشغيل أو مكتمل. يبرز المخطط حالات العقد — مكتمل (أخضر)، العقدة الحالية (نبض أزرق)، لم يتم الوصول إليه (رمادي)، تم تخطيه (خط متقطع) — ويعرض تفاصيل الموافقين والطوابع الزمنية عند التمرير.
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| المعامل | الوصف |
+|---------|-------|
+| `<appType>` | معرف التطبيق (مثال: `APP_XXXXX`) |
+| `<processInstanceId>` | معرف مثيل العملية المراد تصويره |
+
+| الخيار | الاختصار | الوصف | القيمة الافتراضية |
+|--------|----------|-------|-------------------|
+| `--output` | `-o` | مسار إخراج ملف HTML المُنشأ | إنشاء تلقائي في الدليل الحالي |
+
+يجلب هذا الأمر تفاصيل مثيل العملية وسجلات عمليات الموافقة، ثم ينشئ ملف HTML قائم على SVG ويفتحه في المتصفح الافتراضي.
+
+**مثال:**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  يجب تسجيل الدخول قبل تشغيل هذا الأمر. قم بتشغيل `openyida login` أولاً إذا لم تقم بالمصادقة بعد.
+</Info>
 
 ### خصائص عنوان URL لصفحة التفاصيل في تعريف العملية
 
