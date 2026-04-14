@@ -78,7 +78,7 @@ openyida create-form create <appType> "<表单名>" <字段JSON> \
   [--label-align <对齐>]
 
 # 更新表单
-openyida create-form update <appType> <formUuid> <修改JSON>
+openyida create-form update <appType> <formUuid> <修改JSON> [--force]
 
 # 获取表单 Schema
 openyida get-schema <appType> <formUuid>  # 任何涉及字段 ID 的操作前必须执行
@@ -91,6 +91,22 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 <Warning>
   宜搭字段 ID 由平台随机生成（如 `textField_eftt1aa5m`、`selectField_fix024y92`），无法从字段名称推断。在执行任何涉及字段 ID 的操作前（包括创建/更新数据、配置查询条件、编写自定义页面），**必须**先运行 `openyida get-schema` 获取真实字段 ID。
 </Warning>
+
+<Info>
+  更新已有数据的表单时，CLI 会在修改前进行安全检查。如果检测到已有记录且未设置 `--force`，命令会输出包含 `requiresConfirmation: true` 的 JSON 响应并退出，不会进行任何修改。传入 `--force` 可跳过确认并继续更新。
+
+  确认响应包含以下字段：
+
+  | 字段 | 类型 | 说明 |
+  |------|------|------|
+  | `success` | `boolean` | 需要确认时始终为 `false` |
+  | `requiresConfirmation` | `boolean` | 始终为 `true` |
+  | `formUuid` | `string` | 正在更新的表单 UUID |
+  | `appType` | `string` | 应用 ID |
+  | `existingDataCount` | `number` | 表单中已有的记录数 |
+  | `message` | `string` | 可读的确认消息 |
+  | `hint` | `string` | 显示 `--force` 用法的提示 |
+</Info>
 
 ### 支持的字段类型
 

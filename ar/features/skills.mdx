@@ -78,7 +78,7 @@ openyida create-form create <appType> "<اسم النموذج>" <JSON الحقو
   [--label-align <المحاذاة>]
 
 # تحديث النموذج
-openyida create-form update <appType> <formUuid> <JSON التعديلات>
+openyida create-form update <appType> <formUuid> <JSON التعديلات> [--force]
 
 # الحصول على Schema النموذج
 openyida get-schema <appType> <formUuid>  # إلزامي قبل أي عملية تستخدم معرّفات الحقول
@@ -91,6 +91,22 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
 <Warning>
   معرّفات الحقول في Yida يتم إنشاؤها عشوائيًا بواسطة المنصة (مثال: `textField_eftt1aa5m`، `selectField_fix024y92`) ولا يمكن استنتاجها من أسماء الحقول. قبل أي عملية تستخدم معرّفات الحقول (إنشاء/تحديث البيانات، تكوين شروط الاستعلام، كتابة صفحات مخصصة)، **يجب** تشغيل `openyida get-schema` للحصول على المعرّفات الحقيقية.
 </Warning>
+
+<Info>
+  عند تحديث نموذج يحتوي بالفعل على بيانات، يقوم CLI بإجراء فحص أمان قبل تطبيق التغييرات. إذا تم اكتشاف سجلات موجودة ولم يتم تعيين `--force`، يقوم الأمر بإخراج استجابة JSON تتضمن `requiresConfirmation: true` والخروج دون إجراء أي تغييرات. مرر `--force` لتخطي التأكيد والمتابعة في التحديث.
+
+  تتضمن استجابة التأكيد:
+
+  | الحقل | النوع | الوصف |
+  |-------|-------|-------|
+  | `success` | `boolean` | دائمًا `false` عندما يكون التأكيد مطلوبًا |
+  | `requiresConfirmation` | `boolean` | دائمًا `true` |
+  | `formUuid` | `string` | معرّف UUID للنموذج الذي يتم تحديثه |
+  | `appType` | `string` | معرّف التطبيق |
+  | `existingDataCount` | `number` | عدد السجلات الموجودة في النموذج |
+  | `message` | `string` | رسالة تأكيد قابلة للقراءة |
+  | `hint` | `string` | تلميح استخدام يُظهر صيغة العلامة `--force` |
+</Info>
 
 ### أنواع الحقول المدعومة
 
