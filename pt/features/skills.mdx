@@ -46,6 +46,9 @@ openyida copy -skills              # Copiar yida-skills para o diretório skills
 openyida doctor [--fix]            # Diagnóstico de ambiente
 openyida doctor --monitor          # Monitoramento de saúde
 openyida doctor --report <format>  # Gerar relatório (json|markdown|html)
+
+# Atualização automática
+openyida update                    # Verificar e instalar a versão mais recente
 ```
 
 ---
@@ -709,6 +712,22 @@ O comando monitora as sequências das seguintes tabelas principais:
 
 <Info>
   Você deve estar logado e ter acesso a um banco de dados dedicado antes de executar este comando. Execute `openyida login` primeiro se ainda não estiver autenticado.
+</Info>
+
+---
+
+## Atualização automática
+
+Verifique se há uma versão mais recente do OpenYida no npm e instale-a globalmente.
+
+```bash
+openyida update
+```
+
+O comando consulta o registro npm para obter a versão mais recente publicada. Se uma versão mais nova estiver disponível, executa `npm install -g openyida@latest` para atualizar. Se você já estiver na versão mais recente, exibe uma mensagem de confirmação e encerra.
+
+<Info>
+  O OpenYida também verifica atualizações automaticamente em segundo plano sempre que você executa um comando. O comando `update` permite acionar essa verificação e instalar manualmente.
 </Info>
 
 ---

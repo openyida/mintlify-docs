@@ -46,6 +46,9 @@ openyida copy -skills              # Sao chép yida-skills vào thư mục skill
 openyida doctor [--fix]            # Chẩn đoán môi trường
 openyida doctor --monitor          # Giám sát sức khỏe
 openyida doctor --report <format>  # Tạo báo cáo (json|markdown|html)
+
+# Tự cập nhật
+openyida update                    # Kiểm tra và cài đặt phiên bản mới nhất
 ```
 
 ---
@@ -709,6 +712,22 @@ Lệnh giám sát Sequence cho các bảng cốt lõi sau:
 
 <Info>
   Bạn phải đăng nhập và có quyền truy cập cơ sở dữ liệu chuyên dụng trước khi chạy lệnh này. Chạy `openyida login` trước nếu bạn chưa xác thực.
+</Info>
+
+---
+
+## Tự cập nhật
+
+Kiểm tra phiên bản mới hơn của OpenYida trên npm và cài đặt toàn cục.
+
+```bash
+openyida update
+```
+
+Lệnh này truy vấn npm registry để lấy phiên bản mới nhất đã xuất bản. Nếu có phiên bản mới hơn, nó sẽ chạy `npm install -g openyida@latest` để nâng cấp. Nếu bạn đã ở phiên bản mới nhất, nó sẽ in thông báo xác nhận và thoát.
+
+<Info>
+  OpenYida cũng tự động kiểm tra cập nhật trong nền mỗi khi bạn chạy lệnh. Lệnh `update` cho phép bạn kích hoạt kiểm tra này và cài đặt thủ công.
 </Info>
 
 ---
