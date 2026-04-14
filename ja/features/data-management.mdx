@@ -301,6 +301,43 @@ while true; do
 done
 ```
 
+### AttachmentField データ形式
+
+フォームデータの作成または更新時、`AttachmentField`（添付ファイル）および `ImageField`（画像）フィールドには特定のオブジェクト配列形式が必要です。ファイルオブジェクトやプレーンテキスト文字列を直接渡すことはできません。
+
+各添付ファイルオブジェクトには以下のフィールドが必要です：
+
+| フィールド | 型 | 説明 |
+|------------|------|------|
+| `name` | String | ファイル名 |
+| `size` | Number | ファイルサイズ（バイト） |
+| `fileUuid` | String | ファイル一意識別子（OSS objectName） |
+| `url` | String | ファイルアクセス URL |
+| `downloadUrl` | String | ファイルダウンロード URL |
+| `previewUrl` | String | ファイルプレビュー URL |
+
+例：
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  `AttachmentField` の値はオブジェクトの配列でなければなりません。単一のオブジェクト、文字列、または `File` オブジェクトは使用できません。不正な形式を渡すと `syntax error, expect [` のようなエラーが発生します。
+</Warning>
+
 ---
 
 ## 注意事項

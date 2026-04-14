@@ -301,6 +301,43 @@ while true; do
 done
 ```
 
+### Format de données AttachmentField
+
+Lors de la création ou de la mise à jour de données de formulaire, les champs `AttachmentField` (pièce jointe) et `ImageField` (image) nécessitent un format spécifique de tableau d'objets. Vous ne pouvez pas passer directement des objets fichier ou des chaînes de texte brut.
+
+Chaque objet de pièce jointe doit inclure les champs suivants :
+
+| Champ | Type | Description |
+|-------|------|-------------|
+| `name` | String | Nom du fichier |
+| `size` | Number | Taille du fichier en octets |
+| `fileUuid` | String | Identifiant unique du fichier (OSS objectName) |
+| `url` | String | URL d'accès au fichier |
+| `downloadUrl` | String | URL de téléchargement du fichier |
+| `previewUrl` | String | URL de prévisualisation du fichier |
+
+Exemple :
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  La valeur de `AttachmentField` doit être un tableau d'objets — pas un objet unique, une chaîne ou un objet `File`. Un format incorrect provoque des erreurs telles que `syntax error, expect [`.
+</Warning>
+
 ---
 
 ## Précautions

@@ -306,6 +306,43 @@ while true; do
 done
 ```
 
+### Formato de dados AttachmentField
+
+Ao criar ou atualizar dados de formulário, os campos `AttachmentField` (anexo) e `ImageField` (imagem) requerem um formato específico de array de objetos. Você não pode passar diretamente objetos de arquivo ou strings de texto simples.
+
+Cada objeto de anexo deve incluir os seguintes campos:
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `name` | String | Nome do arquivo |
+| `size` | Number | Tamanho do arquivo em bytes |
+| `fileUuid` | String | Identificador único do arquivo (OSS objectName) |
+| `url` | String | URL de acesso ao arquivo |
+| `downloadUrl` | String | URL de download do arquivo |
+| `previewUrl` | String | URL de pré-visualização do arquivo |
+
+Exemplo:
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  O valor de `AttachmentField` deve ser um array de objetos — não um objeto único, uma string ou um objeto `File`. Passar um formato incorreto causa erros como `syntax error, expect [`.
+</Warning>
+
 ---
 
 ## Notas

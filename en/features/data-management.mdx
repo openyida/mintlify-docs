@@ -303,6 +303,43 @@ while true; do
 done
 ```
 
+### AttachmentField data format
+
+When creating or updating form data, `AttachmentField` (attachment) and `ImageField` (image) fields require a specific object array format. You cannot pass raw file objects or plain text strings.
+
+Each attachment object must include these fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | String | File name |
+| `size` | Number | File size in bytes |
+| `fileUuid` | String | Unique file identifier (OSS objectName) |
+| `url` | String | File access URL |
+| `downloadUrl` | String | File download URL |
+| `previewUrl` | String | File preview URL |
+
+Example:
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  The value for `AttachmentField` must be an array of objects — not a single object, a string, or a `File` object. Passing an incorrect format causes errors like `syntax error, expect [`.
+</Warning>
+
 ---
 
 ## Important notes

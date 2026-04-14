@@ -303,6 +303,43 @@ while true; do
 done
 ```
 
+### AttachmentField 資料格式
+
+在建立或更新表單資料時，`AttachmentField`（附件）和 `ImageField`（圖片）欄位需要使用特定的物件陣列格式。你不能直接傳入檔案物件或純文字字串。
+
+每個附件物件需要包含以下欄位：
+
+| 欄位 | 類型 | 說明 |
+|------|------|------|
+| `name` | String | 檔案名稱 |
+| `size` | Number | 檔案大小（位元組） |
+| `fileUuid` | String | 檔案唯一識別碼（OSS objectName） |
+| `url` | String | 檔案存取 URL |
+| `downloadUrl` | String | 檔案下載 URL |
+| `previewUrl` | String | 檔案預覽 URL |
+
+範例：
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  `AttachmentField` 的值必須是物件陣列，不能是單個物件、字串或 `File` 物件。傳入錯誤格式會導致類似 `syntax error, expect [` 的報錯。
+</Warning>
+
 ---
 
 ## 注意事項

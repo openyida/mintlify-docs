@@ -304,6 +304,43 @@ while true; do
 done
 ```
 
+### Định dạng dữ liệu AttachmentField
+
+Khi tạo hoặc cập nhật dữ liệu biểu mẫu, các trường `AttachmentField` (tệp đính kèm) và `ImageField` (hình ảnh) yêu cầu định dạng mảng đối tượng cụ thể. Bạn không thể truyền trực tiếp đối tượng tệp hoặc chuỗi văn bản thuần.
+
+Mỗi đối tượng tệp đính kèm cần bao gồm các trường sau:
+
+| Trường | Kiểu | Mô tả |
+|--------|------|-------|
+| `name` | String | Tên tệp |
+| `size` | Number | Kích thước tệp (byte) |
+| `fileUuid` | String | Mã định danh duy nhất của tệp (OSS objectName) |
+| `url` | String | URL truy cập tệp |
+| `downloadUrl` | String | URL tải xuống tệp |
+| `previewUrl` | String | URL xem trước tệp |
+
+Ví dụ:
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  Giá trị của `AttachmentField` phải là mảng đối tượng — không phải đối tượng đơn lẻ, chuỗi hoặc đối tượng `File`. Truyền định dạng không đúng sẽ gây lỗi như `syntax error, expect [`.
+</Warning>
+
 ---
 
 ## Lưu ý
