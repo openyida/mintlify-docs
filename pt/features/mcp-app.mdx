@@ -1,0 +1,87 @@
+---
+title: "Servidor MCP App"
+description: "Use @openyida/mcp-app para interagir com aplicacoes Yida atraves de clientes AI compativeis com MCP como Claude Desktop, ChatGPT, VS Code e Cursor."
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` e um servidor [MCP Apps](https://modelcontextprotocol.io) que exibe interfaces interativas da plataforma low-code Yida diretamente nas conversas de AI. Em vez de texto simples, voce obtem paineis em cartoes, graficos interativos e pre-visualizacoes de formularios.
+
+## Pre-requisitos
+
+- **Node.js** 18 ou superior
+- **openyida** CLI instalado globalmente (`npm install -g openyida`)
+- Sessao autenticada — execute `openyida login` antes de usar as ferramentas MCP
+
+## Inicio rapido
+
+### Transporte stdio (Claude Desktop, VS Code, Cursor)
+
+Adicione o seguinte a configuracao do seu cliente MCP:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### Transporte HTTP (StreamableHTTP)
+
+```bash
+npx @openyida/mcp-app
+# Servidor escutando em http://localhost:3001/mcp
+```
+
+---
+
+## Ferramentas disponiveis
+
+### Ferramentas de autenticacao
+
+| Ferramenta | Descricao |
+|------------|-----------|
+| `yida_login_status` | Verificar status de login |
+| `yida_login` | Iniciar fluxo de login Yida (`method`: `"auto"` ou `"qr"`) |
+| `yida_env` | Verificar ambiente OpenYida |
+
+### Ferramentas de aplicacao
+
+| Ferramenta | Descricao |
+|------------|-----------|
+| `yida_list_apps` | Listar todas as aplicacoes Yida (painel interativo) |
+| `yida_create_app` | Criar nova aplicacao Yida |
+
+### Ferramentas de formulario
+
+| Ferramenta | Descricao |
+|------------|-----------|
+| `yida_get_schema` | Obter schema completo do formulario (pre-visualizacao interativa) |
+| `yida_create_form` | Criar novo formulario |
+
+### Ferramentas de dados
+
+| Ferramenta | Descricao |
+|------------|-----------|
+| `yida_query_data` | Consultar dados de formulario com paginacao |
+| `yida_create_instance` | Criar registro de dados |
+
+### Ferramentas de relatorio
+
+| Ferramenta | Descricao |
+|------------|-----------|
+| `yida_query_report` | Consultar dados para visualizacao (grafico ECharts interativo) |
+| `yida_create_report` | Criar relatorio Yida |
+
+---
+
+## Visualizacoes interativas
+
+| Ferramenta | Visualizacao | Descricao |
+|------------|-------------|-----------|
+| `yida_list_apps` | App Dashboard | Lista de aplicacoes em cartoes |
+| `yida_query_report` | Report Chart | Visualizacao ECharts interativa |
+| `yida_get_schema` | Form Preview | Pre-visualizacao da estrutura do formulario |

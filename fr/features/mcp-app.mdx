@@ -1,0 +1,87 @@
+---
+title: "Serveur MCP App"
+description: "Utilisez @openyida/mcp-app pour interagir avec les applications Yida via des clients AI compatibles MCP comme Claude Desktop, ChatGPT, VS Code et Cursor."
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` est un serveur [MCP Apps](https://modelcontextprotocol.io) qui affiche des interfaces interactives de la plateforme low-code Yida directement dans les conversations AI. Au lieu de simples textes, vous obtenez des tableaux de bord, des graphiques interactifs et des aperçus de formulaires.
+
+## Prerequis
+
+- **Node.js** 18 ou superieur
+- **openyida** CLI installe globalement (`npm install -g openyida`)
+- Session authentifiee — executez `openyida login` avant d'utiliser les outils MCP
+
+## Demarrage rapide
+
+### Transport stdio (Claude Desktop, VS Code, Cursor)
+
+Ajoutez ceci a votre configuration client MCP :
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### Transport HTTP (StreamableHTTP)
+
+```bash
+npx @openyida/mcp-app
+# Serveur en ecoute sur http://localhost:3001/mcp
+```
+
+---
+
+## Outils disponibles
+
+### Outils d'authentification
+
+| Outil | Description |
+|-------|-------------|
+| `yida_login_status` | Verifier le statut de connexion |
+| `yida_login` | Lancer le flux de connexion Yida (`method`: `"auto"` ou `"qr"`) |
+| `yida_env` | Verifier l'environnement OpenYida |
+
+### Outils d'application
+
+| Outil | Description |
+|-------|-------------|
+| `yida_list_apps` | Lister toutes les applications Yida (tableau de bord interactif) |
+| `yida_create_app` | Creer une nouvelle application Yida |
+
+### Outils de formulaire
+
+| Outil | Description |
+|-------|-------------|
+| `yida_get_schema` | Obtenir le schema complet d'un formulaire (apercu interactif) |
+| `yida_create_form` | Creer un nouveau formulaire |
+
+### Outils de donnees
+
+| Outil | Description |
+|-------|-------------|
+| `yida_query_data` | Interroger les donnees de formulaire avec pagination |
+| `yida_create_instance` | Creer un enregistrement de donnees |
+
+### Outils de rapport
+
+| Outil | Description |
+|-------|-------------|
+| `yida_query_report` | Interroger les donnees pour la visualisation (graphique ECharts interactif) |
+| `yida_create_report` | Creer un rapport Yida |
+
+---
+
+## Vues interactives
+
+| Outil | Vue | Description |
+|-------|-----|-------------|
+| `yida_list_apps` | App Dashboard | Liste d'applications en cartes |
+| `yida_query_report` | Report Chart | Visualisation ECharts interactive |
+| `yida_get_schema` | Form Preview | Apercu de la structure du formulaire |

@@ -1,0 +1,309 @@
+---
+title: "MCP App Server"
+description: "Use @openyida/mcp-app to interact with Yida applications through MCP-compatible AI clients like Claude Desktop, ChatGPT, VS Code, and Cursor."
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` is an [MCP Apps](https://modelcontextprotocol.io) server that brings interactive UIs for the Yida low-code platform directly into AI chat conversations. Instead of plain text responses, you get card-style dashboards, interactive charts, and visual form previews.
+
+## Prerequisites
+
+- **Node.js** 18 or later
+- **openyida** CLI installed globally (`npm install -g openyida`)
+- Authenticated session — run `openyida login` before using MCP tools
+
+## Quick start
+
+### stdio transport (Claude Desktop, VS Code, Cursor)
+
+Add the following to your MCP client configuration:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### HTTP transport (StreamableHTTP)
+
+```bash
+npx @openyida/mcp-app
+# Server listening on http://localhost:3001/mcp
+```
+
+Set a custom port with the `PORT` environment variable:
+
+```bash
+PORT=8080 npx @openyida/mcp-app
+```
+
+The HTTP server exposes two endpoints:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/mcp` | `POST` | MCP StreamableHTTP endpoint |
+| `/health` | `GET` | Health check — returns `{ "status": "ok" }` |
+
+---
+
+## Available tools
+
+The server registers the following MCP tools. Each tool is callable from any MCP-compatible client.
+
+### Authentication tools
+
+#### `yida_login_status`
+
+Check whether you are currently logged in to Yida.
+
+**Parameters:** none
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `loggedIn` | `boolean` | Whether a valid session exists |
+| `baseUrl` | `string` | Yida service endpoint (only when logged in) |
+| `userId` | `string` | Current user ID (only when logged in) |
+| `corpId` | `string` | Current organization ID (only when logged in) |
+
+#### `yida_login`
+
+Trigger the Yida login flow.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `method` | `"auto" \| "qr"` | No | `"auto"` | Login method — `"auto"` for default, `"qr"` for QR code scanning |
+
+#### `yida_env`
+
+Check the current OpenYida environment and configuration status.
+
+**Parameters:** none
+
+---
+
+### Application tools
+
+#### `yida_list_apps`
+
+List all Yida applications for the current account. Returns app names, type identifiers, and access URLs. Renders an interactive dashboard card view in supported clients.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `pageSize` | `integer` | No | `20` | Number of apps per page (1–100) |
+
+**Response fields (per app):**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `appName` | `string` | Application name |
+| `appType` | `string` | Application identifier (e.g. `APP_XXXXX`) |
+| `systemLink` | `string` | URL to access the application |
+| `icon` | `string` | Application icon identifier |
+| `iconColor` | `string` | Icon color hex code |
+
+<Tip>
+  In MCP clients that support interactive views, this tool renders an App Dashboard with card-style application tiles.
+</Tip>
+
+#### `yida_create_app`
+
+Create a new Yida application.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `name` | `string` | Yes | — | Application name |
+| `description` | `string` | No | `""` | Application description |
+| `icon` | `string` | No | `"chart-pie"` | Application icon identifier |
+| `iconColor` | `string` | No | `"#3870EA"` | Icon color hex code |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `appType` | `string` | Created application identifier |
+| `systemLink` | `string` | URL to access the new application |
+| `name` | `string` | Application name |
+
+---
+
+### Form tools
+
+#### `yida_get_schema`
+
+Fetch the full schema of a Yida form, including field definitions, types, and IDs. Renders an interactive form structure preview in supported clients.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `appType` | `string` | Yes | Application identifier (e.g. `APP_XXXXX`) |
+| `formUuid` | `string` | Yes | Form UUID (e.g. `FORM-XXXXX`) |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `formUuid` | `string` | Form UUID |
+| `appType` | `string` | Application identifier |
+| `fields` | `array` | Array of field summaries |
+| `fields[].label` | `string` | Field display label |
+| `fields[].componentName` | `string` | Field type (e.g. `TextField`, `SelectField`) |
+| `fields[].fieldId` | `string` | Field ID used in data operations |
+| `rawSchema` | `object` | Full form schema from the Yida API |
+
+<Warning>
+  Field IDs are randomly generated by the platform (e.g. `textField_eftt1aa5m`). You must use `yida_get_schema` to obtain the real field IDs before creating or querying form data.
+</Warning>
+
+#### `yida_create_form`
+
+Create a new form in a Yida application.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `appType` | `string` | Yes | Application identifier |
+| `formTitle` | `string` | Yes | Form title |
+| `fields` | `string` | Yes | JSON array of field definitions |
+
+The `fields` parameter accepts a JSON string. Each entry should include:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `type` | `string` | Field type (e.g. `TextField`, `NumberField`) |
+| `label` | `string` | Display label |
+| `required` | `boolean` | Whether the field is required |
+
+**Example:**
+
+```json
+[
+  { "type": "TextField", "label": "Name", "required": true },
+  { "type": "NumberField", "label": "Age", "required": false }
+]
+```
+
+---
+
+### Data tools
+
+#### `yida_query_data`
+
+Query form data instances with pagination and optional search conditions.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `appType` | `string` | Yes | — | Application identifier |
+| `formUuid` | `string` | Yes | — | Form UUID |
+| `pageNumber` | `integer` | No | `1` | Page number |
+| `pageSize` | `integer` | No | `10` | Page size (1–100) |
+| `searchFieldJson` | `string` | No | — | Search conditions as a JSON string |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `totalCount` | `integer` | Total number of matching records |
+| `currentPage` | `integer` | Current page number |
+| `data` | `array` | Array of form data instances |
+
+#### `yida_create_instance`
+
+Create a new form data record.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `appType` | `string` | Yes | Application identifier |
+| `formUuid` | `string` | Yes | Form UUID |
+| `formDataJson` | `string` | Yes | Form data as a JSON string (e.g. `{"textField_xxx":"value"}`) |
+| `deptId` | `string` | No | Department ID |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `formInstId` | `string` | Created instance ID |
+| `appType` | `string` | Application identifier |
+| `formUuid` | `string` | Form UUID |
+
+<Warning>
+  Use field IDs (not labels) as keys in `formDataJson`. Run `yida_get_schema` first to obtain the correct field IDs.
+</Warning>
+
+---
+
+### Report tools
+
+#### `yida_query_report`
+
+Query form data for report visualization. Returns data and renders an interactive ECharts chart in supported clients.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `appType` | `string` | Yes | — | Application identifier |
+| `formUuid` | `string` | Yes | — | Form UUID of the data source |
+| `chartType` | `"bar" \| "line" \| "pie" \| "scatter"` | No | `"bar"` | Chart type for visualization |
+| `title` | `string` | No | `"Report"` | Chart title |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `chartType` | `string` | Selected chart type |
+| `title` | `string` | Chart title |
+| `data` | `array` | Query result data |
+| `appType` | `string` | Application identifier |
+| `formUuid` | `string` | Form UUID |
+
+<Tip>
+  In MCP clients that support interactive views, this tool renders a Report Chart with switchable bar, line, pie, and scatter visualizations.
+</Tip>
+
+#### `yida_create_report`
+
+Create a Yida report with a chart definition.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `appType` | `string` | Yes | Application identifier |
+| `reportName` | `string` | Yes | Report name |
+| `chartDefinition` | `string` | Yes | Chart definition as a JSON string |
+
+---
+
+## Interactive views
+
+When used with MCP clients that support the [MCP Apps](https://modelcontextprotocol.io) extension, three tools render interactive HTML views:
+
+| Tool | View | Description |
+|------|------|-------------|
+| `yida_list_apps` | App Dashboard | Card-style application list with icons and links |
+| `yida_query_report` | Report Chart | Interactive ECharts visualization with bar/line/pie/scatter switching |
+| `yida_get_schema` | Form Preview | Visual form structure with field types and IDs |
+
+These views are rendered inline in the AI conversation. In clients that do not support interactive views, you still receive the full JSON data response.
+
+---
+
+## Error handling
+
+All tools return errors in a consistent format:
+
+```json
+{
+  "type": "text",
+  "text": "Error: <error message>"
+}
+```
+
+Common error scenarios:
+
+| Scenario | Message |
+|----------|---------|
+| Not logged in | `"Not logged in. Run 'openyida login' to authenticate."` |
+| Invalid app or form ID | `"Failed to fetch app list"` or `"Failed to fetch schema"` |
+| API failure | Error message from the Yida platform |

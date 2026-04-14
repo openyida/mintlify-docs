@@ -1,0 +1,184 @@
+---
+title: "MCP App サーバー"
+description: "@openyida/mcp-app を使用して、Claude Desktop、ChatGPT、VS Code、Cursor などの MCP 対応 AI クライアントから Yida アプリケーションと対話できます。"
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` は [MCP Apps](https://modelcontextprotocol.io) サーバーで、Yida ローコードプラットフォームのインタラクティブ UI を AI チャットに直接表示します。テキストだけでなく、カード型ダッシュボード、インタラクティブチャート、フォームプレビューを確認できます。
+
+## 前提条件
+
+- **Node.js** 18 以上
+- **openyida** CLI のグローバルインストール（`npm install -g openyida`）
+- 認証済みセッション — MCP ツール使用前に `openyida login` を実行
+
+## クイックスタート
+
+### stdio トランスポート（Claude Desktop、VS Code、Cursor）
+
+MCP クライアント設定に以下を追加：
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### HTTP トランスポート（StreamableHTTP）
+
+```bash
+npx @openyida/mcp-app
+# サーバーが http://localhost:3001/mcp でリッスン
+```
+
+`PORT` 環境変数でカスタムポートを設定：
+
+```bash
+PORT=8080 npx @openyida/mcp-app
+```
+
+HTTP サーバーは 2 つのエンドポイントを公開：
+
+| エンドポイント | メソッド | 説明 |
+|--------------|---------|------|
+| `/mcp` | `POST` | MCP StreamableHTTP エンドポイント |
+| `/health` | `GET` | ヘルスチェック — `{ "status": "ok" }` を返却 |
+
+---
+
+## 利用可能なツール
+
+### 認証ツール
+
+#### `yida_login_status`
+
+Yida へのログイン状態を確認します。**パラメータ：** なし
+
+#### `yida_login`
+
+Yida ログインフローを開始します。
+
+| パラメータ | 型 | 必須 | デフォルト | 説明 |
+|-----------|------|------|-----------|------|
+| `method` | `"auto" \| "qr"` | いいえ | `"auto"` | ログイン方式 |
+
+#### `yida_env`
+
+現在の OpenYida 環境と設定状態を確認します。**パラメータ：** なし
+
+---
+
+### アプリケーションツール
+
+#### `yida_list_apps`
+
+現在のアカウントの全 Yida アプリケーションを一覧表示します。対応クライアントではインタラクティブダッシュボードを表示します。
+
+| パラメータ | 型 | 必須 | デフォルト | 説明 |
+|-----------|------|------|-----------|------|
+| `pageSize` | `integer` | いいえ | `20` | ページあたりのアプリ数（1–100） |
+
+#### `yida_create_app`
+
+新しい Yida アプリケーションを作成します。
+
+| パラメータ | 型 | 必須 | デフォルト | 説明 |
+|-----------|------|------|-----------|------|
+| `name` | `string` | はい | — | アプリケーション名 |
+| `description` | `string` | いいえ | `""` | アプリケーション説明 |
+| `icon` | `string` | いいえ | `"chart-pie"` | アイコン識別子 |
+| `iconColor` | `string` | いいえ | `"#3870EA"` | アイコンカラー |
+
+---
+
+### フォームツール
+
+#### `yida_get_schema`
+
+Yida フォームの完全なスキーマを取得します。対応クライアントではフォーム構造プレビューを表示します。
+
+| パラメータ | 型 | 必須 | 説明 |
+|-----------|------|------|------|
+| `appType` | `string` | はい | アプリケーション識別子 |
+| `formUuid` | `string` | はい | フォーム UUID |
+
+<Warning>
+  フィールド ID はプラットフォームによってランダムに生成されます。データ操作前に必ず `yida_get_schema` で正しいフィールド ID を取得してください。
+</Warning>
+
+#### `yida_create_form`
+
+Yida アプリケーションに新しいフォームを作成します。
+
+| パラメータ | 型 | 必須 | 説明 |
+|-----------|------|------|------|
+| `appType` | `string` | はい | アプリケーション識別子 |
+| `formTitle` | `string` | はい | フォームタイトル |
+| `fields` | `string` | はい | フィールド定義の JSON 配列 |
+
+---
+
+### データツール
+
+#### `yida_query_data`
+
+フォームデータインスタンスをページネーション付きでクエリします。
+
+| パラメータ | 型 | 必須 | デフォルト | 説明 |
+|-----------|------|------|-----------|------|
+| `appType` | `string` | はい | — | アプリケーション識別子 |
+| `formUuid` | `string` | はい | — | フォーム UUID |
+| `pageNumber` | `integer` | いいえ | `1` | ページ番号 |
+| `pageSize` | `integer` | いいえ | `10` | ページサイズ（1–100） |
+| `searchFieldJson` | `string` | いいえ | — | 検索条件 JSON 文字列 |
+
+#### `yida_create_instance`
+
+新しいフォームデータレコードを作成します。
+
+| パラメータ | 型 | 必須 | 説明 |
+|-----------|------|------|------|
+| `appType` | `string` | はい | アプリケーション識別子 |
+| `formUuid` | `string` | はい | フォーム UUID |
+| `formDataJson` | `string` | はい | フォームデータ JSON 文字列 |
+| `deptId` | `string` | いいえ | 部門 ID |
+
+---
+
+### レポートツール
+
+#### `yida_query_report`
+
+レポート可視化用のフォームデータをクエリします。対応クライアントではインタラクティブ ECharts チャートを表示します。
+
+| パラメータ | 型 | 必須 | デフォルト | 説明 |
+|-----------|------|------|-----------|------|
+| `appType` | `string` | はい | — | アプリケーション識別子 |
+| `formUuid` | `string` | はい | — | データソースフォーム UUID |
+| `chartType` | `"bar" \| "line" \| "pie" \| "scatter"` | いいえ | `"bar"` | チャートタイプ |
+| `title` | `string` | いいえ | `"Report"` | チャートタイトル |
+
+#### `yida_create_report`
+
+Yida レポートを作成します。
+
+| パラメータ | 型 | 必須 | 説明 |
+|-----------|------|------|------|
+| `appType` | `string` | はい | アプリケーション識別子 |
+| `reportName` | `string` | はい | レポート名 |
+| `chartDefinition` | `string` | はい | チャート定義 JSON 文字列 |
+
+---
+
+## インタラクティブビュー
+
+| ツール | ビュー | 説明 |
+|--------|--------|------|
+| `yida_list_apps` | App Dashboard | カード型アプリ一覧 |
+| `yida_query_report` | Report Chart | インタラクティブ ECharts チャート |
+| `yida_get_schema` | Form Preview | フォーム構造プレビュー |

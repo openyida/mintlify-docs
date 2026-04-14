@@ -1,0 +1,309 @@
+---
+title: "MCP App 服务器"
+description: "使用 @openyida/mcp-app 通过 Claude Desktop、ChatGPT、VS Code、Cursor 等 MCP 兼容客户端与宜搭应用交互。"
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` 是一个 [MCP Apps](https://modelcontextprotocol.io) 服务器，将宜搭低代码平台的交互式 UI 直接带入 AI 对话中。你可以在对话中看到卡片式仪表盘、交互式图表和可视化表单预览，而不只是纯文本。
+
+## 前置条件
+
+- **Node.js** 18 或更高版本
+- 全局安装 **openyida** CLI（`npm install -g openyida`）
+- 已完成登录认证 — 使用 MCP 工具前请先运行 `openyida login`
+
+## 快速开始
+
+### stdio 传输（Claude Desktop、VS Code、Cursor）
+
+在 MCP 客户端配置中添加：
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### HTTP 传输（StreamableHTTP）
+
+```bash
+npx @openyida/mcp-app
+# 服务监听在 http://localhost:3001/mcp
+```
+
+通过 `PORT` 环境变量设置自定义端口：
+
+```bash
+PORT=8080 npx @openyida/mcp-app
+```
+
+HTTP 服务器暴露两个端点：
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/mcp` | `POST` | MCP StreamableHTTP 端点 |
+| `/health` | `GET` | 健康检查 — 返回 `{ "status": "ok" }` |
+
+---
+
+## 可用工具
+
+服务器注册了以下 MCP 工具，可从任何 MCP 兼容客户端调用。
+
+### 认证工具
+
+#### `yida_login_status`
+
+检查当前是否已登录宜搭。
+
+**参数：** 无
+
+**响应字段：**
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `loggedIn` | `boolean` | 是否存在有效会话 |
+| `baseUrl` | `string` | 宜搭服务端点（仅登录时返回） |
+| `userId` | `string` | 当前用户 ID（仅登录时返回） |
+| `corpId` | `string` | 当前组织 ID（仅登录时返回） |
+
+#### `yida_login`
+
+触发宜搭登录流程。
+
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `method` | `"auto" \| "qr"` | 否 | `"auto"` | 登录方式 — `"auto"` 为默认方式，`"qr"` 为扫码登录 |
+
+#### `yida_env`
+
+检查当前 OpenYida 环境和配置状态。
+
+**参数：** 无
+
+---
+
+### 应用工具
+
+#### `yida_list_apps`
+
+列出当前账号的所有宜搭应用。返回应用名称、类型标识和访问链接。在支持的客户端中渲染交互式仪表盘卡片视图。
+
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `pageSize` | `integer` | 否 | `20` | 每页应用数量（1–100） |
+
+**响应字段（每个应用）：**
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `appName` | `string` | 应用名称 |
+| `appType` | `string` | 应用标识（如 `APP_XXXXX`） |
+| `systemLink` | `string` | 应用访问链接 |
+| `icon` | `string` | 应用图标标识 |
+| `iconColor` | `string` | 图标颜色十六进制代码 |
+
+<Tip>
+  在支持交互式视图的 MCP 客户端中，此工具会渲染一个 App Dashboard，以卡片形式展示应用列表。
+</Tip>
+
+#### `yida_create_app`
+
+创建一个新的宜搭应用。
+
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `name` | `string` | 是 | — | 应用名称 |
+| `description` | `string` | 否 | `""` | 应用描述 |
+| `icon` | `string` | 否 | `"chart-pie"` | 应用图标标识 |
+| `iconColor` | `string` | 否 | `"#3870EA"` | 图标颜色十六进制代码 |
+
+**响应字段：**
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `appType` | `string` | 已创建的应用标识 |
+| `systemLink` | `string` | 新应用的访问链接 |
+| `name` | `string` | 应用名称 |
+
+---
+
+### 表单工具
+
+#### `yida_get_schema`
+
+获取宜搭表单的完整 Schema，包括字段定义、类型和 ID。在支持的客户端中渲染交互式表单结构预览。
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `appType` | `string` | 是 | 应用标识（如 `APP_XXXXX`） |
+| `formUuid` | `string` | 是 | 表单 UUID（如 `FORM-XXXXX`） |
+
+**响应字段：**
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `formUuid` | `string` | 表单 UUID |
+| `appType` | `string` | 应用标识 |
+| `fields` | `array` | 字段摘要数组 |
+| `fields[].label` | `string` | 字段显示标签 |
+| `fields[].componentName` | `string` | 字段类型（如 `TextField`、`SelectField`） |
+| `fields[].fieldId` | `string` | 数据操作中使用的字段 ID |
+| `rawSchema` | `object` | 宜搭 API 返回的完整表单 Schema |
+
+<Warning>
+  字段 ID 由平台随机生成（如 `textField_eftt1aa5m`）。在创建或查询表单数据之前，必须使用 `yida_get_schema` 获取真实的字段 ID。
+</Warning>
+
+#### `yida_create_form`
+
+在宜搭应用中创建新表单。
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `appType` | `string` | 是 | 应用标识 |
+| `formTitle` | `string` | 是 | 表单标题 |
+| `fields` | `string` | 是 | 字段定义的 JSON 数组 |
+
+`fields` 参数接受 JSON 字符串，每个条目应包含：
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `type` | `string` | 字段类型（如 `TextField`、`NumberField`） |
+| `label` | `string` | 显示标签 |
+| `required` | `boolean` | 是否必填 |
+
+**示例：**
+
+```json
+[
+  { "type": "TextField", "label": "姓名", "required": true },
+  { "type": "NumberField", "label": "年龄", "required": false }
+]
+```
+
+---
+
+### 数据工具
+
+#### `yida_query_data`
+
+分页查询表单数据实例，支持可选搜索条件。
+
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `appType` | `string` | 是 | — | 应用标识 |
+| `formUuid` | `string` | 是 | — | 表单 UUID |
+| `pageNumber` | `integer` | 否 | `1` | 页码 |
+| `pageSize` | `integer` | 否 | `10` | 每页条数（1–100） |
+| `searchFieldJson` | `string` | 否 | — | 搜索条件 JSON 字符串 |
+
+**响应字段：**
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `totalCount` | `integer` | 匹配记录总数 |
+| `currentPage` | `integer` | 当前页码 |
+| `data` | `array` | 表单数据实例数组 |
+
+#### `yida_create_instance`
+
+创建一条新的表单数据记录。
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `appType` | `string` | 是 | 应用标识 |
+| `formUuid` | `string` | 是 | 表单 UUID |
+| `formDataJson` | `string` | 是 | 表单数据 JSON 字符串（如 `{"textField_xxx":"value"}`） |
+| `deptId` | `string` | 否 | 部门 ID |
+
+**响应字段：**
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `formInstId` | `string` | 已创建的实例 ID |
+| `appType` | `string` | 应用标识 |
+| `formUuid` | `string` | 表单 UUID |
+
+<Warning>
+  `formDataJson` 中的键必须使用字段 ID（而非标签）。请先运行 `yida_get_schema` 获取正确的字段 ID。
+</Warning>
+
+---
+
+### 报表工具
+
+#### `yida_query_report`
+
+查询表单数据用于报表可视化。返回数据并在支持的客户端中渲染交互式 ECharts 图表。
+
+| 参数 | 类型 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `appType` | `string` | 是 | — | 应用标识 |
+| `formUuid` | `string` | 是 | — | 数据源表单 UUID |
+| `chartType` | `"bar" \| "line" \| "pie" \| "scatter"` | 否 | `"bar"` | 图表类型 |
+| `title` | `string` | 否 | `"Report"` | 图表标题 |
+
+**响应字段：**
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `chartType` | `string` | 选定的图表类型 |
+| `title` | `string` | 图表标题 |
+| `data` | `array` | 查询结果数据 |
+| `appType` | `string` | 应用标识 |
+| `formUuid` | `string` | 表单 UUID |
+
+<Tip>
+  在支持交互式视图的 MCP 客户端中，此工具会渲染一个 Report Chart，支持柱状图、折线图、饼图和散点图之间切换。
+</Tip>
+
+#### `yida_create_report`
+
+创建宜搭报表。
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `appType` | `string` | 是 | 应用标识 |
+| `reportName` | `string` | 是 | 报表名称 |
+| `chartDefinition` | `string` | 是 | 图表定义 JSON 字符串 |
+
+---
+
+## 交互式视图
+
+在支持 [MCP Apps](https://modelcontextprotocol.io) 扩展的客户端中，三个工具会渲染交互式 HTML 视图：
+
+| 工具 | 视图 | 说明 |
+|------|------|------|
+| `yida_list_apps` | App Dashboard | 卡片式应用列表，带图标和链接 |
+| `yida_query_report` | Report Chart | 交互式 ECharts 可视化，支持柱状/折线/饼图/散点图切换 |
+| `yida_get_schema` | Form Preview | 可视化表单结构，显示字段类型和 ID |
+
+这些视图在 AI 对话中内联渲染。在不支持交互式视图的客户端中，你仍然可以获得完整的 JSON 数据响应。
+
+---
+
+## 错误处理
+
+所有工具以统一格式返回错误：
+
+```json
+{
+  "type": "text",
+  "text": "Error: <错误信息>"
+}
+```
+
+常见错误场景：
+
+| 场景 | 提示信息 |
+|------|----------|
+| 未登录 | `"Not logged in. Run 'openyida login' to authenticate."` |
+| 应用或表单 ID 无效 | `"Failed to fetch app list"` 或 `"Failed to fetch schema"` |
+| API 调用失败 | 宜搭平台返回的错误信息 |

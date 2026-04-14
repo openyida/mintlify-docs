@@ -1,0 +1,87 @@
+---
+title: "MCP App Server"
+description: "Verwenden Sie @openyida/mcp-app, um uber MCP-kompatible AI-Clients wie Claude Desktop, ChatGPT, VS Code und Cursor mit Yida-Anwendungen zu interagieren."
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` ist ein [MCP Apps](https://modelcontextprotocol.io) Server, der interaktive UIs der Yida Low-Code-Plattform direkt in AI-Chat-Gesprache bringt. Statt reinem Text erhalten Sie Karten-Dashboards, interaktive Diagramme und Formular-Vorschauen.
+
+## Voraussetzungen
+
+- **Node.js** 18 oder hoher
+- **openyida** CLI global installiert (`npm install -g openyida`)
+- Authentifizierte Sitzung — fuhren Sie `openyida login` aus, bevor Sie MCP-Tools verwenden
+
+## Schnellstart
+
+### stdio Transport (Claude Desktop, VS Code, Cursor)
+
+Fugen Sie Folgendes zu Ihrer MCP-Client-Konfiguration hinzu:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### HTTP Transport (StreamableHTTP)
+
+```bash
+npx @openyida/mcp-app
+# Server lauscht auf http://localhost:3001/mcp
+```
+
+---
+
+## Verfugbare Tools
+
+### Authentifizierungs-Tools
+
+| Tool | Beschreibung |
+|------|-------------|
+| `yida_login_status` | Anmeldestatus prufen |
+| `yida_login` | Yida-Anmeldevorgang starten (`method`: `"auto"` oder `"qr"`) |
+| `yida_env` | OpenYida-Umgebung prufen |
+
+### Anwendungs-Tools
+
+| Tool | Beschreibung |
+|------|-------------|
+| `yida_list_apps` | Alle Yida-Anwendungen auflisten (interaktives Dashboard) |
+| `yida_create_app` | Neue Yida-Anwendung erstellen |
+
+### Formular-Tools
+
+| Tool | Beschreibung |
+|------|-------------|
+| `yida_get_schema` | Vollstandiges Formular-Schema abrufen (interaktive Vorschau) |
+| `yida_create_form` | Neues Formular erstellen |
+
+### Daten-Tools
+
+| Tool | Beschreibung |
+|------|-------------|
+| `yida_query_data` | Formulardaten paginiert abfragen |
+| `yida_create_instance` | Neuen Datensatz erstellen |
+
+### Berichts-Tools
+
+| Tool | Beschreibung |
+|------|-------------|
+| `yida_query_report` | Daten fur Visualisierung abfragen (interaktives ECharts-Diagramm) |
+| `yida_create_report` | Yida-Bericht erstellen |
+
+---
+
+## Interaktive Ansichten
+
+| Tool | Ansicht | Beschreibung |
+|------|---------|-------------|
+| `yida_list_apps` | App Dashboard | Kartenansicht der Anwendungen |
+| `yida_query_report` | Report Chart | Interaktive ECharts-Visualisierung |
+| `yida_get_schema` | Form Preview | Formularstruktur-Vorschau |
