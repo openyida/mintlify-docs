@@ -14,6 +14,13 @@ OpenYida는 풍부한 CLI 명령을 제공하며 앱의 전체 수명 주기 관
 # 환경 감지
 openyida env
 
+# 다중 환경 관리
+openyida env list                  # 모든 환경 나열, 활성 환경 강조
+openyida env add <name>            # 프라이빗 배포 환경을 대화식으로 추가
+openyida env switch <name>         # 활성 환경 전환
+openyida env remove <name>         # 환경 삭제 (public은 삭제 불가)
+openyida env show [name]           # 환경 상세 설정 표시
+
 # 로그인
 openyida login [--qr]              # --qr은 터미널 QR 코드 사용
 openyida login --wukong            # Wukong 환경 전용
@@ -691,6 +698,25 @@ openyida db-seq-fix --help
 | `OPENYIDA_LANG` | 언어 설정 | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | 시스템 언어 | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | Wukong 작업 영역 루트 경로 (동적 UUID) | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | Yida 서비스 엔드포인트 강제 지정 (최고 우선순위) | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | 로그인 페이지 URL 강제 지정 | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | 설정 파일 수정 없이 환경 전환 (CI/CD에 적합) | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | 프라이빗 DingTalk OpenAPI 게이트웨이 엔드포인트 | `https://oapi.example.com` |
+
+### 엔드포인트 해석 우선순위
+
+Yida 서비스 엔드포인트를 결정할 때 다음 순서로 해석됩니다:
+
+1. `OPENYIDA_ENDPOINT` 환경 변수
+2. 활성 환경 설정 (`openyida env switch`로 설정)
+3. 쿠키에 캐시된 `base_url`
+4. 기본 퍼블릭 클라우드 URL (`https://www.aliwork.com`)
+
+로그인 URL 해석 순서:
+
+1. `OPENYIDA_LOGIN_URL` 환경 변수
+2. 활성 환경 설정
+3. 기본 로그인 URL (`https://www.aliwork.com/workPlatform`)
 
 ---
 

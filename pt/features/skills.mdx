@@ -14,6 +14,13 @@ O OpenYida fornece comandos CLI completos que suportam a gestão do ciclo de vid
 # Detecção de ambiente
 openyida env
 
+# Gerenciamento multi-ambiente
+openyida env list                  # Listar todos os ambientes, destacar o ativo
+openyida env add <name>            # Adicionar interativamente um ambiente de implantação privada
+openyida env switch <name>         # Alternar o ambiente ativo
+openyida env remove <name>         # Remover um ambiente (não é possível remover "public")
+openyida env show [name]           # Mostrar configuração detalhada do ambiente
+
 # Login
 openyida login [--qr]              # --qr usa QR code no terminal
 openyida login --wukong            # Exclusivo para ambiente Wukong
@@ -692,6 +699,25 @@ O comando monitora as sequências das seguintes tabelas principais:
 | `OPENYIDA_LANG` | Configurar idioma | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | Idioma do sistema | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | Caminho raiz do espaço de trabalho Wukong (UUID dinâmico) | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | Forçar o endpoint do serviço Yida (prioridade mais alta) | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | Forçar a URL da página de login | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | Alternar ambiente sem modificar o arquivo de configuração (ideal para CI/CD) | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | Endpoint do gateway OpenAPI do DingTalk privado | `https://oapi.example.com` |
+
+### Prioridade de resolução de endpoints
+
+Ao determinar o endpoint do serviço Yida, a seguinte ordem se aplica:
+
+1. Variável de ambiente `OPENYIDA_ENDPOINT`
+2. Configuração do ambiente ativo (definido via `openyida env switch`)
+3. `base_url` armazenado em cache no cookie
+4. URL padrão da nuvem pública (`https://www.aliwork.com`)
+
+Ordem de resolução da URL de login:
+
+1. Variável de ambiente `OPENYIDA_LOGIN_URL`
+2. Configuração do ambiente ativo
+3. URL de login padrão (`https://www.aliwork.com/workPlatform`)
 
 ---
 

@@ -14,6 +14,13 @@ OpenYida provides rich CLI commands for full application lifecycle management.
 # Environment check
 openyida env
 
+# Multi-environment management
+openyida env list                  # List all environments, highlight the active one
+openyida env add <name>            # Interactively add a private deployment environment
+openyida env switch <name>         # Switch the active environment
+openyida env remove <name>         # Remove an environment (cannot remove "public")
+openyida env show [name]           # Show detailed environment configuration
+
 # Login
 openyida login [--qr]              # --qr for terminal QR code
 openyida login --wukong            # Wukong environment
@@ -691,6 +698,25 @@ The command monitors sequences for the following core tables:
 | `OPENYIDA_LANG` | Set language | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | System language | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | Wukong workspace root path (dynamic UUID) | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | Override the Yida service endpoint (highest priority) | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | Override the login page URL | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | Switch environment without modifying config (useful for CI/CD) | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | Private DingTalk OpenAPI gateway endpoint | `https://oapi.example.com` |
+
+### Endpoint resolution priority
+
+When resolving the Yida service endpoint, the following order applies:
+
+1. `OPENYIDA_ENDPOINT` environment variable
+2. Active environment configuration (set via `openyida env switch`)
+3. Cached `base_url` from cookie
+4. Default public cloud URL (`https://www.aliwork.com`)
+
+Login URL resolution order:
+
+1. `OPENYIDA_LOGIN_URL` environment variable
+2. Active environment configuration
+3. Default login URL (`https://www.aliwork.com/workPlatform`)
 
 ---
 

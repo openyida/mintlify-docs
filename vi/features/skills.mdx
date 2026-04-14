@@ -14,6 +14,13 @@ OpenYida cung cấp các lệnh CLI phong phú, hỗ trợ quản lý toàn bộ
 # Phát hiện môi trường
 openyida env
 
+# Quản lý đa môi trường
+openyida env list                  # Liệt kê tất cả môi trường, đánh dấu môi trường đang hoạt động
+openyida env add <name>            # Thêm môi trường triển khai riêng tư bằng tương tác
+openyida env switch <name>         # Chuyển đổi môi trường hoạt động
+openyida env remove <name>         # Xóa môi trường (không thể xóa "public")
+openyida env show [name]           # Hiển thị cấu hình chi tiết của môi trường
+
 # Đăng nhập
 openyida login [--qr]              # --qr sử dụng mã QR trong terminal
 openyida login --wukong            # Dành riêng cho môi trường Wukong
@@ -692,6 +699,25 @@ Lệnh giám sát Sequence cho các bảng cốt lõi sau:
 | `OPENYIDA_LANG` | Cài đặt ngôn ngữ | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | Ngôn ngữ hệ thống | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | Đường dẫn gốc không gian làm việc Wukong (UUID động) | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | Buộc chỉ định endpoint dịch vụ Yida (ưu tiên cao nhất) | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | Buộc chỉ định URL trang đăng nhập | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | Chuyển đổi môi trường mà không sửa file cấu hình (phù hợp cho CI/CD) | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | Endpoint cổng OpenAPI DingTalk riêng tư | `https://oapi.example.com` |
+
+### Ưu tiên phân giải endpoint
+
+Khi xác định endpoint dịch vụ Yida, thứ tự sau được áp dụng:
+
+1. Biến môi trường `OPENYIDA_ENDPOINT`
+2. Cấu hình môi trường đang hoạt động (đặt qua `openyida env switch`)
+3. `base_url` được lưu trong cache cookie
+4. URL đám mây công cộng mặc định (`https://www.aliwork.com`)
+
+Thứ tự phân giải URL đăng nhập:
+
+1. Biến môi trường `OPENYIDA_LOGIN_URL`
+2. Cấu hình môi trường đang hoạt động
+3. URL đăng nhập mặc định (`https://www.aliwork.com/workPlatform`)
 
 ---
 

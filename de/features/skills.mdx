@@ -14,6 +14,13 @@ OpenYida bietet umfangreiche CLI-Befehle, die die Verwaltung des vollständigen 
 # Umgebungserkennung
 openyida env
 
+# Multi-Umgebungsverwaltung
+openyida env list                  # Alle Umgebungen auflisten, aktive Umgebung hervorheben
+openyida env add <name>            # Private Bereitstellungsumgebung interaktiv hinzufügen
+openyida env switch <name>         # Aktive Umgebung wechseln
+openyida env remove <name>         # Umgebung entfernen (public kann nicht entfernt werden)
+openyida env show [name]           # Detaillierte Umgebungskonfiguration anzeigen
+
 # Anmeldung
 openyida login [--qr]              # --qr verwendet Terminal-QR-Code
 openyida login --wukong            # Spezifisch für Wukong-Umgebung
@@ -692,6 +699,25 @@ Der Befehl überwacht Sequences für die folgenden Kerntabellen:
 | `OPENYIDA_LANG` | Sprache festlegen | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | Systemsprache | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | Wukong-Arbeitsbereich-Stammverzeichnis (dynamische UUID) | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | Yida-Service-Endpunkt erzwingen (höchste Priorität) | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | Anmeldeseiten-URL erzwingen | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | Umgebung wechseln ohne Konfigurationsdatei zu ändern (ideal für CI/CD) | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | Privater DingTalk OpenAPI-Gateway-Endpunkt | `https://oapi.example.com` |
+
+### Priorität der Endpunkt-Auflösung
+
+Bei der Bestimmung des Yida-Service-Endpunkts gilt folgende Reihenfolge:
+
+1. Umgebungsvariable `OPENYIDA_ENDPOINT`
+2. Konfiguration der aktiven Umgebung (festgelegt über `openyida env switch`)
+3. Im Cookie zwischengespeicherte `base_url`
+4. Standard-URL der öffentlichen Cloud (`https://www.aliwork.com`)
+
+Auflösungsreihenfolge der Anmelde-URL:
+
+1. Umgebungsvariable `OPENYIDA_LOGIN_URL`
+2. Konfiguration der aktiven Umgebung
+3. Standard-Anmelde-URL (`https://www.aliwork.com/workPlatform`)
 
 ---
 

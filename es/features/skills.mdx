@@ -14,6 +14,13 @@ OpenYida proporciona comandos CLI completos que soportan la gestión del ciclo d
 # Detección de entorno
 openyida env
 
+# Gestión de múltiples entornos
+openyida env list                  # Listar todos los entornos, resaltar el activo
+openyida env add <name>            # Agregar interactivamente un entorno de despliegue privado
+openyida env switch <name>         # Cambiar el entorno activo
+openyida env remove <name>         # Eliminar un entorno (no se puede eliminar "public")
+openyida env show [name]           # Mostrar la configuración detallada del entorno
+
 # Iniciar sesión
 openyida login [--qr]              # --qr usa código QR en terminal
 openyida login --wukong            # Exclusivo para entorno Wukong
@@ -692,6 +699,25 @@ El comando monitorea las secuencias de las siguientes tablas principales:
 | `OPENYIDA_LANG` | Configurar idioma | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | Idioma del sistema | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | Ruta raíz del espacio de trabajo Wukong (UUID dinámico) | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | Forzar el endpoint del servicio Yida (prioridad más alta) | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | Forzar la URL de la página de inicio de sesión | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | Cambiar de entorno sin modificar el archivo de configuración (ideal para CI/CD) | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | Endpoint de la pasarela OpenAPI de DingTalk privada | `https://oapi.example.com` |
+
+### Prioridad de resolución de endpoints
+
+Al determinar el endpoint del servicio Yida, se aplica el siguiente orden:
+
+1. Variable de entorno `OPENYIDA_ENDPOINT`
+2. Configuración del entorno activo (establecido mediante `openyida env switch`)
+3. `base_url` almacenado en caché en la cookie
+4. URL predeterminada de la nube pública (`https://www.aliwork.com`)
+
+Orden de resolución de la URL de inicio de sesión:
+
+1. Variable de entorno `OPENYIDA_LOGIN_URL`
+2. Configuración del entorno activo
+3. URL de inicio de sesión predeterminada (`https://www.aliwork.com/workPlatform`)
 
 ---
 
