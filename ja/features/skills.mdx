@@ -562,6 +562,58 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
+## データベース Sequence 修復
+
+宜搭専用データベースの PostgreSQL Sequence 開始値の問題を検出・修復します。データ移行や同期により Sequence の現在値がテーブルの最大主キー ID を下回ると、新規挿入時に主キー重複エラーが発生します。`db-seq-fix` コマンドはこれらの不整合を自動的に特定し修正します。
+
+```bash
+# すべての Sequence 状態を確認
+openyida db-seq-fix
+
+# 修復 SQL をプレビュー（実行なし）
+openyida db-seq-fix --dry-run
+
+# 遅れている Sequence を自動修復
+openyida db-seq-fix --fix
+
+# ヘルプを表示
+openyida db-seq-fix --help
+```
+
+### パラメータ
+
+| パラメータ | 説明 |
+|-----------|------|
+| *（なし）* | すべての Sequence 状態を確認（デフォルト） |
+| `--fix` | 同期が取れていない Sequence を自動修復 |
+| `--dry-run` | 修復 SQL 文をプレビュー（実行しない） |
+| `--help` | ヘルプ情報を表示 |
+
+### 監視対象テーブル
+
+以下のコアテーブルの Sequence を監視します：
+
+| テーブル | Sequence | 主キー |
+|---------|----------|--------|
+| `alibpms_app_cm_operator_record` | `pro_operator_record_id_seq` | `id` |
+| `tianshu_data_form_version` | `data_form_version_id_seq` | `id` |
+| `tianshu_form_data` | `form_data_id_seq` | `id` |
+| `tianshu_form_data_operation_log` | `operation_log_id_seq` | `id` |
+| `tianshu_form_data_stash` | `form_data_stash_id_seq` | `id` |
+| `tianshu_form_remark` | `form_remark_id_seq` | `id` |
+| `tianshu_instance_relation` | `instance_relation_id_seq` | `id` |
+| `tianshu_proc_inst_carbon` | `proc_inst_carbon_id_seq` | `id` |
+
+<Warning>
+  本番環境で `--fix` を実行する前に、まず `--dry-run` で変更内容をプレビューしてください。高トラフィック時に修復を実行すると、一時的な ID 割り当ての競合が発生する可能性があります。
+</Warning>
+
+<Info>
+  このコマンドを実行するには、事前にログインし、専用データベースへのアクセス権限が必要です。認証がまだの場合は、先に `openyida login` を実行してください。
+</Info>
+
+---
+
 ## グローバルオプション
 
 | オプション | 説明 |

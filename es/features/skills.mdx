@@ -562,6 +562,58 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
+## Reparación de secuencias de base de datos
+
+Detecta y corrige los valores iniciales de las secuencias PostgreSQL en bases de datos dedicadas de Yida. Cuando la migración o sincronización de datos hace que el valor actual de una secuencia sea inferior al ID de clave primaria máximo de la tabla, las nuevas inserciones fallan con errores de clave duplicada. El comando `db-seq-fix` identifica y corrige automáticamente estas inconsistencias.
+
+```bash
+# Verificar el estado de todas las secuencias
+openyida db-seq-fix
+
+# Previsualizar el SQL de reparación sin ejecutar
+openyida db-seq-fix --dry-run
+
+# Reparar automáticamente las secuencias atrasadas
+openyida db-seq-fix --fix
+
+# Mostrar ayuda
+openyida db-seq-fix --help
+```
+
+### Parámetros
+
+| Parámetro | Descripción |
+|-----------|-------------|
+| *(ninguno)* | Verificar el estado de todas las secuencias (predeterminado) |
+| `--fix` | Reparar automáticamente las secuencias desincronizadas |
+| `--dry-run` | Previsualizar las sentencias SQL de reparación sin ejecutarlas |
+| `--help` | Mostrar información de ayuda |
+
+### Tablas monitoreadas
+
+El comando monitorea las secuencias de las siguientes tablas principales:
+
+| Tabla | Secuencia | Clave primaria |
+|-------|-----------|----------------|
+| `alibpms_app_cm_operator_record` | `pro_operator_record_id_seq` | `id` |
+| `tianshu_data_form_version` | `data_form_version_id_seq` | `id` |
+| `tianshu_form_data` | `form_data_id_seq` | `id` |
+| `tianshu_form_data_operation_log` | `operation_log_id_seq` | `id` |
+| `tianshu_form_data_stash` | `form_data_stash_id_seq` | `id` |
+| `tianshu_form_remark` | `form_remark_id_seq` | `id` |
+| `tianshu_instance_relation` | `instance_relation_id_seq` | `id` |
+| `tianshu_proc_inst_carbon` | `proc_inst_carbon_id_seq` | `id` |
+
+<Warning>
+  Ejecute `--dry-run` primero para previsualizar los cambios antes de ejecutar `--fix` en un entorno de producción. Realizar reparaciones durante períodos de alto tráfico puede causar conflictos breves en la asignación de ID.
+</Warning>
+
+<Info>
+  Debe iniciar sesión y tener acceso a una base de datos dedicada antes de ejecutar este comando. Ejecute primero `openyida login` si aún no se ha autenticado.
+</Info>
+
+---
+
 ## Opciones globales
 
 | Opción | Descripción |

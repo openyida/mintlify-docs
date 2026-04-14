@@ -562,6 +562,58 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
+## Reparo de sequências do banco de dados
+
+Detecta e corrige os valores iniciais das sequências PostgreSQL em bancos de dados dedicados do Yida. Quando a migração ou sincronização de dados faz com que o valor atual de uma sequência fique abaixo do ID de chave primária máximo da tabela, novas inserções falham com erros de chave duplicada. O comando `db-seq-fix` identifica e corrige automaticamente essas inconsistências.
+
+```bash
+# Verificar o estado de todas as sequências
+openyida db-seq-fix
+
+# Pré-visualizar o SQL de reparo sem executar
+openyida db-seq-fix --dry-run
+
+# Reparar automaticamente sequências atrasadas
+openyida db-seq-fix --fix
+
+# Mostrar ajuda
+openyida db-seq-fix --help
+```
+
+### Parâmetros
+
+| Parâmetro | Descrição |
+|-----------|-----------|
+| *(nenhum)* | Verificar o estado de todas as sequências (padrão) |
+| `--fix` | Reparar automaticamente sequências dessincronizadas |
+| `--dry-run` | Pré-visualizar as instruções SQL de reparo sem executá-las |
+| `--help` | Mostrar informações de ajuda |
+
+### Tabelas monitoradas
+
+O comando monitora as sequências das seguintes tabelas principais:
+
+| Tabela | Sequência | Chave primária |
+|--------|-----------|----------------|
+| `alibpms_app_cm_operator_record` | `pro_operator_record_id_seq` | `id` |
+| `tianshu_data_form_version` | `data_form_version_id_seq` | `id` |
+| `tianshu_form_data` | `form_data_id_seq` | `id` |
+| `tianshu_form_data_operation_log` | `operation_log_id_seq` | `id` |
+| `tianshu_form_data_stash` | `form_data_stash_id_seq` | `id` |
+| `tianshu_form_remark` | `form_remark_id_seq` | `id` |
+| `tianshu_instance_relation` | `instance_relation_id_seq` | `id` |
+| `tianshu_proc_inst_carbon` | `proc_inst_carbon_id_seq` | `id` |
+
+<Warning>
+  Execute `--dry-run` primeiro para pré-visualizar as alterações antes de executar `--fix` em ambiente de produção. Realizar reparos durante períodos de alto tráfego pode causar conflitos breves na alocação de IDs.
+</Warning>
+
+<Info>
+  Você deve estar logado e ter acesso a um banco de dados dedicado antes de executar este comando. Execute `openyida login` primeiro se ainda não estiver autenticado.
+</Info>
+
+---
+
 ## Opções globais
 
 | Opção | Descrição |

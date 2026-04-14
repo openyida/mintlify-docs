@@ -562,6 +562,58 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
+## إصلاح تسلسلات قاعدة البيانات
+
+كشف وإصلاح قيم بداية تسلسلات PostgreSQL في قواعد بيانات Yida المخصصة. عندما يتسبب ترحيل البيانات أو مزامنتها في انخفاض القيمة الحالية للتسلسل عن أقصى معرف مفتاح أساسي في الجدول، تفشل عمليات الإدراج الجديدة بأخطاء مفتاح مكرر. يحدد أمر `db-seq-fix` هذه التناقضات ويصلحها تلقائيًا.
+
+```bash
+# فحص حالة جميع التسلسلات
+openyida db-seq-fix
+
+# معاينة SQL الإصلاح دون تنفيذ
+openyida db-seq-fix --dry-run
+
+# إصلاح التسلسلات المتأخرة تلقائيًا
+openyida db-seq-fix --fix
+
+# عرض المساعدة
+openyida db-seq-fix --help
+```
+
+### المعلمات
+
+| المعلمة | الوصف |
+|---------|-------|
+| *(بدون)* | فحص حالة جميع التسلسلات (افتراضي) |
+| `--fix` | إصلاح التسلسلات غير المتزامنة تلقائيًا |
+| `--dry-run` | معاينة عبارات SQL للإصلاح دون تنفيذها |
+| `--help` | عرض معلومات المساعدة |
+
+### الجداول المراقبة
+
+يراقب الأمر التسلسلات للجداول الأساسية التالية:
+
+| الجدول | التسلسل | المفتاح الأساسي |
+|--------|---------|-----------------|
+| `alibpms_app_cm_operator_record` | `pro_operator_record_id_seq` | `id` |
+| `tianshu_data_form_version` | `data_form_version_id_seq` | `id` |
+| `tianshu_form_data` | `form_data_id_seq` | `id` |
+| `tianshu_form_data_operation_log` | `operation_log_id_seq` | `id` |
+| `tianshu_form_data_stash` | `form_data_stash_id_seq` | `id` |
+| `tianshu_form_remark` | `form_remark_id_seq` | `id` |
+| `tianshu_instance_relation` | `instance_relation_id_seq` | `id` |
+| `tianshu_proc_inst_carbon` | `proc_inst_carbon_id_seq` | `id` |
+
+<Warning>
+  قم بتشغيل `--dry-run` أولاً لمعاينة التغييرات قبل تنفيذ `--fix` في بيئة الإنتاج. قد يتسبب إجراء الإصلاحات خلال فترات الذروة في تعارضات مؤقتة في تخصيص المعرفات.
+</Warning>
+
+<Info>
+  يجب تسجيل الدخول والحصول على صلاحية الوصول إلى قاعدة بيانات مخصصة قبل تشغيل هذا الأمر. قم بتشغيل `openyida login` أولاً إذا لم تقم بالمصادقة بعد.
+</Info>
+
+---
+
 ## الخيارات العامة
 
 | الخيار | الوصف |

@@ -562,6 +562,58 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
+## Datenbank-Sequence-Reparatur
+
+Erkennt und behebt Probleme mit PostgreSQL-Sequence-Startwerten in dedizierten Yida-Datenbanken. Wenn durch Datenmigration oder -synchronisation der aktuelle Wert einer Sequence hinter die maximale Primärschlüssel-ID der Tabelle zurückfällt, schlagen neue Einfügungen mit Duplikatschlüssel-Fehlern fehl. Der Befehl `db-seq-fix` identifiziert und korrigiert diese Inkonsistenzen automatisch.
+
+```bash
+# Alle Sequence-Status prüfen
+openyida db-seq-fix
+
+# Reparatur-SQL vorschauen ohne Ausführung
+openyida db-seq-fix --dry-run
+
+# Zurückliegende Sequences automatisch reparieren
+openyida db-seq-fix --fix
+
+# Hilfe anzeigen
+openyida db-seq-fix --help
+```
+
+### Parameter
+
+| Parameter | Beschreibung |
+|-----------|-------------|
+| *(keine)* | Alle Sequence-Status prüfen (Standard) |
+| `--fix` | Nicht synchronisierte Sequences automatisch reparieren |
+| `--dry-run` | Reparatur-SQL-Anweisungen vorschauen ohne Ausführung |
+| `--help` | Hilfeinformationen anzeigen |
+
+### Überwachte Tabellen
+
+Der Befehl überwacht Sequences für die folgenden Kerntabellen:
+
+| Tabelle | Sequence | Primärschlüssel |
+|---------|----------|-----------------|
+| `alibpms_app_cm_operator_record` | `pro_operator_record_id_seq` | `id` |
+| `tianshu_data_form_version` | `data_form_version_id_seq` | `id` |
+| `tianshu_form_data` | `form_data_id_seq` | `id` |
+| `tianshu_form_data_operation_log` | `operation_log_id_seq` | `id` |
+| `tianshu_form_data_stash` | `form_data_stash_id_seq` | `id` |
+| `tianshu_form_remark` | `form_remark_id_seq` | `id` |
+| `tianshu_instance_relation` | `instance_relation_id_seq` | `id` |
+| `tianshu_proc_inst_carbon` | `proc_inst_carbon_id_seq` | `id` |
+
+<Warning>
+  Führen Sie zuerst `--dry-run` aus, um Änderungen in der Vorschau zu sehen, bevor Sie `--fix` in einer Produktionsumgebung ausführen. Reparaturen während Hochlastzeiten können kurzzeitige ID-Zuweisungskonflikte verursachen.
+</Warning>
+
+<Info>
+  Sie müssen angemeldet sein und Zugriff auf eine dedizierte Datenbank haben, bevor Sie diesen Befehl ausführen. Führen Sie zuerst `openyida login` aus, falls Sie sich noch nicht authentifiziert haben.
+</Info>
+
+---
+
 ## Globale Optionen
 
 | Option | Beschreibung |

@@ -561,6 +561,58 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
+## Database sequence repair
+
+Detect and fix PostgreSQL sequence start values in Yida dedicated databases. When data migration or synchronization causes a sequence's current value to fall behind the table's maximum primary key ID, new inserts will fail with duplicate key errors. The `db-seq-fix` command identifies and corrects these mismatches.
+
+```bash
+# Check all sequence statuses
+openyida db-seq-fix
+
+# Preview repair SQL without executing
+openyida db-seq-fix --dry-run
+
+# Auto-fix sequences whose values are behind
+openyida db-seq-fix --fix
+
+# Show help
+openyida db-seq-fix --help
+```
+
+### Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| *(none)* | Check all sequence statuses (default) |
+| `--fix` | Automatically repair out-of-sync sequences |
+| `--dry-run` | Preview the repair SQL statements without executing them |
+| `--help` | Show help information |
+
+### Monitored tables
+
+The command monitors sequences for the following core tables:
+
+| Table | Sequence | Primary key |
+|-------|----------|-------------|
+| `alibpms_app_cm_operator_record` | `pro_operator_record_id_seq` | `id` |
+| `tianshu_data_form_version` | `data_form_version_id_seq` | `id` |
+| `tianshu_form_data` | `form_data_id_seq` | `id` |
+| `tianshu_form_data_operation_log` | `operation_log_id_seq` | `id` |
+| `tianshu_form_data_stash` | `form_data_stash_id_seq` | `id` |
+| `tianshu_form_remark` | `form_remark_id_seq` | `id` |
+| `tianshu_instance_relation` | `instance_relation_id_seq` | `id` |
+| `tianshu_proc_inst_carbon` | `proc_inst_carbon_id_seq` | `id` |
+
+<Warning>
+  Run `--dry-run` first to preview changes before executing `--fix` in a production environment. Performing repairs during high-traffic periods may cause brief ID allocation conflicts.
+</Warning>
+
+<Info>
+  You must be logged in and have access to a dedicated database before running this command. Run `openyida login` first if you have not authenticated.
+</Info>
+
+---
+
 ## Global options
 
 | Option | Description |
