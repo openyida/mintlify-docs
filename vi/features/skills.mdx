@@ -95,6 +95,9 @@ openyida get-schema <appType> <formUuid>  # Bắt buộc trước mọi thao tá
 
 # Cập nhật cấu hình biểu mẫu
 openyida update-form-config <appType> <formUuid> <isRenderNav> <tiêu_đề>
+
+# Liệt kê các trang biểu mẫu trong ứng dụng
+openyida list-forms <appType> [--keyword <văn_bản>]
 ```
 
 
@@ -116,6 +119,70 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <tiêu_đề>
   | `existingDataCount` | `number` | Số bản ghi hiện có trong biểu mẫu |
   | `message` | `string` | Thông báo xác nhận dễ đọc |
   | `hint` | `string` | Gợi ý sử dụng hiển thị cú pháp cờ `--force` |
+</Info>
+
+### Liệt kê trang biểu mẫu
+
+Truy xuất tất cả các trang biểu mẫu trong một ứng dụng, có thể lọc theo từ khóa. Lệnh xuất mảng JSON ra stdout.
+
+```bash
+openyida list-forms <appType> [--keyword <văn_bản>]
+```
+
+| Tham số | Mô tả |
+|---------|-------|
+| `<appType>` | ID ứng dụng (ví dụ: `APP_XXXXX`) |
+
+| Tùy chọn | Mô tả | Mặc định |
+|-----------|-------|----------|
+| `--keyword <văn_bản>` | Lọc theo tên, UUID, loại hoặc đường dẫn biểu mẫu (không phân biệt hoa thường) | — |
+
+#### Đầu ra
+
+Lệnh xuất mảng JSON ra stdout. Mỗi mục có các trường sau:
+
+| Trường | Kiểu | Mô tả |
+|--------|------|-------|
+| `formUuid` | `string` | Mã định danh duy nhất của biểu mẫu |
+| `formName` | `string` | Tên biểu mẫu đã bản địa hóa |
+| `formType` | `string` | Loại biểu mẫu (ví dụ: `display`, `process`) |
+| `pathName` | `string` | Tên đường dẫn URL của biểu mẫu |
+
+**Ví dụ đầu ra:**
+
+```json
+[
+  {
+    "formUuid": "FORM-AAA",
+    "formName": "Thông tin khách hàng",
+    "formType": "display",
+    "pathName": "customer-info"
+  },
+  {
+    "formUuid": "FORM-BBB",
+    "formName": "Hoàn chi phí",
+    "formType": "process",
+    "pathName": "expense"
+  }
+]
+```
+
+**Ví dụ sử dụng:**
+
+```bash
+# Liệt kê tất cả biểu mẫu trong ứng dụng
+openyida list-forms APP_XXXXX
+
+# Lọc theo từ khóa
+openyida list-forms APP_XXXXX --keyword "khách hàng"
+```
+
+<Info>
+  Các mục điều hướng hệ thống (ví dụ: chế độ xem tác vụ tích hợp) được tự động loại trừ. Chỉ các trang biểu mẫu do người dùng tạo mới được trả về.
+</Info>
+
+<Info>
+  Bạn phải đăng nhập trước khi chạy lệnh này. Chạy `openyida login` nếu bạn chưa xác thực.
 </Info>
 
 ### Các loại trường được hỗ trợ

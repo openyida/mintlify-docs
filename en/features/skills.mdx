@@ -95,6 +95,9 @@ openyida get-schema <appType> <formUuid>
 
 # Update form config
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+
+# List form pages in an application
+openyida list-forms <appType> [--keyword <text>]
 ```
 
 <Warning>
@@ -115,6 +118,70 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
   | `existingDataCount` | `number` | Number of existing records in the form |
   | `message` | `string` | Human-readable confirmation message |
   | `hint` | `string` | Usage hint showing the `--force` flag syntax |
+</Info>
+
+### List form pages
+
+Retrieve all form pages within an application, optionally filtered by keyword. The command outputs a JSON array of form entries to stdout.
+
+```bash
+openyida list-forms <appType> [--keyword <text>]
+```
+
+| Argument | Description |
+|----------|-------------|
+| `<appType>` | Application ID (e.g. `APP_XXXXX`) |
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--keyword <text>` | Filter forms by name, UUID, type, or path name (case-insensitive) | — |
+
+#### Output
+
+The command prints a JSON array to stdout. Each entry has the following shape:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `formUuid` | `string` | Unique form identifier |
+| `formName` | `string` | Localized form name |
+| `formType` | `string` | Form type (e.g. `display`, `process`) |
+| `pathName` | `string` | URL path name of the form |
+
+**Example output:**
+
+```json
+[
+  {
+    "formUuid": "FORM-AAA",
+    "formName": "Customer Info",
+    "formType": "display",
+    "pathName": "customer-info"
+  },
+  {
+    "formUuid": "FORM-BBB",
+    "formName": "Expense Report",
+    "formType": "process",
+    "pathName": "expense"
+  }
+]
+```
+
+**Examples:**
+
+```bash
+# List all forms in an application
+openyida list-forms APP_XXXXX
+
+# Filter by keyword
+openyida list-forms APP_XXXXX --keyword "customer"
+```
+
+<Info>
+  System navigation items (e.g. built-in task views) are automatically excluded from the output. Only user-created form pages are returned.
+</Info>
+
+<Info>
+  You must be logged in before running this command. Run `openyida login` first if you have not authenticated.
 </Info>
 
 ### Supported field types

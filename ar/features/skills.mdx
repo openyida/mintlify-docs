@@ -95,6 +95,9 @@ openyida get-schema <appType> <formUuid>  # إلزامي قبل أي عملية 
 
 # تحديث تكوين النموذج
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+
+# عرض صفحات النماذج في تطبيق
+openyida list-forms <appType> [--keyword <نص>]
 ```
 
 
@@ -116,6 +119,70 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
   | `existingDataCount` | `number` | عدد السجلات الموجودة في النموذج |
   | `message` | `string` | رسالة تأكيد قابلة للقراءة |
   | `hint` | `string` | تلميح استخدام يُظهر صيغة العلامة `--force` |
+</Info>
+
+### عرض صفحات النماذج
+
+استرجاع جميع صفحات النماذج داخل تطبيق، مع إمكانية التصفية حسب كلمة مفتاحية. يُخرج الأمر مصفوفة JSON على stdout.
+
+```bash
+openyida list-forms <appType> [--keyword <نص>]
+```
+
+| المعامل | الوصف |
+|---------|-------|
+| `<appType>` | معرّف التطبيق (مثال: `APP_XXXXX`) |
+
+| الخيار | الوصف | القيمة الافتراضية |
+|--------|-------|-------------------|
+| `--keyword <نص>` | التصفية حسب اسم النموذج أو UUID أو النوع أو اسم المسار (غير حساس لحالة الأحرف) | — |
+
+#### المخرجات
+
+يُخرج الأمر مصفوفة JSON على stdout. كل عنصر يحتوي على الحقول التالية:
+
+| الحقل | النوع | الوصف |
+|-------|-------|-------|
+| `formUuid` | `string` | المعرّف الفريد للنموذج |
+| `formName` | `string` | اسم النموذج المحلي |
+| `formType` | `string` | نوع النموذج (مثال: `display`، `process`) |
+| `pathName` | `string` | اسم مسار URL للنموذج |
+
+**مثال على المخرجات:**
+
+```json
+[
+  {
+    "formUuid": "FORM-AAA",
+    "formName": "معلومات العميل",
+    "formType": "display",
+    "pathName": "customer-info"
+  },
+  {
+    "formUuid": "FORM-BBB",
+    "formName": "تعويض المصاريف",
+    "formType": "process",
+    "pathName": "expense"
+  }
+]
+```
+
+**أمثلة:**
+
+```bash
+# عرض جميع النماذج في تطبيق
+openyida list-forms APP_XXXXX
+
+# التصفية حسب كلمة مفتاحية
+openyida list-forms APP_XXXXX --keyword "عميل"
+```
+
+<Info>
+  يتم استبعاد عناصر التنقل النظامية (مثل عروض المهام المدمجة) تلقائيًا. يتم إرجاع صفحات النماذج التي أنشأها المستخدم فقط.
+</Info>
+
+<Info>
+  يجب تسجيل الدخول قبل تشغيل هذا الأمر. قم بتشغيل `openyida login` أولاً إذا لم تكن قد سجلت الدخول بعد.
 </Info>
 
 ### أنواع الحقول المدعومة

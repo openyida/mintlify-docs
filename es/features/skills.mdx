@@ -95,6 +95,9 @@ openyida get-schema <appType> <formUuid>  # Obligatorio antes de cualquier opera
 
 # Actualizar configuración del formulario
 openyida update-form-config <appType> <formUuid> <isRenderNav> <título>
+
+# Listar páginas de formulario de una aplicación
+openyida list-forms <appType> [--keyword <texto>]
 ```
 
 
@@ -116,6 +119,70 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <título>
   | `existingDataCount` | `number` | Número de registros existentes en el formulario |
   | `message` | `string` | Mensaje de confirmación legible |
   | `hint` | `string` | Indicación de uso mostrando la sintaxis del flag `--force` |
+</Info>
+
+### Listar páginas de formulario
+
+Recupera todas las páginas de formulario de una aplicación, con filtrado opcional por palabra clave. El comando muestra un array JSON en stdout.
+
+```bash
+openyida list-forms <appType> [--keyword <texto>]
+```
+
+| Argumento | Descripción |
+|-----------|-------------|
+| `<appType>` | ID de la aplicación (ej: `APP_XXXXX`) |
+
+| Opción | Descripción | Valor predeterminado |
+|--------|-------------|----------------------|
+| `--keyword <texto>` | Filtrar por nombre, UUID, tipo o ruta del formulario (sin distinción de mayúsculas) | — |
+
+#### Salida
+
+El comando muestra un array JSON en stdout. Cada entrada tiene la siguiente forma:
+
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `formUuid` | `string` | Identificador único del formulario |
+| `formName` | `string` | Nombre localizado del formulario |
+| `formType` | `string` | Tipo de formulario (ej: `display`, `process`) |
+| `pathName` | `string` | Nombre de ruta URL del formulario |
+
+**Ejemplo de salida:**
+
+```json
+[
+  {
+    "formUuid": "FORM-AAA",
+    "formName": "Información del cliente",
+    "formType": "display",
+    "pathName": "customer-info"
+  },
+  {
+    "formUuid": "FORM-BBB",
+    "formName": "Reembolso de gastos",
+    "formType": "process",
+    "pathName": "expense"
+  }
+]
+```
+
+**Ejemplos:**
+
+```bash
+# Listar todos los formularios de una aplicación
+openyida list-forms APP_XXXXX
+
+# Filtrar por palabra clave
+openyida list-forms APP_XXXXX --keyword "cliente"
+```
+
+<Info>
+  Los elementos de navegación del sistema (ej: vistas de tareas integradas) se excluyen automáticamente. Solo se devuelven las páginas de formulario creadas por el usuario.
+</Info>
+
+<Info>
+  Debe iniciar sesión antes de ejecutar este comando. Ejecute `openyida login` si aún no se ha autenticado.
 </Info>
 
 ### Tipos de campo soportados
