@@ -74,7 +74,7 @@ openyida data query form <appType> <formUuid> \
 | Paramètre | Description |
 |-----------|-------------|
 | `--page N` | Numéro de page (par défaut `1`) |
-| `--size N` | Éléments par page (par défaut `20`, max `100`) |
+| `--size N` | Éléments par page (par défaut `20`, max `100`). Les valeurs supérieures à `100` provoquent une erreur HTTP 500 de l'API ; le CLI ajuste automatiquement la valeur et affiche un avertissement |
 | `--search-json JSON` | Conditions de recherche (doit être un JSON valide) |
 | `--inst-id ID` | Rechercher un enregistrement par ID d'instance |
 | `--ids-only` | Retourner uniquement les ID d'instance |
@@ -84,6 +84,23 @@ openyida data query form <appType> <formUuid> \
 | `--modified-from DATE` | Filtrer les enregistrements modifiés après cette date |
 | `--modified-to DATE` | Filtrer les enregistrements modifiés avant cette date |
 | `--dynamic-order FIELD` | Trier par champ |
+
+<Note>
+  **Paramètre appType :** Lors de l'appel de `this.utils.yida.searchFormDatas` depuis une page personnalisée Yida, vous n'avez pas besoin de passer `appType` — le SDK l'obtient automatiquement du contexte de la page. Lors de l'appel via CLI (`openyida data query form`) ou des requêtes HTTP externes, `appType` est obligatoire (format : `APP_XXXXXXXX`).
+</Note>
+
+<Warning>
+  **Structure de réponse incohérente de searchFormDatas :** L'API Yida peut retourner deux structures de réponse différentes selon le scénario :
+  - **Structure directe** (courante) : `{ data: [...], totalCount, currentPage }`
+  - **Structure imbriquée** (certains scénarios) : `{ content: { data: [...], totalCount, currentPage } }`
+
+  Si vous appelez l'API JS directement, utilisez un pattern défensif pour lire les données :
+  ```javascript
+  var data = (res && res.data) || (res && res.content && res.content.data) || [];
+  var total = (res && res.totalCount) || (res && res.content && res.content.totalCount) || 0;
+  ```
+  Avec la commande CLI `openyida data query form`, ce problème est géré automatiquement — le CLI normalise les réponses vers la structure directe.
+</Warning>
 
 ### Obtenir une seule donnée
 
@@ -347,5 +364,5 @@ openyida data create form <appType> <formUuid> \
 </Warning>
 
 <Info>
-  La requête paginée renvoie par défaut 20 résultats par page, avec un maximum de 100. Pour l'export de grandes quantités de données, il est recommandé d'utiliser la pagination en boucle.
+  La requête paginée renvoie par défaut 20 résultats par page, avec un maximum de 100. Un `pageSize` supérieur à 100 provoque une erreur HTTP 500 de l'API. Le CLI ajuste automatiquement les valeurs supérieures à 100 et affiche un avertissement. Pour l'export de grandes quantités de données, il est recommandé d'utiliser la pagination en boucle.
 </Info>

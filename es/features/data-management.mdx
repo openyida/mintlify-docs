@@ -74,7 +74,7 @@ openyida data query form <appType> <formUuid> \
 | Parámetro | Descripción |
 |-----------|-------------|
 | `--page N` | Número de página (por defecto `1`) |
-| `--size N` | Elementos por página (por defecto `20`, máx `100`) |
+| `--size N` | Elementos por página (por defecto `20`, máx `100`). Valores superiores a `100` provocan un error HTTP 500 de la API; el CLI ajusta automáticamente el valor y muestra una advertencia |
 | `--search-json JSON` | Condiciones de búsqueda (debe ser JSON válido, ver [formato de condiciones de consulta](#formato-de-condiciones-de-consulta)) |
 | `--inst-id ID` | Consultar un registro por ID de instancia |
 | `--ids-only` | Devolver solo IDs de instancia |
@@ -84,6 +84,23 @@ openyida data query form <appType> <formUuid> \
 | `--modified-from DATE` | Filtrar registros modificados después de esta fecha |
 | `--modified-to DATE` | Filtrar registros modificados antes de esta fecha |
 | `--dynamic-order FIELD` | Ordenar por campo |
+
+<Note>
+  **Parámetro appType:** Al llamar a `this.utils.yida.searchFormDatas` desde una página personalizada de Yida, no necesitas pasar `appType` — el SDK lo obtiene automáticamente del contexto de la página. Al llamar mediante CLI (`openyida data query form`) o solicitudes HTTP externas, `appType` es obligatorio (formato: `APP_XXXXXXXX`).
+</Note>
+
+<Warning>
+  **Estructura de respuesta inconsistente de searchFormDatas:** La API de Yida puede devolver dos estructuras de respuesta diferentes según el escenario:
+  - **Estructura directa** (común): `{ data: [...], totalCount, currentPage }`
+  - **Estructura anidada** (algunos escenarios): `{ content: { data: [...], totalCount, currentPage } }`
+
+  Si llamas a la API JS directamente, usa un patrón defensivo para leer los datos:
+  ```javascript
+  var data = (res && res.data) || (res && res.content && res.content.data) || [];
+  var total = (res && res.totalCount) || (res && res.content && res.content.totalCount) || 0;
+  ```
+  Con el comando CLI `openyida data query form`, esto se maneja automáticamente — el CLI normaliza las respuestas a la estructura directa.
+</Warning>
 
 ### Obtener un solo registro
 
@@ -349,5 +366,5 @@ openyida data create form <appType> <formUuid> \
 </Warning>
 
 <Info>
-  La consulta paginada tiene un valor predeterminado de 20 registros por página, máximo 100. Para exportar grandes cantidades de datos, se recomienda usar bucle de paginación.
+  La consulta paginada tiene un valor predeterminado de 20 registros por página, máximo 100. Un `pageSize` superior a 100 causa un error HTTP 500 de la API. El CLI ajusta automáticamente los valores superiores a 100 y muestra una advertencia. Para exportar grandes cantidades de datos, se recomienda usar bucle de paginación.
 </Info>

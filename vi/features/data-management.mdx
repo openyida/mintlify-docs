@@ -74,7 +74,7 @@ openyida data query form <appType> <formUuid> \
 | Tham số | Mô tả |
 |---------|-------|
 | `--page N` | Số trang (mặc định `1`) |
-| `--size N` | Số mục mỗi trang (mặc định `20`, tối đa `100`) |
+| `--size N` | Số mục mỗi trang (mặc định `20`, tối đa `100`). Giá trị trên `100` gây ra lỗi HTTP 500 từ API; CLI tự động điều chỉnh giá trị và hiển thị cảnh báo |
 | `--search-json JSON` | Điều kiện tìm kiếm (phải là JSON hợp lệ) |
 | `--inst-id ID` | Truy vấn bản ghi theo ID thực thể |
 | `--ids-only` | Chỉ trả về ID thực thể |
@@ -82,6 +82,23 @@ openyida data query form <appType> <formUuid> \
 | `--create-from DATE` / `--create-to DATE` | Lọc theo ngày tạo |
 | `--modified-from DATE` / `--modified-to DATE` | Lọc theo ngày sửa đổi |
 | `--dynamic-order FIELD` | Sắp xếp theo trường |
+
+<Note>
+  **Tham số appType:** Khi gọi `this.utils.yida.searchFormDatas` từ bên trong trang tùy chỉnh Yida, bạn không cần truyền `appType` — SDK tự động lấy từ ngữ cảnh trang. Khi gọi qua CLI (`openyida data query form`) hoặc yêu cầu HTTP bên ngoài, `appType` là bắt buộc (định dạng: `APP_XXXXXXXX`).
+</Note>
+
+<Warning>
+  **Cấu trúc phản hồi searchFormDatas không nhất quán:** API Yida có thể trả về hai cấu trúc phản hồi khác nhau tùy theo tình huống:
+  - **Cấu trúc trực tiếp** (phổ biến): `{ data: [...], totalCount, currentPage }`
+  - **Cấu trúc lồng nhau** (một số tình huống): `{ content: { data: [...], totalCount, currentPage } }`
+
+  Nếu bạn gọi JS API trực tiếp, hãy sử dụng mẫu phòng thủ để đọc dữ liệu:
+  ```javascript
+  var data = (res && res.data) || (res && res.content && res.content.data) || [];
+  var total = (res && res.totalCount) || (res && res.content && res.content.totalCount) || 0;
+  ```
+  Khi sử dụng lệnh CLI `openyida data query form`, vấn đề này được xử lý tự động — CLI chuẩn hóa phản hồi về cấu trúc trực tiếp.
+</Warning>
 
 ### Lấy một bản ghi
 
@@ -350,5 +367,5 @@ openyida data create form <appType> <formUuid> \
 </Warning>
 
 <Info>
-  Truy vấn phân trang mặc định 20 bản ghi mỗi trang, tối đa 100. Để xuất lượng lớn dữ liệu, khuyến nghị sử dụng vòng lặp phân trang.
+  Truy vấn phân trang mặc định 20 bản ghi mỗi trang, tối đa 100. Giá trị `pageSize` trên 100 gây ra lỗi HTTP 500 từ API. CLI tự động điều chỉnh giá trị trên 100 và hiển thị cảnh báo. Để xuất lượng lớn dữ liệu, khuyến nghị sử dụng vòng lặp phân trang.
 </Info>

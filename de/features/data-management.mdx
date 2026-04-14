@@ -74,7 +74,7 @@ openyida data query form <appType> <formUuid> \
 | Parameter | Beschreibung |
 |-----------|-------------|
 | `--page N` | Seitennummer (Standard `1`) |
-| `--size N` | Einträge pro Seite (Standard `20`, max `100`) |
+| `--size N` | Einträge pro Seite (Standard `20`, max `100`). Werte über `100` verursachen einen HTTP 500-Fehler der API; das CLI kürzt den Wert automatisch und gibt eine Warnung aus |
 | `--search-json JSON` | Suchbedingungen (muss gültiges JSON sein) |
 | `--inst-id ID` | Einzelnen Datensatz nach Instanz-ID abfragen |
 | `--ids-only` | Nur Instanz-IDs zurückgeben |
@@ -84,6 +84,23 @@ openyida data query form <appType> <formUuid> \
 | `--modified-from DATE` | Nach Änderungsdatum filtern (ab) |
 | `--modified-to DATE` | Nach Änderungsdatum filtern (bis) |
 | `--dynamic-order FIELD` | Nach Feld sortieren |
+
+<Note>
+  **appType-Parameter:** Beim Aufruf von `this.utils.yida.searchFormDatas` innerhalb einer Yida-Custompage müssen Sie `appType` nicht übergeben — das SDK ermittelt ihn automatisch aus dem Seitenkontext. Beim Aufruf über CLI (`openyida data query form`) oder externe HTTP-Anfragen ist `appType` erforderlich (Format: `APP_XXXXXXXX`).
+</Note>
+
+<Warning>
+  **Inkonsistente searchFormDatas-Antwortstruktur:** Die Yida-API kann je nach Szenario zwei verschiedene Antwortstrukturen zurückgeben:
+  - **Direkte Struktur** (häufig): `{ data: [...], totalCount, currentPage }`
+  - **Verschachtelte Struktur** (einige Szenarien): `{ content: { data: [...], totalCount, currentPage } }`
+
+  Wenn Sie die JS-API direkt aufrufen, verwenden Sie ein defensives Muster zum Lesen der Daten:
+  ```javascript
+  var data = (res && res.data) || (res && res.content && res.content.data) || [];
+  var total = (res && res.totalCount) || (res && res.content && res.content.totalCount) || 0;
+  ```
+  Bei Verwendung des CLI-Befehls `openyida data query form` wird dies automatisch behandelt — das CLI normalisiert Antworten zur direkten Struktur.
+</Warning>
 
 ### Einzelne Daten abrufen
 
@@ -349,5 +366,5 @@ openyida data create form <appType> <formUuid> \
 </Warning>
 
 <Info>
-  Paginierte Abfragen geben standardmäßig 20 Ergebnisse pro Seite zurück, maximal 100. Für den Export großer Datenmengen wird die Verwendung von Schleifen-Pagination empfohlen.
+  Paginierte Abfragen geben standardmäßig 20 Ergebnisse pro Seite zurück, maximal 100. Ein `pageSize`-Wert über 100 führt zu einem HTTP 500-Fehler der API. Das CLI kürzt Werte über 100 automatisch und gibt eine Warnung aus. Für den Export großer Datenmengen wird die Verwendung von Schleifen-Pagination empfohlen.
 </Info>

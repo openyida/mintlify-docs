@@ -74,7 +74,7 @@ openyida data query form <appType> <formUuid> \
 | Parameter | Description |
 |-----------|-------------|
 | `--page N` | Page number (default `1`) |
-| `--size N` | Items per page (default `20`, max `100`) |
+| `--size N` | Items per page (default `20`, max `100`). Values above `100` cause an HTTP 500 error from the API; the CLI automatically clamps the value and warns |
 | `--search-json JSON` | Query conditions (must be valid JSON, see [query condition format](#query-condition-format)) |
 | `--inst-id ID` | Query a single instance by ID |
 | `--ids-only` | Return only instance IDs instead of full data |
@@ -84,6 +84,23 @@ openyida data query form <appType> <formUuid> \
 | `--modified-from DATE` | Filter records modified on or after this date |
 | `--modified-to DATE` | Filter records modified on or before this date |
 | `--dynamic-order FIELD` | Sort results by a field |
+
+<Note>
+  **appType parameter:** When calling `this.utils.yida.searchFormDatas` from within a Yida custom page, you do not need to pass `appType` — the SDK obtains it automatically from the page context. When calling via CLI (`openyida data query form`) or external HTTP requests, `appType` is required (format: `APP_XXXXXXXX`).
+</Note>
+
+<Warning>
+  **Inconsistent searchFormDatas response structure:** The Yida API may return two different response shapes depending on the scenario:
+  - **Direct structure** (common): `{ data: [...], totalCount, currentPage }`
+  - **Nested structure** (some scenarios): `{ content: { data: [...], totalCount, currentPage } }`
+
+  If you call the JS API directly, use a defensive pattern to read data:
+  ```javascript
+  var data = (res && res.data) || (res && res.content && res.content.data) || [];
+  var total = (res && res.totalCount) || (res && res.content && res.content.totalCount) || 0;
+  ```
+  When using the `openyida data query form` CLI command, this is handled automatically — the CLI normalizes responses to the direct structure.
+</Warning>
 
 ### Get a single record
 
@@ -349,5 +366,5 @@ openyida data create form <appType> <formUuid> \
 </Warning>
 
 <Info>
-  Paginated queries default to 20 records per page, with a maximum of 100. For large data exports, use a loop with pagination.
+  Paginated queries default to 20 records per page, with a maximum of 100. Setting `pageSize` above 100 causes the API to return an HTTP 500 error. The CLI automatically clamps values exceeding 100 to 100 and issues a warning. For large data exports, use a loop with pagination.
 </Info>
