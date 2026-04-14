@@ -311,6 +311,49 @@ Thứ tự ưu tiên cho **URL chi tiết di động**:
 }
 ```
 
+### Xử lý lỗi và thử lại
+
+Nếu cấu hình quy trình thất bại nhưng biểu mẫu đã được tạo, lệnh sẽ hiển thị gợi ý thử lại với cờ `--formUuid` để bạn có thể tái sử dụng biểu mẫu mà không cần tạo lại:
+
+```bash
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+```
+
+Hữu ích khi:
+- Tệp định nghĩa quy trình có lỗi cần sửa trước khi thử lại.
+- Lỗi mạng hoặc API tạm thời làm gián đoạn bước cấu hình.
+
+Lệnh xuất kết quả JSON ra `stdout`. Khi thành công:
+
+```json
+{
+  "success": true,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "processCode": "TPROC-XXXXX",
+  "url": "https://www.aliwork.com/APP_XXXXX/workbench/FORM-XXXXX"
+}
+```
+
+Khi thất bại (ví dụ: cấu hình quy trình thất bại):
+
+```json
+{
+  "success": false,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "error": "Failed to configure process: <error details>"
+}
+```
+
+<Tip>
+  Khi bạn thấy thông báo lỗi có chứa `formUuid` trong đầu ra, hãy sử dụng cờ `--formUuid` để thử lại mà không cần tạo lại biểu mẫu.
+</Tip>
+
 ---
 
 ## Quản lý quyền hạn

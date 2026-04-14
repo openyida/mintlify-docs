@@ -310,6 +310,49 @@ The resolution order for the **mobile detail URL** is:
 }
 ```
 
+### Error handling and retry
+
+If process configuration fails after the form has already been created, the command outputs a retry hint with the `--formUuid` flag so you can reuse the form without recreating it:
+
+```bash
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+```
+
+This is useful when:
+- The process definition file contains errors that need to be fixed before retrying.
+- A transient network or API failure interrupted the configuration step.
+
+The command outputs a JSON result to `stdout`. On success:
+
+```json
+{
+  "success": true,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "processCode": "TPROC-XXXXX",
+  "url": "https://www.aliwork.com/APP_XXXXX/workbench/FORM-XXXXX"
+}
+```
+
+On failure (for example, when process configuration fails):
+
+```json
+{
+  "success": false,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "error": "Failed to configure process: <error details>"
+}
+```
+
+<Tip>
+  When you see a failure with a `formUuid` in the output, use the `--formUuid` flag to retry without recreating the form.
+</Tip>
+
 ---
 
 ## Permission management

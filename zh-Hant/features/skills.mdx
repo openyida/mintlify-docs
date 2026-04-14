@@ -310,6 +310,49 @@ openyida configure-process <appType> <formUuid> <processDefinitionFile> [process
 }
 ```
 
+### 錯誤處理與重試
+
+如果流程設定失敗但表單已建立完成，命令會輸出重試提示，並附帶 `--formUuid` 參數，方便你複用已建立的表單而無需重新建立：
+
+```bash
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+```
+
+適用場景：
+- 流程定義檔案存在錯誤，需要修正後重試。
+- 網路或 API 臨時故障導致設定步驟中斷。
+
+命令會將 JSON 結果輸出到 `stdout`。成功時：
+
+```json
+{
+  "success": true,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "processCode": "TPROC-XXXXX",
+  "url": "https://www.aliwork.com/APP_XXXXX/workbench/FORM-XXXXX"
+}
+```
+
+失敗時（例如流程設定失敗）：
+
+```json
+{
+  "success": false,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "error": "Failed to configure process: <error details>"
+}
+```
+
+<Tip>
+  當輸出中包含 `formUuid` 的失敗訊息時，使用 `--formUuid` 參數重試即可避免重複建立表單。
+</Tip>
+
 ---
 
 ## 權限管理
