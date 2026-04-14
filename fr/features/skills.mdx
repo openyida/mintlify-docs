@@ -95,6 +95,9 @@ openyida get-schema <appType> <formUuid>  # Obligatoire avant toute opération u
 
 # Mettre à jour la configuration du formulaire
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+
+# Lister les pages de formulaire d'une application
+openyida list-forms <appType> [--keyword <texte>]
 ```
 
 <Warning>
@@ -115,6 +118,70 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
   | `existingDataCount` | `number` | Nombre d'enregistrements existants dans le formulaire |
   | `message` | `string` | Message de confirmation lisible |
   | `hint` | `string` | Indication d'utilisation montrant la syntaxe du drapeau `--force` |
+</Info>
+
+### Lister les pages de formulaire
+
+Récupère toutes les pages de formulaire d'une application, avec filtrage optionnel par mot-clé. La commande affiche un tableau JSON sur stdout.
+
+```bash
+openyida list-forms <appType> [--keyword <texte>]
+```
+
+| Argument | Description |
+|----------|-------------|
+| `<appType>` | ID de l'application (ex : `APP_XXXXX`) |
+
+| Option | Description | Par défaut |
+|--------|-------------|------------|
+| `--keyword <texte>` | Filtrer par nom, UUID, type ou chemin du formulaire (insensible à la casse) | — |
+
+#### Sortie
+
+La commande affiche un tableau JSON sur stdout. Chaque entrée a la forme suivante :
+
+| Champ | Type | Description |
+|-------|------|-------------|
+| `formUuid` | `string` | Identifiant unique du formulaire |
+| `formName` | `string` | Nom localisé du formulaire |
+| `formType` | `string` | Type de formulaire (ex : `display`, `process`) |
+| `pathName` | `string` | Chemin URL du formulaire |
+
+**Exemple de sortie :**
+
+```json
+[
+  {
+    "formUuid": "FORM-AAA",
+    "formName": "Informations client",
+    "formType": "display",
+    "pathName": "customer-info"
+  },
+  {
+    "formUuid": "FORM-BBB",
+    "formName": "Note de frais",
+    "formType": "process",
+    "pathName": "expense"
+  }
+]
+```
+
+**Exemples :**
+
+```bash
+# Lister tous les formulaires d'une application
+openyida list-forms APP_XXXXX
+
+# Filtrer par mot-clé
+openyida list-forms APP_XXXXX --keyword "client"
+```
+
+<Info>
+  Les éléments de navigation système (ex : vues de tâches intégrées) sont automatiquement exclus. Seules les pages de formulaire créées par l'utilisateur sont retournées.
+</Info>
+
+<Info>
+  Vous devez être connecté avant d'exécuter cette commande. Exécutez `openyida login` si vous ne vous êtes pas encore authentifié.
 </Info>
 
 ### Types de champs supportés

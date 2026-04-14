@@ -95,6 +95,9 @@ openyida get-schema <appType> <formUuid>  # 필드 ID를 사용하는 모든 작
 
 # 양식 구성 업데이트
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+
+# 앱 내 양식 페이지 목록
+openyida list-forms <appType> [--keyword <텍스트>]
 ```
 
 <Warning>
@@ -115,6 +118,70 @@ openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
   | `existingDataCount` | `number` | 양식의 기존 레코드 수 |
   | `message` | `string` | 사람이 읽을 수 있는 확인 메시지 |
   | `hint` | `string` | `--force` 플래그 사용법을 보여주는 힌트 |
+</Info>
+
+### 양식 페이지 목록
+
+지정된 애플리케이션 내의 모든 양식 페이지를 조회합니다. 선택적으로 키워드 필터링을 지원합니다. 명령은 JSON 배열을 stdout에 출력합니다.
+
+```bash
+openyida list-forms <appType> [--keyword <텍스트>]
+```
+
+| 인수 | 설명 |
+|------|------|
+| `<appType>` | 애플리케이션 ID (예: `APP_XXXXX`) |
+
+| 옵션 | 설명 | 기본값 |
+|------|------|--------|
+| `--keyword <텍스트>` | 양식 이름, UUID, 유형 또는 경로 이름으로 필터링 (대소문자 구분 없음) | — |
+
+#### 출력
+
+명령은 stdout에 JSON 배열을 출력합니다. 각 항목에는 다음 필드가 포함됩니다:
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| `formUuid` | `string` | 양식 고유 식별자 |
+| `formName` | `string` | 현지화된 양식 이름 |
+| `formType` | `string` | 양식 유형 (예: `display`, `process`) |
+| `pathName` | `string` | 양식의 URL 경로 이름 |
+
+**출력 예시:**
+
+```json
+[
+  {
+    "formUuid": "FORM-AAA",
+    "formName": "고객 정보",
+    "formType": "display",
+    "pathName": "customer-info"
+  },
+  {
+    "formUuid": "FORM-BBB",
+    "formName": "비용 정산",
+    "formType": "process",
+    "pathName": "expense"
+  }
+]
+```
+
+**사용 예시:**
+
+```bash
+# 앱 내 모든 양식 목록
+openyida list-forms APP_XXXXX
+
+# 키워드로 필터링
+openyida list-forms APP_XXXXX --keyword "고객"
+```
+
+<Info>
+  시스템 내비게이션 항목(내장 작업 보기 등)은 자동으로 제외됩니다. 사용자가 생성한 양식 페이지만 출력됩니다.
+</Info>
+
+<Info>
+  이 명령을 실행하기 전에 로그인이 필요합니다. 아직 인증하지 않았다면 먼저 `openyida login`을 실행하세요.
 </Info>
 
 ### 지원되는 필드 유형
