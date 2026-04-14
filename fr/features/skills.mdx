@@ -287,7 +287,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # Configurer et publier le processus
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# Aperçu d'instance de processus (organigramme visuel)
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### Aperçu d'instance de processus
+
+Génère un organigramme HTML interactif pour une instance de processus en cours ou terminée. L'organigramme met en évidence les statuts des nœuds — terminé (vert), nœud actuel (pulsation bleue), en attente (gris), ignoré (ligne pointillée) — et affiche les détails de l'approbateur et les horodatages au survol.
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| Argument | Description |
+|----------|-------------|
+| `<appType>` | ID de l'application (ex. `APP_XXXXX`) |
+| `<processInstanceId>` | ID de l'instance de processus à visualiser |
+
+| Option | Alias | Description | Par défaut |
+|--------|-------|-------------|-----------|
+| `--output` | `-o` | Chemin de sortie du fichier HTML généré | Généré automatiquement dans le répertoire courant |
+
+La commande récupère les détails de l'instance de processus et les enregistrements des opérations d'approbation, puis génère un fichier HTML basé sur SVG et l'ouvre dans le navigateur par défaut.
+
+**Exemple :**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  Vous devez être connecté avant d'exécuter cette commande. Exécutez d'abord `openyida login` si vous n'êtes pas encore authentifié.
+</Info>
 
 ### Propriétés d'URL de page de détails dans la définition de processus
 

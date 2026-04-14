@@ -288,7 +288,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # प्रक्रिया कॉन्फ़िगर और प्रकाशित करें
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# प्रक्रिया इंस्टेंस का पूर्वावलोकन (विज़ुअल फ़्लोचार्ट)
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### प्रक्रिया इंस्टेंस का पूर्वावलोकन
+
+चल रहे या पूर्ण हुए प्रक्रिया इंस्टेंस के लिए एक इंटरैक्टिव HTML फ़्लोचार्ट बनाता है। फ़्लोचार्ट नोड की स्थिति को हाइलाइट करता है — पूर्ण (हरा), वर्तमान नोड (नीला पल्स), लंबित (ग्रे), छोड़ा गया (बिंदीदार रेखा) — और होवर पर अनुमोदक विवरण और टाइमस्टैम्प दिखाता है।
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| आर्ग्यूमेंट | विवरण |
+|-------------|--------|
+| `<appType>` | एप्लिकेशन ID (उदाहरण: `APP_XXXXX`) |
+| `<processInstanceId>` | विज़ुअलाइज़ करने के लिए प्रक्रिया इंस्टेंस ID |
+
+| विकल्प | उपनाम | विवरण | डिफ़ॉल्ट |
+|--------|--------|--------|----------|
+| `--output` | `-o` | जनरेट किए गए HTML फ़ाइल का आउटपुट पथ | वर्तमान डायरेक्टरी में स्वतः जनरेट |
+
+यह कमांड प्रक्रिया इंस्टेंस विवरण और अनुमोदन ऑपरेशन रिकॉर्ड प्राप्त करता है, फिर SVG-आधारित HTML फ़ाइल बनाता है और उसे डिफ़ॉल्ट ब्राउज़र में खोलता है।
+
+**उदाहरण:**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  इस कमांड को चलाने से पहले लॉगिन करना आवश्यक है। यदि आपने अभी तक प्रमाणीकरण नहीं किया है, तो पहले `openyida login` चलाएं।
+</Info>
 
 ### प्रक्रिया परिभाषा विवरण पृष्ठ URL गुण
 

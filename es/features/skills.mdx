@@ -288,7 +288,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # Configurar y publicar proceso
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# Vista previa de instancia de proceso (diagrama de flujo visual)
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### Vista previa de instancia de proceso
+
+Genera un diagrama de flujo HTML interactivo para una instancia de proceso en ejecución o completada. El diagrama resalta los estados de los nodos — completado (verde), nodo actual (pulso azul), pendiente (gris), omitido (línea discontinua) — y muestra los detalles del aprobador y marcas de tiempo al pasar el cursor.
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| Argumento | Descripción |
+|-----------|-------------|
+| `<appType>` | ID de la aplicación (ej. `APP_XXXXX`) |
+| `<processInstanceId>` | ID de la instancia de proceso a visualizar |
+
+| Opción | Alias | Descripción | Predeterminado |
+|--------|-------|-------------|----------------|
+| `--output` | `-o` | Ruta de salida del archivo HTML generado | Generado automáticamente en el directorio actual |
+
+El comando obtiene los detalles de la instancia de proceso y los registros de operaciones de aprobación, luego genera un archivo HTML basado en SVG y lo abre en el navegador predeterminado.
+
+**Ejemplo:**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  Debe iniciar sesión antes de ejecutar este comando. Ejecute `openyida login` primero si aún no se ha autenticado.
+</Info>
 
 ### Propiedades de URL de página de detalle en la definición de proceso
 

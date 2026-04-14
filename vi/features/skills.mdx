@@ -288,7 +288,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # Cấu hình và xuất bản quy trình
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# Xem trước phiên bản quy trình (sơ đồ luồng trực quan)
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### Xem trước phiên bản quy trình
+
+Tạo sơ đồ luồng HTML tương tác cho một phiên bản quy trình đang chạy hoặc đã hoàn thành. Sơ đồ đánh dấu trạng thái các nút — hoàn thành (xanh lá), nút hiện tại (xung xanh dương), chờ xử lý (xám), bỏ qua (đường nét đứt) — và hiển thị chi tiết người phê duyệt và dấu thời gian khi di chuột qua.
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| Đối số | Mô tả |
+|--------|-------|
+| `<appType>` | ID ứng dụng (ví dụ: `APP_XXXXX`) |
+| `<processInstanceId>` | ID phiên bản quy trình cần trực quan hóa |
+
+| Tùy chọn | Viết tắt | Mô tả | Mặc định |
+|-----------|----------|-------|----------|
+| `--output` | `-o` | Đường dẫn xuất file HTML được tạo | Tự động tạo trong thư mục hiện tại |
+
+Lệnh này lấy chi tiết phiên bản quy trình và bản ghi hoạt động phê duyệt, sau đó tạo file HTML dựa trên SVG và mở trong trình duyệt mặc định.
+
+**Ví dụ:**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  Bạn phải đăng nhập trước khi chạy lệnh này. Chạy `openyida login` trước nếu bạn chưa xác thực.
+</Info>
 
 ### Thuộc tính URL trang chi tiết trong định nghĩa quy trình
 

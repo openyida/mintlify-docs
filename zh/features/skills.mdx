@@ -288,7 +288,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # 配置并发布流程
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# 预览流程实例（可视化流程图）
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### 流程实例预览
+
+为运行中或已完成的流程实例生成交互式 HTML 流程图。流程图会高亮显示节点状态——已完成（绿色）、当前节点（蓝色脉冲）、未到达（灰色）、被跳过（虚线）——并在悬停时显示审批人详情和时间戳。
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| 参数 | 说明 |
+|------|------|
+| `<appType>` | 应用 ID（例如 `APP_XXXXX`） |
+| `<processInstanceId>` | 要可视化的流程实例 ID |
+
+| 选项 | 别名 | 说明 | 默认值 |
+|------|------|------|--------|
+| `--output` | `-o` | 生成的 HTML 文件输出路径 | 在当前目录自动生成 |
+
+该命令会获取流程实例详情和审批操作记录，然后生成基于 SVG 的 HTML 文件并在默认浏览器中打开。
+
+**示例：**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  运行此命令前需要先登录。如果尚未认证，请先运行 `openyida login`。
+</Info>
 
 ### 流程定义详情页 URL 属性
 

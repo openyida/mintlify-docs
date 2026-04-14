@@ -287,7 +287,40 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 # Configure and publish process
 openyida configure-process <appType> <formUuid> <processDefinitionFile> [processCode]
+
+# Preview process instance (visual flowchart)
+openyida process preview <appType> <processInstanceId> [--output <path>]
 ```
+
+### Process instance preview
+
+Generate an interactive HTML flowchart for a running or completed process instance. The flowchart highlights node statuses — completed (green), current (blue pulse), pending (grey), and skipped (dashed) — and shows approver details and timestamps on hover.
+
+```bash
+openyida process preview <appType> <processInstanceId> [--output <path>]
+```
+
+| Argument | Description |
+|----------|-------------|
+| `<appType>` | Application ID (e.g. `APP_XXXXX`) |
+| `<processInstanceId>` | Process instance ID to visualize |
+
+| Option | Alias | Description | Default |
+|--------|-------|-------------|---------|
+| `--output` | `-o` | Output file path for the generated HTML | Auto-generated in current directory |
+
+The command fetches the process instance details and operation records, then generates an SVG-based HTML file and opens it in your default browser.
+
+**Example:**
+
+```bash
+openyida process preview APP_XXXXX proc-inst-id-xxx
+openyida process preview APP_XXXXX proc-inst-id-xxx --output flowchart.html
+```
+
+<Info>
+  You must be logged in before running this command. Run `openyida login` first if you have not authenticated.
+</Info>
 
 ### Process definition detail URL properties
 
