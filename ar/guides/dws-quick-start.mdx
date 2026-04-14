@@ -1,0 +1,286 @@
+---
+title: "دليل البدء السريع لـ DingTalk CLI"
+description: "قم بإعداد DingTalk CLI في 5 دقائق وابدأ بالبحث عن جهات الاتصال وإنشاء المهام والاستعلام عن الحضور وإدارة التقويم."
+icon: "rocket"
+---
+
+## البدء السريع في 5 دقائق
+
+<Steps>
+  <Step title="تثبيت DingTalk CLI">
+    ```bash
+    openyida dws install
+    ```
+
+    أو التثبيت يدويًا:
+
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+    ```
+  </Step>
+
+  <Step title="إنشاء تطبيق DingTalk">
+    1. قم بزيارة [منصة DingTalk المفتوحة](https://dev.dingtalk.com/)
+    2. انتقل إلى "التطبيقات الداخلية" ← "إنشاء تطبيق"
+    3. أدخل المعلومات الأساسية للتطبيق
+    4. في "إعدادات الأمان"، أضف عنوان إعادة التوجيه: `http://127.0.0.1`
+    5. انشر إصدار التطبيق
+  </Step>
+
+  <Step title="الحصول على بيانات الاعتماد">
+    احصل على ما يلي من صفحة تفاصيل التطبيق:
+
+    - **Client ID** (AppKey)
+    - **Client Secret** (AppSecret)
+  </Step>
+
+  <Step title="تكوين بيانات الاعتماد">
+    **الطريقة الأولى: متغيرات البيئة (موصى بها)**
+
+    ```bash
+    export DWS_CLIENT_ID="your-client-id"
+    export DWS_CLIENT_SECRET="your-client-secret"
+    ```
+
+    **الطريقة الثانية: معلمات الأمر**
+
+    ```bash
+    openyida dws auth login --client-id your-client-id --client-secret your-client-secret
+    ```
+  </Step>
+
+  <Step title="تسجيل الدخول">
+    ```bash
+    openyida dws auth login
+    ```
+
+    اتبع التعليمات لإكمال مصادقة OAuth عبر تدفق الجهاز.
+  </Step>
+</Steps>
+
+## سيناريوهات الاستخدام الشائعة
+
+### السيناريو 1: البحث عن جهات الاتصال
+
+```bash
+# بحث أساسي
+openyida dws contact user search --keyword "張三"
+
+# إخراج JSON (مناسب لـ AI Agent)
+openyida dws contact user search --keyword "張三" -f json
+
+# حفظ في ملف
+openyida dws contact user search --keyword "張三" -o contacts.json
+```
+
+### السيناريو 2: إنشاء المهام
+
+```bash
+# إنشاء مهمة شخصية
+openyida dws todo task create --title "准备周报" --executors "your-userid"
+
+# إنشاء مهمة فريق
+openyida dws todo task create --title "项目评审" --executors "userid1,userid2,userid3"
+
+# عرض جميع المهام
+openyida dws todo task list
+```
+
+### السيناريو 3: الاستعلام عن سجلات الحضور
+
+```bash
+# الاستعلام عن سجل الحضور اليوم
+openyida dws attendance record list
+
+# الاستعلام عن حضور مستخدم محدد
+openyida dws attendance record list --userids "your-userid"
+```
+
+### السيناريو 4: إدارة أحداث التقويم
+
+```bash
+# عرض أحداث اليوم
+openyida dws calendar event list
+
+# إنشاء اجتماع
+openyida dws calendar event create \
+  --title "الاجتماع الأسبوعي" \
+  --start-time "2026-03-29T10:00:00+08:00" \
+  --end-time "2026-03-29T11:00:00+08:00" \
+  --participants "userid1,userid2"
+
+# الاستعلام عن حالة التوفر
+openyida dws calendar free-busy query \
+  --userids "userid1,userid2" \
+  --start-time "2026-03-29T09:00:00+08:00" \
+  --end-time "2026-03-29T18:00:00+08:00"
+```
+
+### السيناريو 5: إرسال رسائل الروبوت
+
+```bash
+# إرسال رسالة نصية
+openyida dws chat robot send --content "مرحبًا بالجميع، لا تنسوا تقديم التقرير الأسبوعي!"
+
+# إرسال رسالة Markdown
+openyida dws chat robot send --content "## إشعار اجتماع\nالوقت: اليوم الساعة 3 مساءً\nالمكان: قاعة الاجتماعات A"
+```
+
+### السيناريو 6: إدارة عمليات الموافقة
+
+```bash
+# عرض جميع طلبات الموافقة
+openyida dws approval instance list
+
+# إنشاء طلب إجازة
+openyida dws approval instance create \
+  --processCode "leave" \
+  --formData '{"duration": "3", "reason": "事假"}'
+
+# عرض تفاصيل الموافقة
+openyida dws approval instance get --instanceId "INSTANCE-123"
+```
+
+## أمثلة على تكامل AI Agent
+
+### الاستدعاء التلقائي من Cursor/Claude Code
+
+```javascript
+// الاستخدام المباشر في الكود
+const { execSync } = require('child_process');
+
+// البحث عن جهات الاتصال
+const result = execSync('openyida dws contact user search --keyword "悟空" -f json', {
+  encoding: 'utf8'
+});
+const users = JSON.parse(result);
+console.log(users);
+
+// إنشاء مهمة
+execSync('openyida dws todo task create --title "代码审查" --executors "userId123"', {
+  stdio: 'inherit'
+});
+```
+
+### تكامل MCP Server
+
+يدعم DingTalk CLI بروتوكول MCP أصليًا، ويمكن استخدامه كخادم MCP:
+
+```json
+{
+  "mcpServers": {
+    "dws": {
+      "command": "dws",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+## نصائح لتصحيح الأخطاء
+
+### 1. معاينة العملية (بدون تنفيذ)
+
+```bash
+openyida dws todo task list --dry-run
+```
+
+### 2. عرض السجلات التفصيلية
+
+```bash
+openyida dws contact user search --keyword "張三" --debug
+```
+
+### 3. التحقق من الإصدار
+
+```bash
+openyida dws version
+```
+
+### 4. عرض التكوين
+
+```bash
+openyida dws config list
+```
+
+## استكشاف المشكلات الشائعة وإصلاحها
+
+### س1: ظهور رسالة "الأمر غير موجود"
+
+```bash
+# تحقق من تثبيت dws
+which dws
+
+# إذا لم يكن مثبتًا، قم بتنفيذ
+openyida dws install
+```
+
+### س2: ظهور رسالة "فشل المصادقة"
+
+```bash
+# تحقق من حالة تسجيل الدخول
+openyida dws auth status
+
+# أعد تسجيل الدخول
+openyida dws auth login
+```
+
+### س3: ظهور رسالة "صلاحيات غير كافية"
+
+تأكد مما يلي:
+
+1. أن تطبيق DingTalk قد تم نشره
+2. أن مدير المؤسسة قد منح الإذن
+3. أن بيانات الاعتماد مكوّنة بشكل صحيح
+
+### س4: فشل تحليل JSON
+
+<Tip>
+استخدم دائمًا المعلمة `-f json` للحصول على إخراج منظم.
+</Tip>
+
+```bash
+openyida dws contact user search --keyword "張三" -f json
+```
+
+## الخطوات التالية
+
+- عرض قائمة الأوامر الكاملة: `openyida dws help`
+- عرض مساعدة خدمة محددة: `openyida dws contact --help`
+- الرجوع إلى الوثائق التفصيلية: [دليل DWS CLI](/ar/guides/dws-cli-guide)
+- زيارة الوثائق الرسمية: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli
+
+## نصائح مفيدة
+
+### النصيحة 1: تبسيط الأوامر باستخدام الأسماء المستعارة
+
+```bash
+# أضف إلى ~/.zshrc أو ~/.bashrc
+alias dws='openyida dws'
+
+# يمكنك الآن الاستخدام مباشرة
+dws contact user search --keyword "張三"
+```
+
+### النصيحة 2: دمج الأوامر باستخدام الأنابيب
+
+```bash
+# البحث عن جهة اتصال واستخراج userId
+openyida dws contact user search --keyword "張三" -f json | jq '.[0].userId'
+```
+
+### النصيحة 3: العمليات الدفعية
+
+```bash
+# إنشاء مهام دفعيًا (القراءة من ملف)
+cat tasks.json | while read task; do
+  openyida dws todo task create --title "$task" --executors "userId"
+done
+```
+
+### النصيحة 4: المهام المجدولة
+
+```bash
+# تذكير يومي في الساعة 9 صباحًا لتقديم التقرير اليومي (crontab)
+0 9 * * * openyida dws chat robot send --content "لا تنسوا تقديم التقرير اليومي!" >> /tmp/daily-reminder.log
+```

@@ -1,0 +1,286 @@
+---
+title: "DingTalk CLI त्वरित प्रारंभ गाइड"
+description: "DingTalk CLI को 5 मिनट में सेटअप करें और संपर्क खोज, टू-डू निर्माण, उपस्थिति रिकॉर्ड और कैलेंडर प्रबंधन जैसी सामान्य सुविधाओं का उपयोग शुरू करें।"
+icon: "rocket"
+---
+
+## 5 मिनट में त्वरित शुरुआत
+
+<Steps>
+  <Step title="DingTalk CLI इंस्टॉल करें">
+    ```bash
+    openyida dws install
+    ```
+
+    या मैन्युअल रूप से इंस्टॉल करें:
+
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+    ```
+  </Step>
+
+  <Step title="DingTalk ऐप बनाएं">
+    1. [DingTalk ओपन प्लेटफ़ॉर्म](https://dev.dingtalk.com/) पर जाएं
+    2. "आंतरिक एंटरप्राइज़ ऐप" → "ऐप बनाएं" पर जाएं
+    3. ऐप की बुनियादी जानकारी भरें
+    4. "सुरक्षा सेटिंग्स" में रीडायरेक्ट URL जोड़ें: `http://127.0.0.1`
+    5. ऐप वर्शन प्रकाशित करें
+  </Step>
+
+  <Step title="क्रेडेंशियल प्राप्त करें">
+    ऐप विवरण पृष्ठ से निम्नलिखित प्राप्त करें:
+
+    - **Client ID** (AppKey)
+    - **Client Secret** (AppSecret)
+  </Step>
+
+  <Step title="क्रेडेंशियल कॉन्फ़िगर करें">
+    **विधि 1: एनवायरनमेंट वेरिएबल (अनुशंसित)**
+
+    ```bash
+    export DWS_CLIENT_ID="your-client-id"
+    export DWS_CLIENT_SECRET="your-client-secret"
+    ```
+
+    **विधि 2: कमांड पैरामीटर**
+
+    ```bash
+    openyida dws auth login --client-id your-client-id --client-secret your-client-secret
+    ```
+  </Step>
+
+  <Step title="लॉगिन करें">
+    ```bash
+    openyida dws auth login
+    ```
+
+    निर्देशों का पालन करके OAuth डिवाइस फ़्लो प्रमाणीकरण पूरा करें।
+  </Step>
+</Steps>
+
+## सामान्य उपयोग परिदृश्य
+
+### परिदृश्य 1: संपर्क खोजें
+
+```bash
+# बुनियादी खोज
+openyida dws contact user search --keyword "張三"
+
+# JSON आउटपुट (AI Agent के लिए उपयुक्त)
+openyida dws contact user search --keyword "張三" -f json
+
+# फ़ाइल में सहेजें
+openyida dws contact user search --keyword "張三" -o contacts.json
+```
+
+### परिदृश्य 2: टू-डू आइटम बनाएं
+
+```bash
+# व्यक्तिगत टू-डू बनाएं
+openyida dws todo task create --title "准备周报" --executors "your-userid"
+
+# टीम टू-डू बनाएं
+openyida dws todo task create --title "项目评审" --executors "userid1,userid2,userid3"
+
+# सभी टू-डू की सूची देखें
+openyida dws todo task list
+```
+
+### परिदृश्य 3: उपस्थिति रिकॉर्ड देखें
+
+```bash
+# आज की उपस्थिति रिकॉर्ड देखें
+openyida dws attendance record list
+
+# विशिष्ट उपयोगकर्ता की उपस्थिति देखें
+openyida dws attendance record list --userids "your-userid"
+```
+
+### परिदृश्य 4: कैलेंडर इवेंट प्रबंधित करें
+
+```bash
+# आज के इवेंट की सूची देखें
+openyida dws calendar event list
+
+# मीटिंग बनाएं
+openyida dws calendar event create \
+  --title "साप्ताहिक मीटिंग" \
+  --start-time "2026-03-29T10:00:00+08:00" \
+  --end-time "2026-03-29T11:00:00+08:00" \
+  --participants "userid1,userid2"
+
+# उपलब्धता स्थिति जांचें
+openyida dws calendar free-busy query \
+  --userids "userid1,userid2" \
+  --start-time "2026-03-29T09:00:00+08:00" \
+  --end-time "2026-03-29T18:00:00+08:00"
+```
+
+### परिदृश्य 5: रोबोट संदेश भेजें
+
+```bash
+# टेक्स्ट संदेश भेजें
+openyida dws chat robot send --content "सभी को नमस्कार, साप्ताहिक रिपोर्ट जमा करना न भूलें!"
+
+# Markdown संदेश भेजें
+openyida dws chat robot send --content "## मीटिंग सूचना\nसमय: आज दोपहर 3 बजे\nस्थान: मीटिंग रूम A"
+```
+
+### परिदृश्य 6: अनुमोदन प्रक्रिया प्रबंधन
+
+```bash
+# सभी अनुमोदन इंस्टेंस की सूची देखें
+openyida dws approval instance list
+
+# छुट्टी अनुमोदन बनाएं
+openyida dws approval instance create \
+  --processCode "leave" \
+  --formData '{"duration": "3", "reason": "事假"}'
+
+# अनुमोदन विवरण देखें
+openyida dws approval instance get --instanceId "INSTANCE-123"
+```
+
+## AI Agent एकीकरण उदाहरण
+
+### Cursor/Claude Code से स्वचालित कॉल
+
+```javascript
+// अपने कोड में सीधे उपयोग करें
+const { execSync } = require('child_process');
+
+// संपर्क खोजें
+const result = execSync('openyida dws contact user search --keyword "悟空" -f json', {
+  encoding: 'utf8'
+});
+const users = JSON.parse(result);
+console.log(users);
+
+// टू-डू बनाएं
+execSync('openyida dws todo task create --title "代码审查" --executors "userId123"', {
+  stdio: 'inherit'
+});
+```
+
+### MCP Server एकीकरण
+
+DingTalk CLI मूल रूप से MCP प्रोटोकॉल का समर्थन करता है और इसे MCP Server के रूप में उपयोग किया जा सकता है:
+
+```json
+{
+  "mcpServers": {
+    "dws": {
+      "command": "dws",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+## डिबगिंग सुझाव
+
+### 1. ऑपरेशन का पूर्वावलोकन (निष्पादित किए बिना)
+
+```bash
+openyida dws todo task list --dry-run
+```
+
+### 2. विस्तृत लॉग देखें
+
+```bash
+openyida dws contact user search --keyword "張三" --debug
+```
+
+### 3. वर्शन जांचें
+
+```bash
+openyida dws version
+```
+
+### 4. कॉन्फ़िगरेशन देखें
+
+```bash
+openyida dws config list
+```
+
+## सामान्य समस्या निवारण
+
+### प्र1: "कमांड नहीं मिला" त्रुटि
+
+```bash
+# जांचें कि dws इंस्टॉल है या नहीं
+which dws
+
+# यदि इंस्टॉल नहीं है, तो चलाएं
+openyida dws install
+```
+
+### प्र2: "प्रमाणीकरण विफल" त्रुटि
+
+```bash
+# लॉगिन स्थिति जांचें
+openyida dws auth status
+
+# फिर से लॉगिन करें
+openyida dws auth login
+```
+
+### प्र3: "अपर्याप्त अनुमतियां" त्रुटि
+
+निम्नलिखित सुनिश्चित करें:
+
+1. DingTalk ऐप प्रकाशित हो चुका है
+2. एंटरप्राइज़ एडमिन ने अधिकृत किया है
+3. क्रेडेंशियल सही ढंग से कॉन्फ़िगर किए गए हैं
+
+### प्र4: JSON पार्सिंग विफल
+
+<Tip>
+संरचित आउटपुट प्राप्त करने के लिए हमेशा `-f json` पैरामीटर का उपयोग करें।
+</Tip>
+
+```bash
+openyida dws contact user search --keyword "張三" -f json
+```
+
+## अगले कदम
+
+- पूर्ण कमांड सूची देखें: `openyida dws help`
+- विशिष्ट सेवा सहायता देखें: `openyida dws contact --help`
+- विस्तृत दस्तावेज़ देखें: [DWS CLI गाइड](/hi/guides/dws-cli-guide)
+- आधिकारिक दस्तावेज़ पर जाएं: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli
+
+## उपयोगी सुझाव
+
+### सुझाव 1: एलियास से कमांड सरल बनाएं
+
+```bash
+# ~/.zshrc या ~/.bashrc में जोड़ें
+alias dws='openyida dws'
+
+# अब सीधे उपयोग कर सकते हैं
+dws contact user search --keyword "張三"
+```
+
+### सुझाव 2: पाइप से कमांड जोड़ें
+
+```bash
+# संपर्क खोजें और userId निकालें
+openyida dws contact user search --keyword "張三" -f json | jq '.[0].userId'
+```
+
+### सुझाव 3: बैच ऑपरेशन
+
+```bash
+# बैच में टू-डू बनाएं (फ़ाइल से पढ़ें)
+cat tasks.json | while read task; do
+  openyida dws todo task create --title "$task" --executors "userId"
+done
+```
+
+### सुझाव 4: शेड्यूल्ड टास्क
+
+```bash
+# हर सुबह 9 बजे दैनिक रिपोर्ट जमा करने का रिमाइंडर (crontab)
+0 9 * * * openyida dws chat robot send --content "दैनिक रिपोर्ट जमा करना न भूलें!" >> /tmp/daily-reminder.log
+```

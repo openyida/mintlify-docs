@@ -1,0 +1,233 @@
+---
+title: "Huong dan su dung CLI DingTalk (DWS)"
+description: "Huong dan day du ve cach su dung cong cu CLI DingTalk tich hop trong OpenYida: cai dat, xac thuc, API va cac lenh nang cao."
+icon: "terminal"
+---
+
+## Gioi thieu
+
+OpenYida da tich hop cong cu CLI chinh thuc cua DingTalk (dws). Bay gio ban co the truy cap tat ca cac chuc nang cua khong gian lam viec DingTalk truc tiep thong qua lenh `openyida dws`.
+
+## Cai dat CLI DingTalk
+
+### Phuong phap 1: Cai dat qua openyida (khuyen nghi)
+
+```bash
+openyida dws install
+```
+
+### Phuong phap 2: Cai dat thu cong
+
+**macOS / Linux:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+```
+
+**Windows (PowerShell):**
+```bash
+irm https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.ps1 | iex
+```
+
+## Bat dau nhanh
+
+### 1. Cau hinh thong tin xac thuc ung dung DingTalk
+
+```bash
+export DWS_CLIENT_ID="<your-app-key>"
+export DWS_CLIENT_SECRET="<your-app-secret>"
+```
+
+Ban cung co the chi dinh truc tiep trong lenh:
+```bash
+openyida dws auth login --client-id <your-app-key> --client-secret <your-app-secret>
+```
+
+### 2. Xac thuc
+
+```bash
+openyida dws auth login
+```
+
+### 3. Su dung cac API DingTalk
+
+#### Quan ly danh ba lien lac
+
+```bash
+# Tim kiem lien lac
+openyida dws contact user search --keyword "悟空"
+
+# Liet ke phong ban
+openyida dws contact department list
+
+# Truy van chi tiet nguoi dung
+openyida dws contact user get --userid <userId>
+```
+
+#### Quan ly lich
+
+```bash
+# Liet ke su kien lich
+openyida dws calendar event list
+
+# Tao su kien
+openyita dws calendar event create --title "团队会议" --start-time "2026-03-29T10:00:00Z"
+
+# Truy van trang thai ranh/ban
+openyida dws calendar free-busy query --userids <userId1>,<userId2>
+```
+
+#### Cong viec can lam
+
+```bash
+# Tao cong viec
+openyida dws todo task create --title "准备季度汇报材料" --executors "<userId>"
+
+# Liet ke cong viec
+openyida dws todo task list
+
+# Cap nhat trang thai cong viec
+openyida dws todo task update --taskid <taskId> --status completed
+```
+
+#### Quy trinh phe duyet
+
+```bash
+# Liet ke cac phien ban phe duyet
+openyida dws approval instance list
+
+# Tao phien ban phe duyet
+openyida dws approval instance create --processCode <processCode> --formData <json>
+
+# Lay chi tiet phe duyet
+openyida dws approval instance get --instanceId <instanceId>
+```
+
+#### Cham cong
+
+```bash
+# Truy van ban ghi cham cong
+openyida dws attendance record list
+
+# Truy van lich truc ca
+openyida dws attendance shift list
+
+# Lay thong ke cham cong
+openyida dws attendance statistics list
+```
+
+#### Chat nhom va bot
+
+```bash
+# Gui tin nhan qua bot
+openyida dws chat robot send --content "大家好！"
+
+# Liet ke thanh vien nhom
+openyida dws chat member list --chatid <chatId>
+```
+
+## Dinh dang dau ra
+
+Tat ca cac lenh deu ho tro nhieu dinh dang dau ra:
+
+```bash
+# Dau ra dang bang (mac dinh, phu hop de doc)
+openyida dws contact user search --keyword "悟空" -f table
+
+# Dau ra JSON (phu hop cho AI Agent)
+openyida dws contact user search --keyword "悟空" -f json
+
+# Phan hoi API goc
+openyida dws contact user search --keyword "悟空" -f raw
+```
+
+## Su dung nang cao
+
+### Xem truoc thao tac (khong thuc thi)
+
+```bash
+openyida dws todo task list --dry-run
+```
+
+### Xuat ra tep
+
+```bash
+openyida dws contact user search --keyword "李明" -o result.json
+```
+
+### Xem tro giup
+
+```bash
+# Xem tro giup tong quat cua dws
+openyida dws help
+
+# Xem tro giup cho mot dich vu cu the
+openyida dws contact --help
+
+# Xem tro giup cho mot lenh cu the
+openyida dws contact user search --help
+```
+
+## Cac dich vu duoc ho tro
+
+| Dich vu | Tien to lenh | Chuc nang |
+|---------|-------------|-----------|
+| Danh ba lien lac | `contact` | Quan ly nguoi dung va phong ban |
+| Chat nhom | `chat` | Quan ly nhom / Tin nhan bot |
+| Lich | `calendar` | Su kien / Phong hop / Trang thai ranh/ban |
+| Cong viec can lam | `todo` | Quan ly cong viec |
+| Phe duyet | `approval` | Quy trinh phe duyet |
+| Cham cong | `attendance` | Diem danh / Lich truc ca / Thong ke |
+| DING | `ding` | Tin nhan DING |
+| Bao cao | `report` | Quan ly bao cao |
+| Khong gian lam viec | `workbench` | Truy van ung dung |
+| Tai lieu nha phat trien | `devdoc` | Tim kiem tai lieu |
+
+De xem tat ca cac dich vu kha dung, hay chay `openyida dws --help`.
+
+## Bien moi truong
+
+Cac bien moi truong thuong dung:
+
+| Bien | Mo ta |
+|------|-------|
+| `DWS_CLIENT_ID` | Client ID cua ung dung DingTalk (AppKey) |
+| `DWS_CLIENT_SECRET` | Client Secret cua ung dung DingTalk (AppSecret) |
+| `DWS_CONFIG_DIR` | Thu muc cau hinh tuy chinh |
+| `DWS_TRUSTED_DOMAINS` | Danh sach ten mien duoc phep cho Bearer token |
+
+## Luu y quan trong
+
+<Warning>
+**Uy quyen cua quan tri vien doanh nghiep**: cong cu nay truy cap du lieu doanh nghiep tren DingTalk. Can co su uy quyen cua quan tri vien doanh nghiep truoc khi su dung.
+</Warning>
+
+<Warning>
+**Bao mat thong tin xac thuc**: khong bao gio gui thong tin xac thuc vao he thong quan ly phien ban. Hay su dung bien moi truong thay the.
+</Warning>
+
+<Tip>
+**Dinh dang dau ra**: doi voi cac tinh huong su dung AI Agent, khuyen nghi su dung dinh dang dau ra `-f json`.
+</Tip>
+
+<Info>
+**Xu ly loi**: tat ca cac loi deu duoc tra ve duoi dang JSON co cau truc, giup viec xu ly bang chuong trinh tro nen de dang hon.
+</Info>
+
+## Tai lieu tham khao
+
+- [CLI DingTalk tren GitHub](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
+- [Nen tang mo DingTalk](https://open.dingtalk.com/)
+
+## Cau hoi thuong gap
+
+### H: Khong tim thay lenh dws?
+
+Chay `openyida dws install` de cai dat CLI DingTalk, hoac chay thu cong script cai dat.
+
+### H: Lam the nao de lay Client ID va Secret?
+
+Tao mot ung dung noi bo doanh nghiep tren nen tang mo DingTalk, sau do lay thong tin xac thuc tren trang chi tiet ung dung.
+
+### H: Lam the nao de chuyen doi tai khoan?
+
+Chay `openyida dws auth logout` de dang xuat khoi tai khoan hien tai, sau do dang nhap lai.

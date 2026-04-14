@@ -1,0 +1,221 @@
+---
+title: "دليل تكامل DingTalk CLI"
+description: "دليل تثبيت وإعداد واستخدام أداة DingTalk CLI (dws) مع OpenYida"
+icon: "terminal"
+---
+
+## المقدمة
+
+يتضمن OpenYida أداة DingTalk CLI الرسمية (dws). يمكنك الآن الوصول إلى جميع ميزات مساحة عمل DingTalk مباشرة من خلال الأمر `openyida dws`.
+
+## تثبيت DingTalk CLI
+
+### الطريقة الأولى: التثبيت عبر openyida (موصى بها)
+
+```bash
+openyida dws install
+```
+
+### الطريقة الثانية: التثبيت اليدوي
+
+**macOS / Linux:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+```
+
+**Windows (PowerShell):**
+```bash
+irm https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.ps1 | iex
+```
+
+## البدء السريع
+
+### 1. إعداد بيانات اعتماد تطبيق DingTalk
+
+```bash
+export DWS_CLIENT_ID="<your-app-key>"
+export DWS_CLIENT_SECRET="<your-app-secret>"
+```
+
+أو يمكنك تحديدها مباشرة في الأمر:
+```bash
+openyida dws auth login --client-id <your-app-key> --client-secret <your-app-secret>
+```
+
+### 2. تسجيل الدخول والمصادقة
+
+```bash
+openyida dws auth login
+```
+
+### 3. استخدام واجهات DingTalk API
+
+#### إدارة دفتر العناوين
+```bash
+# البحث عن جهات الاتصال
+openyida dws contact user search --keyword "悟空"
+
+# عرض قائمة الأقسام
+openyida dws contact department list
+
+# الاستعلام عن تفاصيل المستخدم
+openyida dws contact user get --userid <userId>
+```
+
+#### إدارة التقويم
+```bash
+# عرض أحداث التقويم
+openyida dws calendar event list
+
+# إنشاء حدث
+openyita dws calendar event create --title "团队会议" --start-time "2026-03-29T10:00:00Z"
+
+# الاستعلام عن حالة التوفر
+openyida dws calendar free-busy query --userids <userId1>,<userId2>
+```
+
+#### المهام المعلقة
+```bash
+# إنشاء مهمة
+openyida dws todo task create --title "准备季度汇报材料" --executors "<userId>"
+
+# عرض قائمة المهام
+openyida dws todo task list
+
+# تحديث حالة المهمة
+openyida dws todo task update --taskid <taskId> --status completed
+```
+
+#### سير عمل الموافقات
+```bash
+# عرض قائمة طلبات الموافقة
+openyida dws approval instance list
+
+# إنشاء طلب موافقة
+openyida dws approval instance create --processCode <processCode> --formData <json>
+
+# الحصول على تفاصيل الموافقة
+openyida dws approval instance get --instanceId <instanceId>
+```
+
+#### إدارة الحضور
+```bash
+# الاستعلام عن سجلات الحضور
+openyida dws attendance record list
+
+# الاستعلام عن جداول المناوبات
+openyida dws attendance shift list
+
+# الحصول على إحصائيات الحضور
+openyida dws attendance statistics list
+```
+
+#### المحادثات الجماعية والروبوتات
+```bash
+# إرسال رسالة عبر الروبوت
+openyida dws chat robot send --content "大家好！"
+
+# عرض أعضاء المجموعة
+openyida dws chat member list --chatid <chatId>
+```
+
+## تنسيقات الإخراج
+
+تدعم جميع الأوامر تنسيقات إخراج متعددة:
+
+```bash
+# إخراج جدولي (افتراضي، مناسب للقراءة البشرية)
+openyida dws contact user search --keyword "悟空" -f table
+
+# إخراج JSON (مناسب لـ AI Agent)
+openyida dws contact user search --keyword "悟空" -f json
+
+# استجابة API الخام
+openyida dws contact user search --keyword "悟空" -f raw
+```
+
+## الاستخدام المتقدم
+
+### معاينة العملية (بدون تنفيذ)
+```bash
+openyida dws todo task list --dry-run
+```
+
+### الإخراج إلى ملف
+```bash
+openyida dws contact user search --keyword "李明" -o result.json
+```
+
+### عرض المساعدة
+```bash
+# عرض المساعدة العامة لـ dws
+openyida dws help
+
+# عرض مساعدة خدمة معينة
+openyida dws contact --help
+
+# عرض مساعدة أمر معين
+openyida dws contact user search --help
+```
+
+## الخدمات المدعومة
+
+| الخدمة | بادئة الأمر | الوظيفة |
+|--------|------------|---------|
+| دفتر العناوين | `contact` | إدارة المستخدمين/الأقسام |
+| المحادثات الجماعية | `chat` | إدارة المجموعات/رسائل الروبوت |
+| التقويم | `calendar` | الجداول/غرف الاجتماعات/حالة التوفر |
+| المهام | `todo` | إدارة المهام |
+| الموافقات | `approval` | سير عمل الموافقات |
+| الحضور | `attendance` | تسجيل الدخول/المناوبات/الإحصائيات |
+| DING | `ding` | رسائل DING |
+| التقارير | `report` | إدارة التقارير |
+| لوحة العمل | `workbench` | البحث عن التطبيقات |
+| وثائق المطورين | `devdoc` | البحث في الوثائق |
+
+لمزيد من الخدمات، قم بتشغيل `openyida dws --help`.
+
+## متغيرات البيئة
+
+متغيرات البيئة شائعة الاستخدام:
+
+| المتغير | الوصف |
+|---------|-------|
+| `DWS_CLIENT_ID` | معرف عميل تطبيق DingTalk (AppKey) |
+| `DWS_CLIENT_SECRET` | السر السري لتطبيق DingTalk (AppSecret) |
+| `DWS_CONFIG_DIR` | دليل التكوين المخصص |
+| `DWS_TRUSTED_DOMAINS` | قائمة النطاقات المسموح بها لرمز Bearer |
+
+## ملاحظات مهمة
+
+<Warning>
+**مطلوب تفويض مدير المؤسسة**: تتطلب هذه الأداة الوصول إلى بيانات مؤسسة DingTalk، ويجب الحصول على تفويض مدير المؤسسة قبل الاستخدام.
+</Warning>
+
+<Warning>
+**أمان بيانات الاعتماد**: لا ترفع بيانات الاعتماد إلى نظام التحكم في الإصدارات. يُنصح باستخدام متغيرات البيئة.
+</Warning>
+
+<Tip>
+في سيناريوهات AI Agent، يُوصى باستخدام تنسيق الإخراج `-f json`.
+</Tip>
+
+<Info>
+تُعاد جميع الأخطاء بتنسيق JSON منظم، مما يسهل المعالجة البرمجية.
+</Info>
+
+## المراجع
+
+- [DingTalk CLI GitHub](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
+- [منصة DingTalk المفتوحة](https://open.dingtalk.com/)
+
+## الأسئلة الشائعة
+
+### س: ماذا أفعل إذا ظهرت رسالة "الأمر dws غير موجود"؟
+ج: قم بتشغيل `openyida dws install` لتثبيت DingTalk CLI، أو قم بتشغيل سكريبت التثبيت يدويًا.
+
+### س: كيف أحصل على Client ID و Secret؟
+ج: أنشئ تطبيقًا داخليًا للمؤسسة على منصة DingTalk المفتوحة، ثم احصل عليهما من صفحة تفاصيل التطبيق.
+
+### س: كيف أقوم بتبديل الحساب؟
+ج: قم بتشغيل `openyida dws auth logout` لتسجيل الخروج من الحساب الحالي، ثم أعد تسجيل الدخول.

@@ -1,0 +1,234 @@
+---
+title: "釘釘 CLI 整合使用指南"
+description: "透過 openyida dws 命令使用釘釘工作台 CLI 的完整指南，涵蓋安裝、認證、API 呼叫與進階用法"
+icon: "terminal"
+---
+
+## 簡介
+
+OpenYida 已整合釘釘官方 CLI 工具（dws），您現在可以透過 `openyida dws` 命令直接使用釘釘工作台的所有功能。
+
+## 安裝釘釘 CLI
+
+### 方法一：透過 openyida 安裝（推薦）
+
+```bash
+openyida dws install
+```
+
+### 方法二：手動安裝
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+    ```
+  </Tab>
+  <Tab title="Windows (PowerShell)">
+    ```bash
+    irm https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.ps1 | iex
+    ```
+  </Tab>
+</Tabs>
+
+## 快速開始
+
+<Steps>
+  <Step title="設定釘釘應用憑證">
+    ```bash
+    export DWS_CLIENT_ID="<your-app-key>"
+    export DWS_CLIENT_SECRET="<your-app-secret>"
+    ```
+
+    或在命令中直接指定：
+
+    ```bash
+    openyida dws auth login --client-id <your-app-key> --client-secret <your-app-secret>
+    ```
+  </Step>
+  <Step title="登入認證">
+    ```bash
+    openyida dws auth login
+    ```
+  </Step>
+  <Step title="使用釘釘 API">
+    登入成功後，即可開始呼叫釘釘 API。請參閱下方各服務的命令範例。
+  </Step>
+</Steps>
+
+## 使用釘釘 API
+
+### 通訊錄管理
+
+```bash
+# 搜索联系人
+openyida dws contact user search --keyword "悟空"
+
+# 列出部门
+openyida dws contact department list
+
+# 查询用户详情
+openyida dws contact user get --userid <userId>
+```
+
+### 日曆管理
+
+```bash
+# 列出日历事件
+openyida dws calendar event list
+
+# 创建日程
+openyida dws calendar event create --title "团队会议" --start-time "2026-03-29T10:00:00Z"
+
+# 查询闲忙状态
+openyida dws calendar free-busy query --userids <userId1>,<userId2>
+```
+
+### 待辦任務
+
+```bash
+# 创建待办
+openyida dws todo task create --title "准备季度汇报材料" --executors "<userId>"
+
+# 列出待办
+openyida dws todo task list
+
+# 更新待办状态
+openyida dws todo task update --taskid <taskId> --status completed
+```
+
+### 審批流程
+
+```bash
+# 列出审批实例
+openyida dws approval instance list
+
+# 创建审批实例
+openyida dws approval instance create --processCode <processCode> --formData <json>
+
+# 获取审批详情
+openyida dws approval instance get --instanceId <instanceId>
+```
+
+### 考勤打卡
+
+```bash
+# 查询考勤记录
+openyida dws attendance record list
+
+# 查询排班信息
+openyida dws attendance shift list
+
+# 获取考勤统计
+openyida dws attendance statistics list
+```
+
+### 群聊與機器人
+
+```bash
+# 发送机器人消息
+openyida dws chat robot send --content "大家好！"
+
+# 列出群成员
+openyida dws chat member list --chatid <chatId>
+```
+
+## 輸出格式
+
+所有命令支援多種輸出格式：
+
+```bash
+# 表格输出（默认，适合人类阅读）
+openyida dws contact user search --keyword "悟空" -f table
+
+# JSON 输出（适合 AI Agent）
+openyida dws contact user search --keyword "悟空" -f json
+
+# 原始 API 响应
+openyida dws contact user search --keyword "悟空" -f raw
+```
+
+<Tip>AI Agent 場景建議使用 `-f json` 格式輸出，便於程式解析。</Tip>
+
+## 進階用法
+
+### 預覽操作（不執行）
+
+```bash
+openyida dws todo task list --dry-run
+```
+
+### 輸出到檔案
+
+```bash
+openyida dws contact user search --keyword "李明" -o result.json
+```
+
+### 檢視說明
+
+```bash
+# 查看 dws 总帮助
+openyida dws help
+
+# 查看特定服务帮助
+openyida dws contact --help
+
+# 查看特定命令帮助
+openyida dws contact user search --help
+```
+
+## 支援的服務
+
+| 服務 | 命令前綴 | 功能 |
+|------|---------|------|
+| 通訊錄 | `contact` | 使用者/部門管理 |
+| 群聊 | `chat` | 群管理/機器人訊息 |
+| 日曆 | `calendar` | 日程/會議室/閒忙查詢 |
+| 待辦 | `todo` | 任務管理 |
+| 審批 | `approval` | 審批流程 |
+| 考勤 | `attendance` | 打卡/排班/統計 |
+| DING | `ding` | DING 訊息 |
+| 日誌 | `report` | 日誌管理 |
+| 工作台 | `workbench` | 應用查詢 |
+| 開發者文件 | `devdoc` | 文件搜尋 |
+
+更多服務請執行 `openyida dws --help` 檢視。
+
+## 環境變數
+
+| 變數 | 說明 |
+|------|------|
+| `DWS_CLIENT_ID` | 釘釘應用 Client ID (AppKey) |
+| `DWS_CLIENT_SECRET` | 釘釘應用 Client Secret (AppSecret) |
+| `DWS_CONFIG_DIR` | 自訂設定目錄 |
+| `DWS_TRUSTED_DOMAINS` | Bearer token 允許的網域清單 |
+
+## 注意事項
+
+<Warning>
+本工具涉及釘釘企業資料存取，需企業管理員授權後方可使用。請勿將憑證提交到版本控制系統，建議使用環境變數管理憑證。
+</Warning>
+
+- **企業管理員授權**: 本工具涉及釘釘企業資料存取，需企業管理員授權後方可使用
+- **憑證安全**: 請勿將憑證提交到版本控制系統，建議使用環境變數
+- **輸出格式**: AI Agent 場景建議使用 `-f json` 格式輸出
+- **錯誤處理**: 所有錯誤均以結構化 JSON 回傳，便於程式處理
+
+## 參考資料
+
+- [釘釘 CLI GitHub](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
+- [釘釘開放平台](https://open.dingtalk.com/)
+
+## 常見問題
+
+<AccordionGroup>
+  <Accordion title="提示未找到 dws 命令？">
+    執行 `openyida dws install` 安裝釘釘 CLI，或手動執行安裝指令碼。
+  </Accordion>
+  <Accordion title="如何取得 Client ID 和 Secret？">
+    在釘釘開放平台建立企業內部應用後，在應用詳情頁取得。
+  </Accordion>
+  <Accordion title="如何切換帳號？">
+    執行 `openyida dws auth logout` 登出目前帳號，然後重新登入。
+  </Accordion>
+</AccordionGroup>

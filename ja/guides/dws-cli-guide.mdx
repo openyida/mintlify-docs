@@ -1,0 +1,221 @@
+---
+title: "DingTalk CLI 統合ガイド"
+description: "OpenYida の DingTalk CLI（dws）統合のインストール、設定、使用方法のガイド"
+icon: "terminal"
+---
+
+## はじめに
+
+OpenYida は DingTalk 公式 CLI ツール（dws）を統合しています。`openyida dws` コマンドを使用して、DingTalk ワークスペースのすべての機能に直接アクセスできます。
+
+## DingTalk CLI のインストール
+
+### 方法1：openyida 経由でインストール（推奨）
+
+```bash
+openyida dws install
+```
+
+### 方法2：手動インストール
+
+**macOS / Linux:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+```
+
+**Windows (PowerShell):**
+```bash
+irm https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.ps1 | iex
+```
+
+## クイックスタート
+
+### 1. DingTalk アプリ資格情報の設定
+
+```bash
+export DWS_CLIENT_ID="<your-app-key>"
+export DWS_CLIENT_SECRET="<your-app-secret>"
+```
+
+またはコマンドで直接指定できます：
+```bash
+openyida dws auth login --client-id <your-app-key> --client-secret <your-app-secret>
+```
+
+### 2. ログイン認証
+
+```bash
+openyida dws auth login
+```
+
+### 3. DingTalk API の使用
+
+#### アドレス帳管理
+```bash
+# 連絡先を検索
+openyida dws contact user search --keyword "悟空"
+
+# 部門を一覧表示
+openyida dws contact department list
+
+# ユーザー詳細を取得
+openyida dws contact user get --userid <userId>
+```
+
+#### カレンダー管理
+```bash
+# カレンダーイベントを一覧表示
+openyida dws calendar event list
+
+# イベントを作成
+openyita dws calendar event create --title "団队会議" --start-time "2026-03-29T10:00:00Z"
+
+# 空き状況を確認
+openyida dws calendar free-busy query --userids <userId1>,<userId2>
+```
+
+#### ToDo タスク
+```bash
+# ToDo を作成
+openyida dws todo task create --title "準備季度汇報材料" --executors "<userId>"
+
+# ToDo を一覧表示
+openyida dws todo task list
+
+# ToDo のステータスを更新
+openyida dws todo task update --taskid <taskId> --status completed
+```
+
+#### 承認ワークフロー
+```bash
+# 承認インスタンスを一覧表示
+openyida dws approval instance list
+
+# 承認インスタンスを作成
+openyida dws approval instance create --processCode <processCode> --formData <json>
+
+# 承認の詳細を取得
+openyida dws approval instance get --instanceId <instanceId>
+```
+
+#### 勤怠管理
+```bash
+# 勤怠記録を取得
+openyida dws attendance record list
+
+# シフト情報を取得
+openyida dws attendance shift list
+
+# 勤怠統計を取得
+openyida dws attendance statistics list
+```
+
+#### グループチャットとボット
+```bash
+# ボットメッセージを送信
+openyida dws chat robot send --content "大家好！"
+
+# グループメンバーを一覧表示
+openyida dws chat member list --chatid <chatId>
+```
+
+## 出力形式
+
+すべてのコマンドは複数の出力形式をサポートしています：
+
+```bash
+# テーブル出力（デフォルト、人間向け）
+openyida dws contact user search --keyword "悟空" -f table
+
+# JSON 出力（AI Agent 向け）
+openyida dws contact user search --keyword "悟空" -f json
+
+# 生の API レスポンス
+openyida dws contact user search --keyword "悟空" -f raw
+```
+
+## 高度な使い方
+
+### プレビュー操作（実行なし）
+```bash
+openyida dws todo task list --dry-run
+```
+
+### ファイルへの出力
+```bash
+openyida dws contact user search --keyword "李明" -o result.json
+```
+
+### ヘルプの表示
+```bash
+# dws の総合ヘルプを表示
+openyida dws help
+
+# 特定サービスのヘルプを表示
+openyida dws contact --help
+
+# 特定コマンドのヘルプを表示
+openyida dws contact user search --help
+```
+
+## サポートされているサービス
+
+| サービス | コマンドプレフィックス | 機能 |
+|---------|---------------------|------|
+| アドレス帳 | `contact` | ユーザー／部門管理 |
+| グループチャット | `chat` | グループ管理／ボットメッセージ |
+| カレンダー | `calendar` | スケジュール／会議室／空き状況確認 |
+| ToDo | `todo` | タスク管理 |
+| 承認 | `approval` | 承認ワークフロー |
+| 勤怠 | `attendance` | 打刻／シフト／統計 |
+| DING | `ding` | DING メッセージ |
+| レポート | `report` | レポート管理 |
+| ワークベンチ | `workbench` | アプリケーション検索 |
+| 開発者ドキュメント | `devdoc` | ドキュメント検索 |
+
+その他のサービスについては `openyida dws --help` を実行してください。
+
+## 環境変数
+
+よく使われる環境変数：
+
+| 変数 | 説明 |
+|------|------|
+| `DWS_CLIENT_ID` | DingTalk アプリの Client ID（AppKey） |
+| `DWS_CLIENT_SECRET` | DingTalk アプリの Client Secret（AppSecret） |
+| `DWS_CONFIG_DIR` | カスタム設定ディレクトリ |
+| `DWS_TRUSTED_DOMAINS` | Bearer トークンが許可されるドメインリスト |
+
+## 注意事項
+
+<Warning>
+**企業管理者の承認が必要**: このツールは DingTalk の企業データにアクセスするため、企業管理者の承認が必要です。
+</Warning>
+
+<Warning>
+**資格情報のセキュリティ**: 資格情報をバージョン管理システムにコミットしないでください。環境変数の使用を推奨します。
+</Warning>
+
+<Tip>
+AI Agent のシナリオでは、`-f json` 形式の出力を使用することを推奨します。
+</Tip>
+
+<Info>
+すべてのエラーは構造化された JSON で返されるため、プログラムでの処理が容易です。
+</Info>
+
+## 参考資料
+
+- [DingTalk CLI GitHub](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
+- [DingTalk オープンプラットフォーム](https://open.dingtalk.com/)
+
+## よくある質問
+
+### Q: dws コマンドが見つからないと表示される場合は？
+A: `openyida dws install` を実行して DingTalk CLI をインストールするか、手動でインストールスクリプトを実行してください。
+
+### Q: Client ID と Secret はどこで取得できますか？
+A: DingTalk オープンプラットフォームで企業内部アプリを作成し、アプリの詳細ページで取得できます。
+
+### Q: アカウントを切り替えるには？
+A: `openyida dws auth logout` を実行して現在のアカウントからログアウトし、再度ログインしてください。

@@ -1,0 +1,291 @@
+---
+title: "釘釘 CLI 快速開始指南"
+description: "5 分鐘快速上手釘釘 CLI，完成安裝、認證和常用操作"
+icon: "rocket"
+---
+
+## 5 分鐘快速上手
+
+<Steps>
+  <Step title="安裝釘釘 CLI">
+    ```bash
+    openyida dws install
+    ```
+
+    或手動安裝：
+
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+    ```
+  </Step>
+
+  <Step title="建立釘釘應用">
+    1. 前往 [釘釘開放平台](https://dev.dingtalk.com/)
+    2. 進入「企業內部應用」→「建立應用」
+    3. 填寫應用基本資訊
+    4. 在「安全設定」中新增重新導向 URL：`http://127.0.0.1`
+    5. 發佈應用版本
+  </Step>
+
+  <Step title="取得憑證">
+    在應用詳情頁取得：
+
+    - **Client ID** (AppKey)
+    - **Client Secret** (AppSecret)
+  </Step>
+
+  <Step title="設定憑證">
+    <Tabs>
+      <Tab title="環境變數（建議）">
+        ```bash
+        export DWS_CLIENT_ID="your-client-id"
+        export DWS_CLIENT_SECRET="your-client-secret"
+        ```
+      </Tab>
+      <Tab title="命令參數">
+        ```bash
+        openyida dws auth login --client-id your-client-id --client-secret your-client-secret
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="登入">
+    ```bash
+    openyida dws auth login
+    ```
+
+    依照提示完成 OAuth 裝置流認證。
+  </Step>
+</Steps>
+
+## 常用情境範例
+
+### 情境 1: 搜尋聯絡人
+
+```bash
+# 基礎搜尋
+openyida dws contact user search --keyword "張三"
+
+# JSON 輸出（適合 AI Agent）
+openyida dws contact user search --keyword "張三" -f json
+
+# 儲存到檔案
+openyida dws contact user search --keyword "張三" -o contacts.json
+```
+
+### 情境 2: 建立待辦事項
+
+```bash
+# 建立個人待辦
+openyida dws todo task create --title "準備週報" --executors "your-userid"
+
+# 建立團隊待辦
+openyida dws todo task create --title "專案評審" --executors "userid1,userid2,userid3"
+
+# 列出所有待辦
+openyida dws todo task list
+```
+
+### 情境 3: 查詢出勤紀錄
+
+```bash
+# 查詢今日打卡紀錄
+openyida dws attendance record list
+
+# 查詢指定使用者的出勤
+openyida dws attendance record list --userids "your-userid"
+```
+
+### 情境 4: 管理行事曆日程
+
+```bash
+# 列出今天的日程
+openyida dws calendar event list
+
+# 建立會議
+openyida dws calendar event create \
+  --title "週會" \
+  --start-time "2026-03-29T10:00:00+08:00" \
+  --end-time "2026-03-29T11:00:00+08:00" \
+  --participants "userid1,userid2"
+
+# 查詢閒忙狀態
+openyida dws calendar free-busy query \
+  --userids "userid1,userid2" \
+  --start-time "2026-03-29T09:00:00+08:00" \
+  --end-time "2026-03-29T18:00:00+08:00"
+```
+
+### 情境 5: 傳送機器人訊息
+
+```bash
+# 傳送文字訊息
+openyida dws chat robot send --content "大家好，記得提交週報！"
+
+# 傳送 Markdown 訊息
+openyida dws chat robot send --content "## 會議通知\n時間：今天下午 3 點\n地點：會議室 A"
+```
+
+### 情境 6: 審批流程管理
+
+```bash
+# 列出所有審批實例
+openyida dws approval instance list
+
+# 建立請假審批
+openyida dws approval instance create \
+  --processCode "leave" \
+  --formData '{"duration": "3", "reason": "事假"}'
+
+# 檢視審批詳情
+openyida dws approval instance get --instanceId "INSTANCE-123"
+```
+
+## AI Agent 整合範例
+
+### 使用 Cursor/Claude Code 自動呼叫
+
+```javascript
+// 在你的程式碼中直接使用
+const { execSync } = require('child_process');
+
+// 搜尋聯絡人
+const result = execSync('openyida dws contact user search --keyword "悟空" -f json', {
+  encoding: 'utf8'
+});
+const users = JSON.parse(result);
+console.log(users);
+
+// 建立待辦
+execSync('openyida dws todo task create --title "代碼審查" --executors "userId123"', {
+  stdio: 'inherit'
+});
+```
+
+### MCP Server 整合
+
+釘釘 CLI 原生支援 MCP 協議，可以作為 MCP Server 使用：
+
+```json
+{
+  "mcpServers": {
+    "dws": {
+      "command": "dws",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+## 除錯技巧
+
+<Steps>
+  <Step title="預覽操作（不執行）">
+    ```bash
+    openyida dws todo task list --dry-run
+    ```
+  </Step>
+
+  <Step title="檢視詳細日誌">
+    ```bash
+    openyida dws contact user search --keyword "張三" --debug
+    ```
+  </Step>
+
+  <Step title="檢查版本">
+    ```bash
+    openyida dws version
+    ```
+  </Step>
+
+  <Step title="檢視設定">
+    ```bash
+    openyida dws config list
+    ```
+  </Step>
+</Steps>
+
+## 常見問題排查
+
+### 提示「未找到命令」
+
+```bash
+# 檢查 dws 是否安裝
+which dws
+
+# 如果未安裝，執行
+openyida dws install
+```
+
+### 提示「認證失敗」
+
+```bash
+# 檢查是否已登入
+openyida dws auth status
+
+# 重新登入
+openyida dws auth login
+```
+
+### 提示「權限不足」
+
+<Warning>
+請確保以下條件均已滿足：
+
+1. 釘釘應用已發佈上線
+2. 企業管理員已授權
+3. 憑證設定正確
+</Warning>
+
+### JSON 解析失敗
+
+<Tip>
+始終使用 `-f json` 參數取得結構化輸出：
+</Tip>
+
+```bash
+openyida dws contact user search --keyword "張三" -f json
+```
+
+## 下一步
+
+- 檢視完整命令列表：`openyida dws help`
+- 檢視特定服務說明：`openyida dws contact --help`
+- 檢視 [DWS CLI 詳細文件](/zh-Hant/guides/dws-cli-guide)
+- 前往 [官方儲存庫](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
+
+## 實用小技巧
+
+### 技巧 1: 使用別名簡化命令
+
+```bash
+# 在 ~/.zshrc 或 ~/.bashrc 中新增
+alias dws='openyida dws'
+
+# 然後可以直接使用
+dws contact user search --keyword "張三"
+```
+
+### 技巧 2: 管道組合命令
+
+```bash
+# 搜尋聯絡人並提取 userId
+openyida dws contact user search --keyword "張三" -f json | jq '.[0].userId'
+```
+
+### 技巧 3: 批次操作
+
+```bash
+# 批次建立待辦（從檔案讀取）
+cat tasks.json | while read task; do
+  openyida dws todo task create --title "$task" --executors "userId"
+done
+```
+
+### 技巧 4: 排程任務
+
+```bash
+# 每天上午 9 點提醒提交日報（crontab）
+0 9 * * * openyida dws chat robot send --content "記得提交日報！" >> /tmp/daily-reminder.log
+```

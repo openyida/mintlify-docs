@@ -1,0 +1,234 @@
+---
+title: "DingTalk CLI integration guide"
+description: "Complete guide to using the DingTalk workspace CLI via the openyida dws command, covering installation, authentication, API usage, and advanced options"
+icon: "terminal"
+---
+
+## Introduction
+
+OpenYida integrates the official DingTalk CLI tool (dws). You can use all DingTalk workspace features directly through the `openyida dws` command.
+
+## Installing the DingTalk CLI
+
+### Option 1: Install via openyida (recommended)
+
+```bash
+openyida dws install
+```
+
+### Option 2: Manual installation
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+    ```
+  </Tab>
+  <Tab title="Windows (PowerShell)">
+    ```bash
+    irm https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.ps1 | iex
+    ```
+  </Tab>
+</Tabs>
+
+## Getting started
+
+<Steps>
+  <Step title="Configure DingTalk app credentials">
+    ```bash
+    export DWS_CLIENT_ID="<your-app-key>"
+    export DWS_CLIENT_SECRET="<your-app-secret>"
+    ```
+
+    Or specify them directly in the command:
+
+    ```bash
+    openyida dws auth login --client-id <your-app-key> --client-secret <your-app-secret>
+    ```
+  </Step>
+  <Step title="Authenticate">
+    ```bash
+    openyida dws auth login
+    ```
+  </Step>
+  <Step title="Start using DingTalk APIs">
+    Once authenticated, you can start calling DingTalk APIs. See the command examples for each service below.
+  </Step>
+</Steps>
+
+## Using DingTalk APIs
+
+### Contacts management
+
+```bash
+# Search contacts
+openyida dws contact user search --keyword "悟空"
+
+# List departments
+openyida dws contact department list
+
+# Get user details
+openyida dws contact user get --userid <userId>
+```
+
+### Calendar management
+
+```bash
+# List calendar events
+openyida dws calendar event list
+
+# Create an event
+openyida dws calendar event create --title "团队会议" --start-time "2026-03-29T10:00:00Z"
+
+# Query free/busy status
+openyida dws calendar free-busy query --userids <userId1>,<userId2>
+```
+
+### To-do tasks
+
+```bash
+# Create a to-do
+openyida dws todo task create --title "准备季度汇报材料" --executors "<userId>"
+
+# List to-dos
+openyida dws todo task list
+
+# Update to-do status
+openyida dws todo task update --taskid <taskId> --status completed
+```
+
+### Approval workflows
+
+```bash
+# List approval instances
+openyida dws approval instance list
+
+# Create an approval instance
+openyida dws approval instance create --processCode <processCode> --formData <json>
+
+# Get approval details
+openyida dws approval instance get --instanceId <instanceId>
+```
+
+### Attendance
+
+```bash
+# Query attendance records
+openyida dws attendance record list
+
+# Query shift schedules
+openyida dws attendance shift list
+
+# Get attendance statistics
+openyida dws attendance statistics list
+```
+
+### Group chat and bots
+
+```bash
+# Send a bot message
+openyida dws chat robot send --content "大家好！"
+
+# List group members
+openyida dws chat member list --chatid <chatId>
+```
+
+## Output formats
+
+All commands support multiple output formats:
+
+```bash
+# Table output (default, human-readable)
+openyida dws contact user search --keyword "悟空" -f table
+
+# JSON output (suitable for AI agents)
+openyida dws contact user search --keyword "悟空" -f json
+
+# Raw API response
+openyida dws contact user search --keyword "悟空" -f raw
+```
+
+<Tip>Use `-f json` when working with AI agents for easy programmatic parsing.</Tip>
+
+## Advanced usage
+
+### Dry run (preview without executing)
+
+```bash
+openyida dws todo task list --dry-run
+```
+
+### Output to a file
+
+```bash
+openyida dws contact user search --keyword "李明" -o result.json
+```
+
+### Viewing help
+
+```bash
+# View overall dws help
+openyida dws help
+
+# View help for a specific service
+openyida dws contact --help
+
+# View help for a specific command
+openyida dws contact user search --help
+```
+
+## Supported services
+
+| Service | Command prefix | Description |
+|---------|---------------|-------------|
+| Contacts | `contact` | User/department management |
+| Group chat | `chat` | Group management/bot messages |
+| Calendar | `calendar` | Events/meeting rooms/free-busy queries |
+| To-do | `todo` | Task management |
+| Approval | `approval` | Approval workflows |
+| Attendance | `attendance` | Clock-in/shift scheduling/statistics |
+| DING | `ding` | DING messages |
+| Reports | `report` | Report management |
+| Workbench | `workbench` | App queries |
+| Developer docs | `devdoc` | Documentation search |
+
+Run `openyida dws --help` to see all available services.
+
+## Environment variables
+
+| Variable | Description |
+|----------|-------------|
+| `DWS_CLIENT_ID` | DingTalk app Client ID (AppKey) |
+| `DWS_CLIENT_SECRET` | DingTalk app Client Secret (AppSecret) |
+| `DWS_CONFIG_DIR` | Custom configuration directory |
+| `DWS_TRUSTED_DOMAINS` | Allowed domain list for bearer tokens |
+
+## Important notes
+
+<Warning>
+This tool accesses DingTalk enterprise data and requires authorization from your enterprise administrator. Never commit credentials to version control -- use environment variables instead.
+</Warning>
+
+- **Enterprise admin authorization**: This tool accesses DingTalk enterprise data and requires authorization from your enterprise administrator before use.
+- **Credential security**: Never commit credentials to version control. Use environment variables instead.
+- **Output format**: Use `-f json` output when working with AI agents.
+- **Error handling**: All errors are returned as structured JSON for easy programmatic handling.
+
+## References
+
+- [DingTalk CLI GitHub](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
+- [DingTalk Open Platform](https://open.dingtalk.com/)
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="The dws command is not found?">
+    Run `openyida dws install` to install the DingTalk CLI, or manually run the installation script.
+  </Accordion>
+  <Accordion title="How do you get a Client ID and Secret?">
+    Create an internal enterprise app on the DingTalk Open Platform, then find the credentials on the app details page.
+  </Accordion>
+  <Accordion title="How do you switch accounts?">
+    Run `openyida dws auth logout` to sign out of the current account, then log in again.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,221 @@
+---
+title: "DingTalk CLI एकीकरण गाइड"
+description: "OpenYida के साथ DingTalk CLI (dws) को इंस्टॉल, कॉन्फ़िगर और उपयोग करने की मार्गदर्शिका"
+icon: "terminal"
+---
+
+## परिचय
+
+OpenYida में DingTalk की आधिकारिक CLI टूल (dws) एकीकृत है। अब आप `openyida dws` कमांड के माध्यम से DingTalk वर्कस्पेस की सभी सुविधाओं को सीधे एक्सेस कर सकते हैं।
+
+## DingTalk CLI इंस्टॉल करना
+
+### विधि 1: openyida के माध्यम से इंस्टॉल करें (अनुशंसित)
+
+```bash
+openyida dws install
+```
+
+### विधि 2: मैन्युअल इंस्टॉलेशन
+
+**macOS / Linux:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+```
+
+**Windows (PowerShell):**
+```bash
+irm https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.ps1 | iex
+```
+
+## त्वरित शुरुआत
+
+### 1. DingTalk ऐप क्रेडेंशियल कॉन्फ़िगर करें
+
+```bash
+export DWS_CLIENT_ID="<your-app-key>"
+export DWS_CLIENT_SECRET="<your-app-secret>"
+```
+
+या सीधे कमांड में निर्दिष्ट करें:
+```bash
+openyida dws auth login --client-id <your-app-key> --client-secret <your-app-secret>
+```
+
+### 2. लॉगिन प्रमाणीकरण
+
+```bash
+openyida dws auth login
+```
+
+### 3. DingTalk API का उपयोग
+
+#### संपर्क सूची प्रबंधन
+```bash
+# संपर्क खोजें
+openyida dws contact user search --keyword "悟空"
+
+# विभागों की सूची देखें
+openyida dws contact department list
+
+# उपयोगकर्ता विवरण प्राप्त करें
+openyida dws contact user get --userid <userId>
+```
+
+#### कैलेंडर प्रबंधन
+```bash
+# कैलेंडर इवेंट्स की सूची देखें
+openyida dws calendar event list
+
+# इवेंट बनाएं
+openyita dws calendar event create --title "团队会议" --start-time "2026-03-29T10:00:00Z"
+
+# उपलब्धता स्थिति जांचें
+openyida dws calendar free-busy query --userids <userId1>,<userId2>
+```
+
+#### कार्य सूची (ToDo)
+```bash
+# कार्य बनाएं
+openyida dws todo task create --title "准备季度汇报材料" --executors "<userId>"
+
+# कार्यों की सूची देखें
+openyida dws todo task list
+
+# कार्य की स्थिति अपडेट करें
+openyida dws todo task update --taskid <taskId> --status completed
+```
+
+#### अनुमोदन वर्कफ़्लो
+```bash
+# अनुमोदन अनुरोधों की सूची देखें
+openyida dws approval instance list
+
+# अनुमोदन अनुरोध बनाएं
+openyida dws approval instance create --processCode <processCode> --formData <json>
+
+# अनुमोदन विवरण प्राप्त करें
+openyida dws approval instance get --instanceId <instanceId>
+```
+
+#### उपस्थिति प्रबंधन
+```bash
+# उपस्थिति रिकॉर्ड देखें
+openyida dws attendance record list
+
+# शिफ्ट जानकारी देखें
+openyida dws attendance shift list
+
+# उपस्थिति आंकड़े प्राप्त करें
+openyida dws attendance statistics list
+```
+
+#### ग्रुप चैट और बॉट
+```bash
+# बॉट संदेश भेजें
+openyida dws chat robot send --content "大家好！"
+
+# ग्रुप सदस्यों की सूची देखें
+openyida dws chat member list --chatid <chatId>
+```
+
+## आउटपुट फॉर्मेट
+
+सभी कमांड कई आउटपुट फॉर्मेट का समर्थन करते हैं:
+
+```bash
+# टेबल आउटपुट (डिफ़ॉल्ट, मानव पठनीय)
+openyida dws contact user search --keyword "悟空" -f table
+
+# JSON आउटपुट (AI Agent के लिए उपयुक्त)
+openyida dws contact user search --keyword "悟空" -f json
+
+# रॉ API रिस्पॉन्स
+openyida dws contact user search --keyword "悟空" -f raw
+```
+
+## उन्नत उपयोग
+
+### प्रीव्यू ऑपरेशन (बिना निष्पादन के)
+```bash
+openyida dws todo task list --dry-run
+```
+
+### फ़ाइल में आउटपुट
+```bash
+openyida dws contact user search --keyword "李明" -o result.json
+```
+
+### सहायता देखें
+```bash
+# dws की सामान्य सहायता देखें
+openyida dws help
+
+# किसी विशिष्ट सेवा की सहायता देखें
+openyida dws contact --help
+
+# किसी विशिष्ट कमांड की सहायता देखें
+openyida dws contact user search --help
+```
+
+## समर्थित सेवाएं
+
+| सेवा | कमांड प्रीफ़िक्स | कार्यक्षमता |
+|------|-----------------|-------------|
+| संपर्क सूची | `contact` | उपयोगकर्ता/विभाग प्रबंधन |
+| ग्रुप चैट | `chat` | ग्रुप प्रबंधन/बॉट संदेश |
+| कैलेंडर | `calendar` | शेड्यूल/मीटिंग रूम/उपलब्धता जांच |
+| कार्य सूची | `todo` | कार्य प्रबंधन |
+| अनुमोदन | `approval` | अनुमोदन वर्कफ़्लो |
+| उपस्थिति | `attendance` | चेक-इन/शिफ्ट/आंकड़े |
+| DING | `ding` | DING संदेश |
+| रिपोर्ट | `report` | रिपोर्ट प्रबंधन |
+| वर्कबेंच | `workbench` | एप्लिकेशन खोज |
+| डेवलपर दस्तावेज़ | `devdoc` | दस्तावेज़ खोज |
+
+अतिरिक्त सेवाओं के लिए `openyida dws --help` चलाएं।
+
+## एनवायरनमेंट वेरिएबल
+
+आमतौर पर उपयोग किए जाने वाले एनवायरनमेंट वेरिएबल:
+
+| वेरिएबल | विवरण |
+|---------|-------|
+| `DWS_CLIENT_ID` | DingTalk ऐप Client ID (AppKey) |
+| `DWS_CLIENT_SECRET` | DingTalk ऐप Client Secret (AppSecret) |
+| `DWS_CONFIG_DIR` | कस्टम कॉन्फ़िगरेशन डायरेक्टरी |
+| `DWS_TRUSTED_DOMAINS` | Bearer टोकन के लिए अनुमत डोमेन की सूची |
+
+## महत्वपूर्ण सूचनाएं
+
+<Warning>
+**एंटरप्राइज़ एडमिन अनुमोदन आवश्यक**: यह टूल DingTalk एंटरप्राइज़ डेटा तक पहुंचता है, इसलिए उपयोग से पहले एंटरप्राइज़ एडमिन की अनुमति आवश्यक है।
+</Warning>
+
+<Warning>
+**क्रेडेंशियल सुरक्षा**: क्रेडेंशियल को वर्शन कंट्रोल सिस्टम में कमिट न करें। एनवायरनमेंट वेरिएबल का उपयोग करने की सलाह दी जाती है।
+</Warning>
+
+<Tip>
+AI Agent परिदृश्यों में, `-f json` फॉर्मेट आउटपुट का उपयोग करने की अनुशंसा की जाती है।
+</Tip>
+
+<Info>
+सभी त्रुटियां संरचित JSON में लौटाई जाती हैं, जिससे प्रोग्रामेटिक प्रोसेसिंग आसान होती है।
+</Info>
+
+## संदर्भ सामग्री
+
+- [DingTalk CLI GitHub](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
+- [DingTalk ओपन प्लेटफ़ॉर्म](https://open.dingtalk.com/)
+
+## अक्सर पूछे जाने वाले प्रश्न
+
+### प्रश्न: "dws कमांड नहीं मिला" त्रुटि दिखे तो?
+उत्तर: DingTalk CLI इंस्टॉल करने के लिए `openyida dws install` चलाएं, या मैन्युअल रूप से इंस्टॉल स्क्रिप्ट चलाएं।
+
+### प्रश्न: Client ID और Secret कहां से प्राप्त करें?
+उत्तर: DingTalk ओपन प्लेटफ़ॉर्म पर एक एंटरप्राइज़ इंटरनल ऐप बनाएं, फिर ऐप विवरण पेज से प्राप्त करें।
+
+### प्रश्न: अकाउंट कैसे बदलें?
+उत्तर: वर्तमान अकाउंट से लॉगआउट करने के लिए `openyida dws auth logout` चलाएं, फिर दोबारा लॉगिन करें।
