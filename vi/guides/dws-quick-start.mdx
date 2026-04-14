@@ -1,0 +1,294 @@
+---
+title: "Huong dan bat dau nhanh DingTalk CLI"
+description: "Cai dat va cau hinh DingTalk CLI trong 5 phut de quan ly danh ba, cong viec, lich va nhieu hon nua."
+icon: "rocket"
+---
+
+## Bat dau trong 5 phut
+
+<Steps>
+  <Step title="Cai dat DingTalk CLI">
+
+```bash
+openyida dws install
+```
+
+Hoac cai dat thu cong:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+```
+
+  </Step>
+
+  <Step title="Tao ung dung DingTalk">
+
+1. Truy cap [nen tang mo DingTalk](https://dev.dingtalk.com/)
+2. Vao "Ung dung noi bo doanh nghiep" roi chon "Tao ung dung"
+3. Dien thong tin co ban cua ung dung
+4. Trong "Cai dat bao mat", them URL chuyen huong: `http://127.0.0.1`
+5. Xuat ban phien ban ung dung
+
+  </Step>
+
+  <Step title="Lay thong tin xac thuc">
+
+Tren trang chi tiet ung dung, lay **Client ID** (AppKey) va **Client Secret** (AppSecret).
+
+  </Step>
+
+  <Step title="Cau hinh thong tin xac thuc">
+
+**Cach 1: Bien moi truong (khuyen nghi)**
+
+```bash
+export DWS_CLIENT_ID="your-client-id"
+export DWS_CLIENT_SECRET="your-client-secret"
+```
+
+**Cach 2: Tham so dong lenh**
+
+```bash
+openyida dws auth login --client-id your-client-id --client-secret your-client-secret
+```
+
+  </Step>
+
+  <Step title="Dang nhap">
+
+```bash
+openyida dws auth login
+```
+
+Lam theo huong dan de hoan tat xac thuc OAuth qua luong thiet bi.
+
+  </Step>
+</Steps>
+
+## Vi du cac truong hop su dung pho bien
+
+### Truong hop 1: Tim kiem danh ba
+
+```bash
+# Tim kiem co ban
+openyida dws contact user search --keyword "张三"
+
+# Xuat JSON (ly tuong cho AI Agent)
+openyida dws contact user search --keyword "张三" -f json
+
+# Luu vao tap tin
+openyida dws contact user search --keyword "张三" -o contacts.json
+```
+
+### Truong hop 2: Tao cong viec can lam
+
+```bash
+# Tao cong viec ca nhan
+openyida dws todo task create --title "准备周报" --executors "your-userid"
+
+# Tao cong viec nhom
+openyida dws todo task create --title "项目评审" --executors "userid1,userid2,userid3"
+
+# Liet ke tat ca cong viec
+openyida dws todo task list
+```
+
+### Truong hop 3: Truy van bang cham cong
+
+```bash
+# Truy van bang cham cong hom nay
+openyida dws attendance record list
+
+# Truy van cham cong cua mot nguoi dung cu the
+openyida dws attendance record list --userids "your-userid"
+```
+
+### Truong hop 4: Quan ly su kien lich
+
+```bash
+# Liet ke su kien hom nay
+openyida dws calendar event list
+
+# Tao cuoc hop
+openyida dws calendar event create \
+  --title "周会" \
+  --start-time "2026-03-29T10:00:00+08:00" \
+  --end-time "2026-03-29T11:00:00+08:00" \
+  --participants "userid1,userid2"
+
+# Kiem tra trang thai ranh/ban
+openyida dws calendar free-busy query \
+  --userids "userid1,userid2" \
+  --start-time "2026-03-29T09:00:00+08:00" \
+  --end-time "2026-03-29T18:00:00+08:00"
+```
+
+### Truong hop 5: Gui tin nhan qua robot
+
+```bash
+# Gui tin nhan van ban
+openyida dws chat robot send --content "大家好，记得提交周报！"
+
+# Gui tin nhan Markdown
+openyida dws chat robot send --content "## 会议通知\n时间：今天下午 3 点\n地点：会议室 A"
+```
+
+### Truong hop 6: Quan ly quy trinh phe duyet
+
+```bash
+# Liet ke tat ca cac phien ban phe duyet
+openyida dws approval instance list
+
+# Tao don xin nghi phep
+openyida dws approval instance create \
+  --processCode "leave" \
+  --formData '{"duration": "3", "reason": "事假"}'
+
+# Xem chi tiet phe duyet
+openyida dws approval instance get --instanceId "INSTANCE-123"
+```
+
+## Vi du tich hop AI Agent
+
+### Goi tu dong voi Cursor/Claude Code
+
+```javascript
+// Su dung truc tiep trong ma nguon cua ban
+const { execSync } = require('child_process');
+
+// Tim kiem danh ba
+const result = execSync('openyida dws contact user search --keyword "悟空" -f json', {
+  encoding: 'utf8'
+});
+const users = JSON.parse(result);
+console.log(users);
+
+// Tao cong viec
+execSync('openyida dws todo task create --title "代码审查" --executors "userId123"', {
+  stdio: 'inherit'
+});
+```
+
+### Tich hop MCP Server
+
+DingTalk CLI ho tro san giao thuc MCP va co the duoc su dung nhu mot MCP Server:
+
+```json
+{
+  "mcpServers": {
+    "dws": {
+      "command": "dws",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+## Meo go loi
+
+### 1. Xem truoc thao tac (khong thuc thi)
+
+```bash
+openyida dws todo task list --dry-run
+```
+
+### 2. Xem nhat ky chi tiet
+
+```bash
+openyida dws contact user search --keyword "张三" --debug
+```
+
+### 3. Kiem tra phien ban
+
+```bash
+openyida dws version
+```
+
+### 4. Xem cau hinh
+
+```bash
+openyida dws config list
+```
+
+## Xu ly su co thuong gap
+
+### Q1: "Khong tim thay lenh"
+
+```bash
+# Kiem tra xem dws da duoc cai dat chua
+which dws
+
+# Neu chua cai dat, chay
+openyida dws install
+```
+
+### Q2: "Xac thuc that bai"
+
+```bash
+# Kiem tra xem ban da dang nhap chua
+openyida dws auth status
+
+# Dang nhap lai
+openyida dws auth login
+```
+
+### Q3: "Khong du quyen"
+
+<Warning>
+Hay dam bao rang:
+1. Ung dung DingTalk da duoc xuat ban va dang hoat dong
+2. Quan tri vien doanh nghiep da cap quyen
+3. Thong tin xac thuc duoc cau hinh dung
+</Warning>
+
+### Q4: Phan tich JSON that bai
+
+<Tip>
+Luon su dung tham so `-f json` de nhan ket qua co cau truc:
+</Tip>
+
+```bash
+openyida dws contact user search --keyword "张三" -f json
+```
+
+## Buoc tiep theo
+
+- Xem danh sach day du cac lenh: `openyida dws help`
+- Xem tro giup cho mot dich vu cu the: `openyida dws contact --help`
+- Doc tai lieu chi tiet: [Huong dan CLI DWS](/vi/guides/dws-cli-guide)
+- Truy cap tai lieu chinh thuc: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli
+
+## Meo huu ich
+
+### Meo 1: Su dung alias de don gian hoa lenh
+
+```bash
+# Them vao ~/.zshrc hoac ~/.bashrc
+alias dws='openyida dws'
+
+# Sau do ban co the su dung truc tiep
+dws contact user search --keyword "张三"
+```
+
+### Meo 2: Ket hop lenh voi pipe
+
+```bash
+# Tim kiem danh ba va trich xuat userId
+openyida dws contact user search --keyword "张三" -f json | jq '.[0].userId'
+```
+
+### Meo 3: Thao tac hang loat
+
+```bash
+# Tao cong viec hang loat (doc tu tap tin)
+cat tasks.json | while read task; do
+  openyida dws todo task create --title "$task" --executors "userId"
+done
+```
+
+### Meo 4: Tac vu dinh ky
+
+```bash
+# Nhac nho hang ngay luc 9h sang nop bao cao ngay (crontab)
+0 9 * * * openyida dws chat robot send --content "记得提交日报！" >> /tmp/daily-reminder.log
+```

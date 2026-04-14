@@ -46,6 +46,8 @@
             "group": "使用指南",
             "pages": [
               "zh/guides/best-practices",
+              "zh/guides/dws-quick-start",
+              "zh/guides/dws-cli-guide",
               "zh/guides/faq"
             ]
           },
@@ -93,6 +95,8 @@
             "group": "Guides",
             "pages": [
               "en/guides/best-practices",
+              "en/guides/dws-quick-start",
+              "en/guides/dws-cli-guide",
               "en/guides/faq"
             ]
           },
@@ -140,6 +144,8 @@
             "group": "使用指南",
             "pages": [
               "zh-Hant/guides/best-practices",
+              "zh-Hant/guides/dws-quick-start",
+              "zh-Hant/guides/dws-cli-guide",
               "zh-Hant/guides/faq"
             ]
           },
@@ -187,6 +193,8 @@
             "group": "ガイド",
             "pages": [
               "ja/guides/best-practices",
+              "ja/guides/dws-quick-start",
+              "ja/guides/dws-cli-guide",
               "ja/guides/faq"
             ]
           },
@@ -234,6 +242,8 @@
             "group": "가이드",
             "pages": [
               "ko/guides/best-practices",
+              "ko/guides/dws-quick-start",
+              "ko/guides/dws-cli-guide",
               "ko/guides/faq"
             ]
           },
@@ -281,6 +291,8 @@
             "group": "Guides",
             "pages": [
               "fr/guides/best-practices",
+              "fr/guides/dws-quick-start",
+              "fr/guides/dws-cli-guide",
               "fr/guides/faq"
             ]
           },
@@ -328,6 +340,8 @@
             "group": "Anleitungen",
             "pages": [
               "de/guides/best-practices",
+              "de/guides/dws-quick-start",
+              "de/guides/dws-cli-guide",
               "de/guides/faq"
             ]
           },
@@ -375,6 +389,8 @@
             "group": "Guías",
             "pages": [
               "es/guides/best-practices",
+              "es/guides/dws-quick-start",
+              "es/guides/dws-cli-guide",
               "es/guides/faq"
             ]
           },
@@ -422,6 +438,8 @@
             "group": "Guias",
             "pages": [
               "pt/guides/best-practices",
+              "pt/guides/dws-quick-start",
+              "pt/guides/dws-cli-guide",
               "pt/guides/faq"
             ]
           },
@@ -469,6 +487,8 @@
             "group": "Hướng dẫn",
             "pages": [
               "vi/guides/best-practices",
+              "vi/guides/dws-quick-start",
+              "vi/guides/dws-cli-guide",
               "vi/guides/faq"
             ]
           },
@@ -516,6 +536,8 @@
             "group": "गाइड",
             "pages": [
               "hi/guides/best-practices",
+              "hi/guides/dws-quick-start",
+              "hi/guides/dws-cli-guide",
               "hi/guides/faq"
             ]
           },
@@ -563,6 +585,8 @@
             "group": "الأدلة",
             "pages": [
               "ar/guides/best-practices",
+              "ar/guides/dws-quick-start",
+              "ar/guides/dws-cli-guide",
               "ar/guides/faq"
             ]
           },

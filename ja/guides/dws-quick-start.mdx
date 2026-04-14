@@ -1,0 +1,286 @@
+---
+title: "DingTalk CLI クイックスタートガイド"
+description: "DingTalk CLIを5分でセットアップし、連絡先検索、ToDo作成、勤怠照会、カレンダー管理などの一般的な操作を始めましょう。"
+icon: "rocket"
+---
+
+## 5分でクイックスタート
+
+<Steps>
+  <Step title="DingTalk CLIのインストール">
+    ```bash
+    openyida dws install
+    ```
+
+    または手動でインストール：
+
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+    ```
+  </Step>
+
+  <Step title="DingTalkアプリの作成">
+    1. [DingTalk オープンプラットフォーム](https://dev.dingtalk.com/)にアクセス
+    2. 「社内アプリ」→「アプリ作成」へ進む
+    3. アプリの基本情報を入力
+    4. 「セキュリティ設定」でリダイレクトURLを追加：`http://127.0.0.1`
+    5. アプリバージョンを公開
+  </Step>
+
+  <Step title="認証情報の取得">
+    アプリ詳細ページで以下を取得します：
+
+    - **Client ID** (AppKey)
+    - **Client Secret** (AppSecret)
+  </Step>
+
+  <Step title="認証情報の設定">
+    **方法1：環境変数（推奨）**
+
+    ```bash
+    export DWS_CLIENT_ID="your-client-id"
+    export DWS_CLIENT_SECRET="your-client-secret"
+    ```
+
+    **方法2：コマンドパラメータ**
+
+    ```bash
+    openyida dws auth login --client-id your-client-id --client-secret your-client-secret
+    ```
+  </Step>
+
+  <Step title="ログイン">
+    ```bash
+    openyida dws auth login
+    ```
+
+    プロンプトに従ってOAuthデバイスフロー認証を完了してください。
+  </Step>
+</Steps>
+
+## よくあるユースケース
+
+### ユースケース1：連絡先の検索
+
+```bash
+# 基本検索
+openyida dws contact user search --keyword "張三"
+
+# JSON出力（AI Agentに最適）
+openyida dws contact user search --keyword "張三" -f json
+
+# ファイルに保存
+openyida dws contact user search --keyword "張三" -o contacts.json
+```
+
+### ユースケース2：ToDo項目の作成
+
+```bash
+# 個人のToDoを作成
+openyida dws todo task create --title "準備周報" --executors "your-userid"
+
+# チームのToDoを作成
+openyida dws todo task create --title "プロジェクトレビュー" --executors "userid1,userid2,userid3"
+
+# すべてのToDoを一覧表示
+openyida dws todo task list
+```
+
+### ユースケース3：勤怠記録の照会
+
+```bash
+# 今日の打刻記録を照会
+openyida dws attendance record list
+
+# 特定ユーザーの勤怠を照会
+openyida dws attendance record list --userids "your-userid"
+```
+
+### ユースケース4：カレンダー予定の管理
+
+```bash
+# 今日の予定を一覧表示
+openyida dws calendar event list
+
+# 会議を作成
+openyida dws calendar event create \
+  --title "週次ミーティング" \
+  --start-time "2026-03-29T10:00:00+08:00" \
+  --end-time "2026-03-29T11:00:00+08:00" \
+  --participants "userid1,userid2"
+
+# 空き状況を照会
+openyida dws calendar free-busy query \
+  --userids "userid1,userid2" \
+  --start-time "2026-03-29T09:00:00+08:00" \
+  --end-time "2026-03-29T18:00:00+08:00"
+```
+
+### ユースケース5：ロボットメッセージの送信
+
+```bash
+# テキストメッセージを送信
+openyida dws chat robot send --content "皆さん、週報の提出をお忘れなく！"
+
+# Markdownメッセージを送信
+openyida dws chat robot send --content "## 会議通知\n時間：本日午後3時\n場所：会議室A"
+```
+
+### ユースケース6：承認フロー管理
+
+```bash
+# すべての承認インスタンスを一覧表示
+openyida dws approval instance list
+
+# 休暇承認を作成
+openyida dws approval instance create \
+  --processCode "leave" \
+  --formData '{"duration": "3", "reason": "事假"}'
+
+# 承認の詳細を表示
+openyida dws approval instance get --instanceId "INSTANCE-123"
+```
+
+## AI Agent連携の例
+
+### Cursor/Claude Codeでの自動呼び出し
+
+```javascript
+// コード内で直接使用
+const { execSync } = require('child_process');
+
+// 連絡先を検索
+const result = execSync('openyida dws contact user search --keyword "悟空" -f json', {
+  encoding: 'utf8'
+});
+const users = JSON.parse(result);
+console.log(users);
+
+// ToDoを作成
+execSync('openyida dws todo task create --title "代码审查" --executors "userId123"', {
+  stdio: 'inherit'
+});
+```
+
+### MCP Server連携
+
+DingTalk CLIはMCPプロトコルをネイティブサポートしており、MCP Serverとして使用できます：
+
+```json
+{
+  "mcpServers": {
+    "dws": {
+      "command": "dws",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+## デバッグのヒント
+
+### 1. 操作のプレビュー（実行しない）
+
+```bash
+openyida dws todo task list --dry-run
+```
+
+### 2. 詳細ログの表示
+
+```bash
+openyida dws contact user search --keyword "張三" --debug
+```
+
+### 3. バージョンの確認
+
+```bash
+openyida dws version
+```
+
+### 4. 設定の表示
+
+```bash
+openyida dws config list
+```
+
+## よくある問題のトラブルシューティング
+
+### Q1：「コマンドが見つかりません」と表示される
+
+```bash
+# dwsがインストールされているか確認
+which dws
+
+# インストールされていない場合は実行
+openyida dws install
+```
+
+### Q2：「認証失敗」と表示される
+
+```bash
+# ログイン済みか確認
+openyida dws auth status
+
+# 再ログイン
+openyida dws auth login
+```
+
+### Q3：「権限不足」と表示される
+
+以下を確認してください：
+
+1. DingTalkアプリが公開済みであること
+2. 企業管理者が承認済みであること
+3. 認証情報が正しく設定されていること
+
+### Q4：JSON解析に失敗する
+
+<Tip>
+構造化された出力を取得するには、常に `-f json` パラメータを使用してください。
+</Tip>
+
+```bash
+openyida dws contact user search --keyword "張三" -f json
+```
+
+## 次のステップ
+
+- 完全なコマンド一覧を表示：`openyida dws help`
+- 特定サービスのヘルプを表示：`openyida dws contact --help`
+- 詳細なドキュメントを参照：[DWS CLIガイド](/ja/guides/dws-cli-guide)
+- 公式ドキュメントにアクセス：https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli
+
+## 便利なヒント
+
+### ヒント1：エイリアスでコマンドを簡略化
+
+```bash
+# ~/.zshrc または ~/.bashrc に追加
+alias dws='openyida dws'
+
+# これで直接使用可能
+dws contact user search --keyword "張三"
+```
+
+### ヒント2：パイプでコマンドを組み合わせる
+
+```bash
+# 連絡先を検索してuserIdを抽出
+openyida dws contact user search --keyword "張三" -f json | jq '.[0].userId'
+```
+
+### ヒント3：バッチ操作
+
+```bash
+# ToDoを一括作成（ファイルから読み込み）
+cat tasks.json | while read task; do
+  openyida dws todo task create --title "$task" --executors "userId"
+done
+```
+
+### ヒント4：定期タスク
+
+```bash
+# 毎朝9時に日報提出のリマインダー（crontab）
+0 9 * * * openyida dws chat robot send --content "日報の提出をお忘れなく！" >> /tmp/daily-reminder.log
+```

@@ -1,0 +1,294 @@
+---
+title: "DingTalk CLI Schnellstartanleitung"
+description: "Installieren und konfigurieren Sie DingTalk CLI in 5 Minuten, um Kontakte, Aufgaben, Kalender und mehr zu verwalten."
+icon: "rocket"
+---
+
+## In 5 Minuten loslegen
+
+<Steps>
+  <Step title="DingTalk CLI installieren">
+
+```bash
+openyida dws install
+```
+
+Oder manuelle Installation:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.sh | sh
+```
+
+  </Step>
+
+  <Step title="DingTalk-Anwendung erstellen">
+
+1. Besuchen Sie die [DingTalk Open Platform](https://dev.dingtalk.com/)
+2. Gehen Sie zu "Unternehmensinterne Anwendungen" und dann "Anwendung erstellen"
+3. Füllen Sie die grundlegenden Anwendungsinformationen aus
+4. Fügen Sie unter "Sicherheitseinstellungen" die Weiterleitungs-URL hinzu: `http://127.0.0.1`
+5. Veröffentlichen Sie die Anwendungsversion
+
+  </Step>
+
+  <Step title="Zugangsdaten abrufen">
+
+Auf der Anwendungsdetailseite erhalten Sie die **Client ID** (AppKey) und das **Client Secret** (AppSecret).
+
+  </Step>
+
+  <Step title="Zugangsdaten konfigurieren">
+
+**Option 1: Umgebungsvariablen (empfohlen)**
+
+```bash
+export DWS_CLIENT_ID="your-client-id"
+export DWS_CLIENT_SECRET="your-client-secret"
+```
+
+**Option 2: Befehlsparameter**
+
+```bash
+openyida dws auth login --client-id your-client-id --client-secret your-client-secret
+```
+
+  </Step>
+
+  <Step title="Anmelden">
+
+```bash
+openyida dws auth login
+```
+
+Folgen Sie den Anweisungen, um die OAuth-Device-Flow-Authentifizierung abzuschließen.
+
+  </Step>
+</Steps>
+
+## Beispiele für häufige Anwendungsfälle
+
+### Fall 1: Kontakte suchen
+
+```bash
+# Einfache Suche
+openyida dws contact user search --keyword "张三"
+
+# JSON-Ausgabe (ideal für AI Agents)
+openyida dws contact user search --keyword "张三" -f json
+
+# In Datei speichern
+openyida dws contact user search --keyword "张三" -o contacts.json
+```
+
+### Fall 2: Aufgaben erstellen
+
+```bash
+# Persönliche Aufgabe erstellen
+openyida dws todo task create --title "准备周报" --executors "your-userid"
+
+# Teamaufgabe erstellen
+openyida dws todo task create --title "项目评审" --executors "userid1,userid2,userid3"
+
+# Alle Aufgaben auflisten
+openyida dws todo task list
+```
+
+### Fall 3: Anwesenheitsdaten abfragen
+
+```bash
+# Heutige Stempeleinträge abfragen
+openyida dws attendance record list
+
+# Anwesenheit eines bestimmten Benutzers abfragen
+openyida dws attendance record list --userids "your-userid"
+```
+
+### Fall 4: Kalendertermine verwalten
+
+```bash
+# Heutige Termine auflisten
+openyida dws calendar event list
+
+# Besprechung erstellen
+openyida dws calendar event create \
+  --title "周会" \
+  --start-time "2026-03-29T10:00:00+08:00" \
+  --end-time "2026-03-29T11:00:00+08:00" \
+  --participants "userid1,userid2"
+
+# Verfügbarkeit prüfen
+openyida dws calendar free-busy query \
+  --userids "userid1,userid2" \
+  --start-time "2026-03-29T09:00:00+08:00" \
+  --end-time "2026-03-29T18:00:00+08:00"
+```
+
+### Fall 5: Roboter-Nachrichten senden
+
+```bash
+# Textnachricht senden
+openyida dws chat robot send --content "大家好，记得提交周报！"
+
+# Markdown-Nachricht senden
+openyida dws chat robot send --content "## 会议通知\n时间：今天下午 3 点\n地点：会议室 A"
+```
+
+### Fall 6: Genehmigungsprozesse verwalten
+
+```bash
+# Alle Genehmigungsinstanzen auflisten
+openyida dws approval instance list
+
+# Urlaubsantrag erstellen
+openyida dws approval instance create \
+  --processCode "leave" \
+  --formData '{"duration": "3", "reason": "事假"}'
+
+# Genehmigungsdetails anzeigen
+openyida dws approval instance get --instanceId "INSTANCE-123"
+```
+
+## Beispiele zur AI-Agent-Integration
+
+### Automatischer Aufruf mit Cursor/Claude Code
+
+```javascript
+// Direkt in Ihrem Code verwenden
+const { execSync } = require('child_process');
+
+// Kontakte suchen
+const result = execSync('openyida dws contact user search --keyword "悟空" -f json', {
+  encoding: 'utf8'
+});
+const users = JSON.parse(result);
+console.log(users);
+
+// Aufgabe erstellen
+execSync('openyida dws todo task create --title "代码审查" --executors "userId123"', {
+  stdio: 'inherit'
+});
+```
+
+### MCP-Server-Integration
+
+DingTalk CLI unterstützt nativ das MCP-Protokoll und kann als MCP-Server verwendet werden:
+
+```json
+{
+  "mcpServers": {
+    "dws": {
+      "command": "dws",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+## Debugging-Tipps
+
+### 1. Vorschau einer Operation (ohne Ausführung)
+
+```bash
+openyida dws todo task list --dry-run
+```
+
+### 2. Detaillierte Protokolle anzeigen
+
+```bash
+openyida dws contact user search --keyword "张三" --debug
+```
+
+### 3. Version prüfen
+
+```bash
+openyida dws version
+```
+
+### 4. Konfiguration anzeigen
+
+```bash
+openyida dws config list
+```
+
+## Fehlerbehebung bei häufigen Problemen
+
+### Q1: "Befehl nicht gefunden"
+
+```bash
+# Prüfen, ob dws installiert ist
+which dws
+
+# Falls nicht installiert, ausführen
+openyida dws install
+```
+
+### Q2: "Authentifizierung fehlgeschlagen"
+
+```bash
+# Prüfen, ob Sie angemeldet sind
+openyida dws auth status
+
+# Erneut anmelden
+openyida dws auth login
+```
+
+### Q3: "Unzureichende Berechtigungen"
+
+<Warning>
+Stellen Sie sicher, dass:
+1. Die DingTalk-Anwendung veröffentlicht und online ist
+2. Der Unternehmensadministrator die Berechtigung erteilt hat
+3. Die Zugangsdaten korrekt konfiguriert sind
+</Warning>
+
+### Q4: JSON-Parsing fehlgeschlagen
+
+<Tip>
+Verwenden Sie immer den Parameter `-f json`, um eine strukturierte Ausgabe zu erhalten:
+</Tip>
+
+```bash
+openyida dws contact user search --keyword "张三" -f json
+```
+
+## Nächste Schritte
+
+- Vollständige Befehlsliste anzeigen: `openyida dws help`
+- Hilfe für einen bestimmten Dienst anzeigen: `openyida dws contact --help`
+- Ausführliche Dokumentation lesen: [DWS CLI-Handbuch](/de/guides/dws-cli-guide)
+- Offizielle Dokumentation besuchen: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli
+
+## Praktische Tipps
+
+### Tipp 1: Aliase zur Vereinfachung von Befehlen verwenden
+
+```bash
+# In ~/.zshrc oder ~/.bashrc hinzufügen
+alias dws='openyida dws'
+
+# Dann können Sie direkt verwenden
+dws contact user search --keyword "张三"
+```
+
+### Tipp 2: Befehle mit Pipes kombinieren
+
+```bash
+# Kontakte suchen und userId extrahieren
+openyida dws contact user search --keyword "张三" -f json | jq '.[0].userId'
+```
+
+### Tipp 3: Massenoperationen
+
+```bash
+# Aufgaben in Masse erstellen (aus Datei lesen)
+cat tasks.json | while read task; do
+  openyida dws todo task create --title "$task" --executors "userId"
+done
+```
+
+### Tipp 4: Geplante Aufgaben
+
+```bash
+# Tägliche Erinnerung um 9 Uhr, den Tagesbericht einzureichen (crontab)
+0 9 * * * openyida dws chat robot send --content "记得提交日报！" >> /tmp/daily-reminder.log
+```
