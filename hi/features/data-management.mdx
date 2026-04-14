@@ -305,6 +305,43 @@ while true; do
 done
 ```
 
+### AttachmentField डेटा प्रारूप
+
+फ़ॉर्म डेटा बनाते या अपडेट करते समय, `AttachmentField` (अटैचमेंट) और `ImageField` (इमेज) फ़ील्ड के लिए एक विशिष्ट ऑब्जेक्ट ऐरे प्रारूप आवश्यक है। आप सीधे फ़ाइल ऑब्जेक्ट या सादा टेक्स्ट स्ट्रिंग नहीं दे सकते।
+
+प्रत्येक अटैचमेंट ऑब्जेक्ट में निम्नलिखित फ़ील्ड शामिल होने चाहिए:
+
+| फ़ील्ड | प्रकार | विवरण |
+|--------|--------|-------|
+| `name` | String | फ़ाइल का नाम |
+| `size` | Number | फ़ाइल का आकार (बाइट्स) |
+| `fileUuid` | String | फ़ाइल का अद्वितीय पहचानकर्ता (OSS objectName) |
+| `url` | String | फ़ाइल एक्सेस URL |
+| `downloadUrl` | String | फ़ाइल डाउनलोड URL |
+| `previewUrl` | String | फ़ाइल प्रीव्यू URL |
+
+उदाहरण:
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  `AttachmentField` का मान ऑब्जेक्ट्स का ऐरे होना चाहिए — एकल ऑब्जेक्ट, स्ट्रिंग या `File` ऑब्जेक्ट नहीं। गलत प्रारूप देने पर `syntax error, expect [` जैसी त्रुटियाँ होती हैं।
+</Warning>
+
 ---
 
 ## ध्यान दें

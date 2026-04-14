@@ -301,6 +301,43 @@ while true; do
 done
 ```
 
+### AttachmentField 데이터 형식
+
+양식 데이터를 생성하거나 업데이트할 때 `AttachmentField`(첨부 파일) 및 `ImageField`(이미지) 필드는 특정 객체 배열 형식이 필요합니다. 파일 객체나 일반 텍스트 문자열을 직접 전달할 수 없습니다.
+
+각 첨부 파일 객체에는 다음 필드가 필요합니다:
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| `name` | String | 파일 이름 |
+| `size` | Number | 파일 크기(바이트) |
+| `fileUuid` | String | 파일 고유 식별자(OSS objectName) |
+| `url` | String | 파일 접근 URL |
+| `downloadUrl` | String | 파일 다운로드 URL |
+| `previewUrl` | String | 파일 미리보기 URL |
+
+예:
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  `AttachmentField`의 값은 객체 배열이어야 합니다. 단일 객체, 문자열 또는 `File` 객체는 사용할 수 없습니다. 잘못된 형식을 전달하면 `syntax error, expect [`와 같은 오류가 발생합니다.
+</Warning>
+
 ---
 
 ## 주의사항

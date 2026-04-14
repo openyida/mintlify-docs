@@ -303,6 +303,43 @@ while true; do
 done
 ```
 
+### تنسيق بيانات AttachmentField
+
+عند إنشاء أو تحديث بيانات النموذج، تتطلب حقول `AttachmentField` (المرفقات) و `ImageField` (الصور) تنسيق مصفوفة كائنات محدد. لا يمكنك تمرير كائنات ملفات أو سلاسل نصية عادية مباشرة.
+
+يجب أن يتضمن كل كائن مرفق الحقول التالية:
+
+| الحقل | النوع | الوصف |
+|-------|-------|-------|
+| `name` | String | اسم الملف |
+| `size` | Number | حجم الملف بالبايت |
+| `fileUuid` | String | المعرف الفريد للملف (OSS objectName) |
+| `url` | String | رابط الوصول إلى الملف |
+| `downloadUrl` | String | رابط تحميل الملف |
+| `previewUrl` | String | رابط معاينة الملف |
+
+مثال:
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  يجب أن تكون قيمة `AttachmentField` مصفوفة من الكائنات — وليس كائنًا واحدًا أو سلسلة نصية أو كائن `File`. تمرير تنسيق خاطئ يسبب أخطاء مثل `syntax error, expect [`.
+</Warning>
+
 ---
 
 ## ملاحظات

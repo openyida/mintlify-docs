@@ -303,6 +303,43 @@ while true; do
 done
 ```
 
+### AttachmentField 数据格式
+
+在创建或更新表单数据时，`AttachmentField`（附件）和 `ImageField`（图片）字段需要使用特定的对象数组格式。你不能直接传入文件对象或纯文本字符串。
+
+每个附件对象需要包含以下字段：
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `name` | String | 文件名 |
+| `size` | Number | 文件大小（字节） |
+| `fileUuid` | String | 文件唯一标识（OSS objectName） |
+| `url` | String | 文件访问 URL |
+| `downloadUrl` | String | 文件下载 URL |
+| `previewUrl` | String | 文件预览 URL |
+
+示例：
+
+```bash
+openyida data create form <appType> <formUuid> \
+  --data-json '{
+    "attachmentField_xxx": [
+      {
+        "name": "report.pdf",
+        "size": 102400,
+        "fileUuid": "APP_XXX/2026/4-1/1713000000000-report.pdf",
+        "url": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "downloadUrl": "/ossFileHandle?appType=APP_XXX&fileName=report.pdf&type=download",
+        "previewUrl": "/inst/preview?appType=APP_XXX&fileName=report.pdf"
+      }
+    ]
+  }'
+```
+
+<Warning>
+  `AttachmentField` 的值必须是对象数组，不能是单个对象、字符串或 `File` 对象。传入错误格式会导致类似 `syntax error, expect [` 的报错。
+</Warning>
+
 ---
 
 ## 注意事项
