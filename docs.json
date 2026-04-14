@@ -31,7 +31,8 @@
               "zh/features/connector",
               "zh/features/data-management",
               "zh/features/report",
-              "zh/features/doctor"
+              "zh/features/doctor",
+              "zh/features/mcp-app"
             ]
           },
           {
@@ -80,7 +81,8 @@
               "en/features/connector",
               "en/features/data-management",
               "en/features/report",
-              "en/features/doctor"
+              "en/features/doctor",
+              "en/features/mcp-app"
             ]
           },
           {
@@ -129,7 +131,8 @@
               "zh-Hant/features/connector",
               "zh-Hant/features/data-management",
               "zh-Hant/features/report",
-              "zh-Hant/features/doctor"
+              "zh-Hant/features/doctor",
+              "zh-Hant/features/mcp-app"
             ]
           },
           {
@@ -178,7 +181,8 @@
               "ja/features/connector",
               "ja/features/data-management",
               "ja/features/report",
-              "ja/features/doctor"
+              "ja/features/doctor",
+              "ja/features/mcp-app"
             ]
           },
           {
@@ -227,7 +231,8 @@
               "ko/features/connector",
               "ko/features/data-management",
               "ko/features/report",
-              "ko/features/doctor"
+              "ko/features/doctor",
+              "ko/features/mcp-app"
             ]
           },
           {
@@ -276,7 +281,8 @@
               "fr/features/connector",
               "fr/features/data-management",
               "fr/features/report",
-              "fr/features/doctor"
+              "fr/features/doctor",
+              "fr/features/mcp-app"
             ]
           },
           {
@@ -325,7 +331,8 @@
               "de/features/connector",
               "de/features/data-management",
               "de/features/report",
-              "de/features/doctor"
+              "de/features/doctor",
+              "de/features/mcp-app"
             ]
           },
           {
@@ -374,7 +381,8 @@
               "es/features/connector",
               "es/features/data-management",
               "es/features/report",
-              "es/features/doctor"
+              "es/features/doctor",
+              "es/features/mcp-app"
             ]
           },
           {
@@ -423,7 +431,8 @@
               "pt/features/connector",
               "pt/features/data-management",
               "pt/features/report",
-              "pt/features/doctor"
+              "pt/features/doctor",
+              "pt/features/mcp-app"
             ]
           },
           {
@@ -472,7 +481,8 @@
               "vi/features/connector",
               "vi/features/data-management",
               "vi/features/report",
-              "vi/features/doctor"
+              "vi/features/doctor",
+              "vi/features/mcp-app"
             ]
           },
           {
@@ -521,7 +531,8 @@
               "hi/features/connector",
               "hi/features/data-management",
               "hi/features/report",
-              "hi/features/doctor"
+              "hi/features/doctor",
+              "hi/features/mcp-app"
             ]
           },
           {
@@ -570,7 +581,8 @@
               "ar/features/connector",
               "ar/features/data-management",
               "ar/features/report",
-              "ar/features/doctor"
+              "ar/features/doctor",
+              "ar/features/mcp-app"
             ]
           },
           {

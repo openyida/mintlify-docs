@@ -1,0 +1,87 @@
+---
+title: "MCP App Server"
+description: "@openyida/mcp-app ka upyog karke Claude Desktop, ChatGPT, VS Code, Cursor jaise MCP-compatible AI clients se Yida applications ke saath interact karein."
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` ek [MCP Apps](https://modelcontextprotocol.io) server hai jo Yida low-code platform ke interactive UIs ko seedhe AI chat conversations mein laata hai. Plain text ki jagah, aapko card-style dashboards, interactive charts, aur form previews dikhte hain.
+
+## Poorv-aavashyaktaayein
+
+- **Node.js** 18 ya usse adhik
+- **openyida** CLI globally installed (`npm install -g openyida`)
+- Authenticated session — MCP tools use karne se pehle `openyida login` chalayein
+
+## Quick start
+
+### stdio transport (Claude Desktop, VS Code, Cursor)
+
+Apne MCP client configuration mein yeh add karein:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### HTTP transport (StreamableHTTP)
+
+```bash
+npx @openyida/mcp-app
+# Server http://localhost:3001/mcp par listen kar raha hai
+```
+
+---
+
+## Upalabdh tools
+
+### Authentication tools
+
+| Tool | Vivaran |
+|------|---------|
+| `yida_login_status` | Login status check karein |
+| `yida_login` | Yida login flow shuru karein |
+| `yida_env` | OpenYida environment check karein |
+
+### Application tools
+
+| Tool | Vivaran |
+|------|---------|
+| `yida_list_apps` | Sabhi Yida applications ki suchi (interactive dashboard) |
+| `yida_create_app` | Nayi Yida application banayein |
+
+### Form tools
+
+| Tool | Vivaran |
+|------|---------|
+| `yida_get_schema` | Form ka poora schema prapt karein (interactive preview) |
+| `yida_create_form` | Naya form banayein |
+
+### Data tools
+
+| Tool | Vivaran |
+|------|---------|
+| `yida_query_data` | Form data ko pagination ke saath query karein |
+| `yida_create_instance` | Naya data record banayein |
+
+### Report tools
+
+| Tool | Vivaran |
+|------|---------|
+| `yida_query_report` | Visualization ke liye data query karein (interactive ECharts chart) |
+| `yida_create_report` | Yida report banayein |
+
+---
+
+## Interactive views
+
+| Tool | View | Vivaran |
+|------|------|---------|
+| `yida_list_apps` | App Dashboard | Card-style application suchi |
+| `yida_query_report` | Report Chart | Interactive ECharts visualization |
+| `yida_get_schema` | Form Preview | Form structure preview |

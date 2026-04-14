@@ -1,0 +1,87 @@
+---
+title: "MCP App Server"
+description: "Su dung @openyida/mcp-app de tuong tac voi ung dung Yida thong qua cac AI client tuong thich MCP nhu Claude Desktop, ChatGPT, VS Code va Cursor."
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` la mot [MCP Apps](https://modelcontextprotocol.io) server mang giao dien tuong tac cua nen tang low-code Yida truc tiep vao cac cuoc hoi thoai AI. Thay vi van ban thuan, ban se thay bang dieu khien dang the, bieu do tuong tac va xem truoc bieu mau.
+
+## Dieu kien tien quyet
+
+- **Node.js** 18 tro len
+- **openyida** CLI da cai dat toan cuc (`npm install -g openyida`)
+- Phien da xac thuc — chay `openyida login` truoc khi su dung cong cu MCP
+
+## Bat dau nhanh
+
+### Truyen tai stdio (Claude Desktop, VS Code, Cursor)
+
+Them vao cau hinh MCP client cua ban:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### Truyen tai HTTP (StreamableHTTP)
+
+```bash
+npx @openyida/mcp-app
+# Server lang nghe tai http://localhost:3001/mcp
+```
+
+---
+
+## Cong cu kha dung
+
+### Cong cu xac thuc
+
+| Cong cu | Mo ta |
+|---------|-------|
+| `yida_login_status` | Kiem tra trang thai dang nhap |
+| `yida_login` | Bat dau luong dang nhap Yida |
+| `yida_env` | Kiem tra moi truong OpenYida |
+
+### Cong cu ung dung
+
+| Cong cu | Mo ta |
+|---------|-------|
+| `yida_list_apps` | Liet ke tat ca ung dung Yida (bang dieu khien tuong tac) |
+| `yida_create_app` | Tao ung dung Yida moi |
+
+### Cong cu bieu mau
+
+| Cong cu | Mo ta |
+|---------|-------|
+| `yida_get_schema` | Lay schema day du cua bieu mau (xem truoc tuong tac) |
+| `yida_create_form` | Tao bieu mau moi |
+
+### Cong cu du lieu
+
+| Cong cu | Mo ta |
+|---------|-------|
+| `yida_query_data` | Truy van du lieu bieu mau voi phan trang |
+| `yida_create_instance` | Tao ban ghi du lieu moi |
+
+### Cong cu bao cao
+
+| Cong cu | Mo ta |
+|---------|-------|
+| `yida_query_report` | Truy van du lieu de truc quan hoa (bieu do ECharts tuong tac) |
+| `yida_create_report` | Tao bao cao Yida |
+
+---
+
+## Che do xem tuong tac
+
+| Cong cu | Che do xem | Mo ta |
+|---------|-----------|-------|
+| `yida_list_apps` | App Dashboard | Danh sach ung dung dang the |
+| `yida_query_report` | Report Chart | Truc quan hoa ECharts tuong tac |
+| `yida_get_schema` | Form Preview | Xem truoc cau truc bieu mau |

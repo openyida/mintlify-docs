@@ -1,0 +1,218 @@
+---
+title: "MCP App 伺服器"
+description: "使用 @openyida/mcp-app 透過 Claude Desktop、ChatGPT、VS Code、Cursor 等 MCP 相容客戶端與宜搭應用互動。"
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` 是一個 [MCP Apps](https://modelcontextprotocol.io) 伺服器，將宜搭低代碼平台的互動式 UI 直接帶入 AI 對話中。你可以在對話中看到卡片式儀表盤、互動式圖表和視覺化表單預覽，而不只是純文字。
+
+## 前置條件
+
+- **Node.js** 18 或更高版本
+- 全域安裝 **openyida** CLI（`npm install -g openyida`）
+- 已完成登入認證 — 使用 MCP 工具前請先執行 `openyida login`
+
+## 快速開始
+
+### stdio 傳輸（Claude Desktop、VS Code、Cursor）
+
+在 MCP 客戶端設定中加入：
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### HTTP 傳輸（StreamableHTTP）
+
+```bash
+npx @openyida/mcp-app
+# 伺服器監聽在 http://localhost:3001/mcp
+```
+
+透過 `PORT` 環境變數設定自訂連接埠：
+
+```bash
+PORT=8080 npx @openyida/mcp-app
+```
+
+HTTP 伺服器公開兩個端點：
+
+| 端點 | 方法 | 說明 |
+|------|------|------|
+| `/mcp` | `POST` | MCP StreamableHTTP 端點 |
+| `/health` | `GET` | 健康檢查 — 回傳 `{ "status": "ok" }` |
+
+---
+
+## 可用工具
+
+伺服器註冊了以下 MCP 工具，可從任何 MCP 相容客戶端呼叫。
+
+### 認證工具
+
+#### `yida_login_status`
+
+檢查目前是否已登入宜搭。
+
+**參數：** 無
+
+**回應欄位：**
+
+| 欄位 | 類型 | 說明 |
+|------|------|------|
+| `loggedIn` | `boolean` | 是否存在有效工作階段 |
+| `baseUrl` | `string` | 宜搭服務端點（僅登入時回傳） |
+| `userId` | `string` | 目前使用者 ID（僅登入時回傳） |
+| `corpId` | `string` | 目前組織 ID（僅登入時回傳） |
+
+#### `yida_login`
+
+觸發宜搭登入流程。
+
+| 參數 | 類型 | 必填 | 預設值 | 說明 |
+|------|------|------|--------|------|
+| `method` | `"auto" \| "qr"` | 否 | `"auto"` | 登入方式 — `"auto"` 為預設方式，`"qr"` 為掃碼登入 |
+
+#### `yida_env`
+
+檢查目前 OpenYida 環境和設定狀態。
+
+**參數：** 無
+
+---
+
+### 應用工具
+
+#### `yida_list_apps`
+
+列出目前帳號的所有宜搭應用。回傳應用名稱、類型標識和存取連結。在支援的客戶端中呈現互動式儀表盤卡片檢視。
+
+| 參數 | 類型 | 必填 | 預設值 | 說明 |
+|------|------|------|--------|------|
+| `pageSize` | `integer` | 否 | `20` | 每頁應用數量（1–100） |
+
+#### `yida_create_app`
+
+建立新的宜搭應用。
+
+| 參數 | 類型 | 必填 | 預設值 | 說明 |
+|------|------|------|--------|------|
+| `name` | `string` | 是 | — | 應用名稱 |
+| `description` | `string` | 否 | `""` | 應用描述 |
+| `icon` | `string` | 否 | `"chart-pie"` | 應用圖示標識 |
+| `iconColor` | `string` | 否 | `"#3870EA"` | 圖示顏色十六進位碼 |
+
+---
+
+### 表單工具
+
+#### `yida_get_schema`
+
+取得宜搭表單的完整 Schema，包括欄位定義、類型和 ID。在支援的客戶端中呈現互動式表單結構預覽。
+
+| 參數 | 類型 | 必填 | 說明 |
+|------|------|------|------|
+| `appType` | `string` | 是 | 應用標識（如 `APP_XXXXX`） |
+| `formUuid` | `string` | 是 | 表單 UUID（如 `FORM-XXXXX`） |
+
+<Warning>
+  欄位 ID 由平台隨機產生（如 `textField_eftt1aa5m`）。在建立或查詢表單資料之前，必須使用 `yida_get_schema` 取得真實的欄位 ID。
+</Warning>
+
+#### `yida_create_form`
+
+在宜搭應用中建立新表單。
+
+| 參數 | 類型 | 必填 | 說明 |
+|------|------|------|------|
+| `appType` | `string` | 是 | 應用標識 |
+| `formTitle` | `string` | 是 | 表單標題 |
+| `fields` | `string` | 是 | 欄位定義的 JSON 陣列 |
+
+---
+
+### 資料工具
+
+#### `yida_query_data`
+
+分頁查詢表單資料實例，支援可選搜尋條件。
+
+| 參數 | 類型 | 必填 | 預設值 | 說明 |
+|------|------|------|--------|------|
+| `appType` | `string` | 是 | — | 應用標識 |
+| `formUuid` | `string` | 是 | — | 表單 UUID |
+| `pageNumber` | `integer` | 否 | `1` | 頁碼 |
+| `pageSize` | `integer` | 否 | `10` | 每頁筆數（1–100） |
+| `searchFieldJson` | `string` | 否 | — | 搜尋條件 JSON 字串 |
+
+#### `yida_create_instance`
+
+建立一筆新的表單資料紀錄。
+
+| 參數 | 類型 | 必填 | 說明 |
+|------|------|------|------|
+| `appType` | `string` | 是 | 應用標識 |
+| `formUuid` | `string` | 是 | 表單 UUID |
+| `formDataJson` | `string` | 是 | 表單資料 JSON 字串（如 `{"textField_xxx":"value"}`） |
+| `deptId` | `string` | 否 | 部門 ID |
+
+<Warning>
+  `formDataJson` 中的鍵必須使用欄位 ID（而非標籤）。請先執行 `yida_get_schema` 取得正確的欄位 ID。
+</Warning>
+
+---
+
+### 報表工具
+
+#### `yida_query_report`
+
+查詢表單資料用於報表視覺化。回傳資料並在支援的客戶端中呈現互動式 ECharts 圖表。
+
+| 參數 | 類型 | 必填 | 預設值 | 說明 |
+|------|------|------|--------|------|
+| `appType` | `string` | 是 | — | 應用標識 |
+| `formUuid` | `string` | 是 | — | 資料來源表單 UUID |
+| `chartType` | `"bar" \| "line" \| "pie" \| "scatter"` | 否 | `"bar"` | 圖表類型 |
+| `title` | `string` | 否 | `"Report"` | 圖表標題 |
+
+#### `yida_create_report`
+
+建立宜搭報表。
+
+| 參數 | 類型 | 必填 | 說明 |
+|------|------|------|------|
+| `appType` | `string` | 是 | 應用標識 |
+| `reportName` | `string` | 是 | 報表名稱 |
+| `chartDefinition` | `string` | 是 | 圖表定義 JSON 字串 |
+
+---
+
+## 互動式檢視
+
+在支援 [MCP Apps](https://modelcontextprotocol.io) 擴充的客戶端中，三個工具會呈現互動式 HTML 檢視：
+
+| 工具 | 檢視 | 說明 |
+|------|------|------|
+| `yida_list_apps` | App Dashboard | 卡片式應用列表，帶圖示和連結 |
+| `yida_query_report` | Report Chart | 互動式 ECharts 視覺化，支援柱狀/折線/圓餅/散佈圖切換 |
+| `yida_get_schema` | Form Preview | 視覺化表單結構，顯示欄位類型和 ID |
+
+---
+
+## 錯誤處理
+
+所有工具以統一格式回傳錯誤：
+
+```json
+{
+  "type": "text",
+  "text": "Error: <錯誤訊息>"
+}
+```

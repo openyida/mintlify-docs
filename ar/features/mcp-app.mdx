@@ -1,0 +1,87 @@
+---
+title: "خادم MCP App"
+description: "استخدم @openyida/mcp-app للتفاعل مع تطبيقات Yida عبر عملاء AI متوافقة مع MCP مثل Claude Desktop وChatGPT وVS Code وCursor."
+icon: "puzzle-piece"
+---
+
+`@openyida/mcp-app` هو خادم [MCP Apps](https://modelcontextprotocol.io) يعرض واجهات تفاعلية لمنصة Yida منخفضة الكود مباشرة في محادثات AI. بدلاً من النص العادي، تحصل على لوحات معلومات بطاقية ورسوم بيانية تفاعلية ومعاينات نماذج.
+
+## المتطلبات المسبقة
+
+- **Node.js** الإصدار 18 أو أعلى
+- **openyida** CLI مثبت عالمياً (`npm install -g openyida`)
+- جلسة مصادق عليها — قم بتشغيل `openyida login` قبل استخدام أدوات MCP
+
+## البدء السريع
+
+### نقل stdio (Claude Desktop وVS Code وCursor)
+
+أضف التالي إلى إعدادات عميل MCP الخاص بك:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+### نقل HTTP (StreamableHTTP)
+
+```bash
+npx @openyida/mcp-app
+# الخادم يستمع على http://localhost:3001/mcp
+```
+
+---
+
+## الأدوات المتاحة
+
+### أدوات المصادقة
+
+| الأداة | الوصف |
+|--------|-------|
+| `yida_login_status` | التحقق من حالة تسجيل الدخول |
+| `yida_login` | بدء عملية تسجيل الدخول إلى Yida |
+| `yida_env` | التحقق من بيئة OpenYida |
+
+### أدوات التطبيقات
+
+| الأداة | الوصف |
+|--------|-------|
+| `yida_list_apps` | عرض جميع تطبيقات Yida (لوحة معلومات تفاعلية) |
+| `yida_create_app` | إنشاء تطبيق Yida جديد |
+
+### أدوات النماذج
+
+| الأداة | الوصف |
+|--------|-------|
+| `yida_get_schema` | الحصول على مخطط النموذج الكامل (معاينة تفاعلية) |
+| `yida_create_form` | إنشاء نموذج جديد |
+
+### أدوات البيانات
+
+| الأداة | الوصف |
+|--------|-------|
+| `yida_query_data` | استعلام بيانات النموذج مع ترقيم الصفحات |
+| `yida_create_instance` | إنشاء سجل بيانات جديد |
+
+### أدوات التقارير
+
+| الأداة | الوصف |
+|--------|-------|
+| `yida_query_report` | استعلام البيانات للتصور (رسم بياني ECharts تفاعلي) |
+| `yida_create_report` | إنشاء تقرير Yida |
+
+---
+
+## العروض التفاعلية
+
+| الأداة | العرض | الوصف |
+|--------|-------|-------|
+| `yida_list_apps` | App Dashboard | قائمة التطبيقات بشكل بطاقات |
+| `yida_query_report` | Report Chart | تصور ECharts تفاعلي |
+| `yida_get_schema` | Form Preview | معاينة هيكل النموذج |
