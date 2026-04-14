@@ -621,6 +621,58 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
+## Sửa chữa Sequence cơ sở dữ liệu
+
+Phát hiện và sửa chữa các giá trị bắt đầu của Sequence PostgreSQL trong cơ sở dữ liệu chuyên dụng của Yida. Khi việc di chuyển hoặc đồng bộ dữ liệu khiến giá trị hiện tại của Sequence thấp hơn ID khóa chính lớn nhất của bảng, các bản ghi mới sẽ thất bại với lỗi khóa trùng lặp. Lệnh `db-seq-fix` tự động xác định và sửa chữa các sự không nhất quán này.
+
+```bash
+# Kiểm tra trạng thái tất cả Sequence
+openyida db-seq-fix
+
+# Xem trước SQL sửa chữa mà không thực thi
+openyida db-seq-fix --dry-run
+
+# Tự động sửa chữa các Sequence bị tụt hậu
+openyida db-seq-fix --fix
+
+# Hiển thị trợ giúp
+openyida db-seq-fix --help
+```
+
+### Tham số
+
+| Tham số | Mô tả |
+|---------|-------|
+| *(không có)* | Kiểm tra trạng thái tất cả Sequence (mặc định) |
+| `--fix` | Tự động sửa chữa các Sequence không đồng bộ |
+| `--dry-run` | Xem trước các câu lệnh SQL sửa chữa mà không thực thi |
+| `--help` | Hiển thị thông tin trợ giúp |
+
+### Các bảng được giám sát
+
+Lệnh giám sát Sequence cho các bảng cốt lõi sau:
+
+| Bảng | Sequence | Khóa chính |
+|------|----------|------------|
+| `alibpms_app_cm_operator_record` | `pro_operator_record_id_seq` | `id` |
+| `tianshu_data_form_version` | `data_form_version_id_seq` | `id` |
+| `tianshu_form_data` | `form_data_id_seq` | `id` |
+| `tianshu_form_data_operation_log` | `operation_log_id_seq` | `id` |
+| `tianshu_form_data_stash` | `form_data_stash_id_seq` | `id` |
+| `tianshu_form_remark` | `form_remark_id_seq` | `id` |
+| `tianshu_instance_relation` | `instance_relation_id_seq` | `id` |
+| `tianshu_proc_inst_carbon` | `proc_inst_carbon_id_seq` | `id` |
+
+<Warning>
+  Chạy `--dry-run` trước để xem trước các thay đổi trước khi thực thi `--fix` trong môi trường sản xuất. Thực hiện sửa chữa trong thời gian lưu lượng cao có thể gây ra xung đột phân bổ ID ngắn.
+</Warning>
+
+<Info>
+  Bạn phải đăng nhập và có quyền truy cập cơ sở dữ liệu chuyên dụng trước khi chạy lệnh này. Chạy `openyida login` trước nếu bạn chưa xác thực.
+</Info>
+
+---
+
 ## Tùy chọn toàn cục
 
 | Tùy chọn | Mô tả |

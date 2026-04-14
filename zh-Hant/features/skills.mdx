@@ -620,6 +620,58 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
+## 資料庫 Sequence 修復
+
+偵測和修復宜搭專屬資料庫中 PostgreSQL Sequence 起始值問題。當資料遷移或同步導致 Sequence 當前值小於表中最大主鍵 ID 時，新插入資料會因主鍵衝突而失敗。`db-seq-fix` 命令可自動識別並修正這些不一致。
+
+```bash
+# 檢查所有 Sequence 狀態
+openyida db-seq-fix
+
+# 預覽修復 SQL，不實際執行
+openyida db-seq-fix --dry-run
+
+# 自動修復落後的 Sequence
+openyida db-seq-fix --fix
+
+# 顯示幫助
+openyida db-seq-fix --help
+```
+
+### 參數
+
+| 參數 | 說明 |
+|------|------|
+| *（無參數）* | 檢查所有 Sequence 狀態（預設） |
+| `--fix` | 自動修復不同步的 Sequence |
+| `--dry-run` | 預覽修復 SQL 語句，不實際執行 |
+| `--help` | 顯示幫助信息 |
+
+### 監控的表
+
+該命令監控以下核心表的 Sequence：
+
+| 表名 | Sequence 名稱 | 主鍵欄位 |
+|------|---------------|----------|
+| `alibpms_app_cm_operator_record` | `pro_operator_record_id_seq` | `id` |
+| `tianshu_data_form_version` | `data_form_version_id_seq` | `id` |
+| `tianshu_form_data` | `form_data_id_seq` | `id` |
+| `tianshu_form_data_operation_log` | `operation_log_id_seq` | `id` |
+| `tianshu_form_data_stash` | `form_data_stash_id_seq` | `id` |
+| `tianshu_form_remark` | `form_remark_id_seq` | `id` |
+| `tianshu_instance_relation` | `instance_relation_id_seq` | `id` |
+| `tianshu_proc_inst_carbon` | `proc_inst_carbon_id_seq` | `id` |
+
+<Warning>
+  在正式環境執行 `--fix` 前，請先執行 `--dry-run` 預覽變更。在高流量期間執行修復可能會導致短暫的 ID 分配衝突。
+</Warning>
+
+<Info>
+  執行此命令前需要先登入並擁有專屬資料庫存取權限。如尚未認證，請先執行 `openyida login`。
+</Info>
+
+---
+
 ## 全局選項
 
 | 選項 | 說明 |

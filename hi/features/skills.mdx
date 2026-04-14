@@ -621,6 +621,58 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
+## डेटाबेस Sequence मरम्मत
+
+Yida समर्पित डेटाबेस में PostgreSQL Sequence प्रारंभ मानों की समस्याओं का पता लगाएं और उन्हें ठीक करें। जब डेटा माइग्रेशन या सिंक्रोनाइज़ेशन के कारण किसी Sequence का वर्तमान मान तालिका की अधिकतम प्राइमरी की ID से कम हो जाता है, तो नई प्रविष्टियाँ डुप्लिकेट की त्रुटियों के साथ विफल हो जाती हैं। `db-seq-fix` कमांड इन विसंगतियों को स्वचालित रूप से पहचानता और ठीक करता है।
+
+```bash
+# सभी Sequence स्थिति की जाँच करें
+openyida db-seq-fix
+
+# मरम्मत SQL का पूर्वावलोकन करें (निष्पादित न करें)
+openyida db-seq-fix --dry-run
+
+# पिछड़ी हुई Sequence को स्वचालित रूप से ठीक करें
+openyida db-seq-fix --fix
+
+# सहायता दिखाएं
+openyida db-seq-fix --help
+```
+
+### पैरामीटर
+
+| पैरामीटर | विवरण |
+|----------|-------|
+| *(कोई नहीं)* | सभी Sequence स्थिति की जाँच करें (डिफ़ॉल्ट) |
+| `--fix` | असमन्वित Sequence को स्वचालित रूप से ठीक करें |
+| `--dry-run` | मरम्मत SQL कथनों का पूर्वावलोकन करें (निष्पादित न करें) |
+| `--help` | सहायता जानकारी दिखाएं |
+
+### मॉनिटर की जाने वाली तालिकाएं
+
+यह कमांड निम्नलिखित मुख्य तालिकाओं की Sequence की निगरानी करता है:
+
+| तालिका | Sequence | प्राइमरी की |
+|--------|----------|-------------|
+| `alibpms_app_cm_operator_record` | `pro_operator_record_id_seq` | `id` |
+| `tianshu_data_form_version` | `data_form_version_id_seq` | `id` |
+| `tianshu_form_data` | `form_data_id_seq` | `id` |
+| `tianshu_form_data_operation_log` | `operation_log_id_seq` | `id` |
+| `tianshu_form_data_stash` | `form_data_stash_id_seq` | `id` |
+| `tianshu_form_remark` | `form_remark_id_seq` | `id` |
+| `tianshu_instance_relation` | `instance_relation_id_seq` | `id` |
+| `tianshu_proc_inst_carbon` | `proc_inst_carbon_id_seq` | `id` |
+
+<Warning>
+  उत्पादन वातावरण में `--fix` चलाने से पहले पहले `--dry-run` चलाकर परिवर्तनों का पूर्वावलोकन करें। उच्च ट्रैफ़िक अवधि के दौरान मरम्मत करने से संक्षिप्त ID आवंटन विरोध हो सकता है।
+</Warning>
+
+<Info>
+  इस कमांड को चलाने से पहले आपको लॉग इन होना चाहिए और समर्पित डेटाबेस तक पहुँच होनी चाहिए। यदि आपने अभी तक प्रमाणीकरण नहीं किया है तो पहले `openyida login` चलाएं।
+</Info>
+
+---
+
 ## वैश्विक विकल्प
 
 | विकल्प | विवरण |
