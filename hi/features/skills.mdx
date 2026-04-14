@@ -14,6 +14,13 @@ OpenYida समृद्ध CLI कमांड प्रदान करता 
 # वातावरण जांच
 openyida env
 
+# बहु-वातावरण प्रबंधन
+openyida env list                  # सभी वातावरणों की सूची, सक्रिय वातावरण हाइलाइट करें
+openyida env add <name>            # इंटरैक्टिव रूप से निजी परिनियोजन वातावरण जोड़ें
+openyida env switch <name>         # सक्रिय वातावरण बदलें
+openyida env remove <name>         # वातावरण हटाएं (public हटाया नहीं जा सकता)
+openyida env show [name]           # वातावरण की विस्तृत कॉन्फ़िगरेशन दिखाएं
+
 # लॉगिन
 openyida login [--qr]              # --qr टर्मिनल में QR कोड का उपयोग करें
 openyida login --wukong            # Wukong वातावरण के लिए विशेष
@@ -597,6 +604,25 @@ openyida export-conversation -i conversation.json -o result.md
 | `OPENYIDA_LANG` | भाषा सेट करें | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | सिस्टम भाषा | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | Wukong कार्यक्षेत्र रूट पथ (गतिशील UUID) | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | Yida सेवा एंडपॉइंट को बाध्य करें (सर्वोच्च प्राथमिकता) | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | लॉगिन पृष्ठ URL को बाध्य करें | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | कॉन्फ़िग फ़ाइल बदले बिना वातावरण बदलें (CI/CD के लिए आदर्श) | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | निजी DingTalk OpenAPI गेटवे एंडपॉइंट | `https://oapi.example.com` |
+
+### एंडपॉइंट समाधान प्राथमिकता
+
+Yida सेवा एंडपॉइंट निर्धारित करते समय, निम्नलिखित क्रम लागू होता है:
+
+1. `OPENYIDA_ENDPOINT` वातावरण चर
+2. सक्रिय वातावरण कॉन्फ़िगरेशन (`openyida env switch` द्वारा सेट)
+3. कुकी में कैश किया गया `base_url`
+4. डिफ़ॉल्ट सार्वजनिक क्लाउड URL (`https://www.aliwork.com`)
+
+लॉगिन URL समाधान क्रम:
+
+1. `OPENYIDA_LOGIN_URL` वातावरण चर
+2. सक्रिय वातावरण कॉन्फ़िगरेशन
+3. डिफ़ॉल्ट लॉगिन URL (`https://www.aliwork.com/workPlatform`)
 
 ---
 

@@ -14,6 +14,13 @@ icon: "terminal"
 # فحص البيئة
 openyida env
 
+# إدارة البيئات المتعددة
+openyida env list                  # سرد جميع البيئات، وتمييز البيئة النشطة
+openyida env add <name>            # إضافة بيئة نشر خاصة بشكل تفاعلي
+openyida env switch <name>         # التبديل إلى البيئة النشطة
+openyida env remove <name>         # حذف بيئة (لا يمكن حذف "public")
+openyida env show [name]           # عرض تكوين البيئة التفصيلي
+
 # تسجيل الدخول
 openyida login [--qr]              # --qr استخدام رمز QR في المحطة
 openyida login --wukong            # خاص ببيئة Wukong
@@ -597,6 +604,25 @@ openyida export-conversation -i conversation.json -o result.md
 | `OPENYIDA_LANG` | تعيين اللغة | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | لغة النظام | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | مسار جذر مساحة عمل Wukong (UUID ديناميكي) | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | فرض عنوان خدمة Yida (الأولوية القصوى) | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | فرض عنوان URL لصفحة تسجيل الدخول | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | تبديل البيئة بدون تعديل ملف التكوين (مثالي لـ CI/CD) | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | نقطة نهاية بوابة OpenAPI الخاصة بـ DingTalk | `https://oapi.example.com` |
+
+### أولوية حل نقاط النهاية
+
+عند تحديد نقطة نهاية خدمة Yida، يتم تطبيق الترتيب التالي:
+
+1. متغير البيئة `OPENYIDA_ENDPOINT`
+2. تكوين البيئة النشطة (يتم تعيينه عبر `openyida env switch`)
+3. `base_url` المخزن مؤقتاً في ملف تعريف الارتباط
+4. عنوان URL السحابة العامة الافتراضي (`https://www.aliwork.com`)
+
+ترتيب حل عنوان URL لتسجيل الدخول:
+
+1. متغير البيئة `OPENYIDA_LOGIN_URL`
+2. تكوين البيئة النشطة
+3. عنوان URL لتسجيل الدخول الافتراضي (`https://www.aliwork.com/workPlatform`)
 
 ---
 

@@ -14,6 +14,13 @@ OpenYida 提供豐富的 CLI 命令，支持應用全生命週期管理。
 # 環境檢測
 openyida env
 
+# 多環境管理
+openyida env list                  # 列出所有環境，高亮當前激活環境
+openyida env add <name>            # 交互式添加私有化部署環境
+openyida env switch <name>         # 切換激活環境
+openyida env remove <name>         # 刪除環境（public 不可刪）
+openyida env show [name]           # 顯示環境詳細配置
+
 # 登錄
 openyida login [--qr]              # --qr 使用終端二維碼
 openyida login --wukong            # 悟空環境專用
@@ -596,6 +603,25 @@ openyida export-conversation -i conversation.json -o result.md
 | `OPENYIDA_LANG` | 設置語言 | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | 系統語言 | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | 悟空工作區根路徑（動態 UUID） | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | 強制指定宜搭服務地址（優先級最高） | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | 強制指定登錄頁地址 | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | 快速切換環境（不修改配置文件，適合 CI/CD） | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | 私有化釘釘 OpenAPI 網關地址 | `https://oapi.example.com` |
+
+### 端點解析優先級
+
+當確定宜搭服務地址時，按以下順序解析：
+
+1. `OPENYIDA_ENDPOINT` 環境變量
+2. 當前激活環境的配置（通過 `openyida env switch` 設置）
+3. Cookie 中緩存的 `base_url`
+4. 默認公有雲地址（`https://www.aliwork.com`）
+
+登錄頁地址解析順序：
+
+1. `OPENYIDA_LOGIN_URL` 環境變量
+2. 當前激活環境的配置
+3. 默認登錄頁地址（`https://www.aliwork.com/workPlatform`）
 
 ---
 

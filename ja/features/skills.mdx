@@ -14,6 +14,13 @@ OpenYidaは豊富なCLIコマンドを提供し、アプリの全ライフサイ
 # 環境検出
 openyida env
 
+# マルチ環境管理
+openyida env list                  # すべての環境を一覧表示、アクティブな環境をハイライト
+openyida env add <name>            # プライベートデプロイ環境をインタラクティブに追加
+openyida env switch <name>         # アクティブな環境を切り替え
+openyida env remove <name>         # 環境を削除（publicは削除不可）
+openyida env show [name]           # 環境の詳細設定を表示
+
 # ログイン
 openyida login [--qr]              # --qr はターミナルQRコードを使用
 openyida login --wukong            # 悟空環境専用
@@ -597,6 +604,25 @@ openyida export-conversation -i conversation.json -o result.md
 | `OPENYIDA_LANG` | 言語を設定 | `zh`, `en`, `ja` |
 | `LANG` / `LC_ALL` | システム言語 | `zh_CN.UTF-8` |
 | `AGENT_WORK_ROOT` | 悟空ワークスペースルートパス（動的UUID） | `~/.real/users/user-xxx/` |
+| `OPENYIDA_ENDPOINT` | Yidaサービスエンドポイントを強制指定（最高優先度） | `https://yida.example.com` |
+| `OPENYIDA_LOGIN_URL` | ログインページURLを強制指定 | `https://yida.example.com/login` |
+| `OPENYIDA_ENV` | 設定ファイルを変更せずに環境を切り替え（CI/CDに最適） | `my-private-env` |
+| `OPENYIDA_DWS_ENDPOINT` | プライベートDingTalk OpenAPIゲートウェイエンドポイント | `https://oapi.example.com` |
+
+### エンドポイント解決の優先順位
+
+Yidaサービスエンドポイントの解決は、以下の順序で行われます：
+
+1. `OPENYIDA_ENDPOINT` 環境変数
+2. アクティブな環境の設定（`openyida env switch` で設定）
+3. Cookieにキャッシュされた `base_url`
+4. デフォルトのパブリッククラウドURL（`https://www.aliwork.com`）
+
+ログインURL解決順序：
+
+1. `OPENYIDA_LOGIN_URL` 環境変数
+2. アクティブな環境の設定
+3. デフォルトのログインURL（`https://www.aliwork.com/workPlatform`）
 
 ---
 
