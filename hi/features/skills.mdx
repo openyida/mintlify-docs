@@ -327,6 +327,49 @@ openyida configure-process <appType> <formUuid> <processDefinitionFile> [process
 }
 ```
 
+### त्रुटि प्रबंधन और पुनः प्रयास
+
+यदि प्रक्रिया कॉन्फ़िगरेशन विफल हो जाता है लेकिन फ़ॉर्म पहले ही बन चुका है, तो कमांड `--formUuid` फ़्लैग के साथ पुनः प्रयास का संकेत देता है ताकि आप फ़ॉर्म को दोबारा बनाए बिना पुनः उपयोग कर सकें:
+
+```bash
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+```
+
+यह तब उपयोगी है जब:
+- प्रक्रिया परिभाषा फ़ाइल में त्रुटियाँ हैं जिन्हें पुनः प्रयास से पहले ठीक करना होगा।
+- नेटवर्क या API की अस्थायी विफलता ने कॉन्फ़िगरेशन चरण को बाधित किया।
+
+कमांड JSON परिणाम `stdout` पर आउटपुट करता है। सफलता पर:
+
+```json
+{
+  "success": true,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "processCode": "TPROC-XXXXX",
+  "url": "https://www.aliwork.com/APP_XXXXX/workbench/FORM-XXXXX"
+}
+```
+
+विफलता पर (उदाहरण: प्रक्रिया कॉन्फ़िगरेशन विफल):
+
+```json
+{
+  "success": false,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "error": "Failed to configure process: <error details>"
+}
+```
+
+<Tip>
+  जब आउटपुट में `formUuid` के साथ विफलता संदेश दिखे, तो फ़ॉर्म को दोबारा बनाए बिना पुनः प्रयास करने के लिए `--formUuid` फ़्लैग का उपयोग करें।
+</Tip>
+
 ---
 
 ## अनुमति प्रबंधन

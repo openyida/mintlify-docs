@@ -327,6 +327,49 @@ A ordem de resolução para a **URL de detalhes mobile** é:
 }
 ```
 
+### Tratamento de erros e nova tentativa
+
+Se a configuração do processo falhar mas o formulário já tiver sido criado, o comando exibe uma dica de nova tentativa com o flag `--formUuid` para reutilizar o formulário sem recriá-lo:
+
+```bash
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+```
+
+Isso é útil quando:
+- O arquivo de definição do processo contém erros que precisam ser corrigidos antes de tentar novamente.
+- Uma falha temporária de rede ou API interrompeu a etapa de configuração.
+
+O comando exibe um resultado JSON em `stdout`. Em caso de sucesso:
+
+```json
+{
+  "success": true,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "processCode": "TPROC-XXXXX",
+  "url": "https://www.aliwork.com/APP_XXXXX/workbench/FORM-XXXXX"
+}
+```
+
+Em caso de falha (por exemplo, falha na configuração do processo):
+
+```json
+{
+  "success": false,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "error": "Failed to configure process: <error details>"
+}
+```
+
+<Tip>
+  Quando você vir uma falha com `formUuid` na saída, use o flag `--formUuid` para tentar novamente sem recriar o formulário.
+</Tip>
+
 ---
 
 ## Gestão de permissões

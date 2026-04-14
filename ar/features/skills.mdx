@@ -327,6 +327,49 @@ openyida configure-process <appType> <formUuid> <processDefinitionFile> [process
 }
 ```
 
+### معالجة الأخطاء وإعادة المحاولة
+
+إذا فشل تكوين العملية ولكن النموذج قد تم إنشاؤه بالفعل، يعرض الأمر تلميحًا لإعادة المحاولة مع علم `--formUuid` لإعادة استخدام النموذج دون إعادة إنشائه:
+
+```bash
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+```
+
+هذا مفيد عندما:
+- يحتوي ملف تعريف العملية على أخطاء تحتاج إلى إصلاح قبل إعادة المحاولة.
+- أدى عطل مؤقت في الشبكة أو واجهة برمجة التطبيقات إلى مقاطعة خطوة التكوين.
+
+يُخرج الأمر نتيجة JSON إلى `stdout`. عند النجاح:
+
+```json
+{
+  "success": true,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "processCode": "TPROC-XXXXX",
+  "url": "https://www.aliwork.com/APP_XXXXX/workbench/FORM-XXXXX"
+}
+```
+
+عند الفشل (مثال: فشل تكوين العملية):
+
+```json
+{
+  "success": false,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "error": "Failed to configure process: <error details>"
+}
+```
+
+<Tip>
+  عندما ترى رسالة فشل تحتوي على `formUuid` في المخرجات، استخدم علم `--formUuid` لإعادة المحاولة دون إعادة إنشاء النموذج.
+</Tip>
+
 ---
 
 ## إدارة الأذونات

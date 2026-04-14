@@ -327,6 +327,49 @@ Die Auflösungsreihenfolge für die **Mobile-Detail-URL** ist:
 }
 ```
 
+### Fehlerbehandlung und Wiederholung
+
+Wenn die Prozesskonfiguration fehlschlägt, das Formular aber bereits erstellt wurde, gibt der Befehl einen Wiederholungshinweis mit dem `--formUuid`-Flag aus, damit Sie das Formular wiederverwenden können, ohne es neu zu erstellen:
+
+```bash
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+```
+
+Dies ist nützlich, wenn:
+- Die Prozessdefinitionsdatei Fehler enthält, die vor einem erneuten Versuch behoben werden müssen.
+- Ein vorübergehender Netzwerk- oder API-Fehler den Konfigurationsschritt unterbrochen hat.
+
+Der Befehl gibt ein JSON-Ergebnis auf `stdout` aus. Bei Erfolg:
+
+```json
+{
+  "success": true,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "processCode": "TPROC-XXXXX",
+  "url": "https://www.aliwork.com/APP_XXXXX/workbench/FORM-XXXXX"
+}
+```
+
+Bei Fehler (z. B. Prozesskonfiguration fehlgeschlagen):
+
+```json
+{
+  "success": false,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "error": "Failed to configure process: <error details>"
+}
+```
+
+<Tip>
+  Wenn die Ausgabe eine Fehlermeldung mit `formUuid` enthält, verwenden Sie das `--formUuid`-Flag zum Wiederholen, um das Formular nicht erneut erstellen zu müssen.
+</Tip>
+
 ---
 
 ## Berechtigungsverwaltung

@@ -327,6 +327,49 @@ openyida configure-process <appType> <formUuid> <processDefinitionFile> [process
 }
 ```
 
+### エラー処理とリトライ
+
+プロセス設定が失敗してもフォームがすでに作成されている場合、コマンドは `--formUuid` フラグ付きのリトライヒントを出力します。これにより、フォームを再作成せずに再利用できます：
+
+```bash
+openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
+```
+
+以下の場合に便利です：
+- プロセス定義ファイルにエラーがあり、修正後にリトライが必要な場合。
+- ネットワークまたは API の一時的な障害により設定ステップが中断された場合。
+
+コマンドは JSON 結果を `stdout` に出力します。成功時：
+
+```json
+{
+  "success": true,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "processCode": "TPROC-XXXXX",
+  "url": "https://www.aliwork.com/APP_XXXXX/workbench/FORM-XXXXX"
+}
+```
+
+失敗時（例：プロセス設定失敗）：
+
+```json
+{
+  "success": false,
+  "formUuid": "FORM-XXXXX",
+  "formTitle": "Order Form",
+  "appType": "APP_XXXXX",
+  "fieldCount": 5,
+  "error": "Failed to configure process: <error details>"
+}
+```
+
+<Tip>
+  出力に `formUuid` を含む失敗メッセージが表示された場合、`--formUuid` フラグを使用してリトライすることでフォームの再作成を回避できます。
+</Tip>
+
 ---
 
 ## 権限管理
