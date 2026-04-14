@@ -46,6 +46,9 @@ openyida copy -skills              # 複製 yida-skills 到 AI 工具 skills 目
 openyida doctor [--fix]            # 環境診斷
 openyida doctor --monitor          # 健康監控
 openyida doctor --report <format>  # 生成報告 (json|markdown|html)
+
+# 自更新
+openyida update                    # 檢查並更新到最新版本
 ```
 
 ---
@@ -708,6 +711,22 @@ openyida db-seq-fix --help
 
 <Info>
   執行此命令前需要先登入並擁有專屬資料庫存取權限。如尚未認證，請先執行 `openyida login`。
+</Info>
+
+---
+
+## 自更新
+
+檢查 npm 上是否有更新版本的 OpenYida，並全局安裝。
+
+```bash
+openyida update
+```
+
+該命令會查詢 npm registry 獲取最新發佈版本。如果有更新的版本，會執行 `npm install -g openyida@latest` 進行升級。如果已是最新版本，會列印確認資訊並退出。
+
+<Info>
+  OpenYida 在每次運行命令時也會在後台自動檢查更新。`update` 命令可以讓你手動觸發檢查並立即安裝。
 </Info>
 
 ---

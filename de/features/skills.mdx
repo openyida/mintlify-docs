@@ -46,6 +46,9 @@ openyida copy -skills              # yida-skills in das AI-Tool skills-Verzeichn
 openyida doctor [--fix]            # Umgebungsdiagnose
 openyida doctor --monitor          # Gesundheitsüberwachung
 openyida doctor --report <format>  # Bericht generieren (json|markdown|html)
+
+# Selbstaktualisierung
+openyida update                    # Neueste Version prüfen und installieren
 ```
 
 ---
@@ -709,6 +712,22 @@ Der Befehl überwacht Sequences für die folgenden Kerntabellen:
 
 <Info>
   Sie müssen angemeldet sein und Zugriff auf eine dedizierte Datenbank haben, bevor Sie diesen Befehl ausführen. Führen Sie zuerst `openyida login` aus, falls Sie sich noch nicht authentifiziert haben.
+</Info>
+
+---
+
+## Selbstaktualisierung
+
+Prüfen Sie, ob eine neuere Version von OpenYida auf npm verfügbar ist, und installieren Sie sie global.
+
+```bash
+openyida update
+```
+
+Der Befehl fragt die npm-Registry nach der neuesten veröffentlichten Version ab. Wenn eine neuere Version verfügbar ist, wird `npm install -g openyida@latest` ausgeführt, um das Upgrade durchzuführen. Wenn Sie bereits die neueste Version verwenden, wird eine Bestätigungsmeldung ausgegeben und der Befehl beendet.
+
+<Info>
+  OpenYida prüft bei jeder Befehlsausführung automatisch im Hintergrund auf Updates. Der Befehl `update` ermöglicht es Ihnen, diese Prüfung manuell auszulösen und sofort zu installieren.
 </Info>
 
 ---

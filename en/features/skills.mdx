@@ -46,6 +46,9 @@ openyida copy -skills              # Copy yida-skills to AI tool skills director
 openyida doctor [--fix]            # Environment diagnosis
 openyida doctor --monitor          # Health monitoring
 openyida doctor --report <format>  # Generate report (json|markdown|html)
+
+# Self-update
+openyida update                    # Check for and install the latest version
 ```
 
 ---
@@ -708,6 +711,22 @@ The command monitors sequences for the following core tables:
 
 <Info>
   You must be logged in and have access to a dedicated database before running this command. Run `openyida login` first if you have not authenticated.
+</Info>
+
+---
+
+## Self-update
+
+Check for a newer version of OpenYida on npm and install it globally.
+
+```bash
+openyida update
+```
+
+The command queries the npm registry for the latest published version. If a newer version is available, it runs `npm install -g openyida@latest` to upgrade in place. If you are already on the latest version, it prints a confirmation and exits.
+
+<Info>
+  OpenYida also checks for updates automatically in the background each time you run any command. The `update` command lets you trigger this check and install explicitly.
 </Info>
 
 ---
