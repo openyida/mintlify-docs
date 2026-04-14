@@ -95,7 +95,53 @@ openyida get-schema <appType> <formUuid>  # Obligatoire avant toute opération u
 
 # Mettre à jour la configuration du formulaire
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+
+# Lister les pages de formulaire d'une application
+openyida list-forms <appType> [--keyword <text>]
 ```
+
+### Lister les pages de formulaire
+
+Interroge toutes les entrées de formulaires et de pages au sein d'une application. Les résultats sont affichés en JSON sur la sortie standard.
+
+```bash
+openyida list-forms <appType> [--keyword <text>]
+```
+
+| Argument | Description |
+|----------|-------------|
+| `<appType>` | ID de l'application (ex. `APP_XXXXX`) |
+
+| Option | Description |
+|--------|-------------|
+| `--keyword <text>` | Filtrer les résultats par mot-clé (correspond au nom du formulaire, UUID, type ou chemin) |
+
+**Exemples :**
+
+```bash
+# Lister tous les formulaires d'une application
+openyida list-forms APP_XXXXX
+
+# Filtrer par mot-clé
+openyida list-forms APP_XXXXX --keyword customer
+```
+
+La commande renvoie un tableau JSON d'objets formulaire :
+
+```json
+[
+  {
+    "formUuid": "FORM-XXXXX",
+    "formName": "Inscription client",
+    "formType": "form",
+    "pathName": "customer-registration"
+  }
+]
+```
+
+<Info>
+  Vous devez être connecté avant d'exécuter cette commande. Exécutez `openyida login` d'abord si vous n'êtes pas encore authentifié.
+</Info>
 
 <Warning>
   Les ID de champs Yida sont générés aléatoirement par la plateforme (ex : `textField_eftt1aa5m`, `selectField_fix024y92`) et ne peuvent pas être déduits des noms de champs. Avant toute opération utilisant des ID de champs (création/mise à jour de données, configuration de conditions de requête, écriture de pages personnalisées), vous **devez** exécuter `openyida get-schema` pour obtenir les vrais ID de champs.

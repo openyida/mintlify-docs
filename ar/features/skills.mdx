@@ -95,8 +95,53 @@ openyida get-schema <appType> <formUuid>  # إلزامي قبل أي عملية 
 
 # تحديث تكوين النموذج
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+
+# عرض قائمة صفحات النماذج في التطبيق
+openyida list-forms <appType> [--keyword <text>]
 ```
 
+### عرض قائمة صفحات النماذج
+
+استعلام جميع إدخالات النماذج والصفحات داخل التطبيق. يتم إخراج النتائج بتنسيق JSON إلى المخرج القياسي.
+
+```bash
+openyida list-forms <appType> [--keyword <text>]
+```
+
+| المعامل | الوصف |
+|---------|-------|
+| `<appType>` | معرّف التطبيق (مثال: `APP_XXXXX`) |
+
+| الخيار | الوصف |
+|--------|-------|
+| `--keyword <text>` | تصفية النتائج بكلمة مفتاحية (تطابق اسم النموذج أو UUID أو النوع أو المسار) |
+
+**أمثلة:**
+
+```bash
+# عرض جميع النماذج في التطبيق
+openyida list-forms APP_XXXXX
+
+# التصفية بكلمة مفتاحية
+openyida list-forms APP_XXXXX --keyword customer
+```
+
+يُخرج الأمر مصفوفة JSON من كائنات النماذج:
+
+```json
+[
+  {
+    "formUuid": "FORM-XXXXX",
+    "formName": "تسجيل العملاء",
+    "formType": "form",
+    "pathName": "customer-registration"
+  }
+]
+```
+
+<Info>
+  يجب تسجيل الدخول قبل تشغيل هذا الأمر. قم بتشغيل `openyida login` أولاً إذا لم تكن قد قمت بالمصادقة بعد.
+</Info>
 
 <Warning>
   معرّفات الحقول في Yida يتم إنشاؤها عشوائيًا بواسطة المنصة (مثال: `textField_eftt1aa5m`، `selectField_fix024y92`) ولا يمكن استنتاجها من أسماء الحقول. قبل أي عملية تستخدم معرّفات الحقول (إنشاء/تحديث البيانات، تكوين شروط الاستعلام، كتابة صفحات مخصصة)، **يجب** تشغيل `openyida get-schema` للحصول على المعرّفات الحقيقية.

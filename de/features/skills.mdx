@@ -95,8 +95,53 @@ openyida get-schema <appType> <formUuid>  # Pflicht vor jeder Operation mit Feld
 
 # Formularkonfiguration aktualisieren
 openyida update-form-config <appType> <formUuid> <isRenderNav> <title>
+
+# Formularseiten einer Anwendung auflisten
+openyida list-forms <appType> [--keyword <text>]
 ```
 
+### Formularseiten auflisten
+
+Alle Formular- und Seiteneinträge innerhalb einer Anwendung abfragen. Die Ergebnisse werden als JSON auf der Standardausgabe ausgegeben.
+
+```bash
+openyida list-forms <appType> [--keyword <text>]
+```
+
+| Argument | Beschreibung |
+|----------|-------------|
+| `<appType>` | Anwendungs-ID (z.B. `APP_XXXXX`) |
+
+| Option | Beschreibung |
+|--------|-------------|
+| `--keyword <text>` | Ergebnisse nach Stichwort filtern (trifft auf Formularname, UUID, Typ oder Pfad zu) |
+
+**Beispiele:**
+
+```bash
+# Alle Formulare einer Anwendung auflisten
+openyida list-forms APP_XXXXX
+
+# Nach Stichwort filtern
+openyida list-forms APP_XXXXX --keyword customer
+```
+
+Der Befehl gibt ein JSON-Array von Formularobjekten aus:
+
+```json
+[
+  {
+    "formUuid": "FORM-XXXXX",
+    "formName": "Kundenregistrierung",
+    "formType": "form",
+    "pathName": "customer-registration"
+  }
+]
+```
+
+<Info>
+  Sie müssen angemeldet sein, bevor Sie diesen Befehl ausführen. Führen Sie zuerst `openyida login` aus, wenn Sie sich noch nicht authentifiziert haben.
+</Info>
 
 <Warning>
   Yida-Feld-IDs werden zufällig von der Plattform generiert (z.B. `textField_eftt1aa5m`, `selectField_fix024y92`) und können nicht aus Feldnamen abgeleitet werden. Vor jeder Operation mit Feld-IDs (Daten erstellen/aktualisieren, Abfragebedingungen konfigurieren, benutzerdefinierte Seiten schreiben) **müssen** Sie `openyida get-schema` ausführen, um die echten Feld-IDs zu erhalten.

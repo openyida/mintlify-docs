@@ -95,8 +95,53 @@ openyida get-schema <appType> <formUuid>  # Bắt buộc trước mọi thao tá
 
 # Cập nhật cấu hình biểu mẫu
 openyida update-form-config <appType> <formUuid> <isRenderNav> <tiêu_đề>
+
+# Liệt kê các trang biểu mẫu trong ứng dụng
+openyida list-forms <appType> [--keyword <text>]
 ```
 
+### Liệt kê các trang biểu mẫu
+
+Truy vấn tất cả các mục biểu mẫu và trang trong một ứng dụng. Kết quả được xuất dưới dạng JSON ra đầu ra tiêu chuẩn.
+
+```bash
+openyida list-forms <appType> [--keyword <text>]
+```
+
+| Tham số | Mô tả |
+|---------|-------|
+| `<appType>` | ID ứng dụng (ví dụ: `APP_XXXXX`) |
+
+| Tùy chọn | Mô tả |
+|-----------|-------|
+| `--keyword <text>` | Lọc kết quả theo từ khóa (khớp với tên biểu mẫu, UUID, loại hoặc đường dẫn) |
+
+**Ví dụ:**
+
+```bash
+# Liệt kê tất cả biểu mẫu trong ứng dụng
+openyida list-forms APP_XXXXX
+
+# Lọc theo từ khóa
+openyida list-forms APP_XXXXX --keyword customer
+```
+
+Lệnh xuất ra một mảng JSON các đối tượng biểu mẫu:
+
+```json
+[
+  {
+    "formUuid": "FORM-XXXXX",
+    "formName": "Đăng ký khách hàng",
+    "formType": "form",
+    "pathName": "customer-registration"
+  }
+]
+```
+
+<Info>
+  Bạn phải đăng nhập trước khi chạy lệnh này. Chạy `openyida login` trước nếu bạn chưa xác thực.
+</Info>
 
 <Warning>
   Field ID trong Yida được tạo ngẫu nhiên bởi nền tảng (ví dụ: `textField_eftt1aa5m`, `selectField_fix024y92`) và không thể suy ra từ tên trường. Trước mọi thao tác sử dụng field ID (tạo/cập nhật dữ liệu, cấu hình điều kiện truy vấn, viết trang tùy chỉnh), bạn **phải** chạy `openyida get-schema` để lấy field ID thực tế.
