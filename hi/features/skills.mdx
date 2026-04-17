@@ -482,6 +482,56 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 ---
 
+## एकीकरण और स्वचालन
+
+फॉर्म इवेंट ट्रिगर, सूचनाएं और डेटा ऑपरेशन के साथ लॉजिकफ्लो (एकीकरण और स्वचालन) बनाएं और प्रबंधित करें।
+
+```bash
+# लॉजिकफ्लो बनाएं
+openyida integration create <appType> <formUuid> <flowName> [विकल्प]
+```
+
+### पैरामीटर
+
+| पैरामीटर | आवश्यक | विवरण |
+|---------|--------|-------|
+| `appType` | हाँ | ऐप ID (उदा: `APP_XXXX`) |
+| `formUuid` | हाँ | ट्रिगर फॉर्म UUID (उदा: `FORM-XXXX`) |
+| `flowName` | हाँ | लॉजिकफ्लो नाम |
+
+### विकल्प
+
+| विकल्प | डिफ़ॉल्ट | विवरण |
+|--------|---------|-------|
+| `--process-code <code>` | स्वचालित | मौजूदा processCode (`LPROC-xxx`) |
+| `--receivers <userId,...>` | खाली | DingTalk सूचना प्राप्तकर्ता उपयोगकर्ता ID (अल्पविराम से अलग) |
+| `--title <title>` | flowName जैसा | सूचना शीर्षक, `#{fieldId-ComponentType}#` समर्थित |
+| `--content <content>` | `"नया रिकॉर्ड सबमिट किया गया"` | सूचना सामग्री |
+| `--events <insert,update>` | `insert` | ट्रिगर इवेंट: `insert`/`update`/`delete`/`comment` |
+| `--add-data-form-uuid <formUuid>` | — | डेटा जोड़ने के नोड का लक्ष्य फॉर्म UUID |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | फ़ील्ड असाइनमेंट (कई बार निर्दिष्ट किया जा सकता है)। `valueType`: `processVar`/`literal`/`column` |
+| `--publish` | प्रकाशित नहीं | सहेजने के बाद तुरंत प्रकाशित करें |
+
+### आउटपुट
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "नया रिकॉर्ड सूचना",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  इस कमांड को चलाने से पहले लॉगिन आवश्यक है। `--publish` के साथ `published` `true` होगा; विफलता पर `published` `false` होगा और `warning` फ़ील्ड शामिल होगा।
+</Info>
+
+---
+
 ## अनुमति प्रबंधन
 
 ```bash
