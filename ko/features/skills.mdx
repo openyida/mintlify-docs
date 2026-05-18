@@ -23,7 +23,7 @@ openyida env show [name]           # 환경 상세 설정 표시
 
 # 로그인
 openyida login [--qr]              # --qr은 터미널 QR 코드 사용
-openyida login --agent-qr         # Agent QR handoff
+openyida login --wukong            # Wukong 환경 전용
 
 # 로그아웃
 openyida logout
@@ -256,10 +256,10 @@ openyida list-forms APP_XXXXX --keyword "고객"
 
 ```bash
 # 사용자 정의 페이지 생성
-openyida create-page <appType> "<페이지명>" [--mode dashboard] [--open|--no-open]
+openyida create-page <appType> "<페이지명>" [--datasource <jsonOrFile>]
 
 # 페이지 컴파일 및 게시
-openyida publish <源文件路径> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
+openyida publish <源文件路径> <appType> <formUuid> [--skip-lint]
 
 # 페이지 공유 구성
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -806,7 +806,7 @@ openyida update
 | `--version`, `-v` | 버전 표시 |
 | `--qr` | 터미널 QR 코드로 로그인 |
 | `--force` | 강제 실행, 확인 건너뛰기 |
-| `--health-check` | Run a health check after publishing a custom page |
+| `--skip-lint` | `publish` 시 Yida 코딩 표준 사전 검사 건너뛰기 |
 
 ---
 

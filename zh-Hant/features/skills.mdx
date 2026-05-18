@@ -23,7 +23,7 @@ openyida env show [name]           # 顯示環境詳細配置
 
 # 登錄
 openyida login [--qr]              # --qr 使用終端二維碼
-openyida login --agent-qr         # Agent QR handoff
+openyida login --wukong            # 悟空環境專用
 
 # 退出登錄
 openyida logout
@@ -256,10 +256,10 @@ openyida list-forms APP_XXXXX --keyword "客戶"
 
 ```bash
 # 創建自定義頁面
-openyida create-page <appType> "<頁面名>" [--mode dashboard] [--open|--no-open]
+openyida create-page <appType> "<頁面名>" [--datasource <jsonOrFile>]
 
 # 編譯併發布頁面
-openyida publish <源文件路徑> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
+openyida publish <源文件路徑> <appType> <formUuid> [--skip-lint]
 
 # 頁面分享配置
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -806,7 +806,7 @@ openyida update
 | `--version`, `-v` | 顯示版本號 |
 | `--qr` | 使用終端二維碼登錄 |
 | `--force` | 強制操作，跳過確認 |
-| `--health-check` | Run a health check after publishing a custom page |
+| `--skip-lint` | 在 `publish` 時跳過宜搭編碼規範預檢 |
 
 ---
 

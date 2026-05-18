@@ -13,7 +13,6 @@ OpenYida provides rich CLI commands for full application lifecycle management.
 ```bash
 # Environment check
 openyida env
-openyida env --json
 
 # Multi-environment management
 openyida env list                  # List all environments, highlight the active one
@@ -23,8 +22,8 @@ openyida env remove <name>         # Remove an environment (cannot remove "publi
 openyida env show [name]           # Show detailed environment configuration
 
 # Login
-openyida login [--qr|--agent-qr|--codex|--browser] [--env <name>] [--corp-id <corpId>]
-openyida login --check-only --json # Check the current login state only
+openyida login [--qr]              # --qr for terminal QR code
+openyida login --wukong            # Wukong environment
 
 # Logout
 openyida logout
@@ -50,9 +49,6 @@ openyida doctor --report <format>  # Generate report (json|markdown|html)
 
 # Self-update
 openyida update                    # Check for and install the latest version
-
-# Machine-readable command manifest
-openyida commands --json           # Print the current CLI manifest
 ```
 
 ---
@@ -60,9 +56,6 @@ openyida commands --json           # Print the current CLI manifest
 ## Application management
 
 ```bash
-# List applications
-openyida app-list [--size N]
-
 # Create application
 openyida create-app "<name>" [desc] [icon] [color] [themeColor]
 
@@ -74,9 +67,6 @@ openyida import <file> [name]      # Rebuild app from migration package
 
 # Update application info
 openyida update-app <appType> --name "<name>" [--desc "<description>"] [--icon "<icon>"] [--icon-color "<color>"]
-
-# Manage application-level permissions
-openyida app-permission <get|set|add|remove|search-user> ...
 ```
 
 | Option | Alias | Description |
@@ -266,10 +256,10 @@ Field types such as `MobileField` and `EmailField` are not supported and will be
 
 ```bash
 # Create custom page
-openyida create-page <appType> "<name>" [--mode dashboard] [--open|--no-open]
+openyida create-page <appType> "<name>" [--datasource <jsonOrFile>]
 
 # Compile and publish page
-openyida publish <sourceFilePath> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
+openyida publish <sourceFilePath> <appType> <formUuid> [--skip-lint]
 
 # Page sharing config
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -815,11 +805,8 @@ The command queries the npm registry for the latest published version. If a newe
 | `--help`, `-h` | Show help information |
 | `--version`, `-v` | Show version number |
 | `--qr` | Use terminal QR code for login |
-| `--agent-qr` | Hand QR login back to the AI conversation |
-| `--browser` | Force browser login |
 | `--force` | Force operation, skip confirmation |
-| `--health-check` | Run a health check after publishing a custom page |
-| `--open` / `--no-open` | Control whether a command opens the page after completion |
+| `--skip-lint` | Skip the Yida coding standards pre-check during `publish` |
 
 ---
 

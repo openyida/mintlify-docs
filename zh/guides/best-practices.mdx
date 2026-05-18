@@ -90,24 +90,17 @@ AI 创建每个组件后，让它验证：
 
 ---
 
-## 7. 环境和登录检查
+## 7. 环境特定登录
 
-OpenYida 会自动检测 Codex、Claude Code、Cursor、Qoder、悟空等 AI 工具。切换工具、组织或部署环境时，先运行：
+不同 AI 工具需要不同登录方式：
 
-```bash
-openyida env --json
-openyida login --check-only --json
-```
+| AI 工具 | 登录命令 |
+|---------|----------|
+| Claude Code、Cursor、VSCode | `openyida login` |
+| 悟空 | `openyida login --wukong` |
+| OpenCode、Aone Copilot | `openyida login` |
 
-常用登录方式：
-
-| 场景 | 命令 |
-|------|------|
-| 默认缓存优先登录 | `openyida login` |
-| 指定浏览器登录 | `openyida login --browser` |
-| 终端二维码登录 | `openyida login --qr` |
-| AI 对话框二维码交接 | `openyida login --agent-qr` |
-| 指定组织 | `openyida login --corp-id <corpId>` |
+切换工具时，先运行 `openyida env` 确认激活环境。
 
 ---
 

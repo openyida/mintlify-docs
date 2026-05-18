@@ -23,7 +23,7 @@ openyida env show [name]           # 環境の詳細設定を表示
 
 # ログイン
 openyida login [--qr]              # --qr はターミナルQRコードを使用
-openyida login --agent-qr         # Agent QR handoff
+openyida login --wukong            # 悟空環境専用
 
 # ログアウト
 openyida logout
@@ -257,10 +257,10 @@ openyida list-forms APP_XXXXX --keyword "顧客"
 
 ```bash
 # カスタムページ作成
-openyida create-page <appType> "<ページ名>" [--mode dashboard] [--open|--no-open]
+openyida create-page <appType> "<ページ名>" [--datasource <jsonOrFile>]
 
 # ページのコンパイルと公開
-openyida publish <源文件路径> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
+openyida publish <源文件路径> <appType> <formUuid> [--skip-lint]
 
 # ページ共有設定
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -807,7 +807,7 @@ openyida update
 | `--version`, `-v` | バージョンを表示 |
 | `--qr` | ターミナルQRコードでログイン |
 | `--force` | 強制実行、確認をスキップ |
-| `--health-check` | Run a health check after publishing a custom page |
+| `--skip-lint` | `publish` 時にYidaコーディング規約の事前チェックをスキップ |
 
 ---
 

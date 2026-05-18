@@ -47,9 +47,6 @@
             "group": "使用指南",
             "pages": [
               "zh/guides/best-practices",
-              "zh/guides/custom-pages",
-              "zh/guides/sharing-and-navigation",
-              "zh/guides/wukong",
               "zh/guides/dws-quick-start",
               "zh/guides/dws-cli-guide",
               "zh/guides/faq"
@@ -100,9 +97,6 @@
             "group": "Guides",
             "pages": [
               "en/guides/best-practices",
-              "en/guides/custom-pages",
-              "en/guides/sharing-and-navigation",
-              "en/guides/wukong",
               "en/guides/dws-quick-start",
               "en/guides/dws-cli-guide",
               "en/guides/faq"

@@ -1,95 +1,163 @@
 ---
-title: Architecture overview
-description: How OpenYida connects AI coding agents with the Yida low-code platform.
+title: Architecture Overview
+description: OpenYida overall architecture design and technology selection
 icon: "sitemap"
 ---
 
-# Architecture overview
+# Architecture Overview
 
-OpenYida is a Node.js CLI that lets AI coding agents operate the Yida low-code platform. It does not run an LLM service itself. Instead, it gives tools such as Codex, Claude Code, Cursor, Qoder, and Wukong a stable command surface for creating apps, forms, custom pages, reports, connectors, integrations, and data operations.
+OpenYida is a Node.js-based CLI tool with a layered architecture that organically combines AI capabilities, Yida platform integration, and developer experience.
 
-## Layers
+## Architecture Diagram
 
 ```
-AI coding agent
-  -> openyida CLI
-  -> local project workspace
-  -> Yida web APIs with cached login cookies
-  -> Yida low-code app, form, page, report, or data result
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI Interface                          │
+│         (Command Parser + Interactive Prompts)              │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Command Layer                            │
+│   create-app │ create-form │ publish │ data │ doctor ...   │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Services                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   AI Service │  │  Yida API    │  │   Config     │      │
+│  │  (Multi-LLM) │  │  (Open API)  │  │   Manager    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Auth        │  │  Skill       │  │   Template   │      │
+│  │  (OAuth 2.0) │  │  System      │  │   Engine     │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+┌─────────────────────────┐    ┌─────────────────────────────┐
+│    AI Providers         │    │    Yida Platform            │
+│  ┌─────────────────┐    │    │                             │
+│  │ OpenAI (GPT-4)  │    │    │   ┌─────────────────────┐   │
+│  ├─────────────────┤    │    │   │   Application       │   │
+│  │ Claude (3.5)    │    │    │   │   Engine            │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ Tongyi Qianwen  │    │    │   │   Form Builder      │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ DeepSeek        │    │    │   │   Page Designer     │   │
+│  └─────────────────┘    │    │   ├─────────────────────┤   │
+│                         │    │   │   Data Management   │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Connector Hub     │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Report Center     │   │
+│                         │    │   └─────────────────────┘   │
+└─────────────────────────┘    └─────────────────────────────┘
 ```
 
-| Layer | Source path | Responsibility |
-| --- | --- | --- |
-| CLI entry | `bin/yida.js` | Parse commands and route to implementation modules. |
-| Core utilities | `lib/core/` | Environment detection, i18n, update checks, workspace copy, data/query helpers, and Babel transforms. |
-| Authentication | `lib/auth/` | Login, cookie cache, QR handoff, organization switching, and multi-environment support. |
-| App and page management | `lib/app/` | Create apps, create forms, create custom display pages, list pages, check, compile, and publish custom pages. |
-| Page sharing | `lib/page-config/` | Verify short URLs and save public or organization share config. |
-| Permissions | `lib/permission/` | Read and save form permission groups. |
-| Process and automation | `lib/process/`, `lib/integration/` | Create process forms, configure process rules, preview instances, and create integration flows. |
-| Connectors and reports | `lib/connector/`, `lib/report/` | Manage HTTP connectors and native Yida reports. |
-| Skills | `yida-skills/` | Markdown instructions used by AI agents to choose the right CLI workflow. |
+## Core Design Principles
 
-## Project workspace
+### 1. Modular Design
 
-`openyida copy` initializes a local workspace that agents can read and update:
+Each functional module is independently encapsulated with clear interfaces:
 
-```text
-project/
-  config.json
-  pages/
-    src/
-    build/
-    dist/
-  .cache/
+- **Command Layer**: Handles CLI input and calls core services
+- **Service Layer**: Encapsulates business logic with unified APIs
+- **Adapter Layer**: Interfaces with external systems (AI, Yida platform)
+
+### 2. Plugin Extension
+
+Skill system supports dynamic loading and extension:
+
+```typescript
+interface Skill {
+  name: string;
+  version: string;
+  activate(context: SkillContext): void;
+  deactivate(): void;
+}
 ```
 
-- `config.json` stores app and organization context.
-- `pages/src/` stores custom page source files.
-- `pages/build/` and `pages/dist/` store compiled output.
-- `.cache/` stores local metadata such as schemas and login cache files.
+### 3. Configuration-Driven
 
-## Custom page pipeline
+Supports multi-environment configuration with flexible switching:
 
-Custom display pages use Yida-compatible React 16 style source files.
+- Local global config (~/.openyida/)
+- Project-level config (.openyidarc.json)
+- Environment variable overrides
 
-```bash
-openyida create-page <appType> "Dashboard"
-openyida check-page project/pages/src/dashboard.oyd.jsx
-openyida compile project/pages/src/dashboard.oyd.jsx
-openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
+### 4. Type Safety
+
+Full TypeScript type support throughout to reduce runtime errors.
+
+## Data Flow
+
+### App Creation Flow
+
+```
+User Input → AI Service → Code Generation → Yida API → Application
+                ↑                              ↓
+           PRD Analysis                  Validation
+                ↑                              ↓
+           Template Selection           Deployment
 ```
 
-`create-page` returns the page `formUuid`. Agents should use the returned value and should never invent IDs.
+### Data Operation Flow
 
-## Authentication and environments
-
-OpenYida stores login state in the active project cache and sends Yida requests with cached cookies. The active environment can be public cloud, overseas, or a private deployment.
-
-```bash
-openyida env --json
-openyida login --check-only --json
-openyida env <setup|list|show|switch|add|remove>
+```
+User Command → Config Load → Auth Check → Yida API → Data Response
+                                              ↓
+                                         Cache/Store
 ```
 
-In Codex and other AI coding environments, OpenYida prefers cached credentials first. If needed, it can use browser login, terminal QR login, or agent QR handoff.
+## Technology Stack
 
-## Data and schema discipline
+| Layer | Technology |
+|-------|------------|
+| Runtime | Node.js 18+ |
+| Language | TypeScript 5.x |
+| CLI Framework | Commander.js |
+| HTTP Client | Axios |
+| AI SDK | OpenAI SDK, Anthropic SDK |
+| Config | Cosmiconfig |
+| Logging | Winston |
+| Testing | Jest |
 
-Yida field IDs are generated by the platform. Before creating data, updating data, configuring query conditions, or writing custom page code against form data, agents should run:
+## Security Design
 
-```bash
-openyida get-schema <appType> <formUuid>
-```
+### Authentication Security
 
-Data operations use the unified `openyida data` command. Global task-center queries use `openyida task-center` and do not require an `appType`.
+- OAuth 2.0 standard flow
+- Automatic token refresh
+- Encrypted local storage for sensitive data
 
-## Machine-readable command manifest
+### Data Transmission
 
-The CLI exposes its current command surface for agents and documentation checks:
+- Full HTTPS throughout
+- API signature verification
+- Request retry and timeout control
 
-```bash
-openyida commands --json
-```
+## Performance Optimization
 
-Docs should prefer this manifest over hand-maintained command lists whenever possible.
+- **Connection Pooling**: Reuse HTTP connections
+- **Smart Caching**: Local cache for config and metadata
+- **Incremental Updates**: Only transmit changed content
+- **Concurrency Control**: Limit simultaneous API calls
+
+## Extension Points
+
+Developers can extend at the following levels:
+
+1. **New Commands**: Add custom CLI commands
+2. **New Skills**: Extend AI capabilities
+3. **New Templates**: Custom code generation templates
+4. **New AI Providers**: Integrate other LLMs
+
+## Version Compatibility
+
+| OpenYida Version | Node.js Support | Yida API Version |
+|------------------|-----------------|------------------|
+| 1.x | >= 18.0.0 | v1 |
+| 2.x | >= 20.0.0 | v2 |

@@ -23,7 +23,7 @@ openyida env show [name]           # Mostrar configuração detalhada do ambient
 
 # Login
 openyida login [--qr]              # --qr usa QR code no terminal
-openyida login --agent-qr         # Agent QR handoff
+openyida login --wukong            # Exclusivo para ambiente Wukong
 
 # Logout
 openyida logout
@@ -257,10 +257,10 @@ Tipos de campo como `MobileField` e `EmailField` não são suportados e serão r
 
 ```bash
 # Criar página personalizada
-openyida create-page <appType> "<nome>" [--mode dashboard] [--open|--no-open]
+openyida create-page <appType> "<nome>" [--datasource <jsonOrFile>]
 
 # Compilar e publicar página
-openyida publish <caminho_arquivo_fonte> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
+openyida publish <caminho_arquivo_fonte> <appType> <formUuid> [--skip-lint]
 
 # Configuração de compartilhamento de página
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -807,7 +807,7 @@ O comando consulta o registro npm para obter a versão mais recente publicada. S
 | `--version`, `-v` | Mostrar número da versão |
 | `--qr` | Usar QR code no terminal para login |
 | `--force` | Forçar operação, pular confirmação |
-| `--health-check` | Run a health check after publishing a custom page |
+| `--skip-lint` | Pular a verificação de padrões de codificação Yida durante o `publish` |
 
 ---
 

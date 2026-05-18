@@ -41,7 +41,11 @@ openyida login
 OpenYida एक ब्राउज़र विंडो खोलेगा (या QR कोड प्रदर्शित करेगा) ताकि आप अपने Yida/Alibaba खाते से प्रमाणित कर सकें। क्रेडेंशियल स्थानीय रूप से कैश किए जाते हैं — आपको इसे केवल एक बार करने की आवश्यकता है।
 
 <Info>
-  OpenYida detects Wukong automatically. If QR login is needed, use `openyida login --qr` or `openyida login --agent-qr`.
+  यदि आप AI टूल के रूप में **Wukong** का उपयोग कर रहे हैं, तो विशेष लॉगिन फ्लैग का उपयोग करें:
+
+  ```bash
+  openyida login --wukong
+  ```
 </Info>
 
 ---
@@ -95,9 +99,7 @@ AI OpenYida के स्किल पैक का उपयोग करके
 AI द्वारा ऐप जनरेट होने के बाद, प्रकाशित करने के लिए निम्नलिखित कमांड का उपयोग करें:
 
 ```bash
-openyida check-page project/pages/src/dashboard.oyd.jsx
-openyida compile project/pages/src/dashboard.oyd.jsx
-openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
+openyida publish
 ```
 
 या AI से पूछें:

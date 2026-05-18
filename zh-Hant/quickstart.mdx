@@ -41,7 +41,11 @@ openyida login
 OpenYida 將開啟瀏覽器視窗（或顯示二維碼）供您使用宜搭/阿里巴巴帳號進行身份驗證。憑證會快取於本地 — 只需執行一次。
 
 <Info>
-  OpenYida detects Wukong automatically. If QR login is needed, use `openyida login --qr` or `openyida login --agent-qr`.
+  如果您使用 **悟空** 作為 AI 工具，請使用特殊登入標誌：
+
+  ```bash
+  openyida login --wukong
+  ```
 </Info>
 
 ---
@@ -95,9 +99,7 @@ AI 將使用 OpenYida 的技能包依序呼叫正確的 CLI 命令：`create-app
 AI 產生應用程式後，使用以下指令發布：
 
 ```bash
-openyida check-page project/pages/src/dashboard.oyd.jsx
-openyida compile project/pages/src/dashboard.oyd.jsx
-openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
+openyida publish
 ```
 
 或者詢問 AI：
