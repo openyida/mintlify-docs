@@ -23,7 +23,7 @@ openyida env show [name]           # عرض تكوين البيئة التفصي
 
 # تسجيل الدخول
 openyida login [--qr]              # --qr استخدام رمز QR في المحطة
-openyida login --wukong            # خاص ببيئة Wukong
+openyida login --agent-qr         # Agent QR handoff
 
 # تسجيل الخروج
 openyida logout
@@ -257,10 +257,10 @@ openyida list-forms APP_XXXXX --keyword "عميل"
 
 ```bash
 # إنشاء صفحة مخصصة
-openyida create-page <appType> "<اسم الصفحة>" [--datasource <jsonOrFile>]
+openyida create-page <appType> "<اسم الصفحة>" [--mode dashboard] [--open|--no-open]
 
 # تجميع ونشر الصفحة
-openyida publish <مسار الملف المصدر> <appType> <formUuid> [--skip-lint]
+openyida publish <مسار الملف المصدر> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
 
 # تكوين مشاركة الصفحة
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -857,7 +857,7 @@ openyida update
 | `--version`, `-v` | عرض رقم الإصدار |
 | `--qr` | استخدام رمز QR في المحطة لتسجيل الدخول |
 | `--force` | فرض العملية، تخطي التأكيد |
-| `--skip-lint` | تخطي فحص معايير ترميز Yida أثناء `publish` |
+| `--health-check` | Run a health check after publishing a custom page |
 
 ---
 

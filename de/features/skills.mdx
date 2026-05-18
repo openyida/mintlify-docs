@@ -23,7 +23,7 @@ openyida env show [name]           # Detaillierte Umgebungskonfiguration anzeige
 
 # Anmeldung
 openyida login [--qr]              # --qr verwendet Terminal-QR-Code
-openyida login --wukong            # Spezifisch für Wukong-Umgebung
+openyida login --agent-qr         # Agent QR handoff
 
 # Abmeldung
 openyida logout
@@ -257,10 +257,10 @@ Feldtypen wie `MobileField` und `EmailField` werden nicht unterstützt und abgel
 
 ```bash
 # Benutzerdefinierte Seite erstellen
-openyida create-page <appType> "<Seitenname>" [--datasource <jsonOrFile>]
+openyida create-page <appType> "<Seitenname>" [--mode dashboard] [--open|--no-open]
 
 # Seite kompilieren und veröffentlichen
-openyida publish <QuellDateiPfad> <appType> <formUuid> [--skip-lint]
+openyida publish <QuellDateiPfad> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
 
 # Seitenfreigabekonfiguration
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -857,7 +857,7 @@ Der Befehl fragt die npm-Registry nach der neuesten veröffentlichten Version ab
 | `--version`, `-v` | Versionsnummer anzeigen |
 | `--qr` | Terminal-QR-Code für Anmeldung verwenden |
 | `--force` | Operation erzwingen, Bestätigung überspringen |
-| `--skip-lint` | Yida-Codierungsstandard-Prüfung beim `publish` überspringen |
+| `--health-check` | Run a health check after publishing a custom page |
 
 ---
 

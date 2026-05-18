@@ -23,7 +23,7 @@ openyida env show [name]           # Hiển thị cấu hình chi tiết của m
 
 # Đăng nhập
 openyida login [--qr]              # --qr sử dụng mã QR trong terminal
-openyida login --wukong            # Dành riêng cho môi trường Wukong
+openyida login --agent-qr         # Agent QR handoff
 
 # Đăng xuất
 openyida logout
@@ -257,10 +257,10 @@ Các loại trường như `MobileField` và `EmailField` không được hỗ t
 
 ```bash
 # Tạo trang tùy chỉnh
-openyida create-page <appType> "<tên>" [--datasource <jsonOrFile>]
+openyida create-page <appType> "<tên>" [--mode dashboard] [--open|--no-open]
 
 # Biên dịch và xuất bản trang
-openyida publish <đường_dẫn_tệp_nguồn> <appType> <formUuid> [--skip-lint]
+openyida publish <đường_dẫn_tệp_nguồn> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
 
 # Cấu hình chia sẻ trang
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -857,7 +857,7 @@ Lệnh này truy vấn npm registry để lấy phiên bản mới nhất đã x
 | `--version`, `-v` | Hiển thị số phiên bản |
 | `--qr` | Sử dụng mã QR trong terminal để đăng nhập |
 | `--force` | Buộc thực hiện, bỏ qua xác nhận |
-| `--skip-lint` | Bỏ qua kiểm tra tiêu chuẩn mã hóa Yida khi `publish` |
+| `--health-check` | Run a health check after publishing a custom page |
 
 ---
 

@@ -1,0 +1,65 @@
+---
+title: "分享与导航"
+description: "配置公开访问链接、组织内分享短链，以及页面导航显示状态。"
+icon: "share-nodes"
+---
+
+页面创建并发布后，可以用 OpenYida 配置访问方式和导航显示状态。
+
+## 链接类型
+
+| 类型 | 路径 | 访问对象 | 适用场景 |
+| --- | --- | --- | --- |
+| 公开访问 | `/o/<slug>` | 拿到链接的任何人 | 不依赖登录态的静态页面。 |
+| 组织内分享 | `/s/<slug>` | 钉钉/宜搭 SSO 登录后的内部成员 | 内部看板、经营报告、业务页面。 |
+
+<Warning>
+如果页面会调用宜搭表单数据 API，不要使用 `/o/` 公开访问。匿名用户无法调用需要登录态的宜搭数据 API，应使用 `/s/` 组织内分享。
+</Warning>
+
+## 配置内部短链
+
+保存前先校验路径：
+
+```bash
+openyida verify-short-url <appType> <formUuid> /s/my-dashboard
+openyida save-share-config <appType> <formUuid> /s/my-dashboard y
+openyida get-page-config <appType> <formUuid>
+```
+
+最终访问地址为：
+
+```text
+https://www.aliwork.com/s/my-dashboard
+```
+
+## 配置公开访问
+
+纯静态页面可以配置公开访问：
+
+```bash
+openyida verify-short-url <appType> <formUuid> /o/my-public-page
+openyida save-share-config <appType> <formUuid> /o/my-public-page y n
+```
+
+最后一个可选参数是 `openAuth`：
+
+| 值 | 含义 |
+| --- | --- |
+| `y` | 需要授权。 |
+| `n` | 不需要授权。 |
+
+## 关闭分享
+
+```bash
+openyida save-share-config <appType> <formUuid> "" n
+```
+
+## 隐藏或显示平台导航
+
+```bash
+openyida update-form-config <appType> <formUuid> false "页面标题"
+openyida update-form-config <appType> <formUuid> true "页面标题"
+```
+
+全屏看板、高管报告和演示型页面通常适合隐藏导航。
