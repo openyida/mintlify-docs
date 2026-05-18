@@ -23,7 +23,7 @@ openyida env show [name]           # वातावरण की विस्�
 
 # लॉगिन
 openyida login [--qr]              # --qr टर्मिनल में QR कोड का उपयोग करें
-openyida login --wukong            # Wukong वातावरण के लिए विशेष
+openyida login --agent-qr         # Agent QR handoff
 
 # लॉगआउट
 openyida logout
@@ -257,10 +257,10 @@ openyida list-forms APP_XXXXX --keyword "ग्राहक"
 
 ```bash
 # कस्टम पेज बनाएं
-openyida create-page <appType> "<नाम>" [--datasource <jsonOrFile>]
+openyida create-page <appType> "<नाम>" [--mode dashboard] [--open|--no-open]
 
 # पेज संकलित और प्रकाशित करें
-openyida publish <स्रोत_फ़ाइल_पथ> <appType> <formUuid> [--skip-lint]
+openyida publish <स्रोत_फ़ाइल_पथ> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
 
 # पेज शेयर कॉन्फ़िगरेशन
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -807,7 +807,7 @@ openyida update
 | `--version`, `-v` | संस्करण संख्या दिखाएं |
 | `--qr` | लॉगिन के लिए टर्मिनल में QR कोड का उपयोग करें |
 | `--force` | ऑपरेशन फोर्स करें, पुष्टि छोड़ें |
-| `--skip-lint` | `publish` के दौरान Yida कोडिंग मानक पूर्व-जांच छोड़ें |
+| `--health-check` | Run a health check after publishing a custom page |
 
 ---
 

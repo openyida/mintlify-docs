@@ -1,0 +1,71 @@
+---
+title: "自定义页面"
+description: "使用 OpenYida 创建、检查、编译并发布宜搭自定义展示页面。"
+icon: "window-maximize"
+---
+
+自定义展示页面适合看板、门户、可视化报告、计算器和富交互页面。OpenYida 会把符合宜搭运行时规范的 JSX 编译并发布到对应页面容器。
+
+## 端到端流程
+
+```bash
+openyida create-page <appType> "经营看板"
+openyida check-page project/pages/src/dashboard.oyd.jsx
+openyida compile project/pages/src/dashboard.oyd.jsx
+openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
+```
+
+`create-page` 会返回页面的 `formUuid`。不要手写或猜测这个值，应保存命令输出，或从项目缓存里读取。
+
+## 运行时规范
+
+宜搭自定义页面运行在 React 16 类组件模式下，源码需遵守这些规则：
+
+- 使用 `export function renderJsx()` 输出页面。
+- 使用 `export function didMount()` 和 `export function didUnmount()` 处理生命周期。
+- 自定义方法写成 `export function methodName() {}`。
+- 事件处理要包一层函数，例如 `onClick={(e) => { this.handleClick(e); }}`。
+- `.map()`、`.filter()` 等回调使用箭头函数。
+- 不使用 `useState`、`useEffect` 等 React Hooks。
+- 页面源码中不使用 `import` 和 `require`。
+- 样式使用内联 style 对象。
+- 输入框优先使用 `defaultValue`。
+
+## 发布前检查
+
+```bash
+openyida check-page project/pages/src/dashboard.oyd.jsx
+openyida compile project/pages/src/dashboard.oyd.jsx
+```
+
+`check-page` 会检查常见运行时错误。`compile` 会在 `project/pages/build/` 和 `project/pages/dist/` 下生成兼容宜搭的产物。
+
+## 隐藏宜搭导航
+
+全屏看板或演示页通常需要隐藏平台导航：
+
+```bash
+openyida update-form-config <appType> <formUuid> false "经营看板"
+```
+
+恢复显示导航：
+
+```bash
+openyida update-form-config <appType> <formUuid> true "经营看板"
+```
+
+## 何时使用 `build-page`
+
+```bash
+openyida build-page project/pages/src/dashboard.oyd.jsx --write
+```
+
+`build-page` 只转换源码，不发布页面。它适合做代码审查、CI 检查或调试编译输出。
+
+## 推荐提示词
+
+```text
+把这份分析文档做成宜搭自定义页面。
+使用 React 16 兼容的 export function 写法，不使用 Hooks，样式内联，适配移动端。
+发布前先运行 openyida check-page 和 compile。
+```

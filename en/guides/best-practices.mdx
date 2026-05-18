@@ -90,17 +90,24 @@ Run `openyida copy` only once per project, not every session. The `project/confi
 
 ---
 
-## 7. Environment-Specific Login
+## 7. Environment and login checks
 
-Different AI tools require different login methods:
+OpenYida detects Codex, Claude Code, Cursor, Qoder, Wukong, and similar AI tools automatically. When you switch tools, organizations, or deployment environments, run:
 
-| AI Tool | Login Command |
-|---------|----------|
-| Claude Code, Cursor, VSCode | `openyida login` |
-| Wukong | `openyida login --wukong` |
-| OpenCode, Aone Copilot | `openyida login` |
+```bash
+openyida env --json
+openyida login --check-only --json
+```
 
-When switching tools, run `openyida env` first to confirm the active environment.
+Common login methods:
+
+| Scenario | Command |
+|----------|---------|
+| Default cached login | `openyida login` |
+| Force browser login | `openyida login --browser` |
+| Terminal QR login | `openyida login --qr` |
+| Agent QR handoff | `openyida login --agent-qr` |
+| Target organization | `openyida login --corp-id <corpId>` |
 
 ---
 

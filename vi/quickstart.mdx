@@ -41,11 +41,7 @@ openyida login
 OpenYida sẽ mở cửa sổ trình duyệt (hoặc hiển thị mã QR) để bạn xác thực bằng tài khoản Yida/Alibaba. Thông tin đăng nhập được lưu trữ cục bộ — bạn chỉ cần làm điều này một lần.
 
 <Info>
-  Nếu bạn đang sử dụng **Wukong** làm công cụ AI, hãy sử dụng cờ đăng nhập đặc biệt:
-
-  ```bash
-  openyida login --wukong
-  ```
+  OpenYida detects Wukong automatically. If QR login is needed, use `openyida login --qr` or `openyida login --agent-qr`.
 </Info>
 
 ---
@@ -99,7 +95,9 @@ AI sẽ sử dụng gói kỹ năng OpenYida để gọi các lệnh CLI đúng 
 Sau khi AI tạo ra ứng dụng, sử dụng lệnh sau để xuất bản:
 
 ```bash
-openyida publish
+openyida check-page project/pages/src/dashboard.oyd.jsx
+openyida compile project/pages/src/dashboard.oyd.jsx
+openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
 ```
 
 Hoặc hỏi AI:

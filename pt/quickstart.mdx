@@ -41,11 +41,7 @@ openyida login
 O OpenYida abrirá uma janela do navegador (ou exibirá um código QR) para você autenticar com sua conta Yida/Alibaba. As credenciais são armazenadas em cache localmente — você só precisa fazer isso uma vez.
 
 <Info>
-  Se você estiver usando **Wukong** como ferramenta de IA, use a flag de login especial:
-
-  ```bash
-  openyida login --wukong
-  ```
+  OpenYida detects Wukong automatically. If QR login is needed, use `openyida login --qr` or `openyida login --agent-qr`.
 </Info>
 
 ---
@@ -99,7 +95,9 @@ A IA usará o pacote de habilidades do OpenYida para chamar os comandos CLI corr
 Após a IA gerar o aplicativo, use o seguinte comando para publicar:
 
 ```bash
-openyida publish
+openyida check-page project/pages/src/dashboard.oyd.jsx
+openyida compile project/pages/src/dashboard.oyd.jsx
+openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
 ```
 
 Ou pergunte à IA:

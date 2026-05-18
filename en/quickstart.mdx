@@ -28,7 +28,10 @@ Verify the installation:
 
 ```bash
 openyida --version
+openyida commands --json
 ```
+
+`commands --json` prints the machine-readable command manifest. Agents and documentation checks can use it to confirm the current CLI surface.
 
 ---
 
@@ -41,11 +44,7 @@ openyida login
 OpenYida will open a browser window (or display a QR code) for you to authenticate with your Yida/Alibaba account. Credentials are cached locally — you only need to do this once.
 
 <Info>
-  If you are using **Wukong** as your AI tool, use the special login flag:
-
-  ```bash
-  openyida login --wukong
-  ```
+  In Codex, Claude Code, Cursor, Qoder, Wukong, and similar AI tools, OpenYida detects the active environment automatically. Use `--browser`, `--qr`, or `--agent-qr` when you need to force a login method.
 </Info>
 
 ---
@@ -53,10 +52,11 @@ OpenYida will open a browser window (or display a QR code) for you to authentica
 ## Step 3 — Check Environment
 
 ```bash
-openyida env
+openyida env --json
+openyida login --check-only --json
 ```
 
-This detects the currently active AI coding tool (Claude Code, Cursor, Wukong, etc.) and displays your current login status. Run this command anytime you switch environments.
+This detects the active AI coding tool, workspace root, environment configuration, and login status. Run these commands whenever you switch tools or organizations.
 
 ---
 
@@ -99,7 +99,9 @@ The AI will use OpenYida's skill pack to call the correct CLI commands in sequen
 After the AI generates the app, use the following command to publish:
 
 ```bash
-openyida publish
+openyida check-page project/pages/src/dashboard.oyd.jsx
+openyida compile project/pages/src/dashboard.oyd.jsx
+openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
 ```
 
 Or ask the AI:
@@ -122,18 +124,6 @@ It checks your Node.js version, login status, and environment configuration, and
 
 ---
 
-## OpenClaw Integration
-
-If you are using OpenClaw, install the OpenYida skill pack directly:
-
-```bash
-npx clawhub@latest install nicky1108/yida-app
-```
-
-Then use it via [yida-app on ClawhHub](https://clawhub.ai/nicky1108/yida-app).
-
----
-
 ## Next Steps
 
 <CardGroup cols={2}>
@@ -148,5 +138,11 @@ Then use it via [yida-app on ClawhHub](https://clawhub.ai/nicky1108/yida-app).
   </Card>
   <Card title="Best Practices" icon="star" href="/en/guides/best-practices">
     Tips for getting the most out of AI-driven app generation.
+  </Card>
+  <Card title="Custom Pages" icon="window-maximize" href="/en/guides/custom-pages">
+    Learn the check, compile, and publish workflow for custom pages.
+  </Card>
+  <Card title="Sharing and Navigation" icon="share-nodes" href="/en/guides/sharing-and-navigation">
+    Configure internal short links, public access, and page navigation.
   </Card>
 </CardGroup>
