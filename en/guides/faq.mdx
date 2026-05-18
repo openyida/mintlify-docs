@@ -19,7 +19,7 @@ icon: "circle-question"
   </Accordion>
 
   <Accordion title="What if the login QR code doesn't display?">
-    Try `openyida login --browser` in a terminal that supports browser launching. In a headless environment, use `openyida login --qr` to show a terminal QR code, or `openyida login --agent-qr` to hand the QR code back to the AI conversation.
+    Try running `openyida login` in a terminal that supports browser launching. If in a headless environment (e.g., remote server), use `openyida login --wukong` in DingTalk/Wukong environments, or copy the login URL from terminal output and open it in your local browser.
   </Accordion>
 
   <Accordion title="How to refresh an expired session?">
@@ -52,30 +52,9 @@ icon: "circle-question"
     ```
     Or run directly:
     ```bash
-    openyida verify-short-url <appType> <formUuid> /o/my-public-page
-    openyida save-share-config <appType> <formUuid> /o/my-public-page y n
+    openyida save-share-config
     ```
     Configure page sharing settings so anyone can access it via link without login.
-  </Accordion>
-
-  <Accordion title="How do I create an internal short link?">
-    Use an `/s/` path for organization-only access:
-    ```bash
-    openyida verify-short-url <appType> <formUuid> /s/my-dashboard
-    openyida save-share-config <appType> <formUuid> /s/my-dashboard y
-    openyida get-page-config <appType> <formUuid>
-    ```
-    The final link looks like `https://www.aliwork.com/s/my-dashboard`.
-  </Accordion>
-
-  <Accordion title="How do I hide page navigation?">
-    ```bash
-    openyida update-form-config <appType> <formUuid> false "Page Title"
-    ```
-    To show navigation again:
-    ```bash
-    openyida update-form-config <appType> <formUuid> true "Page Title"
-    ```
   </Accordion>
 
   <Accordion title="Can I migrate existing Yida apps with OpenYida?">

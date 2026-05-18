@@ -1,95 +1,228 @@
 ---
 title: 架构概览
-description: "了解 OpenYida 如何把 AI 编程工具连接到宜搭低代码平台。"
+description: "了解 OpenYida 的分层架构设计，包括 CLI 接口层、核心服务层、AI 多模型适配层和宜搭平台集成层的工作原理。"
 icon: "sitemap"
 ---
 
 # 架构概览
 
-OpenYida 是一个 Node.js CLI，用来让 AI 编程工具操作宜搭低代码平台。它本身不运行大模型服务，而是为 Codex、Claude Code、Cursor、Qoder、悟空等工具提供稳定的命令层，完成应用、表单、自定义页面、报表、连接器、集成自动化和数据操作。
+OpenYida 是一个基于 Node.js 的 CLI 工具，采用分层架构设计，将 AI 能力、宜搭平台集成和开发者体验有机结合。
 
-## 分层结构
+## 整体工作流程
+
+<Frame>
+  <img src="/images/architecture-workflow.png" alt="OpenYida 工作流程" />
+</Frame>
+
+OpenYida 的工作流程分为 6 个阶段：
+
+1. **User Requirement** - 用户通过自然语言描述需求
+2. **AI Understanding** - AI 理解并分析用户需求
+3. **PRD Document** - 生成产品需求文档
+4. **CLI Execution** - 执行 CLI 命令创建应用
+5. **Yida Platform** - 在宜搭平台构建应用
+6. **Online Access** - 应用上线访问
+
+## 系统架构
 
 ```
-AI 编程工具
-  -> openyida CLI
-  -> 本地 project 工作区
-  -> 携带本地登录 Cookie 调用宜搭 Web API
-  -> 生成宜搭应用、表单、页面、报表或数据结果
+┌─────────────────────────────────────────────────────────────┐
+│                      CLI Interface                          │
+│         (Command Parser + Interactive Prompts)              │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Command Layer                            │
+│   create-app │ create-form │ publish │ data │ doctor ...   │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Core Services                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   AI Service │  │  Yida API    │  │   Config     │      │
+│  │  (Multi-LLM) │  │  (Open API)  │  │   Manager    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Auth        │  │  Skill       │  │   Template   │      │
+│  │  (OAuth 2.0) │  │  System      │  │   Engine     │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+┌─────────────────────────┐    ┌─────────────────────────────┐
+│    AI Providers         │    │    Yida Platform            │
+│  ┌─────────────────┐    │    │                             │
+│  │ OpenAI (GPT-4)  │    │    │   ┌─────────────────────┐   │
+│  ├─────────────────┤    │    │   │   Application       │   │
+│  │ Claude (3.5)    │    │    │   │   Engine            │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ 通义千问        │    │    │   │   Form Builder      │   │
+│  ├─────────────────┤    │    │   ├─────────────────────┤   │
+│  │ DeepSeek        │    │    │   │   Page Designer     │   │
+│  └─────────────────┘    │    │   ├─────────────────────┤   │
+│                         │    │   │   Data Management   │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Connector Hub     │   │
+│                         │    │   ├─────────────────────┤   │
+│                         │    │   │   Report Center     │   │
+│                         │    │   └─────────────────────┘   │
+└─────────────────────────┘    └─────────────────────────────┘
 ```
 
-| 层级 | 源码路径 | 职责 |
-| --- | --- | --- |
-| CLI 入口 | `bin/yida.js` | 解析命令并路由到具体实现模块。 |
-| 核心工具 | `lib/core/` | 环境检测、国际化、更新检查、工作区复制、数据查询工具和 Babel 转换。 |
-| 登录认证 | `lib/auth/` | 登录、Cookie 缓存、二维码交接、组织切换和多环境支持。 |
-| 应用与页面 | `lib/app/` | 创建应用、创建表单、创建自定义展示页面、列出页面、检查、编译和发布页面。 |
-| 分享配置 | `lib/page-config/` | 校验短链并保存公开访问或组织内分享配置。 |
-| 权限配置 | `lib/permission/` | 查询和保存表单权限组。 |
-| 流程与自动化 | `lib/process/`、`lib/integration/` | 创建流程表单、配置流程规则、预览流程实例、创建集成自动化。 |
-| 连接器与报表 | `lib/connector/`、`lib/report/` | 管理 HTTP 连接器和宜搭原生报表。 |
-| 技能文档 | `yida-skills/` | 给 AI 代理读取的 Markdown 工作流说明。 |
+## 认证流程
 
-## 本地工作区
+![认证流程](/images/architecture-auth.png)
 
-`openyida copy` 会初始化 AI 可读写的项目工作区：
+OpenYida 的认证流程：
 
-```text
-project/
-  config.json
-  pages/
-    src/
-    build/
-    dist/
-  .cache/
+1. **config.json** - 存储配置信息
+2. **Login Session** - 建立登录会话
+3. **Cookie Cache** - 缓存认证信息
+4. **API Request** - 发送 API 请求
+5. **Yida Backend** - 宜搭后端处理
+6. **Page/Form Output** - 输出页面/表单
+
+## CLI 架构
+
+![CLI 架构](/images/architecture-cli.png)
+
+OpenYida CLI 与宜搭平台的交互：
+
+- **AI Coding Tool** → **OpenYida CLI**
+  - Login（登录）
+  - Create App（创建应用）
+  - Create Page（创建页面）
+  - Publish（发布）
+  - Get Schema（获取结构）
+- **Yida Low-Code Platform**
+  - App Management（应用管理）
+  - Form Pages（表单页面）
+  - Custom Pages（自定义页面）
+
+## 技能体系
+
+![技能体系](/images/architecture-skills.png)
+
+OpenYida 的技能分为三大类：
+
+### Login Skills（登录技能）
+- `login` - 登录宜搭平台
+- `logout` - 退出登录
+
+### Create Skills（创建技能）
+- `create-app` - 创建应用
+- `create-page` - 创建页面
+- `create-form` - 创建表单
+- `get-schema` - 获取数据结构
+
+### Publish Skills（发布技能）
+- `publish` - 发布应用
+
+## 核心设计原则
+
+### 1. 模块化设计
+
+每个功能模块独立封装，通过清晰的接口进行交互：
+
+- **命令层**: 处理 CLI 输入，调用核心服务
+- **服务层**: 封装业务逻辑，对外提供统一 API
+- **适配层**: 对接外部系统（AI、宜搭平台）
+
+### 2. 插件化扩展
+
+Skill 系统支持动态加载和扩展：
+
+```typescript
+// Skill 接口定义
+interface Skill {
+  name: string;
+  version: string;
+  activate(context: SkillContext): void;
+  deactivate(): void;
+}
 ```
 
-- `config.json` 保存应用和组织上下文。
-- `pages/src/` 保存自定义页面源码。
-- `pages/build/` 和 `pages/dist/` 保存编译产物。
-- `.cache/` 保存 Schema、登录缓存等本地元数据。
+### 3. 配置驱动
 
-## 自定义页面发布链路
+支持多环境配置，灵活切换：
 
-自定义展示页面使用兼容宜搭 React 16 运行时的源码。
+- 本地全局配置（~/.openyida/）
+- 项目级配置（.openyidarc.json）
+- 环境变量覆盖
 
-```bash
-openyida create-page <appType> "经营看板"
-openyida check-page project/pages/src/dashboard.oyd.jsx
-openyida compile project/pages/src/dashboard.oyd.jsx
-openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
+### 4. 类型安全
+
+全链路 TypeScript 类型支持，减少运行时错误。
+
+## 数据流
+
+### 应用创建流程
+
+```
+User Input → AI Service → Code Generation → Yida API → Application
+                ↑                              ↓
+           PRD Analysis                  Validation
+                ↑                              ↓
+           Template Selection           Deployment
 ```
 
-`create-page` 会返回页面 `formUuid`。AI 代理应使用命令返回值，不要猜测或手写 ID。
+### 数据操作流程
 
-## 登录和环境
-
-OpenYida 会把登录态存储在当前项目缓存中，并携带 Cookie 调用宜搭接口。当前环境可以是公有云、海外环境或私有化部署。
-
-```bash
-openyida env --json
-openyida login --check-only --json
-openyida env <setup|list|show|switch|add|remove>
+```
+User Command → Config Load → Auth Check → Yida API → Data Response
+                                              ↓
+                                         Cache/Store
 ```
 
-在 Codex 等 AI 编程环境中，OpenYida 会优先复用缓存登录态；必要时再使用浏览器登录、终端二维码或 AI 对话框二维码交接。
+## 技术栈
 
-## 数据和 Schema 约束
+| 层级 | 技术 |
+|------|------|
+| 运行时 | Node.js 18+ |
+| 语言 | TypeScript 5.x |
+| CLI 框架 | Commander.js |
+| HTTP 客户端 | Axios |
+| AI SDK | OpenAI SDK, Anthropic SDK |
+| 配置管理 | Cosmiconfig |
+| 日志 | Winston |
+| 测试 | Jest |
 
-宜搭字段 ID 由平台生成。创建数据、更新数据、配置查询条件，或在自定义页面中读取表单数据前，应先执行：
+## 安全设计
 
-```bash
-openyida get-schema <appType> <formUuid>
-```
+### 认证安全
 
-数据操作统一使用 `openyida data`。全局任务中心查询使用 `openyida task-center`，不需要传入 `appType`。
+- OAuth 2.0 标准流程
+- Token 自动刷新机制
+- 敏感信息本地加密存储
 
-## 机器可读命令清单
+### 数据传输
 
-CLI 会暴露当前命令能力，便于 AI 代理和文档检查使用：
+- 全链路 HTTPS
+- API 签名验证
+- 请求重试和超时控制
 
-```bash
-openyida commands --json
-```
+## 性能优化
 
-维护文档时，应优先以这个 manifest 为准，减少手写命令表过期的风险。
+- **连接池**: 复用 HTTP 连接
+- **智能缓存**: 配置和元数据本地缓存
+- **增量更新**: 只传输变更内容
+- **并发控制**: 限制同时进行的 API 调用
+
+## 扩展点
+
+开发者可以在以下层面进行扩展：
+
+1. **新命令**: 添加自定义 CLI 命令
+2. **新 Skill**: 扩展 AI 能力
+3. **新模板**: 自定义代码生成模板
+4. **新 AI Provider**: 接入其他大模型
+
+## 版本兼容性
+
+| OpenYida 版本 | 支持的 Node.js | 宜搭 API 版本 |
+|--------------|----------------|--------------|
+| 1.x | >= 18.0.0 | v1 |
+| 2.x | >= 20.0.0 | v2 |
