@@ -19,7 +19,7 @@ icon: "circle-question"
   </Accordion>
 
   <Accordion title="登录二维码不显示怎么办？">
-    尝试在支持浏览器启动的终端运行 `openyida login`。如处于无头环境（如远程服务器），若在钉钉/悟空环境使用 `openyida login --wukong`，或复制终端输出的登录 URL 在本地浏览器打开。
+    尝试在支持浏览器启动的终端运行 `openyida login --browser`。如处于无头环境，使用 `openyida login --qr` 在终端显示二维码，或使用 `openyida login --agent-qr` 让 AI 对话框接管二维码展示。
   </Accordion>
 
   <Accordion title="会话过期如何刷新？">
@@ -52,9 +52,30 @@ icon: "circle-question"
     ```
     或直接运行：
     ```bash
-    openyida save-share-config
+    openyida verify-short-url <appType> <formUuid> /o/my-public-page
+    openyida save-share-config <appType> <formUuid> /o/my-public-page y n
     ```
     配置页面分享设置，任何人可通过链接访问，无需登录。
+  </Accordion>
+
+  <Accordion title="如何生成组织内访问短链？">
+    使用 `/s/` 路径配置内部访问短链：
+    ```bash
+    openyida verify-short-url <appType> <formUuid> /s/my-dashboard
+    openyida save-share-config <appType> <formUuid> /s/my-dashboard y
+    openyida get-page-config <appType> <formUuid>
+    ```
+    最终链接形如 `https://www.aliwork.com/s/my-dashboard`。
+  </Accordion>
+
+  <Accordion title="如何隐藏页面导航？">
+    ```bash
+    openyida update-form-config <appType> <formUuid> false "页面标题"
+    ```
+    如需恢复导航：
+    ```bash
+    openyida update-form-config <appType> <formUuid> true "页面标题"
+    ```
   </Accordion>
 
   <Accordion title="可用 OpenYida 迁移现有宜搭应用吗？">

@@ -13,6 +13,7 @@ OpenYida 提供丰富的 CLI 命令，支持应用全生命周期管理。
 ```bash
 # 环境检测
 openyida env
+openyida env --json
 
 # 多环境管理
 openyida env list                  # 列出所有环境，高亮当前激活环境
@@ -22,8 +23,8 @@ openyida env remove <name>         # 删除环境（public 不可删）
 openyida env show [name]           # 显示环境详细配置
 
 # 登录
-openyida login [--qr]              # --qr 使用终端二维码
-openyida login --wukong            # 悟空环境专用
+openyida login [--qr|--agent-qr|--codex|--browser] [--env <name>] [--corp-id <corpId>]
+openyida login --check-only --json # 仅检查当前登录态
 
 # 退出登录
 openyida logout
@@ -49,6 +50,9 @@ openyida doctor --report <format>  # 生成报告 (json|markdown|html)
 
 # 自更新
 openyida update                    # 检查并更新到最新版本
+
+# 机器可读命令清单
+openyida commands --json           # 输出当前 CLI manifest
 ```
 
 ---
@@ -56,6 +60,9 @@ openyida update                    # 检查并更新到最新版本
 ## 应用管理
 
 ```bash
+# 查询应用列表
+openyida app-list [--size N]
+
 # 创建应用
 openyida create-app "<名称>" [desc] [icon] [color] [themeColor]
 
@@ -67,6 +74,9 @@ openyida import <file> [name]      # 从迁移包重建应用
 
 # 更新应用信息
 openyida update-app <appType> --name "<名称>" [--desc "<描述>"] [--icon "<图标>"] [--icon-color "<颜色>"]
+
+# 管理应用级权限
+openyida app-permission <get|set|add|remove|search-user> ...
 ```
 
 | 选项 | 缩写 | 说明 |
@@ -257,10 +267,10 @@ openyida list-forms APP_XXXXX --keyword "客户"
 
 ```bash
 # 创建自定义页面
-openyida create-page <appType> "<页面名>" [--datasource <jsonOrFile>]
+openyida create-page <appType> "<页面名>" [--mode dashboard] [--open|--no-open]
 
 # 编译并发布页面
-openyida publish <源文件路径> <appType> <formUuid> [--skip-lint]
+openyida publish <源文件路径> <appType> <formUuid> [--health-check] [--force] [--open|--no-open]
 
 # 页面分享配置
 openyida save-share-config <appType> <formUuid> <url> <isOpen> [openAuth]
@@ -806,8 +816,11 @@ openyida update
 | `--help`, `-h` | 显示帮助信息 |
 | `--version`, `-v` | 显示版本号 |
 | `--qr` | 使用终端二维码登录 |
+| `--agent-qr` | 在 AI 对话框中交接二维码登录 |
+| `--browser` | 强制浏览器登录 |
 | `--force` | 强制操作，跳过确认 |
-| `--skip-lint` | 在 `publish` 时跳过宜搭编码规范预检 |
+| `--health-check` | 发布自定义页面后执行健康检查 |
+| `--open` / `--no-open` | 控制命令完成后是否打开页面 |
 
 ---
 

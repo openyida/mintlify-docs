@@ -1,0 +1,66 @@
+---
+title: "悟空环境配置"
+description: "在悟空工作区使用 OpenYida，并避免 Node.js 路径问题。"
+icon: "robot"
+---
+
+悟空工作区路径包含动态 ID，并且自带 Node.js 运行时。OpenYida 会通过当前环境自动识别悟空，但执行 shell 命令时仍需要注意 Node.js 路径。
+
+## 工作区识别
+
+悟空工作区通常类似：
+
+```text
+~/.real/users/{uuid}/workspace/
+```
+
+当存在 `AGENT_WORK_ROOT` 时，OpenYida 会直接读取它作为工作区根目录。
+
+```bash
+openyida env --json
+```
+
+## Node.js 路径
+
+在悟空里执行 `node`、`npm`、`npx` 前，建议把悟空自带 Node.js 放到 `PATH` 最前面。
+
+macOS/Linux：
+
+```bash
+export PATH="$HOME/.real/.bin/node/bin:$PATH"
+```
+
+Windows PowerShell：
+
+```powershell
+$env:PATH = "$env:USERPROFILE\.real\.bin\node\bin;$env:PATH"
+```
+
+这可以避免误用系统 Node.js，导致权限或依赖行为不一致。
+
+## 初始化工作区
+
+```bash
+openyida copy
+openyida env --json
+openyida login
+```
+
+悟空工作区为空时，`openyida copy` 会把 `project/` 模板内容直接铺到工作区，不额外创建一层嵌套的 `project/` 目录。
+
+## 技能包
+
+悟空使用手动上传的技能包。请在 OpenYida 仓库中构建：
+
+```bash
+npm run build:skills
+```
+
+产物位置：
+
+```text
+dist/skills/openyida/
+openyida-skills.zip
+```
+
+悟空包只保留一个根 `SKILL.md`，子技能文档会转换到 `references/subskills/`。

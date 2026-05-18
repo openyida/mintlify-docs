@@ -28,7 +28,10 @@ npm install -g openyida
 
 ```bash
 openyida --version
+openyida commands --json
 ```
+
+`commands --json` 会输出机器可读的命令清单，AI 代理和文档检查都可以用它确认当前 CLI 能力。
 
 ---
 
@@ -41,11 +44,7 @@ openyida login
 OpenYida 将打开浏览器窗口（或显示二维码）供您使用宜搭/阿里巴巴账号进行身份验证。凭证会缓存在本地 — 只需执行一次。
 
 <Info>
-  如果您使用 **悟空** 作为 AI 工具，请使用特殊登录标志：
-
-  ```bash
-  openyida login --wukong
-  ```
+  在 Codex、Claude Code、Cursor、Qoder、悟空等 AI 工具中，OpenYida 会自动检测当前环境。需要明确登录方式时，可以使用 `--browser`、`--qr` 或 `--agent-qr`。
 </Info>
 
 ---
@@ -53,10 +52,11 @@ OpenYida 将打开浏览器窗口（或显示二维码）供您使用宜搭/阿�
 ## 第 3 步 — 检查环境
 
 ```bash
-openyida env
+openyida env --json
+openyida login --check-only --json
 ```
 
-这将检测当前激活的 AI 编程工具（Claude Code、Cursor、悟空等）并显示您的当前登录状态。切换环境时随时运行此命令。
+这会检测当前激活的 AI 编程工具、工作区根目录、环境配置和登录状态。切换工具或组织时，先运行这两个命令。
 
 ---
 
@@ -99,7 +99,9 @@ AI 将使用 OpenYida 的技能包按顺序调用正确的 CLI 命令：`create-
 AI 生成应用后，使用以下命令发布：
 
 ```bash
-openyida publish
+openyida check-page project/pages/src/dashboard.oyd.jsx
+openyida compile project/pages/src/dashboard.oyd.jsx
+openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
 ```
 
 或者询问 AI：
@@ -122,18 +124,6 @@ openyida doctor
 
 ---
 
-## OpenClaw 集成
-
-如果您使用 OpenClaw，直接安装 OpenYida 技能包：
-
-```bash
-npx clawhub@latest install nicky1108/yida-app
-```
-
-然后通过 [ClawhHub 上的 yida-app](https://clawhub.ai/nicky1108/yida-app) 使用它。
-
----
-
 ## 下一步
 
 <CardGroup cols={2}>
@@ -148,5 +138,11 @@ npx clawhub@latest install nicky1108/yida-app
   </Card>
   <Card title="最佳实践" icon="star" href="/zh/guides/best-practices">
     充分利用 AI 驱动应用生成的技巧。
+  </Card>
+  <Card title="自定义页面" icon="window-maximize" href="/zh/guides/custom-pages">
+    学习自定义页面的检查、编译和发布流程。
+  </Card>
+  <Card title="分享与导航" icon="share-nodes" href="/zh/guides/sharing-and-navigation">
+    配置内部短链、公开访问和页面导航显示。
   </Card>
 </CardGroup>

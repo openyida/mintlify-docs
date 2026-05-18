@@ -41,11 +41,7 @@ openyida login
 OpenYida はブラウザウィンドウを開く（または QR コードを表示する）ことで、Yida/Alibaba アカウントで認証します。認証情報はローカルにキャッシュされます — これは一度だけ実行すればよいです。
 
 <Info>
-  AI ツールとして **悟空** を使用している場合は、特別なログインフラグを使用してください：
-
-  ```bash
-  openyida login --wukong
-  ```
+  OpenYida detects Wukong automatically. If QR login is needed, use `openyida login --qr` or `openyida login --agent-qr`.
 </Info>
 
 ---
@@ -99,7 +95,9 @@ AI は OpenYida のスキルパックを使用して、正しい CLI コマン�
 AI がアプリを生成した後、以下のコマンドを使用して公開します：
 
 ```bash
-openyida publish
+openyida check-page project/pages/src/dashboard.oyd.jsx
+openyida compile project/pages/src/dashboard.oyd.jsx
+openyida publish project/pages/src/dashboard.oyd.jsx <appType> <formUuid>
 ```
 
 または AI に尋ねてください：
