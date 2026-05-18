@@ -45,7 +45,7 @@ openyida create-report APP_XXXXXX "Sales Dashboard" '{
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "sales_form",
+      "cubeCode": "FORM_XXXXXX",
       "xField": "month",
       "yField": "amount"
     }
@@ -73,11 +73,66 @@ openyida append-chart <appType> <reportId> '<圖表定義JSON或檔案路徑>'
 openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "type": "line",
   "title": "Growth Trend",
-  "dataSource": "form_sales",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "month",
   "yField": "growth_rate"
 }'
 ```
+
+---
+
+## 篩選器設定
+
+報表支援新增篩選器，實現與圖表的聯動過濾。你可以在圖表定義 JSON 中使用 `filters` 陣列來設定篩選器。
+
+### 帶篩選器的完整設定
+
+```json
+{
+  "filters": [
+    {
+      "title": "專案篩選",
+      "placeholder": "請選擇專案",
+      "cubeCode": "FORM_XXXXXX",
+      "valueField": {
+        "fieldCode": "selectField_xxx",
+        "aliasName": "專案值",
+        "dataType": "STRING"
+      },
+      "labelField": {
+        "fieldCode": "selectField_xxx",
+        "aliasName": "專案名稱",
+        "dataType": "STRING"
+      },
+      "linkTo": [0, 1]
+    }
+  ],
+  "charts": [
+    {
+      "type": "bar",
+      "title": "柱狀圖",
+      "cubeCode": "FORM_XXXXXX",
+      "xField": "name",
+      "yField": "value"
+    }
+  ]
+}
+```
+
+### 篩選器欄位說明
+
+| 欄位 | 必填 | 說明 |
+|------|------|------|
+| `title` | 是 | 篩選器標題 |
+| `placeholder` | 否 | 佔位提示文字 |
+| `cubeCode` | 是 | 資料來源表單 ID（如 `FORM_XXXXXX`） |
+| `valueField` | 是 | 值欄位定義（包含 `fieldCode`、`aliasName`、`dataType`） |
+| `labelField` | 是 | 顯示欄位定義（包含 `fieldCode`、`aliasName`、`dataType`） |
+| `linkTo` | 否 | 聯動目標圖表，陣列元素可以是圖表索引（數字）或圖表標題（字串）。未指定則聯動所有圖表 |
+
+<Info>
+  如果未設定 `filters`，系統會自動為圖表中的 `selectField` 類型欄位產生下拉篩選器。
+</Info>
 
 ---
 
@@ -95,6 +150,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **combo** | 柱線混合圖 | 雙軸對比 |
 | **pivot** | 交叉透視表 | 多維分析 |
 | **gauge** | 儀表盤 | 進度或目標追蹤 |
+| **radar** | 雷達圖 | 多維度對比分析 |
 | **funnel** | 漏斗圖 | 階段轉化分析 |
 
 ---
@@ -130,7 +186,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 {
   "type": "bar",
   "title": "Sales by Region",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "region",
   "yField": "amount",
   "aggregation": "sum",
@@ -145,7 +201,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 {
   "type": "line",
   "title": "Traffic Trend",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "date",
   "yField": "visitors",
   "aggregation": "sum"
@@ -158,7 +214,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 {
   "type": "pie",
   "title": "Market Share",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "categoryField": "product",
   "valueField": "share"
 }
@@ -170,7 +226,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 {
   "type": "table",
   "title": "Detail View",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "columns": [
     { "field": "name", "title": "Name" },
     { "field": "amount", "title": "Amount" },
@@ -178,6 +234,21 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   ]
 }
 ```
+
+---
+
+## cubeCode 格式
+
+圖表定義中的 `cubeCode` 是報表引擎的資料來源識別碼。它基於表單的 `formUuid`，但使用**底線**分隔而非連字號。
+
+```
+formUuid: FORM-AB4ACB9D-D12C-470D-8204-7E05CDC19166
+cubeCode: FORM_AB4ACB9D_D12C_470D_8204_7E05CDC19166
+```
+
+<Tip>
+  你可以使用 `openyida get-schema` 取得表單的 `formUuid`，然後將連字號替換為底線作為 `cubeCode`。系統也會自動轉換連字號格式。
+</Tip>
 
 ---
 
@@ -203,7 +274,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "form_monthly_sales",
+      "cubeCode": "FORM_MONTHLY_SALES",
       "xField": "month",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -211,14 +282,14 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
     {
       "type": "pie",
       "title": "Product Categories",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "categoryField": "product_category",
       "valueField": "sales_amount"
     },
     {
       "type": "line",
       "title": "Sales Trend",
-      "dataSource": "form_daily_sales",
+      "cubeCode": "FORM_DAILY_SALES",
       "xField": "date",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -226,7 +297,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
     {
       "type": "table",
       "title": "Sales Detail",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "columns": [
         { "field": "order_no", "title": "Order No.", "width": 150 },
         { "field": "customer_name", "title": "Customer", "width": 200 },

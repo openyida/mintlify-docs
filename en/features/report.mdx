@@ -45,7 +45,7 @@ openyida create-report APP_XXXXXX "Sales Dashboard" '{
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "sales_form",
+      "cubeCode": "FORM_XXXXXX",
       "xField": "month",
       "yField": "amount"
     }
@@ -73,11 +73,66 @@ openyida append-chart <appType> <reportId> '<chart-definition-JSON-or-file>'
 openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "type": "line",
   "title": "Growth Trend",
-  "dataSource": "form_sales",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "month",
   "yField": "growth_rate"
 }'
 ```
+
+---
+
+## Filter configuration
+
+Reports support filters that link to charts for interactive data filtering. You can configure filters using the `filters` array in the chart definition JSON.
+
+### Full configuration with filters
+
+```json
+{
+  "filters": [
+    {
+      "title": "Project filter",
+      "placeholder": "Select a project",
+      "cubeCode": "FORM_XXXXXX",
+      "valueField": {
+        "fieldCode": "selectField_xxx",
+        "aliasName": "Project value",
+        "dataType": "STRING"
+      },
+      "labelField": {
+        "fieldCode": "selectField_xxx",
+        "aliasName": "Project name",
+        "dataType": "STRING"
+      },
+      "linkTo": [0, 1]
+    }
+  ],
+  "charts": [
+    {
+      "type": "bar",
+      "title": "Bar chart",
+      "cubeCode": "FORM_XXXXXX",
+      "xField": "name",
+      "yField": "value"
+    }
+  ]
+}
+```
+
+### Filter field reference
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `title` | Yes | Filter title |
+| `placeholder` | No | Placeholder text |
+| `cubeCode` | Yes | Data source form ID (e.g., `FORM_XXXXXX`) |
+| `valueField` | Yes | Value field definition (contains `fieldCode`, `aliasName`, `dataType`) |
+| `labelField` | Yes | Display field definition (contains `fieldCode`, `aliasName`, `dataType`) |
+| `linkTo` | No | Target charts to link. Array elements can be chart indices (numbers) or chart titles (strings). If omitted, the filter links to all charts |
+
+<Info>
+  If you do not configure `filters`, the system automatically generates dropdown filters for `selectField`-type fields in your charts.
+</Info>
 
 ---
 
@@ -95,6 +150,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **combo** | Combo chart (bar + line) | Dual-axis comparisons |
 | **pivot** | Cross pivot table | Multi-dimensional analysis |
 | **gauge** | Gauge chart | Progress or target tracking |
+| **radar** | Radar chart | Multi-dimensional comparisons |
 | **funnel** | Funnel chart | Stage-based conversion |
 
 ---
@@ -130,7 +186,7 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
 {
   "type": "bar",
   "title": "Sales by Region",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "region",
   "yField": "amount",
   "aggregation": "sum",
@@ -145,7 +201,7 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
 {
   "type": "line",
   "title": "Traffic Trend",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "date",
   "yField": "visitors",
   "aggregation": "sum"
@@ -158,7 +214,7 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
 {
   "type": "pie",
   "title": "Market Share",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "categoryField": "product",
   "valueField": "share"
 }
@@ -170,7 +226,7 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
 {
   "type": "table",
   "title": "Detail View",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "columns": [
     { "field": "name", "title": "Name" },
     { "field": "amount", "title": "Amount" },
@@ -178,6 +234,21 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
   ]
 }
 ```
+
+---
+
+## cubeCode format
+
+The `cubeCode` in chart definitions is the report engine's data source identifier. It is derived from the form's `formUuid` but uses **underscores** instead of hyphens.
+
+```
+formUuid: FORM-AB4ACB9D-D12C-470D-8204-7E05CDC19166
+cubeCode: FORM_AB4ACB9D_D12C_470D_8204_7E05CDC19166
+```
+
+<Tip>
+  You can use `openyida get-schema` to retrieve a form's `formUuid`, then replace hyphens with underscores to get the `cubeCode`. The system also accepts hyphenated format and converts it automatically.
+</Tip>
 
 ---
 
@@ -203,7 +274,7 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "form_monthly_sales",
+      "cubeCode": "FORM_MONTHLY_SALES",
       "xField": "month",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -211,14 +282,14 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
     {
       "type": "pie",
       "title": "Product Categories",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "categoryField": "product_category",
       "valueField": "sales_amount"
     },
     {
       "type": "line",
       "title": "Sales Trend",
-      "dataSource": "form_daily_sales",
+      "cubeCode": "FORM_DAILY_SALES",
       "xField": "date",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -226,7 +297,7 @@ Setting `w` or `h` to `0` is valid and will be respected. If omitted, the defaul
     {
       "type": "table",
       "title": "Sales Detail",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "columns": [
         { "field": "order_no", "title": "Order No.", "width": 150 },
         { "field": "customer_name", "title": "Customer", "width": 200 },

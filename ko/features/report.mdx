@@ -45,7 +45,7 @@ openyida create-report APP_XXXXXX "Sales Dashboard" '{
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "sales_form",
+      "cubeCode": "FORM_XXXXXX",
       "xField": "month",
       "yField": "amount"
     }
@@ -73,11 +73,66 @@ openyida append-chart <appType> <reportId> '<차트-정의-JSON-또는-파일>'
 openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "type": "line",
   "title": "Growth Trend",
-  "dataSource": "form_sales",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "month",
   "yField": "growth_rate"
 }'
 ```
+
+---
+
+## 필터 설정
+
+보고서는 차트와의 연동 필터링을 위한 필터를 지원합니다. 차트 정의 JSON의 `filters` 배열로 필터를 설정할 수 있습니다.
+
+### 필터가 포함된 전체 설정
+
+```json
+{
+  "filters": [
+    {
+      "title": "프로젝트 필터",
+      "placeholder": "프로젝트를 선택하세요",
+      "cubeCode": "FORM_XXXXXX",
+      "valueField": {
+        "fieldCode": "selectField_xxx",
+        "aliasName": "프로젝트 값",
+        "dataType": "STRING"
+      },
+      "labelField": {
+        "fieldCode": "selectField_xxx",
+        "aliasName": "프로젝트 이름",
+        "dataType": "STRING"
+      },
+      "linkTo": [0, 1]
+    }
+  ],
+  "charts": [
+    {
+      "type": "bar",
+      "title": "막대 차트",
+      "cubeCode": "FORM_XXXXXX",
+      "xField": "name",
+      "yField": "value"
+    }
+  ]
+}
+```
+
+### 필터 필드 설명
+
+| 필드 | 필수 | 설명 |
+|------|------|------|
+| `title` | 예 | 필터 제목 |
+| `placeholder` | 아니오 | 플레이스홀더 텍스트 |
+| `cubeCode` | 예 | 데이터 소스 양식 ID (예: `FORM_XXXXXX`) |
+| `valueField` | 예 | 값 필드 정의 (`fieldCode`, `aliasName`, `dataType` 포함) |
+| `labelField` | 예 | 표시 필드 정의 (`fieldCode`, `aliasName`, `dataType` 포함) |
+| `linkTo` | 아니오 | 연동 대상 차트. 배열 요소는 차트 인덱스(숫자) 또는 차트 제목(문자열). 미지정 시 모든 차트에 연동 |
+
+<Info>
+  `filters`를 설정하지 않으면 차트의 `selectField` 유형 필드에 대해 자동으로 드롭다운 필터가 생성됩니다.
+</Info>
 
 ---
 
@@ -95,6 +150,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **combo** | 콤보 차트 (막대 + 꺾은선) | 이중 축 비교 |
 | **pivot** | 크로스 피벗 테이블 | 다차원 분석 |
 | **gauge** | 게이지 차트 | 진행률 또는 목표 추적 |
+| **radar** | 레이더 차트 | 다차원 비교 분석 |
 | **funnel** | 퍼널 차트 | 단계별 전환 |
 
 ---
@@ -130,7 +186,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 {
   "type": "bar",
   "title": "Sales by Region",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "region",
   "yField": "amount",
   "aggregation": "sum",
@@ -145,7 +201,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 {
   "type": "line",
   "title": "Traffic Trend",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "date",
   "yField": "visitors",
   "aggregation": "sum"
@@ -158,7 +214,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 {
   "type": "pie",
   "title": "Market Share",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "categoryField": "product",
   "valueField": "share"
 }
@@ -170,7 +226,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 {
   "type": "table",
   "title": "Detail View",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "columns": [
     { "field": "name", "title": "Name" },
     { "field": "amount", "title": "Amount" },
@@ -178,6 +234,19 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   ]
 }
 ```
+
+## cubeCode 형식
+
+차트 정의의 `cubeCode`는 보고서 엔진의 데이터 소스 식별자입니다. 양식의 `formUuid`를 기반으로 하이픈을 **밑줄**로 대체합니다.
+
+```
+formUuid: FORM-AB4ACB9D-D12C-470D-8204-7E05CDC19166
+cubeCode: FORM_AB4ACB9D_D12C_470D_8204_7E05CDC19166
+```
+
+<Tip>
+  `openyida get-schema`로 양식의 `formUuid`를 가져온 다음 하이픈을 밑줄로 바꿔 `cubeCode`를 얻을 수 있습니다. 하이픈 형식도 자동 변환됩니다.
+</Tip>
 
 ---
 
@@ -203,7 +272,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "form_monthly_sales",
+      "cubeCode": "FORM_MONTHLY_SALES",
       "xField": "month",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -211,14 +280,14 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
     {
       "type": "pie",
       "title": "Product Categories",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "categoryField": "product_category",
       "valueField": "sales_amount"
     },
     {
       "type": "line",
       "title": "Sales Trend",
-      "dataSource": "form_daily_sales",
+      "cubeCode": "FORM_DAILY_SALES",
       "xField": "date",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -226,7 +295,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
     {
       "type": "table",
       "title": "Sales Detail",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "columns": [
         { "field": "order_no", "title": "Order No.", "width": 150 },
         { "field": "customer_name", "title": "Customer", "width": 200 },

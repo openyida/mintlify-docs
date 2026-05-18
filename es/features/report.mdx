@@ -45,7 +45,7 @@ openyida create-report APP_XXXXXX "Sales Dashboard" '{
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "sales_form",
+      "cubeCode": "FORM_XXXXXX",
       "xField": "month",
       "yField": "amount"
     }
@@ -73,11 +73,53 @@ openyida append-chart <appType> <reportId> '<JSON-definición-o-archivo>'
 openyida append-chart APP_XXXXXX REPORT_XXXXX '{
   "type": "line",
   "title": "Growth Trend",
-  "dataSource": "form_sales",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "month",
   "yField": "growth_rate"
 }'
 ```
+
+---
+
+## Configuración de filtros
+
+Los informes soportan filtros vinculados a los gráficos, lo que permite a los usuarios filtrar los datos mostrados de forma interactiva. Los filtros se definen en un arreglo `filters` dentro de la configuración del informe.
+
+```json
+{
+  "charts": [
+    {
+      "type": "bar",
+      "title": "Sales by Region",
+      "cubeCode": "FORM_XXXXXX",
+      "xField": "region",
+      "yField": "amount"
+    }
+  ],
+  "filters": [
+    {
+      "label": "Región",
+      "field": "region",
+      "type": "select",
+      "options": ["Norte", "Sur", "Este", "Oeste"]
+    },
+    {
+      "label": "Fecha de inicio",
+      "field": "start_date",
+      "type": "date"
+    }
+  ]
+}
+```
+
+| Campo | Descripción |
+|-------|-------------|
+| **label** | Etiqueta visible del filtro |
+| **field** | Campo del formulario al que se aplica el filtro |
+| **type** | Tipo de filtro: `select`, `date`, `text`, etc. |
+| **options** | Lista de opciones disponibles (solo para tipo `select`) |
+
+<Info>Cuando se utiliza el tipo `select` sin proporcionar `options`, se genera automáticamente un menú desplegable con los valores únicos del campo vinculado.</Info>
 
 ---
 
@@ -95,6 +137,7 @@ openyida append-chart APP_XXXXXX REPORT_XXXXX '{
 | **combo** | Gráfico combinado (barras + líneas) | Comparaciones de doble eje |
 | **pivot** | Tabla dinámica cruzada | Análisis multidimensional |
 | **gauge** | Gráfico de velocímetro | Seguimiento de progreso u objetivos |
+| **radar** | Gráfico de radar | Comparaciones multidimensionales |
 | **funnel** | Gráfico de embudo | Conversión por etapas |
 
 ---
@@ -130,7 +173,7 @@ Establecer `w` o `h` en `0` es válido y será respetado. Si se omite, se usan l
 {
   "type": "bar",
   "title": "Sales by Region",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "region",
   "yField": "amount",
   "aggregation": "sum",
@@ -145,7 +188,7 @@ Establecer `w` o `h` en `0` es válido y será respetado. Si se omite, se usan l
 {
   "type": "line",
   "title": "Traffic Trend",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "xField": "date",
   "yField": "visitors",
   "aggregation": "sum"
@@ -158,7 +201,7 @@ Establecer `w` o `h` en `0` es válido y será respetado. Si se omite, se usan l
 {
   "type": "pie",
   "title": "Market Share",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "categoryField": "product",
   "valueField": "share"
 }
@@ -170,7 +213,7 @@ Establecer `w` o `h` en `0` es válido y será respetado. Si se omite, se usan l
 {
   "type": "table",
   "title": "Detail View",
-  "dataSource": "form_uuid",
+  "cubeCode": "FORM_XXXXXX",
   "columns": [
     { "field": "name", "title": "Name" },
     { "field": "amount", "title": "Amount" },
@@ -178,6 +221,16 @@ Establecer `w` o `h` en `0` es válido y será respetado. Si se omite, se usan l
   ]
 }
 ```
+
+---
+
+## Formato de cubeCode
+
+El campo `cubeCode` identifica la fuente de datos del formulario vinculado al gráfico. Debe seguir el formato en mayúsculas con el prefijo `FORM_`, seguido de un identificador único del formulario.
+
+- **Formato**: `FORM_<IDENTIFICADOR>` (por ejemplo, `FORM_MONTHLY_SALES`, `FORM_DAILY_SALES`)
+- **Uso genérico**: Cuando el formulario específico no es relevante, puede usarse el valor de marcador de posición `FORM_XXXXXX`.
+- El `cubeCode` se obtiene a partir de la configuración del formulario en la plataforma Yida.
 
 ---
 
@@ -203,7 +256,7 @@ Establecer `w` o `h` en `0` es válido y será respetado. Si se omite, se usan l
     {
       "type": "bar",
       "title": "Monthly Sales",
-      "dataSource": "form_monthly_sales",
+      "cubeCode": "FORM_MONTHLY_SALES",
       "xField": "month",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -211,14 +264,14 @@ Establecer `w` o `h` en `0` es válido y será respetado. Si se omite, se usan l
     {
       "type": "pie",
       "title": "Product Categories",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "categoryField": "product_category",
       "valueField": "sales_amount"
     },
     {
       "type": "line",
       "title": "Sales Trend",
-      "dataSource": "form_daily_sales",
+      "cubeCode": "FORM_DAILY_SALES",
       "xField": "date",
       "yField": "sales_amount",
       "aggregation": "sum"
@@ -226,7 +279,7 @@ Establecer `w` o `h` en `0` es válido y será respetado. Si se omite, se usan l
     {
       "type": "table",
       "title": "Sales Detail",
-      "dataSource": "form_sales",
+      "cubeCode": "FORM_SALES",
       "columns": [
         { "field": "order_no", "title": "Order No.", "width": 150 },
         { "field": "customer_name", "title": "Customer", "width": 200 },
