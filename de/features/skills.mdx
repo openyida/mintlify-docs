@@ -482,6 +482,56 @@ Bei Fehler (z. B. Prozesskonfiguration fehlgeschlagen):
 
 ---
 
+## Integration und Automatisierung
+
+Erstellen und verwalten Sie Logikflows (Integration & Automatisierung) mit Formular-Event-Triggern, Benachrichtigungen und Datenoperationen.
+
+```bash
+# Logikflow erstellen
+openyida integration create <appType> <formUuid> <flowName> [Optionen]
+```
+
+### Parameter
+
+| Parameter | Erforderlich | Beschreibung |
+|-----------|-------------|--------------|
+| `appType` | Ja | App-ID (z.B. `APP_XXXX`) |
+| `formUuid` | Ja | Trigger-Formular-UUID (z.B. `FORM-XXXX`) |
+| `flowName` | Ja | Name des Logikflows |
+
+### Optionen
+
+| Option | Standard | Beschreibung |
+|--------|----------|--------------|
+| `--process-code <code>` | Automatisch generiert | Bestehender processCode (`LPROC-xxx`) |
+| `--receivers <userId,...>` | Leer | Benutzer-IDs für DingTalk-Benachrichtigungen (kommagetrennt) |
+| `--title <title>` | Gleich wie flowName | Benachrichtigungstitel, unterstützt `#{fieldId-ComponentType}#` |
+| `--content <content>` | `"Neuer Datensatz eingereicht"` | Benachrichtigungsinhalt |
+| `--events <insert,update>` | `insert` | Trigger-Ereignisse: `insert`/`update`/`delete`/`comment` |
+| `--add-data-form-uuid <formUuid>` | — | Zielformular-UUID für Datenerstellungsknoten |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | Feldzuweisung (mehrfach angebbar). `valueType`: `processVar`/`literal`/`column` |
+| `--publish` | Nicht veröffentlicht | Sofort nach Speichern veröffentlichen |
+
+### Ausgabe
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "Neue Datensatz-Benachrichtigung",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  Sie müssen angemeldet sein, bevor Sie diesen Befehl ausführen. Mit `--publish` wird `published` auf `true` gesetzt; bei Fehler wird `published` `false` mit einem `warning`-Feld.
+</Info>
+
+---
+
 ## Berechtigungsverwaltung
 
 ```bash

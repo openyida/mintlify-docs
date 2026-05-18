@@ -482,6 +482,56 @@ Em caso de falha (por exemplo, falha na configuração do processo):
 
 ---
 
+## Integração e automação
+
+Crie e gerencie fluxos lógicos (integração e automação) com gatilhos de eventos de formulário, notificações e operações de dados.
+
+```bash
+# Criar um fluxo lógico
+openyida integration create <appType> <formUuid> <flowName> [opções]
+```
+
+### Parâmetros
+
+| Parâmetro | Obrigatório | Descrição |
+|-----------|-------------|-----------|
+| `appType` | Sim | ID do aplicativo (ex: `APP_XXXX`) |
+| `formUuid` | Sim | UUID do formulário gatilho (ex: `FORM-XXXX`) |
+| `flowName` | Sim | Nome do fluxo lógico |
+
+### Opções
+
+| Opção | Padrão | Descrição |
+|-------|--------|-----------|
+| `--process-code <code>` | Autogerado | processCode existente (`LPROC-xxx`) |
+| `--receivers <userId,...>` | Vazio | IDs de usuário para notificações DingTalk (separados por vírgulas) |
+| `--title <title>` | Igual ao flowName | Título da notificação, suporta `#{fieldId-ComponentType}#` |
+| `--content <content>` | `"Novo registro enviado"` | Conteúdo da notificação |
+| `--events <insert,update>` | `insert` | Eventos gatilho: `insert`/`update`/`delete`/`comment` |
+| `--add-data-form-uuid <formUuid>` | — | UUID do formulário destino para o nó de adição de dados |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | Atribuição de campo (especificável várias vezes). `valueType`: `processVar`/`literal`/`column` |
+| `--publish` | Não publicado | Publicar imediatamente após salvar |
+
+### Saída
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "Notificação de novo registro",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  Você deve estar logado antes de executar este comando. Com `--publish`, `published` será `true`; em caso de falha, `published` será `false` com um campo `warning`.
+</Info>
+
+---
+
 ## Gestão de permissões
 
 ```bash

@@ -481,6 +481,90 @@ On failure (for example, when process configuration fails):
 
 ---
 
+## Integration & automation
+
+Create and manage logicflows (integration & automation) that support form event triggers, message notifications, data operations, and more.
+
+```bash
+# Create a logicflow
+openyida integration create <appType> <formUuid> <flowName> [options]
+```
+
+### Parameters
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `appType` | Yes | Application ID, e.g. `APP_XXXX` |
+| `formUuid` | Yes | Trigger form UUID, e.g. `FORM-XXXX` |
+| `flowName` | Yes | Logicflow name |
+
+### Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--process-code <code>` | Auto-generated | Existing logicflow processCode (`LPROC-xxx` format) |
+| `--receivers <userId,...>` | Empty | User IDs for DingTalk work notifications, comma-separated |
+| `--title <title>` | Same as flowName | Notification title, supports `#{fieldId-ComponentType}#` field references |
+| `--content <content>` | `"New form record submitted"` | Notification content, supports field variable references |
+| `--events <insert,update>` | `insert` | Trigger events: `insert`/`update`/`delete`/`comment`, comma-separated |
+| `--data-form-uuid <formUuid>` | — | Target form UUID for the get-single-data node |
+| `--data-condition <bFieldId:bFieldName:aFieldId[:componentType]>` | — | Filter condition for get-single-data, can be specified multiple times |
+| `--add-data-form-uuid <formUuid>` | — | Target form UUID for the add-data node |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | Field assignment for add-data, can be specified multiple times. `valueType`: `processVar`/`literal`/`column` |
+| `--publish` | Not published | Publish immediately after saving; otherwise saves as draft only |
+
+### Examples
+
+```bash
+# Notify users when a form record is created
+openyida integration create APP_XXX FORM-XXX "New record notification" \
+  --receivers user123 \
+  --title "New record submitted" \
+  --content "A new form record has been submitted."
+
+# Reference form field variables, save and publish
+openyida integration create APP_XXX FORM-XXX "Record change notification" \
+  --receivers user123,user456 \
+  --events insert,update,delete,comment \
+  --publish
+
+# Sync data from form A to form B with an add-data node
+openyida integration create APP_XXX FORM-A-XXX "Sync to form B" \
+  --add-data-form-uuid FORM-B-XXX \
+  --add-data-assignment "textField_b1:processVar:textField_a1" \
+  --add-data-assignment "numberField_b2:literal:0" \
+  --publish
+```
+
+### Field variable references
+
+Use `#{fieldId-ComponentType}#` in notification titles and content to reference trigger form field values:
+
+```
+#{textField_mmq4ldti-TextField}#
+#{numberField_abc123-NumberField}#
+```
+
+### Output
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "New record notification",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  You must be logged in before running this command. When `--publish` is used, `published` will be `true`; if publishing fails, `published` will be `false` with a `warning` field.
+</Info>
+
+---
+
 ## Permission management
 
 ```bash

@@ -481,6 +481,56 @@ openyida create-process <appType> --formUuid <formUuid> <processDefinitionFile>
 
 ---
 
+## 整合與自動化
+
+建立和管理邏輯流（整合&自動化），支援表單事件觸發、訊息通知、資料操作等場景。
+
+```bash
+# 建立邏輯流
+openyida integration create <appType> <formUuid> <flowName> [選項]
+```
+
+### 參數
+
+| 參數 | 必填 | 說明 |
+|------|------|------|
+| `appType` | 是 | 應用 ID（如 `APP_XXXX`） |
+| `formUuid` | 是 | 觸發表單 UUID（如 `FORM-XXXX`） |
+| `flowName` | 是 | 邏輯流名稱 |
+
+### 選項
+
+| 選項 | 預設值 | 說明 |
+|------|--------|------|
+| `--process-code <code>` | 自動產生 | 已有邏輯流的 processCode（`LPROC-xxx` 格式） |
+| `--receivers <userId,...>` | 空 | 接收釘釘工作通知的使用者 ID，多個用逗號分隔 |
+| `--title <title>` | 同 flowName | 通知標題，支援 `#{fieldId-ComponentType}#` 引用表單欄位 |
+| `--content <content>` | `"表單有新記錄提交，請及時查看。"` | 通知內容，支援欄位變數引用 |
+| `--events <insert,update>` | `insert` | 觸發事件：`insert`/`update`/`delete`/`comment`，多個用逗號分隔 |
+| `--add-data-form-uuid <formUuid>` | — | 新增資料節點的目標表單 UUID |
+| `--add-data-assignment <targetFieldId:valueType:value>` | — | 新增資料的欄位賦值，可多次傳入。`valueType` 可選 `processVar`/`literal`/`column` |
+| `--publish` | 不發佈 | 儲存後立即發佈（開啟狀態），否則僅儲存為草稿 |
+
+### 輸出
+
+```json
+{
+  "success": true,
+  "published": false,
+  "processCode": "LPROC-XXXX",
+  "flowName": "新增記錄通知",
+  "appType": "APP_XXX",
+  "formUuid": "FORM-XXX",
+  "formEventTypes": ["insert"]
+}
+```
+
+<Info>
+  執行此命令前需要先登入。使用 `--publish` 時 `published` 為 `true`；若發佈失敗，`published` 為 `false` 並附帶 `warning` 欄位。
+</Info>
+
+---
+
 ## 權限管理
 
 ```bash
