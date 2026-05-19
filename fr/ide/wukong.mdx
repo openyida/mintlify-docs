@@ -31,6 +31,17 @@ Wukong est l'assistant de programmation IA intégré à DingTalk. OpenYida est p
     </Warning>
   </Step>
 
+  <Step title="Téléverser le zip de compétences">
+    Wukong requiert le téléversement manuel du fichier zip de compétences (les autres IDE l'injectent automatiquement — Wukong fait exception).
+
+    1. Rendez-vous sur [OpenYida Releases](https://github.com/openyida/openyida/releases/latest) et téléchargez le dernier **`openyida-skills.zip`**
+    2. Dans la page de gestion des compétences de l'espace de travail Wukong, téléversez le fichier zip téléchargé
+
+    <Info>
+      À chaque nouvelle version d'OpenYida, il est recommandé de re-télécharger et re-téléverser le dernier `openyida-skills.zip` afin de bénéficier des dernières fonctionnalités Yida.
+    </Info>
+  </Step>
+
   <Step title="Demander à l'IA de se connecter à Yida">
     Dites directement dans la conversation Wukong :
 
@@ -114,5 +125,9 @@ Publie la page que l'on vient de créer en lien public
 
   <Accordion title="Le QR code de connexion ne s'affiche pas">
     Dites à l'IA : « Connecte-moi à Yida par QR code ». L'IA utilisera le mode `--agent-qr` pour afficher le QR code dans la zone de conversation.
+  </Accordion>
+
+  <Accordion title="Comment mettre à jour le package de compétences">
+    Rendez-vous sur [OpenYida Releases](https://github.com/openyida/openyida/releases/latest), téléchargez le dernier `openyida-skills.zip` et re-téléversez-le sur la page de gestion des compétences de Wukong.
   </Accordion>
 </AccordionGroup>

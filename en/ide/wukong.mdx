@@ -31,6 +31,17 @@ Wukong is DingTalk's built-in AI programming assistant. OpenYida is deeply adapt
     </Warning>
   </Step>
 
+  <Step title="Upload the skills zip">
+    Wukong requires you to upload the skills zip file manually (other IDEs inject it automatically — Wukong is the exception).
+
+    1. Go to [OpenYida Releases](https://github.com/openyida/openyida/releases/latest) and download the latest **`openyida-skills.zip`**
+    2. In the Wukong workspace's skill management page, upload the zip file you downloaded
+
+    <Info>
+      Whenever OpenYida releases a new version, it is recommended to re-download and re-upload the latest `openyida-skills.zip` to get the newest Yida capabilities.
+    </Info>
+  </Step>
+
   <Step title="Tell the AI to log in to Yida">
     Say directly in the Wukong conversation:
 
@@ -114,5 +125,9 @@ Publish the page I just created as a public link
 
   <Accordion title="Login QR code doesn't display">
     Tell the AI: "Log in to Yida using QR code." The AI will use `--agent-qr` mode to display the QR code in the chat window.
+  </Accordion>
+
+  <Accordion title="How to update the skills package">
+    Go to [OpenYida Releases](https://github.com/openyida/openyida/releases/latest), download the latest `openyida-skills.zip`, and re-upload it on Wukong's skill management page.
   </Accordion>
 </AccordionGroup>

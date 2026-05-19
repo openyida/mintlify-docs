@@ -31,6 +31,17 @@ icon: "hat-wizard"
     </Warning>
   </Step>
 
+  <Step title="上传技能包">
+    悟空需要手动上传技能包 zip 文件（其他 IDE 是自动注入的，悟空例外）。
+
+    1. 前往 [OpenYida Releases](https://github.com/openyida/openyida/releases/latest) 下载最新版本的 **`openyida-skills.zip`**
+    2. 在悟空工作区的技能管理页面，上传下载好的 zip 文件
+
+    <Info>
+      每次 OpenYida 发布新版本时，建议重新下载并上传最新的 `openyida-skills.zip`，以获得最新的宜搭能力支持。
+    </Info>
+  </Step>
+
   <Step title="告诉 AI 登录宜搭">
     直接在悟空对话中说：
 
@@ -114,5 +125,9 @@ icon: "hat-wizard"
 
   <Accordion title="登录二维码不显示">
     告诉 AI：「用扫码方式登录宜搭」。AI 会使用 `--agent-qr` 模式在对话框中展示二维码。
+  </Accordion>
+
+  <Accordion title="如何更新技能包">
+    前往 [OpenYida Releases](https://github.com/openyida/openyida/releases/latest) 下载最新 `openyida-skills.zip`，重新上传到悟空技能管理页面即可。
   </Accordion>
 </AccordionGroup>

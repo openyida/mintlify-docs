@@ -31,6 +31,17 @@ Wukong は DingTalk に内蔵された AI プログラミングアシスタン�
     </Warning>
   </Step>
 
+  <Step title="スキル zip をアップロード">
+    Wukong ではスキル zip ファイルを手動でアップロードする必要があります（他の IDE は自動的に注入されますが、Wukong は例外です）。
+
+    1. [OpenYida Releases](https://github.com/openyida/openyida/releases/latest) にアクセスして最新の **`openyida-skills.zip`** をダウンロードする
+    2. Wukong ワークスペースのスキル管理ページで、ダウンロードした zip ファイルをアップロードする
+
+    <Info>
+      OpenYida が新バージョンをリリースするたびに、最新の `openyida-skills.zip` を再ダウンロードしてアップロードし直すことをお勧めします。これにより、最新の Yida 機能を利用できます。
+    </Info>
+  </Step>
+
   <Step title="AI に Yida へのログインを依頼">
     Wukong の対話画面で直接話しかけます：
 
@@ -114,5 +125,9 @@ Yidaで出張精算システムを作成して：
 
   <Accordion title="ログイン用 QR コードが表示されない">
     AI に「QRコードスキャン方式でYidaにログインして」と伝えてください。AI が `--agent-qr` モードで対話ボックスに QR コードを表示します。
+  </Accordion>
+
+  <Accordion title="スキルパッケージを更新するには">
+    [OpenYida Releases](https://github.com/openyida/openyida/releases/latest) から最新の `openyida-skills.zip` をダウンロードし、Wukong のスキル管理ページに再アップロードしてください。
   </Accordion>
 </AccordionGroup>
