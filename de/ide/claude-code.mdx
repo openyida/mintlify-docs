@@ -1,0 +1,136 @@
+---
+title: "Claude Code"
+description: "OpenYida in Claude Code verwenden: Einmal installieren, dann Yida-Anwendungen in natürlicher Sprache erstellen."
+icon: "message-bot"
+---
+
+Claude Code ist der Terminal-KI-Assistent von Anthropic. Nach der Installation von OpenYida müssen Sie nur mit der KI sprechen, und sie ruft automatisch alle Befehle auf, um Ihre Anwendungen zu erstellen.
+
+---
+
+## Einmalige Vorbereitung
+
+Der gesamte Prozess erfordert nur zwei Schritte, danach können Sie alles per Konversation erledigen.
+
+<Steps>
+  <Step title="OpenYida installieren">
+    Stellen Sie sicher, dass [Node.js ≥ 18](https://nodejs.org) installiert ist, und führen Sie im Terminal aus:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Nach der Installation wird das OpenYida-Skill-Paket automatisch in Claude Code injiziert, keine weitere Konfiguration nötig.
+  </Step>
+
+  <Step title="Die KI bitten, sich bei Yida anzumelden">
+    Starten Sie Claude Code und sagen Sie einfach:
+
+    ```
+    Hilf mir, mich bei Yida anzumelden
+    ```
+
+    Die KI ruft automatisch den Anmeldebefehl auf, öffnet den Browser oder zeigt einen QR-Code zum Scannen. Nach einmaliger Anmeldung werden die Zugangsdaten zwischengespeichert und der Vorgang muss nicht wiederholt werden.
+  </Step>
+</Steps>
+
+<Tip>
+  Das war's, die Vorbereitung ist abgeschlossen. Ab jetzt müssen Sie nur noch mit der KI sprechen.
+</Tip>
+
+---
+
+## Modellauswahl
+
+Claude Code verwendet standardmäßig Claude-Modelle, die Sie über den Befehl `/model` wechseln können:
+
+| Modell | Empfohlenes Szenario |
+|--------|---------------------|
+| **Claude Sonnet 4** (Standard) | Alltägliche Anwendungserstellung, schnell |
+| **Claude Opus 4** | Komplexe Multi-Formular-Geschäftssysteme |
+
+Beide treiben OpenYida hervorragend an, für den Alltag reicht Sonnet aus.
+
+---
+
+## Mit dem Erstellen beginnen
+
+Beschreiben Sie einfach in natürlicher Sprache die gewünschte Anwendung, die KI erledigt alles automatisch:
+
+```
+Erstelle mir auf Yida ein CRM-System mit:
+- Lead-Formular: Name, Unternehmen, Telefon, Quelle, Status
+- Kundenformular: Firmenname, Branche, Ansprechpartner, Kundenbetreuer
+- Opportunity-Formular: verknüpft mit Kunde, Betrag, Phase, voraussichtliches Abschlussdatum
+```
+
+```
+Erstelle eine IT-Asset-Management-Anwendung, mit der Geräteinformationen erfasst und Aus-/Rückgaben verfolgt werden können
+```
+
+```
+Veröffentliche diese Seite und stelle sie auf öffentlichen Zugriff ein
+```
+
+Die KI führt automatisch alle Schritte durch: Anwendung erstellen, Formulare erstellen, Seiten veröffentlichen usw. Sie müssen sich keine Befehle merken.
+
+---
+
+## Beispiel einer realen Konversation
+
+Hier ein typischer Gesprächsablauf:
+
+> **Sie**: Erstelle mir ein Urlaubsantragssystem
+>
+> **KI**: Gut, ich erstelle es für Sie. Ich überprüfe zunächst die Umgebung und den Anmeldestatus...
+>
+> Umgebung OK, angemeldet. Ich beginne mit der Erstellung der Anwendung...
+>
+> Das Urlaubssystem ist fertig! Es enthält:
+> - Urlaubsantragsformular (Antragsteller, Urlaubsart, Start-/Enddatum, Grund)
+> - Anwendungslink: https://www.aliwork.com/APP_XXXXX/...
+>
+> Soll ich noch einen Genehmigungsworkflow hinzufügen?
+
+Sie müssen nur Ihre Anforderungen nennen, die KI übernimmt die Ausführung.
+
+---
+
+## Erweiterte Nutzung
+
+Wenn Sie mehr Erfahrung haben, können Sie der KI präzisere Anweisungen geben:
+
+```
+Hole die Feldliste des Formulars „Kundeninformationen", ich möchte die Feldkonfiguration überprüfen
+```
+
+```
+Erstelle aus diesem curl-Befehl einen Yida-Connector:
+curl -H "Authorization: Bearer xxx" https://api.example.com/users
+```
+
+```
+Prüfe, ob es Probleme mit der Umgebung gibt
+```
+
+---
+
+## Häufig gestellte Fragen
+
+<AccordionGroup>
+  <Accordion title="Die KI sagt, sie findet den Befehl openyida nicht">
+    Bestätigen Sie im Terminal die erfolgreiche Installation: `openyida --version`. Falls installiert aber Claude Code es nicht findet, beenden und starten Sie Claude Code neu.
+  </Accordion>
+
+  <Accordion title="Was tun, wenn die Anmeldung abgelaufen ist">
+    Sagen Sie der KI einfach „Melde mich erneut bei Yida an" und sie erledigt es automatisch.
+  </Accordion>
+
+  <Accordion title="Die KI verwendet die OpenYida-Skills nicht">
+    Erwähnen Sie das Schlüsselwort „Yida" in der Konversation, um die Skills auszulösen. Zum Beispiel „Erstelle ein Formular auf Yida".
+  </Accordion>
+
+  <Accordion title="Auf die neueste Version aktualisieren">
+    Sagen Sie der KI „Aktualisiere openyida für mich", oder führen Sie manuell `npm install -g openyida@latest` aus.
+  </Accordion>
+</AccordionGroup>

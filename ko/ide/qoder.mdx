@@ -1,0 +1,102 @@
+---
+title: "Qoder"
+description: "Qoder 데스크톱 앱에서 OpenYida 사용: 설치 즉시 사용 가능, 대화로 Yida 앱 구축."
+icon: "robot"
+---
+
+Qoder는 데스크톱 AI 에이전트입니다. OpenYida를 설치하면 스킬팩이 자동 주입되어 대화로 요구사항을 설명하기만 하면 Yida 앱을 구축할 수 있습니다.
+
+---
+
+## 초기 설정
+
+<Steps>
+  <Step title="Qoder 다운로드">
+    [qoder.com](https://qoder.com)에 방문하여 데스크톱 앱을 다운로드합니다. macOS / Windows를 지원합니다.
+  </Step>
+
+  <Step title="OpenYida 설치">
+    ```bash
+    npm install -g openyida
+    ```
+
+    스킬팩이 자동으로 Qoder에 주입됩니다. 추가 설정은 필요 없습니다.
+  </Step>
+
+  <Step title="AI에게 Yida 로그인 요청">
+    Qoder 대화 화면에서 다음과 같이 말합니다:
+
+    ```
+    Yida에 로그인해 줘
+    ```
+
+    안내에 따라 로그인을 완료하세요.
+  </Step>
+</Steps>
+
+---
+
+## 모델 선택
+
+Qoder 대화 화면에서 모델 선택기로 전환합니다:
+
+| 모델 | 권장 시나리오 |
+|------|----------|
+| **Premium** | 복잡한 앱 구축, 다중 테이블 연동 |
+| **Standard** | 일상 사용, 빠른 속도 |
+
+간단한 양식 생성에는 Standard로 충분합니다. 복잡한 업무 시스템에는 Premium을 권장합니다.
+
+---
+
+## 구축 시작
+
+대화로 직접 요구사항을 설명합니다:
+
+```
+Yida에서 설비 점검 시스템을 만들어 줘:
+- 설비 대장: 번호, 명칭, 위치, 상태, 책임자
+- 점검 기록: 설비 연동, 점검일, 점검자, 결과, 비고
+```
+
+```
+간단한 직원 연락처 앱을 만들어 줘
+```
+
+```
+경비 정산 시스템에 승인 프로세스를 추가해 줘
+```
+
+AI가 전 과정을 자동 실행합니다. 요구사항만 전달하면 됩니다.
+
+---
+
+## 실제 대화 예시
+
+> **사용자**: 채용 관리 앱을 만들어 줘
+>
+> **AI**: 네, 채용 관리 시스템을 만들겠습니다.
+>
+> ✓ 앱 「채용 관리」를 생성했습니다
+> ✓ 「채용 정보」 양식을 생성했습니다: 직종명, 부서, 등급, 급여 범위, 상태
+> ✓ 「후보자」 양식을 생성했습니다: 이름, 지원 직종, 이력서 첨부, 면접 상태, 평가
+>
+> 면접 일정 프로세스 양식도 추가할까요?
+
+---
+
+## 자주 묻는 질문
+
+<AccordionGroup>
+  <Accordion title="AI가 OpenYida를 인식하지 못함">
+    설치를 확인하세요: `openyida --version`. 스킬팩 경로는 `~/.qoder/skills/yida-skills/`입니다. 없으면 `openyida copy -skills`를 실행하세요.
+  </Accordion>
+
+  <Accordion title="로그인 만료">
+    AI에게 「Yida 로그인이 만료됐어, 다시 로그인해 줘」라고 말하세요.
+  </Accordion>
+
+  <Accordion title="OpenYida 업데이트">
+    AI에게 「openyida 업데이트해 줘」라고 말하거나 수동으로 `npm install -g openyida@latest`를 실행하세요.
+  </Accordion>
+</AccordionGroup>

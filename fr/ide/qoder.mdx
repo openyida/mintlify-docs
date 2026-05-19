@@ -1,0 +1,102 @@
+---
+title: "Qoder"
+description: "Utiliser OpenYida dans l'application de bureau Qoder : installation et utilisation immédiate, construction d'applications Yida par conversation."
+icon: "robot"
+---
+
+Qoder est un agent IA de bureau. Après l'installation d'OpenYida, le pack de compétences est automatiquement injecté et vous pouvez construire des applications Yida directement en décrivant vos besoins dans la conversation.
+
+---
+
+## Préparation initiale
+
+<Steps>
+  <Step title="Télécharger Qoder">
+    Rendez-vous sur [qoder.com](https://qoder.com) pour télécharger l'application de bureau, compatible macOS / Windows.
+  </Step>
+
+  <Step title="Installer OpenYida">
+    ```bash
+    npm install -g openyida
+    ```
+
+    Le pack de compétences est automatiquement injecté dans Qoder, aucune configuration supplémentaire requise.
+  </Step>
+
+  <Step title="Demander à l'IA de se connecter à Yida">
+    Dans la conversation Qoder, dites :
+
+    ```
+    Aide-moi à me connecter à Yida
+    ```
+
+    Suivez les instructions pour compléter la connexion.
+  </Step>
+</Steps>
+
+---
+
+## Choix du modèle
+
+Changez de modèle via le sélecteur dans l'interface de conversation Qoder :
+
+| Modèle | Scénario recommandé |
+|--------|---------------------|
+| **Premium** | Construction d'applications complexes, associations multi-tables |
+| **Standard** | Utilisation quotidienne, rapide |
+
+Pour la création de formulaires simples, Standard suffit. Pour les systèmes métier complexes, Premium est recommandé.
+
+---
+
+## Commencer à construire
+
+Décrivez vos besoins directement dans la conversation :
+
+```
+Crée sur Yida un système d'inspection d'équipements :
+- Registre des équipements : numéro, nom, emplacement, état, responsable
+- Registre d'inspection : lié à l'équipement, date d'inspection, inspecteur, résultat, remarques
+```
+
+```
+Construis-moi une application simple d'annuaire des employés
+```
+
+```
+Ajoute un workflow d'approbation à mon système de remboursement
+```
+
+L'IA exécute tout automatiquement, vous n'avez qu'à exprimer vos besoins.
+
+---
+
+## Exemple de conversation réelle
+
+> **Vous** : Crée une application de gestion du recrutement
+>
+> **IA** : D'accord, je vais créer le système de gestion du recrutement.
+>
+> ✓ Application « Gestion du recrutement » créée
+> ✓ Formulaire « Informations poste » créé : intitulé du poste, département, niveau, fourchette salariale, statut
+> ✓ Formulaire « Candidats » créé : nom, poste visé, CV en pièce jointe, statut de l'entretien, évaluation
+>
+> Voulez-vous que j'ajoute un formulaire de workflow pour la planification des entretiens ?
+
+---
+
+## Questions fréquentes
+
+<AccordionGroup>
+  <Accordion title="L'IA ne reconnaît pas OpenYida">
+    Vérifiez que l'installation a réussi : `openyida --version`. Le chemin du pack de compétences est `~/.qoder/skills/yida-skills/`, s'il manque vous pouvez exécuter `openyida copy -skills`.
+  </Accordion>
+
+  <Accordion title="Connexion expirée">
+    Dites à l'IA « Ma connexion Yida a expiré, reconnecte-moi ».
+  </Accordion>
+
+  <Accordion title="Mettre à jour OpenYida">
+    Dites à l'IA « Mets à jour openyida » ou exécutez manuellement `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,127 @@
+---
+title: "OpenCode"
+description: "OpenYida in OpenCode verwenden: Modell konfigurieren und dann Yida-Anwendungen per Konversation erstellen."
+icon: "terminal"
+---
+
+OpenCode ist ein Open-Source-Terminal-KI-Assistent, der mehrere Modell-Backends unterstützt. Nach der Installation von OpenYida wird das Skill-Paket automatisch injiziert, und Sie können mit Ihrem bevorzugten Modell Yida-Anwendungen per Konversation erstellen.
+
+---
+
+## Einmalige Vorbereitung
+
+<Steps>
+  <Step title="OpenCode installieren">
+    ```bash
+    # Homebrew (macOS)
+    brew install opencode
+
+    # Oder Go install
+    go install github.com/opencode-ai/opencode@latest
+    ```
+
+    Weitere Details unter [opencode.ai](https://opencode.ai).
+  </Step>
+
+  <Step title="Modell-API-Key konfigurieren">
+    OpenCode erfordert eine eigene Modellkonfiguration. Empfohlen wird Anthropic (Claude-Serie):
+
+    ```bash
+    export ANTHROPIC_API_KEY="Ihr API Key"
+    ```
+
+    Auch OpenAI-, DeepSeek- und andere kompatible Schnittstellen werden unterstützt:
+
+    ```bash
+    # OpenAI
+    export OPENAI_API_KEY="Ihr Key"
+
+    # DeepSeek
+    export OPENAI_API_KEY="Ihr Key"
+    export OPENAI_BASE_URL="https://api.deepseek.com/v1"
+    ```
+  </Step>
+
+  <Step title="OpenYida installieren">
+    ```bash
+    npm install -g openyida
+    ```
+
+    Das Skill-Paket wird automatisch in OpenCode injiziert.
+  </Step>
+
+  <Step title="Die KI bitten, sich bei Yida anzumelden">
+    Nach dem Start von OpenCode sagen Sie:
+
+    ```
+    Hilf mir, mich bei Yida anzumelden
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Empfohlene Modelle
+
+| Modell | Empfohlenes Szenario | Beschreibung |
+|--------|---------------------|--------------|
+| **Claude Sonnet 4** (empfohlen) | Alltägliche Erstellung | Stärkste Tool-Aufruf-Fähigkeiten |
+| Claude Opus 4 | Komplexe Systeme | Tiefes Reasoning |
+| DeepSeek V3 | Chinesischsprachige Szenarien | Gutes Preis-Leistungs-Verhältnis |
+| GPT-4o | Allgemein | Ausgewogen |
+
+<Tip>
+  Das Modell muss Tool-Aufrufe (Tool Use / Function Calling) unterstützen, um OpenYida zu steuern. Einige kleinere Open-Source-Modelle unterstützen dies möglicherweise nicht, es wird empfohlen, Claude Sonnet 4 zu bevorzugen.
+</Tip>
+
+---
+
+## Mit dem Erstellen beginnen
+
+Beschreiben Sie der KI Ihre Anforderungen:
+
+```
+Erstelle auf Yida ein Materialbeschaffungssystem:
+- Beschaffungsantrag: Antragsteller, Materialname, Menge, Budget, Verwendungszweck
+- Genehmigungsworkflow: Abteilungsleiter → Finanzgenehmigung
+```
+
+```
+Erstelle eine Veranstaltungsanmeldungs-Anwendung mit Anmeldeformular und Statistik-Dashboard
+```
+
+```
+Zeige mir alle meine Anwendungen auf Yida
+```
+
+---
+
+## Beispiel einer realen Konversation
+
+> **Sie**: Erstelle mir eine Bereitschaftsplanungs-Anwendung
+>
+> **KI**: Gut, ich erstelle das Bereitschaftsplanungssystem.
+>
+> ✓ Anwendung „Bereitschaftsplanung" erstellt
+> ✓ Formular „Dienstplan" erstellt: Datum, Zeitraum, Bereitschaftsperson, Bemerkungen
+> ✓ Formular „Schichttausch-Antrag" erstellt: ursprüngliche Person, Vertretung, Datum, Grund
+>
+> Soll ich einen Schichttausch-Genehmigungsworkflow hinzufügen?
+
+---
+
+## Häufig gestellte Fragen
+
+<AccordionGroup>
+  <Accordion title="Die KI kann den Befehl openyida nicht ausführen">
+    Überprüfen Sie die Installation: `openyida --version`. Wenn der Befehl existiert aber die KI ihn nicht verwendet, unterstützt das Modell möglicherweise keine Tool-Aufrufe. Versuchen Sie, zu Claude Sonnet 4 zu wechseln.
+  </Accordion>
+
+  <Accordion title="Anmeldung abgelaufen">
+    Sagen Sie der KI einfach „Melde mich erneut bei Yida an".
+  </Accordion>
+
+  <Accordion title="OpenYida aktualisieren">
+    `npm install -g openyida@latest`, oder bitten Sie die KI, für Sie zu aktualisieren.
+  </Accordion>
+</AccordionGroup>

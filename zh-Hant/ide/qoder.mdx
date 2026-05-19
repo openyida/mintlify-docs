@@ -1,0 +1,102 @@
+---
+title: "Qoder"
+description: "在 Qoder 桌面應用中使用 OpenYida：安裝即用，對話構建宜搭應用。"
+icon: "robot"
+---
+
+Qoder 是一款桌面端 AI 智能體。安裝 OpenYida 後技能包自動注入，直接在對話中描述需求就能構建宜搭應用。
+
+---
+
+## 一次性準備
+
+<Steps>
+  <Step title="下載 Qoder">
+    訪問 [qoder.com](https://qoder.com) 下載桌面應用，支援 macOS / Windows。
+  </Step>
+
+  <Step title="安裝 OpenYida">
+    ```bash
+    npm install -g openyida
+    ```
+
+    技能包自動注入 Qoder，無需額外配置。
+  </Step>
+
+  <Step title="告訴 AI 登入宜搭">
+    在 Qoder 對話中說：
+
+    ```
+    幫我登入宜搭
+    ```
+
+    按提示完成登入即可。
+  </Step>
+</Steps>
+
+---
+
+## 模型選擇
+
+在 Qoder 對話介面透過模型選擇器切換：
+
+| 模型 | 推薦場景 |
+|------|----------|
+| **Premium** | 複雜應用構建，多表關聯 |
+| **Standard** | 日常使用，速度快 |
+
+簡單的表單創建用 Standard 就夠了，複雜業務系統建議用 Premium。
+
+---
+
+## 開始構建
+
+直接對話描述需求：
+
+```
+在宜搭上創建一個設備巡檢系統：
+- 設備台帳：編號、名稱、位置、狀態、責任人
+- 巡檢記錄：關聯設備、巡檢日期、巡檢人、結果、備註
+```
+
+```
+幫我搭一個簡單的員工通訊錄應用
+```
+
+```
+給我的報銷系統加一個審批流程
+```
+
+AI 全程自動執行，你只管提需求。
+
+---
+
+## 實際對話示例
+
+> **你**：創建一個招聘管理應用
+>
+> **AI**：好的，我來幫你創建招聘管理系統。
+>
+> ✓ 已創建應用「招聘管理」
+> ✓ 已創建「職位資訊」表單：職位名稱、部門、級別、薪資範圍、狀態
+> ✓ 已創建「候選人」表單：姓名、應聘職位、簡歷附件、面試狀態、評價
+>
+> 需要我添加面試安排的流程表單嗎？
+
+---
+
+## 常見問題
+
+<AccordionGroup>
+  <Accordion title="AI 沒有識別到 OpenYida">
+    確認安裝成功：`openyida --version`。技能包路徑為 `~/.qoder/skills/yida-skills/`，如缺失可執行 `openyida copy -skills`。
+  </Accordion>
+
+  <Accordion title="登入過期">
+    告訴 AI「宜搭登入過期了，幫我重新登入」。
+  </Accordion>
+
+  <Accordion title="更新 OpenYida">
+    告訴 AI「更新 openyida」或手動 `npm install -g openyida@latest`。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,127 @@
+---
+title: "OpenCode"
+description: "在 OpenCode 中使用 OpenYida：配置模型後對話構建宜搭應用。"
+icon: "terminal"
+---
+
+OpenCode 是一個開源終端 AI 助手，支援多種模型後端。安裝 OpenYida 後技能包自動注入，配合你喜歡的模型即可對話構建宜搭應用。
+
+---
+
+## 一次性準備
+
+<Steps>
+  <Step title="安裝 OpenCode">
+    ```bash
+    # Homebrew（macOS）
+    brew install opencode
+
+    # 或 Go install
+    go install github.com/opencode-ai/opencode@latest
+    ```
+
+    詳見 [opencode.ai](https://opencode.ai)。
+  </Step>
+
+  <Step title="配置模型 API Key">
+    OpenCode 需要你自己配置模型。推薦 Anthropic（Claude 系列）：
+
+    ```bash
+    export ANTHROPIC_API_KEY="你的 API Key"
+    ```
+
+    也支援 OpenAI、DeepSeek 等相容介面：
+
+    ```bash
+    # OpenAI
+    export OPENAI_API_KEY="你的 Key"
+
+    # DeepSeek
+    export OPENAI_API_KEY="你的 Key"
+    export OPENAI_BASE_URL="https://api.deepseek.com/v1"
+    ```
+  </Step>
+
+  <Step title="安裝 OpenYida">
+    ```bash
+    npm install -g openyida
+    ```
+
+    技能包自動注入 OpenCode。
+  </Step>
+
+  <Step title="告訴 AI 登入宜搭">
+    啟動 OpenCode 後說：
+
+    ```
+    幫我登入宜搭
+    ```
+  </Step>
+</Steps>
+
+---
+
+## 模型推薦
+
+| 模型 | 推薦場景 | 說明 |
+|------|----------|------|
+| **Claude Sonnet 4**（推薦） | 日常構建 | 工具呼叫能力最強 |
+| Claude Opus 4 | 複雜系統 | 深度推理 |
+| DeepSeek V3 | 中文場景 | 性價比高 |
+| GPT-4o | 通用 | 均衡 |
+
+<Tip>
+  模型必須支援工具呼叫（Tool Use / Function Calling）才能驅動 OpenYida。部分開源小模型可能不支援，建議優先選擇 Claude Sonnet 4。
+</Tip>
+
+---
+
+## 開始構建
+
+和 AI 對話描述需求：
+
+```
+在宜搭上創建一個物資採購系統：
+- 採購申請：申請人、物資名稱、數量、預算、用途
+- 審批流程：部門經理 → 財務審批
+```
+
+```
+創建一個活動報名應用，包含報名表單和報名統計看板
+```
+
+```
+查看一下我宜搭上的所有應用
+```
+
+---
+
+## 實際對話示例
+
+> **你**：幫我做一個值班排班應用
+>
+> **AI**：好的，我來創建值班排班系統。
+>
+> ✓ 已創建應用「值班排班」
+> ✓ 已創建「排班表」表單：日期、時段、值班人、備註
+> ✓ 已創建「換班申請」表單：原值班人、替班人、日期、原因
+>
+> 需要添加換班審批流程嗎？
+
+---
+
+## 常見問題
+
+<AccordionGroup>
+  <Accordion title="AI 呼叫 openyida 命令失敗">
+    確認安裝：`openyida --version`。如果命令存在但 AI 不使用，可能是模型不支援工具呼叫。切換到 Claude Sonnet 4 試試。
+  </Accordion>
+
+  <Accordion title="登入過期">
+    告訴 AI「重新登入宜搭」即可。
+  </Accordion>
+
+  <Accordion title="更新 OpenYida">
+    `npm install -g openyida@latest`，或告訴 AI 幫你更新。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,136 @@
+---
+title: "Claude Code"
+description: "Use OpenYida in Claude Code: install once, then build Yida apps with natural language."
+icon: "message-bot"
+---
+
+Claude Code is a terminal AI assistant by Anthropic. After installing OpenYida, you simply chat with the AI and it will automatically invoke all the commands needed to build your apps.
+
+---
+
+## One-Time Setup
+
+The entire process only takes two steps, after which you can operate purely through conversation.
+
+<Steps>
+  <Step title="Install OpenYida">
+    Make sure you have [Node.js >= 18](https://nodejs.org), then run in your terminal:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    After installation, OpenYida's skill pack is automatically injected into Claude Code — no other configuration needed.
+  </Step>
+
+  <Step title="Tell the AI to log in to Yida">
+    Launch Claude Code and simply say:
+
+    ```
+    Help me log in to Yida
+    ```
+
+    The AI will automatically invoke the login command, opening a browser or displaying a QR code for you to scan. Credentials are cached after the first login, so you won't need to repeat this.
+  </Step>
+</Steps>
+
+<Tip>
+  That's it — setup is complete. From here on, just talk to the AI.
+</Tip>
+
+---
+
+## Model Selection
+
+Claude Code defaults to Claude series models. You can switch using the `/model` command:
+
+| Model | Recommended For |
+|-------|----------------|
+| **Claude Sonnet 4** (default) | Everyday app building, fast |
+| **Claude Opus 4** | Complex multi-form business systems |
+
+Both can drive OpenYida effectively. Sonnet is sufficient for daily use.
+
+---
+
+## Start Building
+
+Describe the app you want in natural language and the AI handles everything automatically:
+
+```
+Help me create a CRM system on Yida, including:
+- Leads form: name, company, phone, source, status
+- Customers form: company name, industry, contact person, account manager
+- Opportunities form: linked to customer, amount, stage, expected close date
+```
+
+```
+Create an IT asset management app that can record device info and track assignments and returns
+```
+
+```
+Publish this page and set it to public access
+```
+
+The AI will automatically complete all steps — creating the app, creating forms, publishing pages, etc. You don't need to remember any commands.
+
+---
+
+## Example Conversation
+
+Here's a typical conversation flow:
+
+> **You**: Help me create an employee leave request system
+>
+> **AI**: Sure, I'll help you create that. Let me check the environment and login status first...
+>
+> Environment is normal, already logged in. Now creating the app...
+>
+> The leave request system has been created! It includes:
+> - Leave request form (applicant, leave type, start/end date, reason)
+> - App link: https://www.aliwork.com/APP_XXXXX/...
+>
+> Would you like me to add an approval workflow?
+
+You only need to state your requirements — the AI handles execution.
+
+---
+
+## Advanced Usage
+
+Once you're more familiar, you can give the AI more precise instructions:
+
+```
+Get the field list for the "Customer Info" form — I want to confirm the field configuration
+```
+
+```
+Help me turn this curl command into a Yida connector:
+curl -H "Authorization: Bearer xxx" https://api.example.com/users
+```
+
+```
+Check if there are any issues with the environment
+```
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="AI says it can't find the openyida command">
+    Confirm installation in your terminal: `openyida --version`. If it's installed but Claude Code can't find it, exit and restart Claude Code.
+  </Accordion>
+
+  <Accordion title="What to do if login expires">
+    Simply tell the AI "Re-login to Yida" and it will handle it automatically.
+  </Accordion>
+
+  <Accordion title="AI isn't using OpenYida skills">
+    Mention "Yida" keywords in the conversation to trigger it. For example: "Create a form on Yida."
+  </Accordion>
+
+  <Accordion title="Want to update to the latest version">
+    Tell the AI "Help me update openyida", or manually run `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

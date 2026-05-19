@@ -1,0 +1,153 @@
+---
+title: "Codex"
+description: "Use OpenYida in OpenAI Codex: native plugin integration, one-click access from the @ menu, build Yida apps through conversation."
+icon: "bolt"
+---
+
+Codex is the AI programming environment by OpenAI. OpenYida has **native plugin-level integration** with Codex — after installation it automatically registers as a Codex local plugin, appearing directly in the `@` menu as the "Yida" entry, with a built-in MCP Server providing tool-calling capabilities. This is the deepest integration among all supported IDEs.
+
+---
+
+## One-Time Setup
+
+<Steps>
+  <Step title="Install OpenYida">
+    Make sure you have [Node.js >= 18](https://nodejs.org), then run:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    After installation, the following happens automatically:
+    - OpenYida registers as a Codex local plugin (appears in the `@` menu)
+    - MCP Server is configured (AI can directly call Yida tools)
+    - The full skill pack is injected
+  </Step>
+
+  <Step title="Tell the AI to log in to Yida">
+    Open Codex and simply say:
+
+    ```
+    Help me log in to Yida
+    ```
+
+    The AI will open your local browser to complete login. If you belong to multiple organizations, Codex will display a native selection control for you to choose.
+  </Step>
+</Steps>
+
+<Tip>
+  That's all it takes. OpenYida is a "first-class plugin citizen" in Codex — you don't even need to know the CLI exists.
+</Tip>
+
+---
+
+## How to Use
+
+### Option 1: @ Menu (Recommended)
+
+Type `@` in the Codex dialog and you'll see the "Yida" option. Click it and the AI automatically enters Yida development mode:
+
+```
+@Yida Help me create a project management system
+```
+
+### Option 2: Direct Conversation
+
+You don't need to use @. As long as you mention Yida-related keywords, the AI will automatically use the OpenYida plugin:
+
+```
+Build an employee training management system on Yida, including a course schedule, registration form, and assessment scores table
+```
+
+---
+
+## Model Notes
+
+Codex uses OpenAI's built-in models with no manual configuration needed. The models have excellent support for both tool calling and code generation.
+
+---
+
+## Start Building
+
+Some example conversations:
+
+```
+Help me create a CRM system:
+- Lead management: name, company, phone, source, follow-up status
+- Customer profiles: linked to leads, industry, annual revenue, account manager
+- Opportunity tracking: linked to customer, amount, stage, expected close date
+```
+
+```
+Add a data analytics dashboard to my app showing this month's total opportunity amount and close rate
+```
+
+```
+Help me configure an approval workflow: leave requests over 3 days require department manager approval
+```
+
+---
+
+## Example Conversation
+
+> **You**: @Yida Build a travel expense reimbursement system
+>
+> **AI**: Sure, I'll create a travel expense reimbursement system.
+>
+> ✓ Created app "Travel Expense Management"
+> ✓ Created "Travel Request" form: applicant, destination, departure date, return date, reason
+> ✓ Created "Expense Reimbursement" form: linked to travel request, expense type (sub-form), total amount, attachments
+> ✓ Configured approval workflow: Department Manager → Finance
+>
+> App link: https://www.aliwork.com/APP_XXXXX/...
+>
+> Would you like me to also create a reimbursement statistics dashboard?
+
+---
+
+## Codex-Exclusive Features
+
+Compared to other IDEs, OpenYida has several unique advantages in Codex:
+
+<CardGroup cols={2}>
+  <Card title="Native Plugin" icon="puzzle-piece">
+    Registered in the Codex plugin system, not just as skill files. The AI has a deeper understanding of OpenYida.
+  </Card>
+  <Card title="Built-in MCP" icon="plug">
+    MCP Server is automatically configured, allowing the AI to interact with Yida through structured tool calls rather than just executing commands.
+  </Card>
+  <Card title="@ Menu Entry" icon="at">
+    Select "Yida" directly from the @ menu to enter app development mode with one click.
+  </Card>
+  <Card title="Native Org Selection" icon="building">
+    In multi-organization scenarios, select the target organization through Codex's native UI controls for a smoother experience.
+  </Card>
+</CardGroup>
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="I don't see 'Yida' in the @ menu">
+    Confirm OpenYida is properly installed: `openyida --version`. If it still doesn't appear after installation, restart Codex to let it re-scan plugins. You can also manually check the plugin directory:
+    ```bash
+    ls ~/.openyida/codex-plugin/plugins/openyida/.codex-plugin/plugin.json
+    ```
+  </Accordion>
+
+  <Accordion title="Organization selection doesn't appear during login">
+    If you only belong to one Yida organization, it will be automatically selected. The selection control only appears when you have multiple organizations.
+  </Accordion>
+
+  <Accordion title="Login expired">
+    Tell the AI "My Yida login seems to have expired" and it will automatically trigger the login flow again.
+  </Accordion>
+
+  <Accordion title="Updating OpenYida">
+    ```bash
+    npm install -g openyida@latest
+    ```
+    After updating, the Codex plugin will also update automatically.
+  </Accordion>
+</AccordionGroup>

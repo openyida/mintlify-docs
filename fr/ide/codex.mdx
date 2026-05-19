@@ -1,0 +1,153 @@
+---
+title: "Codex"
+description: "Utiliser OpenYida dans OpenAI Codex : intégration native en tant que plugin, accès en un clic via le menu @, construction d'applications Yida par conversation."
+icon: "bolt"
+---
+
+Codex est l'environnement de programmation IA proposé par OpenAI. OpenYida offre une **intégration native au niveau plugin** pour Codex — après installation, il s'enregistre automatiquement comme plugin local de Codex, apparaît directement dans le menu `@` avec l'entrée « Yida », et inclut un MCP Server intégré pour les appels d'outils. C'est l'intégration la plus profonde parmi tous les IDE supportés.
+
+---
+
+## Préparation initiale
+
+<Steps>
+  <Step title="Installer OpenYida">
+    Assurez-vous d'avoir [Node.js ≥ 18](https://nodejs.org), puis exécutez :
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Après l'installation, les actions suivantes sont automatiques :
+    - Enregistrement d'OpenYida comme plugin local Codex (apparaît dans le menu `@`)
+    - Configuration du MCP Server (l'IA peut appeler directement les outils Yida)
+    - Injection du pack de compétences complet
+  </Step>
+
+  <Step title="Demander à l'IA de se connecter à Yida">
+    Ouvrez Codex et dites simplement :
+
+    ```
+    Aide-moi à me connecter à Yida
+    ```
+
+    L'IA ouvrira le navigateur local pour effectuer la connexion. Si vous appartenez à plusieurs organisations, Codex affichera un contrôle de sélection natif.
+  </Step>
+</Steps>
+
+<Tip>
+  C'est prêt dès l'installation. OpenYida est un « citoyen de première classe » dans Codex — vous n'avez même pas besoin de connaître l'existence du CLI.
+</Tip>
+
+---
+
+## Utilisation
+
+### Méthode 1 : Menu @ (recommandé)
+
+Dans la zone de dialogue de Codex, tapez `@` et vous verrez l'option « Yida ». Cliquez dessus et l'IA entre automatiquement en mode développement Yida :
+
+```
+@Yida Crée-moi un système de gestion de projets
+```
+
+### Méthode 2 : Conversation directe
+
+Pas besoin du @, il suffit de mentionner des mots-clés liés à « Yida » et l'IA utilisera automatiquement le plugin OpenYida :
+
+```
+Construis sur Yida un système de gestion de formation des employés, comprenant un tableau des cours, un formulaire d'inscription et un tableau des résultats d'évaluation
+```
+
+---
+
+## Informations sur le modèle
+
+Codex utilise les modèles intégrés d'OpenAI, aucune configuration manuelle n'est nécessaire. Le modèle offre un excellent support pour les appels d'outils et la génération de code.
+
+---
+
+## Commencer à construire
+
+Quelques exemples de conversations :
+
+```
+Crée-moi un système CRM de gestion de la relation client :
+- Gestion des prospects : nom, entreprise, téléphone, source, statut de suivi
+- Fiches clients : associées aux prospects, secteur, chiffre d'affaires annuel, responsable commercial
+- Suivi des opportunités : associé au client, montant, étape, date de conclusion prévue
+```
+
+```
+Ajoute un tableau de bord statistique à mon application, montrant le montant total des opportunités du mois et le taux de conversion
+```
+
+```
+Configure un workflow d'approbation : les congés de plus de 3 jours nécessitent l'approbation du responsable de département
+```
+
+---
+
+## Exemple de conversation réelle
+
+> **Vous** : @Yida Fais-moi un système de remboursement de frais de déplacement
+>
+> **IA** : D'accord, je vais créer le système de remboursement de frais de déplacement.
+>
+> ✓ Application « Gestion des frais de déplacement » créée
+> ✓ Formulaire « Demande de déplacement » créé : demandeur, destination, date de départ, date de retour, motif
+> ✓ Formulaire « Remboursement de frais » créé : lié à la demande de déplacement, type de frais (sous-formulaire), montant total, pièces jointes
+> ✓ Workflow d'approbation configuré : responsable de département → finances
+>
+> Lien de l'application : https://www.aliwork.com/APP_XXXXX/...
+>
+> Voulez-vous que je crée aussi un tableau de bord des statistiques de remboursement ?
+
+---
+
+## Fonctionnalités exclusives à Codex
+
+Par rapport aux autres IDE, OpenYida dans Codex offre plusieurs avantages exclusifs :
+
+<CardGroup cols={2}>
+  <Card title="Plugin natif" icon="puzzle-piece">
+    Enregistré dans le système de plugins de Codex, pas simplement un fichier de compétences. L'IA a une compréhension plus approfondie d'OpenYida.
+  </Card>
+  <Card title="MCP intégré" icon="plug">
+    Configuration automatique du MCP Server, l'IA peut interagir avec Yida via des appels d'outils structurés, pas seulement exécuter des commandes.
+  </Card>
+  <Card title="Entrée menu @" icon="at">
+    Sélectionnez directement « Yida » dans le menu @ pour entrer en mode développement d'applications en un clic.
+  </Card>
+  <Card title="Sélection d'organisation native" icon="building">
+    En cas de multi-organisations, sélection de l'organisation cible via les contrôles natifs de l'interface Codex, pour une expérience plus fluide.
+  </Card>
+</CardGroup>
+
+---
+
+## Questions fréquentes
+
+<AccordionGroup>
+  <Accordion title="« Yida » n'apparaît pas dans le menu @">
+    Vérifiez qu'OpenYida est correctement installé : `openyida --version`. Si après l'installation l'option n'apparaît toujours pas, redémarrez Codex pour qu'il re-scanne les plugins. Vous pouvez aussi vérifier manuellement le répertoire des plugins :
+    ```bash
+    ls ~/.openyida/codex-plugin/plugins/openyida/.codex-plugin/plugin.json
+    ```
+  </Accordion>
+
+  <Accordion title="La sélection d'organisation n'apparaît pas lors de la connexion">
+    Si vous n'appartenez qu'à une seule organisation Yida, elle sera sélectionnée automatiquement. Le contrôle de sélection n'apparaît que pour les cas multi-organisations.
+  </Accordion>
+
+  <Accordion title="Connexion expirée">
+    Dites à l'IA « Ma connexion Yida semble avoir expiré » et elle relancera automatiquement le processus de connexion.
+  </Accordion>
+
+  <Accordion title="Mettre à jour OpenYida">
+    ```bash
+    npm install -g openyida@latest
+    ```
+    Après la mise à jour, le plugin Codex se met aussi à jour automatiquement.
+  </Accordion>
+</AccordionGroup>

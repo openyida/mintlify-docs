@@ -1,0 +1,118 @@
+---
+title: "Wukong"
+description: "DingTalk Wukong で OpenYida を使用：直接対話で Yida アプリを構築、DingTalk 内のネイティブ体験。"
+icon: "hat-wizard"
+---
+
+Wukong は DingTalk に内蔵された AI プログラミングアシスタントです。OpenYida は Wukong と深く適合しており、インストール後は対話で要件を記述するだけで Yida アプリを構築できます。
+
+---
+
+## 初期セットアップ
+
+<Steps>
+  <Step title="Wukong ワークスペースに入る">
+    DingTalk を開き → Wukong ワークスペースに入ります。Wukong には Node.js ランタイムが組み込まれているため、別途インストールは不要です。
+  </Step>
+
+  <Step title="OpenYida をインストール">
+    Wukong ターミナルで実行します：
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    <Warning>
+      権限エラーが表示された場合は、まず Wukong 組み込みの Node.js パスを設定してください：
+      ```bash
+      export PATH="$HOME/.real/.bin/node/bin:$PATH"
+      npm install -g openyida
+      ```
+    </Warning>
+  </Step>
+
+  <Step title="AI に Yida へのログインを依頼">
+    Wukong の対話画面で直接話しかけます：
+
+    ```
+    Yidaにログインして
+    ```
+
+    QR コードスキャン方式を推奨します。AI が対話ボックスに QR コードを表示するので、スマートフォンの DingTalk でスキャンしてください。
+  </Step>
+</Steps>
+
+---
+
+## モデルについて
+
+Wukong は DingTalk プラットフォームが統一提供する AI モデルを使用するため、手動設定は不要です。モデルは中国語シーンとエンタープライズオフィス向けに深く最適化されているため、そのまま使用できます。
+
+---
+
+## 構築を始める
+
+Wukong の対話画面で直接要件を伝えます：
+
+```
+Yidaで出張精算システムを作成して：
+- 出張申請：申請者、目的、出発地、目的地、日付
+- 経費精算：出張申請連携、費用明細、金額、領収書
+- 承認フロー
+```
+
+```
+会議室予約アプリを作って
+```
+
+```
+さっき作成したページを公開リンクとして公開して
+```
+
+---
+
+## 実際の対話例
+
+> **あなた**：週報管理システムを作成して
+>
+> **AI**：わかりました。Yida で作成します。
+>
+> ✓ アプリ「週報管理」を作成しました
+> ✓ 「週報提出」フォームを作成しました：今週の完了事項、来週の計画、サポート依頼、主要指標
+> ✓ アプリリンク：https://www.aliwork.com/APP_XXXXX/...
+>
+> チーム週報集約のダッシュボードも追加しますか？
+
+---
+
+## Wukong 特有の注意事項
+
+<Info>
+  Wukong ワークスペースはサンドボックス環境です。いくつかの特殊な点があります：
+
+  - **ワークスペースパス**：動的 UUID を含みます（`~/.real/users/{uuid}/workspace/`）。OpenYida が自動認識します
+  - **ファイル初期化**：初回使用時に AI に「Yida ワークスペースを初期化して」と伝えると、自動的に処理されます
+  - **コマンドタイムアウト**：操作に時間がかかる場合は、AI にステップごとに実行させることができます
+</Info>
+
+---
+
+## よくある質問
+
+<AccordionGroup>
+  <Accordion title="npm install で権限エラーが表示される">
+    Wukong 組み込みの Node.js パスを設定してから再試行してください：
+    ```bash
+    export PATH="$HOME/.real/.bin/node/bin:$PATH"
+    npm install -g openyida
+    ```
+  </Accordion>
+
+  <Accordion title="AI が Yida 関連のコマンドを認識しない">
+    インストールを確認してください：Wukong ターミナルで `openyida --version` を実行します。コマンドは存在するのに AI がトリガーしない場合は、対話で明確に「Yida」キーワードを言及してください。
+  </Accordion>
+
+  <Accordion title="ログイン用 QR コードが表示されない">
+    AI に「QRコードスキャン方式でYidaにログインして」と伝えてください。AI が `--agent-qr` モードで対話ボックスに QR コードを表示します。
+  </Accordion>
+</AccordionGroup>

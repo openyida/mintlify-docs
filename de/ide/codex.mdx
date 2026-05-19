@@ -1,0 +1,153 @@
+---
+title: "Codex"
+description: "OpenYida in OpenAI Codex verwenden: Native Plugin-Integration, Ein-Klick-Zugriff über das @-Menü, Yida-Anwendungen per Konversation erstellen."
+icon: "bolt"
+---
+
+Codex ist die KI-Programmierumgebung von OpenAI. OpenYida bietet eine **native Plugin-Integration** für Codex — nach der Installation wird es automatisch als lokales Codex-Plugin registriert, erscheint direkt im `@`-Menü mit dem Eintrag „Yida" und enthält einen integrierten MCP Server für Tool-Aufrufe. Dies ist die tiefste Integration unter allen unterstützten IDEs.
+
+---
+
+## Einmalige Vorbereitung
+
+<Steps>
+  <Step title="OpenYida installieren">
+    Stellen Sie sicher, dass [Node.js ≥ 18](https://nodejs.org) installiert ist, und führen Sie dann aus:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Nach der Installation geschieht automatisch:
+    - Registrierung von OpenYida als lokales Codex-Plugin (erscheint im `@`-Menü)
+    - Konfiguration des MCP Servers (KI kann Yida-Tools direkt aufrufen)
+    - Injektion des vollständigen Skill-Pakets
+  </Step>
+
+  <Step title="Die KI bitten, sich bei Yida anzumelden">
+    Öffnen Sie Codex und sagen Sie einfach:
+
+    ```
+    Hilf mir, mich bei Yida anzumelden
+    ```
+
+    Die KI öffnet den lokalen Browser zur Anmeldung. Wenn Sie mehreren Organisationen angehören, zeigt Codex ein natives Auswahl-Steuerelement an.
+  </Step>
+</Steps>
+
+<Tip>
+  Nach der Installation ist alles einsatzbereit. OpenYida ist ein „erstklassiger Bürger" in Codex — Sie müssen nicht einmal wissen, dass ein CLI existiert.
+</Tip>
+
+---
+
+## Verwendung
+
+### Methode 1: @-Menü (empfohlen)
+
+Geben Sie im Codex-Dialogfeld `@` ein, und Sie sehen die Option „Yida". Klicken Sie darauf und die KI wechselt automatisch in den Yida-Entwicklungsmodus:
+
+```
+@Yida Erstelle mir ein Projektmanagementsystem
+```
+
+### Methode 2: Direktes Gespräch
+
+Sie können auch ohne @ arbeiten — solange Sie „Yida"-bezogene Schlüsselwörter erwähnen, verwendet die KI automatisch das OpenYida-Plugin:
+
+```
+Baue auf Yida ein Schulungsmanagementsystem für Mitarbeiter mit Kursliste, Anmeldeformular und Prüfungsergebnistabelle
+```
+
+---
+
+## Modellinformationen
+
+Codex verwendet die integrierten Modelle von OpenAI, keine manuelle Konfiguration erforderlich. Das Modell bietet ausgezeichnete Unterstützung für Tool-Aufrufe und Code-Generierung.
+
+---
+
+## Mit dem Erstellen beginnen
+
+Einige Beispieldialoge:
+
+```
+Erstelle mir ein CRM-Kundenbeziehungsmanagementsystem:
+- Lead-Verwaltung: Name, Unternehmen, Telefon, Quelle, Follow-up-Status
+- Kundenakte: verknüpft mit Lead, Branche, Jahresumsatz, Kundenbetreuer
+- Opportunity-Tracking: verknüpft mit Kunde, Betrag, Phase, voraussichtliches Abschlussdatum
+```
+
+```
+Füge meiner Anwendung ein Statistik-Dashboard hinzu, das den Gesamtbetrag der Opportunities dieses Monats und die Abschlussrate zeigt
+```
+
+```
+Konfiguriere einen Genehmigungsworkflow: Urlaub über 3 Tage benötigt die Genehmigung des Abteilungsleiters
+```
+
+---
+
+## Beispiel einer realen Konversation
+
+> **Sie**: @Yida Erstelle ein Reisekostenabrechnungssystem
+>
+> **KI**: Gut, ich erstelle das Reisekostenabrechnungssystem.
+>
+> ✓ Anwendung „Reisekostenmanagement" erstellt
+> ✓ Formular „Dienstreiseantrag" erstellt: Antragsteller, Zielort, Abreisedatum, Rückkehrdatum, Grund
+> ✓ Formular „Kostenabrechnung" erstellt: verknüpft mit Dienstreiseantrag, Kostenart (Unterformular), Gesamtbetrag, Anhänge
+> ✓ Genehmigungsworkflow konfiguriert: Abteilungsleiter → Finanzen
+>
+> Anwendungslink: https://www.aliwork.com/APP_XXXXX/...
+>
+> Soll ich noch ein Abrechnungsstatistik-Dashboard erstellen?
+
+---
+
+## Exklusive Codex-Funktionen
+
+Im Vergleich zu anderen IDEs bietet OpenYida in Codex mehrere exklusive Vorteile:
+
+<CardGroup cols={2}>
+  <Card title="Natives Plugin" icon="puzzle-piece">
+    Im Codex-Plugin-System registriert, nicht nur eine Skill-Datei. Die KI hat ein tieferes Verständnis von OpenYida.
+  </Card>
+  <Card title="Integriertes MCP" icon="plug">
+    Automatische MCP-Server-Konfiguration, die KI kann über strukturierte Tool-Aufrufe mit Yida interagieren, nicht nur Befehle ausführen.
+  </Card>
+  <Card title="@-Menü-Eintrag" icon="at">
+    „Yida" direkt im @-Menü auswählen, um mit einem Klick in den Anwendungsentwicklungsmodus zu wechseln.
+  </Card>
+  <Card title="Native Organisationsauswahl" icon="building">
+    Bei mehreren Organisationen erfolgt die Auswahl über native Codex-UI-Steuerelemente für ein flüssigeres Erlebnis.
+  </Card>
+</CardGroup>
+
+---
+
+## Häufig gestellte Fragen
+
+<AccordionGroup>
+  <Accordion title="„Yida" erscheint nicht im @-Menü">
+    Überprüfen Sie, ob OpenYida korrekt installiert ist: `openyida --version`. Falls es nach der Installation immer noch nicht angezeigt wird, starten Sie Codex neu, damit es die Plugins erneut scannt. Sie können auch manuell das Plugin-Verzeichnis prüfen:
+    ```bash
+    ls ~/.openyida/codex-plugin/plugins/openyida/.codex-plugin/plugin.json
+    ```
+  </Accordion>
+
+  <Accordion title="Keine Organisationsauswahl bei der Anmeldung">
+    Wenn Sie nur einer Yida-Organisation angehören, wird diese automatisch ausgewählt. Das Auswahl-Steuerelement erscheint nur bei mehreren Organisationen.
+  </Accordion>
+
+  <Accordion title="Anmeldung abgelaufen">
+    Sagen Sie der KI „Meine Yida-Anmeldung scheint abgelaufen zu sein" und sie wird den Anmeldevorgang automatisch erneut starten.
+  </Accordion>
+
+  <Accordion title="OpenYida aktualisieren">
+    ```bash
+    npm install -g openyida@latest
+    ```
+    Nach dem Update wird auch das Codex-Plugin automatisch aktualisiert.
+  </Accordion>
+</AccordionGroup>

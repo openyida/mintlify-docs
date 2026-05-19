@@ -1,0 +1,153 @@
+---
+title: "Codex"
+description: "OpenAI Codex에서 OpenYida 사용: 네이티브 플러그인 통합, @ 메뉴로 원클릭 접근, 대화로 Yida 앱 구축."
+icon: "bolt"
+---
+
+Codex는 OpenAI가 제공하는 AI 프로그래밍 환경입니다. OpenYida는 Codex에 **네이티브 플러그인 수준의 통합**을 제공합니다. 설치 후 자동으로 Codex 로컬 플러그인으로 등록되어 `@` 메뉴에 「Yida」 항목이 직접 표시되며, 동시에 내장 MCP Server가 도구 호출 기능을 제공합니다. 지원되는 모든 IDE 중 가장 깊은 통합입니다.
+
+---
+
+## 초기 설정
+
+<Steps>
+  <Step title="OpenYida 설치">
+    [Node.js >= 18](https://nodejs.org)이 설치되어 있는지 확인한 후 실행합니다:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    설치 완료 후 자동으로 다음이 수행됩니다:
+    - OpenYida를 Codex 로컬 플러그인으로 등록 (`@` 메뉴에 표시)
+    - MCP Server 설정 (AI가 Yida 도구를 직접 호출 가능)
+    - 전체 스킬팩 주입
+  </Step>
+
+  <Step title="AI에게 Yida 로그인 요청">
+    Codex를 열고 직접 말합니다:
+
+    ```
+    Yida에 로그인해 줘
+    ```
+
+    AI가 로컬 브라우저를 열어 로그인을 완료합니다. 여러 조직에 소속된 경우, Codex가 네이티브 선택 컨트롤을 표시하여 선택할 수 있습니다.
+  </Step>
+</Steps>
+
+<Tip>
+  설치하면 바로 사용할 수 있습니다. OpenYida는 Codex에서 「플러그인 수준의 일급 시민」입니다. CLI의 존재를 알 필요조차 없습니다.
+</Tip>
+
+---
+
+## 사용 방법
+
+### 방법 1: @ 메뉴 (권장)
+
+Codex 대화창에서 `@`를 입력하면 「Yida」 옵션이 표시됩니다. 클릭하면 AI가 자동으로 Yida 개발 모드로 진입합니다:
+
+```
+@Yida 프로젝트 관리 시스템을 만들어 줘
+```
+
+### 방법 2: 직접 대화
+
+@를 사용하지 않아도 「Yida」 관련 키워드를 언급하면 AI가 자동으로 OpenYida 플러그인을 사용합니다:
+
+```
+Yida에서 직원 교육 관리 시스템을 만들어 줘. 커리큘럼표, 신청 양식, 평가 성적표를 포함해서
+```
+
+---
+
+## 모델 설명
+
+Codex는 OpenAI 내장 모델을 사용하므로 수동 설정이 필요 없습니다. 모델은 도구 호출과 코드 생성 모두를 잘 지원합니다.
+
+---
+
+## 구축 시작
+
+대화 예시를 소개합니다:
+
+```
+CRM 고객 관계 관리 시스템을 만들어 줘:
+- 리드 관리: 이름, 회사, 전화번호, 소스, 후속 상태
+- 고객 파일: 리드 연동, 업종, 연간 매출, 담당자
+- 상담 추적: 고객 연동, 금액, 단계, 예상 계약일
+```
+
+```
+내 앱에 데이터 통계 대시보드를 추가해서 이번 달 상담 총액과 계약률을 보여 줘
+```
+
+```
+승인 프로세스를 설정해 줘: 3일 초과 휴가는 부서장 승인 필요
+```
+
+---
+
+## 실제 대화 예시
+
+> **사용자**: @Yida 출장 정산 시스템을 만들어 줘
+>
+> **AI**: 네, 출장 정산 시스템을 만들겠습니다.
+>
+> ✓ 앱 「출장 정산 관리」를 생성했습니다
+> ✓ 「출장 신청」 양식을 생성했습니다: 신청자, 목적지, 출발일, 귀환일, 사유
+> ✓ 「경비 정산」 양식을 생성했습니다: 출장 신청 연동, 비용 유형(하위 양식), 총 금액, 첨부파일
+> ✓ 승인 프로세스를 설정했습니다: 부서장 → 재무
+>
+> 앱 링크: https://www.aliwork.com/APP_XXXXX/...
+>
+> 정산 통계 대시보드도 만들까요?
+
+---
+
+## Codex 고유 기능
+
+다른 IDE와 비교하여, OpenYida는 Codex에서 몇 가지 고유한 장점이 있습니다:
+
+<CardGroup cols={2}>
+  <Card title="네이티브 플러그인" icon="puzzle-piece">
+    Codex 플러그인 시스템에 등록되어 있으며, 단순한 스킬 파일이 아닙니다. AI의 OpenYida에 대한 이해가 더 깊어집니다.
+  </Card>
+  <Card title="MCP 내장" icon="plug">
+    MCP Server가 자동 설정되어, AI가 구조화된 도구 호출로 Yida와 상호작용할 수 있습니다. 단순한 명령 실행이 아닙니다.
+  </Card>
+  <Card title="@ 메뉴 진입점" icon="at">
+    @ 메뉴에서 직접 「Yida」를 선택하여 원클릭으로 앱 개발 모드에 진입합니다.
+  </Card>
+  <Card title="네이티브 조직 선택" icon="building">
+    다중 조직 시나리오에서 Codex 네이티브 UI 컨트롤로 대상 조직을 선택하여 더 매끄러운 경험을 제공합니다.
+  </Card>
+</CardGroup>
+
+---
+
+## 자주 묻는 질문
+
+<AccordionGroup>
+  <Accordion title="@ 메뉴에 「Yida」가 보이지 않음">
+    OpenYida가 올바르게 설치되었는지 확인하세요: `openyida --version`. 설치 후에도 표시되지 않으면 Codex를 재시작하여 플러그인을 다시 스캔하게 하세요. 수동으로 플러그인 디렉토리를 확인할 수도 있습니다:
+    ```bash
+    ls ~/.openyida/codex-plugin/plugins/openyida/.codex-plugin/plugin.json
+    ```
+  </Accordion>
+
+  <Accordion title="로그인 시 조직 선택이 표시되지 않음">
+    소속된 Yida 조직이 1개뿐인 경우 자동으로 선택됩니다. 여러 조직일 때만 선택 컨트롤이 표시됩니다.
+  </Accordion>
+
+  <Accordion title="로그인 만료">
+    AI에게 「Yida 로그인이 만료된 것 같아」라고 말하면 자동으로 재로그인 프로세스를 트리거합니다.
+  </Accordion>
+
+  <Accordion title="OpenYida 업데이트">
+    ```bash
+    npm install -g openyida@latest
+    ```
+    업데이트 후 Codex 플러그인도 자동으로 업데이트됩니다.
+  </Accordion>
+</AccordionGroup>

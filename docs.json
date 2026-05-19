@@ -109,6 +109,18 @@
             ]
           },
           {
+            "group": "IDE Setup",
+            "pages": [
+              "en/ide/codex",
+              "en/ide/claude-code",
+              "en/ide/cursor",
+              "en/ide/vscode",
+              "en/ide/qoder",
+              "en/ide/wukong",
+              "en/ide/opencode"
+            ]
+          },
+          {
             "group": "Guides",
             "pages": [
               "en/guides/best-practices",
@@ -162,6 +174,18 @@
             ]
           },
           {
+            "group": "IDE 配置",
+            "pages": [
+              "zh-Hant/ide/codex",
+              "zh-Hant/ide/claude-code",
+              "zh-Hant/ide/cursor",
+              "zh-Hant/ide/vscode",
+              "zh-Hant/ide/qoder",
+              "zh-Hant/ide/wukong",
+              "zh-Hant/ide/opencode"
+            ]
+          },
+          {
             "group": "使用指南",
             "pages": [
               "zh-Hant/guides/best-practices",
@@ -209,6 +233,18 @@
               "ja/architecture/overview",
               "ja/architecture/project-structure",
               "ja/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "IDE 設定",
+            "pages": [
+              "ja/ide/codex",
+              "ja/ide/claude-code",
+              "ja/ide/cursor",
+              "ja/ide/vscode",
+              "ja/ide/qoder",
+              "ja/ide/wukong",
+              "ja/ide/opencode"
             ]
           },
           {
@@ -262,6 +298,18 @@
             ]
           },
           {
+            "group": "IDE 설정",
+            "pages": [
+              "ko/ide/codex",
+              "ko/ide/claude-code",
+              "ko/ide/cursor",
+              "ko/ide/vscode",
+              "ko/ide/qoder",
+              "ko/ide/wukong",
+              "ko/ide/opencode"
+            ]
+          },
+          {
             "group": "가이드",
             "pages": [
               "ko/guides/best-practices",
@@ -309,6 +357,18 @@
               "fr/architecture/overview",
               "fr/architecture/project-structure",
               "fr/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "Configuration IDE",
+            "pages": [
+              "fr/ide/codex",
+              "fr/ide/claude-code",
+              "fr/ide/cursor",
+              "fr/ide/vscode",
+              "fr/ide/qoder",
+              "fr/ide/wukong",
+              "fr/ide/opencode"
             ]
           },
           {
@@ -362,6 +422,18 @@
             ]
           },
           {
+            "group": "IDE-Konfiguration",
+            "pages": [
+              "de/ide/codex",
+              "de/ide/claude-code",
+              "de/ide/cursor",
+              "de/ide/vscode",
+              "de/ide/qoder",
+              "de/ide/wukong",
+              "de/ide/opencode"
+            ]
+          },
+          {
             "group": "Anleitungen",
             "pages": [
               "de/guides/best-practices",
@@ -409,6 +481,18 @@
               "es/architecture/overview",
               "es/architecture/project-structure",
               "es/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "Configuración IDE",
+            "pages": [
+              "es/ide/codex",
+              "es/ide/claude-code",
+              "es/ide/cursor",
+              "es/ide/vscode",
+              "es/ide/qoder",
+              "es/ide/wukong",
+              "es/ide/opencode"
             ]
           },
           {
@@ -462,6 +546,18 @@
             ]
           },
           {
+            "group": "Configuração IDE",
+            "pages": [
+              "pt/ide/codex",
+              "pt/ide/claude-code",
+              "pt/ide/cursor",
+              "pt/ide/vscode",
+              "pt/ide/qoder",
+              "pt/ide/wukong",
+              "pt/ide/opencode"
+            ]
+          },
+          {
             "group": "Guias",
             "pages": [
               "pt/guides/best-practices",
@@ -509,6 +605,18 @@
               "vi/architecture/overview",
               "vi/architecture/project-structure",
               "vi/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "Cấu hình IDE",
+            "pages": [
+              "vi/ide/codex",
+              "vi/ide/claude-code",
+              "vi/ide/cursor",
+              "vi/ide/vscode",
+              "vi/ide/qoder",
+              "vi/ide/wukong",
+              "vi/ide/opencode"
             ]
           },
           {
@@ -562,6 +670,18 @@
             ]
           },
           {
+            "group": "IDE कॉन्फ़िगरेशन",
+            "pages": [
+              "hi/ide/codex",
+              "hi/ide/claude-code",
+              "hi/ide/cursor",
+              "hi/ide/vscode",
+              "hi/ide/qoder",
+              "hi/ide/wukong",
+              "hi/ide/opencode"
+            ]
+          },
+          {
             "group": "गाइड",
             "pages": [
               "hi/guides/best-practices",
@@ -609,6 +729,18 @@
               "ar/architecture/overview",
               "ar/architecture/project-structure",
               "ar/architecture/tech-stack"
+            ]
+          },
+          {
+            "group": "إعداد IDE",
+            "pages": [
+              "ar/ide/codex",
+              "ar/ide/claude-code",
+              "ar/ide/cursor",
+              "ar/ide/vscode",
+              "ar/ide/qoder",
+              "ar/ide/wukong",
+              "ar/ide/opencode"
             ]
           },
           {

@@ -1,0 +1,127 @@
+---
+title: "OpenCode"
+description: "Usando OpenYida no OpenCode: configure o modelo e construa aplicações Yida por conversa."
+icon: "terminal"
+---
+
+OpenCode é um assistente de IA para terminal de código aberto que suporta múltiplos backends de modelos. Após instalar o OpenYida, o pacote de habilidades é injetado automaticamente. Combine com o modelo de sua preferência para construir aplicações Yida por conversa.
+
+---
+
+## Preparação única
+
+<Steps>
+  <Step title="Instalar o OpenCode">
+    ```bash
+    # Homebrew (macOS)
+    brew install opencode
+
+    # Ou Go install
+    go install github.com/opencode-ai/opencode@latest
+    ```
+
+    Veja mais em [opencode.ai](https://opencode.ai).
+  </Step>
+
+  <Step title="Configurar a API Key do modelo">
+    O OpenCode requer que você configure o modelo. Recomendado Anthropic (série Claude):
+
+    ```bash
+    export ANTHROPIC_API_KEY="sua API Key"
+    ```
+
+    Também suporta OpenAI, DeepSeek e outras interfaces compatíveis:
+
+    ```bash
+    # OpenAI
+    export OPENAI_API_KEY="sua Key"
+
+    # DeepSeek
+    export OPENAI_API_KEY="sua Key"
+    export OPENAI_BASE_URL="https://api.deepseek.com/v1"
+    ```
+  </Step>
+
+  <Step title="Instalar o OpenYida">
+    ```bash
+    npm install -g openyida
+    ```
+
+    O pacote de habilidades é injetado automaticamente no OpenCode.
+  </Step>
+
+  <Step title="Peça à IA para fazer login no Yida">
+    Após iniciar o OpenCode, diga:
+
+    ```
+    Me ajude a fazer login no Yida
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Modelos recomendados
+
+| Modelo | Cenário recomendado | Observações |
+|--------|---------------------|-------------|
+| **Claude Sonnet 4** (recomendado) | Construção diária | Melhor capacidade de chamada de ferramentas |
+| Claude Opus 4 | Sistemas complexos | Raciocínio profundo |
+| DeepSeek V3 | Cenários em chinês | Boa relação custo-benefício |
+| GPT-4o | Uso geral | Equilibrado |
+
+<Tip>
+  O modelo deve suportar chamadas de ferramentas (Tool Use / Function Calling) para acionar o OpenYida. Alguns modelos open source pequenos podem não suportar isso. Recomenda-se priorizar o Claude Sonnet 4.
+</Tip>
+
+---
+
+## Comece a construir
+
+Converse com a IA descrevendo suas necessidades:
+
+```
+Criar um sistema de compras de materiais no Yida:
+- Solicitação de compra: solicitante, nome do material, quantidade, orçamento, finalidade
+- Fluxo de aprovação: gerente de departamento → aprovação financeira
+```
+
+```
+Criar um aplicativo de inscrição em eventos, com formulário de inscrição e painel de estatísticas
+```
+
+```
+Ver todos os meus aplicativos no Yida
+```
+
+---
+
+## Exemplo real de conversa
+
+> **Você**: Me ajude a criar um aplicativo de escala de plantão
+>
+> **IA**: Ok, vou criar o sistema de escala de plantão.
+>
+> ✓ Aplicativo "Escala de Plantão" criado
+> ✓ Formulário "Tabela de Escalas" criado: data, turno, plantonista, observações
+> ✓ Formulário "Solicitação de Troca" criado: plantonista original, substituto, data, motivo
+>
+> Quer adicionar um fluxo de aprovação para trocas?
+
+---
+
+## Perguntas frequentes
+
+<AccordionGroup>
+  <Accordion title="A IA falha ao chamar o comando openyida">
+    Confirme a instalação: `openyida --version`. Se o comando existe mas a IA não o utiliza, pode ser que o modelo não suporte chamadas de ferramentas. Tente alternar para o Claude Sonnet 4.
+  </Accordion>
+
+  <Accordion title="Login expirado">
+    Diga à IA "fazer login novamente no Yida".
+  </Accordion>
+
+  <Accordion title="Atualizar o OpenYida">
+    `npm install -g openyida@latest`, ou peça à IA para atualizar.
+  </Accordion>
+</AccordionGroup>

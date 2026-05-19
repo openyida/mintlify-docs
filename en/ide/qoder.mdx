@@ -1,0 +1,102 @@
+---
+title: "Qoder"
+description: "Use OpenYida in the Qoder desktop app: install and go, build Yida apps through conversation."
+icon: "robot"
+---
+
+Qoder is a desktop AI agent. After installing OpenYida, the skill pack is automatically injected — simply describe your requirements in conversation to build Yida apps.
+
+---
+
+## One-Time Setup
+
+<Steps>
+  <Step title="Download Qoder">
+    Visit [qoder.com](https://qoder.com) to download the desktop app. Supports macOS / Windows.
+  </Step>
+
+  <Step title="Install OpenYida">
+    ```bash
+    npm install -g openyida
+    ```
+
+    The skill pack is automatically injected into Qoder — no extra configuration needed.
+  </Step>
+
+  <Step title="Tell the AI to log in to Yida">
+    In a Qoder conversation, say:
+
+    ```
+    Help me log in to Yida
+    ```
+
+    Follow the prompts to complete login.
+  </Step>
+</Steps>
+
+---
+
+## Model Selection
+
+Switch models using the model selector in the Qoder conversation interface:
+
+| Model | Recommended For |
+|-------|----------------|
+| **Premium** | Complex app building, multi-table relationships |
+| **Standard** | Everyday use, fast |
+
+Standard is sufficient for simple form creation. Premium is recommended for complex business systems.
+
+---
+
+## Start Building
+
+Describe your requirements directly in conversation:
+
+```
+Create an equipment inspection system on Yida:
+- Equipment registry: ID number, name, location, status, responsible person
+- Inspection records: linked to equipment, inspection date, inspector, result, notes
+```
+
+```
+Help me build a simple employee directory app
+```
+
+```
+Add an approval workflow to my reimbursement system
+```
+
+The AI executes everything automatically — just state your requirements.
+
+---
+
+## Example Conversation
+
+> **You**: Create a recruitment management app
+>
+> **AI**: Sure, I'll help you create a recruitment management system.
+>
+> ✓ Created app "Recruitment Management"
+> ✓ Created "Job Positions" form: position name, department, level, salary range, status
+> ✓ Created "Candidates" form: name, applied position, resume attachment, interview status, evaluation
+>
+> Would you like me to add an interview scheduling workflow form?
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="AI doesn't recognize OpenYida">
+    Confirm installation: `openyida --version`. The skill pack path is `~/.qoder/skills/yida-skills/`. If missing, run `openyida copy -skills`.
+  </Accordion>
+
+  <Accordion title="Login expired">
+    Tell the AI "My Yida login has expired, please help me re-login."
+  </Accordion>
+
+  <Accordion title="Updating OpenYida">
+    Tell the AI "Update openyida" or manually run `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

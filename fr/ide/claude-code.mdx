@@ -1,0 +1,136 @@
+---
+title: "Claude Code"
+description: "Utiliser OpenYida dans Claude Code : une seule installation, puis construisez des applications Yida en langage naturel."
+icon: "message-bot"
+---
+
+Claude Code est l'assistant IA en terminal proposé par Anthropic. Après l'installation d'OpenYida, il vous suffit de converser avec l'IA qui appellera automatiquement toutes les commandes pour construire vos applications.
+
+---
+
+## Préparation initiale
+
+L'ensemble du processus ne nécessite que deux étapes, après quoi tout se fait par conversation.
+
+<Steps>
+  <Step title="Installer OpenYida">
+    Assurez-vous d'avoir [Node.js ≥ 18](https://nodejs.org), puis exécutez dans le terminal :
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Après l'installation, le pack de compétences d'OpenYida est automatiquement injecté dans Claude Code, aucune autre configuration nécessaire.
+  </Step>
+
+  <Step title="Demander à l'IA de se connecter à Yida">
+    Lancez Claude Code et dites simplement :
+
+    ```
+    Aide-moi à me connecter à Yida
+    ```
+
+    L'IA appellera automatiquement la commande de connexion, ouvrira le navigateur ou affichera un QR code à scanner. Une fois connecté, les identifiants sont mis en cache et vous n'aurez pas à répéter l'opération.
+  </Step>
+</Steps>
+
+<Tip>
+  C'est tout, la préparation est terminée. Il ne vous reste plus qu'à converser avec l'IA.
+</Tip>
+
+---
+
+## Choix du modèle
+
+Claude Code utilise par défaut les modèles de la série Claude, que vous pouvez changer via la commande `/model` :
+
+| Modèle | Scénario recommandé |
+|--------|---------------------|
+| **Claude Sonnet 4** (par défaut) | Construction d'applications courantes, rapide |
+| **Claude Opus 4** | Systèmes métier complexes multi-formulaires |
+
+Les deux pilotent très bien OpenYida, Sonnet suffit pour une utilisation quotidienne.
+
+---
+
+## Commencer à construire
+
+Décrivez simplement en langage naturel l'application souhaitée, l'IA gère tout automatiquement :
+
+```
+Crée-moi sur Yida un système CRM comprenant :
+- Formulaire prospects : nom, entreprise, téléphone, source, statut
+- Formulaire clients : nom de l'entreprise, secteur, contact, responsable commercial
+- Formulaire opportunités : lié au client, montant, étape, date de conclusion prévue
+```
+
+```
+Crée une application de gestion des actifs IT, permettant d'enregistrer les équipements et de suivre les prêts et retours
+```
+
+```
+Publie cette page et configure-la en accès public
+```
+
+L'IA effectue automatiquement toutes les étapes : création de l'application, des formulaires, publication des pages, etc. Vous n'avez besoin de retenir aucune commande.
+
+---
+
+## Exemple de conversation réelle
+
+Voici un flux de conversation typique :
+
+> **Vous** : Crée-moi un système de demande de congés
+>
+> **IA** : D'accord, je vais le créer pour vous. Je vérifie d'abord l'environnement et l'état de connexion...
+>
+> Environnement OK, connecté. Je commence la création de l'application...
+>
+> Le système de congés est créé ! Il comprend :
+> - Formulaire de demande de congés (demandeur, type de congé, dates de début/fin, motif)
+> - Lien de l'application : https://www.aliwork.com/APP_XXXXX/...
+>
+> Voulez-vous que j'ajoute un workflow d'approbation ?
+
+Vous n'avez qu'à exprimer vos besoins, l'IA se charge de l'exécution.
+
+---
+
+## Utilisation avancée
+
+Quand vous serez plus à l'aise, vous pourrez donner des instructions plus précises à l'IA :
+
+```
+Récupère la liste des champs du formulaire « Informations clients », je veux vérifier la configuration des champs
+```
+
+```
+Crée un connecteur Yida à partir de cette commande curl :
+curl -H "Authorization: Bearer xxx" https://api.example.com/users
+```
+
+```
+Vérifie s'il y a des problèmes avec l'environnement
+```
+
+---
+
+## Questions fréquentes
+
+<AccordionGroup>
+  <Accordion title="L'IA dit ne pas trouver la commande openyida">
+    Vérifiez dans le terminal que l'installation a réussi : `openyida --version`. Si c'est installé mais que Claude Code ne le trouve pas, quittez et relancez Claude Code.
+  </Accordion>
+
+  <Accordion title="Que faire si la connexion a expiré">
+    Dites simplement à l'IA « Reconnecte-moi à Yida » et elle s'en occupera automatiquement.
+  </Accordion>
+
+  <Accordion title="L'IA n'utilise pas les compétences OpenYida">
+    Mentionnez le mot-clé « Yida » dans la conversation pour déclencher les compétences. Par exemple « Crée un formulaire sur Yida ».
+  </Accordion>
+
+  <Accordion title="Mettre à jour vers la dernière version">
+    Dites à l'IA « Mets à jour openyida pour moi », ou exécutez manuellement `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

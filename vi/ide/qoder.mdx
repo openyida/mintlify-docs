@@ -1,0 +1,102 @@
+---
+title: "Qoder"
+description: "Sử dụng OpenYida trong ứng dụng desktop Qoder: cài đặt là dùng được, xây dựng ứng dụng Yida bằng hội thoại."
+icon: "robot"
+---
+
+Qoder là một agent AI trên desktop. Sau khi cài đặt OpenYida, gói kỹ năng được tự động chèn. Mô tả trực tiếp yêu cầu trong hội thoại để xây dựng ứng dụng Yida.
+
+---
+
+## Chuẩn bị một lần
+
+<Steps>
+  <Step title="Tải Qoder">
+    Truy cập [qoder.com](https://qoder.com) để tải ứng dụng desktop. Hỗ trợ macOS / Windows.
+  </Step>
+
+  <Step title="Cài đặt OpenYida">
+    ```bash
+    npm install -g openyida
+    ```
+
+    Gói kỹ năng được tự động chèn vào Qoder, không cần cấu hình thêm.
+  </Step>
+
+  <Step title="Yêu cầu AI đăng nhập Yida">
+    Trong hội thoại Qoder, nói:
+
+    ```
+    Giúp tôi đăng nhập Yida
+    ```
+
+    Làm theo hướng dẫn để hoàn tất đăng nhập.
+  </Step>
+</Steps>
+
+---
+
+## Chọn mô hình
+
+Chuyển đổi qua bộ chọn mô hình trong giao diện hội thoại Qoder:
+
+| Mô hình | Tình huống khuyến nghị |
+|---------|------------------------|
+| **Premium** | Xây dựng ứng dụng phức tạp, nhiều bảng liên kết |
+| **Standard** | Sử dụng hàng ngày, nhanh |
+
+Tạo biểu mẫu đơn giản thì Standard là đủ. Hệ thống nghiệp vụ phức tạp nên dùng Premium.
+
+---
+
+## Bắt đầu xây dựng
+
+Mô tả trực tiếp yêu cầu trong hội thoại:
+
+```
+Tạo hệ thống kiểm tra thiết bị trên Yida:
+- Sổ thiết bị: mã số, tên, vị trí, trạng thái, người phụ trách
+- Bản ghi kiểm tra: liên kết thiết bị, ngày kiểm tra, người kiểm tra, kết quả, ghi chú
+```
+
+```
+Giúp tôi xây dựng ứng dụng danh bạ nhân viên đơn giản
+```
+
+```
+Thêm quy trình phê duyệt vào hệ thống hoàn trả chi phí của tôi
+```
+
+AI tự động thực hiện toàn bộ. Bạn chỉ cần nêu yêu cầu.
+
+---
+
+## Ví dụ hội thoại thực tế
+
+> **Bạn**: Tạo ứng dụng quản lý tuyển dụng
+>
+> **AI**: Được, tôi sẽ giúp bạn tạo hệ thống quản lý tuyển dụng.
+>
+> ✓ Đã tạo ứng dụng "Quản lý tuyển dụng"
+> ✓ Đã tạo biểu mẫu "Thông tin vị trí": tên vị trí, phòng ban, cấp bậc, mức lương, trạng thái
+> ✓ Đã tạo biểu mẫu "Ứng viên": tên, vị trí ứng tuyển, CV đính kèm, trạng thái phỏng vấn, đánh giá
+>
+> Bạn có muốn tôi thêm biểu mẫu lịch phỏng vấn không?
+
+---
+
+## Câu hỏi thường gặp
+
+<AccordionGroup>
+  <Accordion title="AI không nhận diện OpenYida">
+    Xác nhận cài đặt thành công: `openyida --version`. Đường dẫn gói kỹ năng là `~/.qoder/skills/yida-skills/`. Nếu thiếu, chạy `openyida copy -skills`.
+  </Accordion>
+
+  <Accordion title="Đăng nhập hết hạn">
+    Nói với AI "đăng nhập Yida hết hạn rồi, giúp tôi đăng nhập lại".
+  </Accordion>
+
+  <Accordion title="Cập nhật OpenYida">
+    Nói với AI "cập nhật openyida" hoặc chạy thủ công `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,127 @@
+---
+title: "OpenCode"
+description: "Use OpenYida in OpenCode: configure your model and build Yida apps through conversation."
+icon: "terminal"
+---
+
+OpenCode is an open-source terminal AI assistant that supports multiple model backends. After installing OpenYida, the skill pack is automatically injected — pair it with your preferred model to build Yida apps through conversation.
+
+---
+
+## One-Time Setup
+
+<Steps>
+  <Step title="Install OpenCode">
+    ```bash
+    # Homebrew (macOS)
+    brew install opencode
+
+    # Or Go install
+    go install github.com/opencode-ai/opencode@latest
+    ```
+
+    See [opencode.ai](https://opencode.ai) for details.
+  </Step>
+
+  <Step title="Configure Model API Key">
+    OpenCode requires you to configure your own model. Anthropic (Claude series) is recommended:
+
+    ```bash
+    export ANTHROPIC_API_KEY="your API key"
+    ```
+
+    Also supports OpenAI, DeepSeek, and other compatible endpoints:
+
+    ```bash
+    # OpenAI
+    export OPENAI_API_KEY="your key"
+
+    # DeepSeek
+    export OPENAI_API_KEY="your key"
+    export OPENAI_BASE_URL="https://api.deepseek.com/v1"
+    ```
+  </Step>
+
+  <Step title="Install OpenYida">
+    ```bash
+    npm install -g openyida
+    ```
+
+    The skill pack is automatically injected into OpenCode.
+  </Step>
+
+  <Step title="Tell the AI to log in to Yida">
+    After launching OpenCode, say:
+
+    ```
+    Help me log in to Yida
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Recommended Models
+
+| Model | Recommended For | Notes |
+|-------|----------------|-------|
+| **Claude Sonnet 4** (recommended) | Everyday building | Strongest tool-calling capability |
+| Claude Opus 4 | Complex systems | Deep reasoning |
+| DeepSeek V3 | Chinese-language scenarios | Cost-effective |
+| GPT-4o | General purpose | Well-balanced |
+
+<Tip>
+  The model must support tool calling (Tool Use / Function Calling) to drive OpenYida. Some smaller open-source models may not support this — Claude Sonnet 4 is the recommended first choice.
+</Tip>
+
+---
+
+## Start Building
+
+Chat with the AI and describe your requirements:
+
+```
+Create a procurement system on Yida:
+- Purchase request: applicant, item name, quantity, budget, purpose
+- Approval workflow: Department Manager → Finance approval
+```
+
+```
+Create an event registration app with a signup form and registration statistics dashboard
+```
+
+```
+Show me all my apps on Yida
+```
+
+---
+
+## Example Conversation
+
+> **You**: Help me build a duty scheduling app
+>
+> **AI**: Sure, I'll create a duty scheduling system.
+>
+> ✓ Created app "Duty Scheduling"
+> ✓ Created "Schedule" form: date, time slot, on-duty person, notes
+> ✓ Created "Shift Swap Request" form: original person, substitute, date, reason
+>
+> Would you like me to add a shift swap approval workflow?
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="AI fails to call openyida commands">
+    Confirm installation: `openyida --version`. If the command exists but the AI doesn't use it, the model may not support tool calling. Try switching to Claude Sonnet 4.
+  </Accordion>
+
+  <Accordion title="Login expired">
+    Simply tell the AI "Re-login to Yida."
+  </Accordion>
+
+  <Accordion title="Updating OpenYida">
+    Run `npm install -g openyida@latest`, or tell the AI to update it for you.
+  </Accordion>
+</AccordionGroup>

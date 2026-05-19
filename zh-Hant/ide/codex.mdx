@@ -1,0 +1,153 @@
+---
+title: "Codex"
+description: "在 OpenAI Codex 中使用 OpenYida：原生外掛整合，@ 選單一鍵觸達，對話構建宜搭應用。"
+icon: "bolt"
+---
+
+Codex 是 OpenAI 推出的 AI 程式設計環境。OpenYida 對 Codex 做了**原生外掛級整合** — 安裝後自動註冊為 Codex 本地外掛，在 `@` 選單中直接出現「宜搭」入口，同時內建 MCP Server 提供工具呼叫能力。這是所有支援的 IDE 中整合最深的一個。
+
+---
+
+## 一次性準備
+
+<Steps>
+  <Step title="安裝 OpenYida">
+    確保已有 [Node.js ≥ 18](https://nodejs.org)，然後執行：
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    安裝完成後會自動：
+    - 將 OpenYida 註冊為 Codex 本地外掛（出現在 `@` 選單中）
+    - 配置 MCP Server（AI 可直接呼叫宜搭工具）
+    - 注入完整技能包
+  </Step>
+
+  <Step title="告訴 AI 登入宜搭">
+    打開 Codex，直接說：
+
+    ```
+    幫我登入宜搭
+    ```
+
+    AI 會打開本地瀏覽器完成登入。如果你屬於多個組織，Codex 會彈出原生選擇控件讓你選。
+  </Step>
+</Steps>
+
+<Tip>
+  安裝完就能用了。OpenYida 在 Codex 中是「外掛級公民」—— 你甚至不需要知道 CLI 的存在。
+</Tip>
+
+---
+
+## 使用方式
+
+### 方式一：@ 選單（推薦）
+
+在 Codex 對話框中輸入 `@`，會看到「宜搭」選項。點擊後 AI 自動進入宜搭開發模式：
+
+```
+@宜搭 幫我創建一個專案管理系統
+```
+
+### 方式二：直接對話
+
+不用 @ 也可以，只要提及「宜搭」相關關鍵詞，AI 就會自動使用 OpenYida 外掛：
+
+```
+在宜搭上搭建一個員工培訓管理系統，包含課程表、報名表和考核成績表
+```
+
+---
+
+## 模型說明
+
+Codex 使用 OpenAI 內建模型，無需手動配置。模型對工具呼叫和程式碼生成都有很好的支援。
+
+---
+
+## 開始構建
+
+一些示例對話：
+
+```
+幫我創建一個 CRM 客戶關係管理系統：
+- 線索管理：姓名、公司、電話、來源、跟進狀態
+- 客戶檔案：關聯線索、行業、年收入、客戶經理
+- 商機追蹤：關聯客戶、金額、階段、預計成交日期
+```
+
+```
+給我的應用添加一個資料統計看板，展示本月商機總金額和成交率
+```
+
+```
+幫我配置一個審批流程：請假超過 3 天需要部門經理審批
+```
+
+---
+
+## 實際對話示例
+
+> **你**：@宜搭 做一個差旅報銷系統
+>
+> **AI**：好的，我來創建差旅報銷系統。
+>
+> ✓ 已創建應用「差旅報銷管理」
+> ✓ 已創建「出差申請」表單：申請人、目的地、出發日期、返回日期、事由
+> ✓ 已創建「費用報銷」表單：關聯出差申請、費用類型（子表單）、總金額、附件
+> ✓ 已配置審批流程：部門經理 → 財務
+>
+> 應用連結：https://www.aliwork.com/APP_XXXXX/...
+>
+> 需要我再做一個報銷統計看板嗎？
+
+---
+
+## Codex 獨有能力
+
+相比其他 IDE，OpenYida 在 Codex 中有幾個獨有優勢：
+
+<CardGroup cols={2}>
+  <Card title="原生外掛" icon="puzzle-piece">
+    註冊在 Codex 外掛系統中，而非僅僅是技能檔案。AI 對 OpenYida 的理解更深入。
+  </Card>
+  <Card title="MCP 內建" icon="plug">
+    自動配置 MCP Server，AI 可以透過結構化工具呼叫與宜搭互動，而不只是執行命令。
+  </Card>
+  <Card title="@ 選單入口" icon="at">
+    在 @ 選單中直接選擇「宜搭」，一鍵進入應用開發模式。
+  </Card>
+  <Card title="原生組織選擇" icon="building">
+    多組織場景下，透過 Codex 原生 UI 控件選擇目標組織，體驗更流暢。
+  </Card>
+</CardGroup>
+
+---
+
+## 常見問題
+
+<AccordionGroup>
+  <Accordion title="@ 選單中沒有看到「宜搭」">
+    確認 OpenYida 已正確安裝：`openyida --version`。如果安裝後仍不顯示，重啟 Codex 讓它重新掃描外掛。也可以手動檢查外掛目錄：
+    ```bash
+    ls ~/.openyida/codex-plugin/plugins/openyida/.codex-plugin/plugin.json
+    ```
+  </Accordion>
+
+  <Accordion title="登入時不彈出組織選擇">
+    如果你只屬於一個宜搭組織，會自動選中。多組織時才會彈出選擇控件。
+  </Accordion>
+
+  <Accordion title="登入過期">
+    告訴 AI「宜搭登入好像過期了」，它會自動重新觸發登入流程。
+  </Accordion>
+
+  <Accordion title="更新 OpenYida">
+    ```bash
+    npm install -g openyida@latest
+    ```
+    更新後 Codex 外掛也會自動更新。
+  </Accordion>
+</AccordionGroup>
