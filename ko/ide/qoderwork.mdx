@@ -1,0 +1,129 @@
+---
+title: "QoderWork"
+description: "QoderWork에서 OpenYida 사용하기: 데스크톱 AI 에이전트, 설치 즉시 대화로 Yida 앱 구축."
+icon: "wand-magic-sparkles"
+---
+
+QoderWork는 Qoder에서 출시한 데스크톱 AI 에이전트 앱으로, 일상 업무 효율을 위해 설계되었습니다. OpenYida를 설치하면 스킬 팩이 자동 주입되어 대화에서 요구사항을 설명하는 것만으로 Yida 앱을 구축할 수 있습니다.
+
+---
+
+## 최초 설정
+
+<Steps>
+  <Step title="QoderWork 다운로드">
+    [qoder.com](https://qoder.com)에서 QoderWork 데스크톱 앱을 다운로드하세요. macOS / Windows를 지원합니다.
+  </Step>
+
+  <Step title="OpenYida 설치">
+    시스템 터미널에서 실행하세요:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    설치 완료 후 스킬 팩이 자동으로 QoderWork에 주입됩니다(경로: `~/.qoderwork/skills/yida-skills/`). 추가 설정이 필요 없습니다.
+  </Step>
+
+  <Step title="AI에게 Yida 로그인 요청">
+    QoderWork 대화에서 말하세요:
+
+    ```
+    Yida에 로그인해 줘
+    ```
+
+    AI가 브라우저를 열어 로그인을 완료하게 합니다. 한 번 로그인하면 자격 증명이 캐시되어 반복할 필요가 없습니다.
+  </Step>
+</Steps>
+
+<Tip>
+  이게 전부입니다. 준비가 완료되었습니다. 이제 AI와 대화하기만 하면 됩니다.
+</Tip>
+
+---
+
+## 모델 선택
+
+QoderWork 대화 인터페이스에서 모델 선택기로 전환합니다:
+
+| 모델 | 추천 시나리오 |
+|------|--------------|
+| **Premium** (추천) | 복잡한 앱 구축, 다중 테이블 연관, 강력한 도구 호출 능력 |
+| **Standard** | 일상적인 간단한 작업, 빠른 응답 |
+
+Yida 앱 구축에는 Premium을 권장합니다. 도구 호출이 더 안정적입니다.
+
+---
+
+## 구축 시작
+
+대화에서 원하는 앱을 직접 설명하세요:
+
+```
+Yida에 설비 점검 시스템을 만들어 줘:
+- 설비 대장: 번호, 이름, 위치, 상태, 담당자
+- 점검 기록: 설비 연결, 점검 일자, 점검자, 결과, 비고
+```
+
+```
+간단한 직원 주소록 앱을 만들어 줘
+```
+
+```
+내 경비 정산 시스템에 승인 워크플로를 추가해 줘
+```
+
+AI가 전 과정을 자동으로 실행합니다. 요구사항만 말하면 됩니다.
+
+---
+
+## 실제 대화 예시
+
+> **사용자**: 채용 관리 앱을 만들어 줘
+>
+> **AI**: 네, 채용 관리 시스템을 만들어 드리겠습니다.
+>
+> ✓ 앱 "채용 관리" 생성 완료
+> ✓ "직무 정보" 양식 생성 완료: 직무명, 부서, 등급, 급여 범위, 상태
+> ✓ "후보자" 양식 생성 완료: 이름, 지원 직무, 이력서 첨부, 면접 상태, 평가
+>
+> 면접 일정 관리 워크플로 양식을 추가할까요?
+
+---
+
+## QoderWork 특징
+
+QoderWork는 풀 기능 데스크톱 에이전트로서 OpenYida 사용 시 몇 가지 추가 이점이 있습니다:
+
+<CardGroup cols={2}>
+  <Card title="멀티 도구 협업" icon="layer-group">
+    Yida, Lark, 브라우저 등 여러 기능을 동시에 사용하여 한 번의 대화로 크로스 플랫폼 작업을 완료할 수 있습니다.
+  </Card>
+  <Card title="백그라운드 작업" icon="clock">
+    Yida 구축 작업을 백그라운드에서 실행하여 다른 작업을 차단하지 않습니다.
+  </Card>
+  <Card title="파일 처리" icon="file">
+    로컬 파일을 읽어 Yida에 직접 가져올 수 있습니다. 예를 들어 Excel에서 양식 필드를 일괄 생성할 수 있습니다.
+  </Card>
+  <Card title="예약 작업" icon="calendar">
+    예약 작업을 설정하여 정기적으로 Yida 앱 상태를 확인하거나 보고서를 생성할 수 있습니다.
+  </Card>
+</CardGroup>
+
+---
+
+## 자주 묻는 질문
+
+<AccordionGroup>
+  <Accordion title="AI가 OpenYida를 인식하지 못함">
+    설치가 성공했는지 확인하세요: 시스템 터미널에서 `openyida --version`을 실행합니다. 스킬 팩 경로는 `~/.qoderwork/skills/yida-skills/`이며, 없는 경우 `openyida copy -skills`를 실행하세요.
+  </Accordion>
+
+  <Accordion title="로그인 만료">
+    AI에게 "Yida 로그인이 만료됐어, 다시 로그인해 줘"라고 말하세요.
+  </Accordion>
+
+  <Accordion title="OpenYida 업데이트">
+    AI에게 "openyida 업데이트해 줘"라고 말하거나, 수동으로 `npm install -g openyida@latest`를 실행하세요.
+  </Accordion>
+</AccordionGroup>

@@ -50,6 +50,7 @@
               "zh/ide/claude-code",
               "zh/ide/cursor",
               "zh/ide/vscode",
+              "zh/ide/qoderwork",
               "zh/ide/qoder",
               "zh/ide/wukong",
               "zh/ide/opencode"
@@ -115,6 +116,7 @@
               "en/ide/claude-code",
               "en/ide/cursor",
               "en/ide/vscode",
+              "en/ide/qoderwork",
               "en/ide/qoder",
               "en/ide/wukong",
               "en/ide/opencode"
@@ -180,6 +182,7 @@
               "zh-Hant/ide/claude-code",
               "zh-Hant/ide/cursor",
               "zh-Hant/ide/vscode",
+              "zh-Hant/ide/qoderwork",
               "zh-Hant/ide/qoder",
               "zh-Hant/ide/wukong",
               "zh-Hant/ide/opencode"
@@ -242,6 +245,7 @@
               "ja/ide/claude-code",
               "ja/ide/cursor",
               "ja/ide/vscode",
+              "ja/ide/qoderwork",
               "ja/ide/qoder",
               "ja/ide/wukong",
               "ja/ide/opencode"
@@ -304,6 +308,7 @@
               "ko/ide/claude-code",
               "ko/ide/cursor",
               "ko/ide/vscode",
+              "ko/ide/qoderwork",
               "ko/ide/qoder",
               "ko/ide/wukong",
               "ko/ide/opencode"
@@ -366,6 +371,7 @@
               "fr/ide/claude-code",
               "fr/ide/cursor",
               "fr/ide/vscode",
+              "fr/ide/qoderwork",
               "fr/ide/qoder",
               "fr/ide/wukong",
               "fr/ide/opencode"
@@ -428,6 +434,7 @@
               "de/ide/claude-code",
               "de/ide/cursor",
               "de/ide/vscode",
+              "de/ide/qoderwork",
               "de/ide/qoder",
               "de/ide/wukong",
               "de/ide/opencode"
@@ -490,6 +497,7 @@
               "es/ide/claude-code",
               "es/ide/cursor",
               "es/ide/vscode",
+              "es/ide/qoderwork",
               "es/ide/qoder",
               "es/ide/wukong",
               "es/ide/opencode"
@@ -552,6 +560,7 @@
               "pt/ide/claude-code",
               "pt/ide/cursor",
               "pt/ide/vscode",
+              "pt/ide/qoderwork",
               "pt/ide/qoder",
               "pt/ide/wukong",
               "pt/ide/opencode"
@@ -614,6 +623,7 @@
               "vi/ide/claude-code",
               "vi/ide/cursor",
               "vi/ide/vscode",
+              "vi/ide/qoderwork",
               "vi/ide/qoder",
               "vi/ide/wukong",
               "vi/ide/opencode"
@@ -676,6 +686,7 @@
               "hi/ide/claude-code",
               "hi/ide/cursor",
               "hi/ide/vscode",
+              "hi/ide/qoderwork",
               "hi/ide/qoder",
               "hi/ide/wukong",
               "hi/ide/opencode"
@@ -738,6 +749,7 @@
               "ar/ide/claude-code",
               "ar/ide/cursor",
               "ar/ide/vscode",
+              "ar/ide/qoderwork",
               "ar/ide/qoder",
               "ar/ide/wukong",
               "ar/ide/opencode"

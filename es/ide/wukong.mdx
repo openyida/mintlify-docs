@@ -31,6 +31,17 @@ Wukong es el asistente de programación con IA integrado en DingTalk. OpenYida e
     </Warning>
   </Step>
 
+  <Step title="Subir el zip de habilidades">
+    Wukong requiere subir manualmente el archivo zip de habilidades (otros IDEs lo inyectan automáticamente — Wukong es la excepción).
+
+    1. Ve a [OpenYida Releases](https://github.com/openyida/openyida/releases/latest) y descarga el último **`openyida-skills.zip`**
+    2. En la página de gestión de habilidades del espacio de trabajo de Wukong, sube el archivo zip descargado
+
+    <Info>
+      Cada vez que OpenYida lance una nueva versión, se recomienda volver a descargar y subir el último `openyida-skills.zip` para disponer de las capacidades más recientes de Yida.
+    </Info>
+  </Step>
+
   <Step title="Pedir a la IA que inicie sesión en Yida">
     Di directamente en la conversación de Wukong:
 
@@ -114,5 +125,9 @@ Publica la página que acabamos de crear como enlace público
 
   <Accordion title="El código QR de inicio de sesión no se muestra">
     Di a la IA: «Inicia sesión en Yida con código QR». La IA usará el modo `--agent-qr` para mostrar el código QR en el cuadro de diálogo.
+  </Accordion>
+
+  <Accordion title="Cómo actualizar el paquete de habilidades">
+    Ve a [OpenYida Releases](https://github.com/openyida/openyida/releases/latest), descarga el último `openyida-skills.zip` y vuelve a subirlo en la página de gestión de habilidades de Wukong.
   </Accordion>
 </AccordionGroup>

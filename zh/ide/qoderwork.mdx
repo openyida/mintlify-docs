@@ -1,0 +1,129 @@
+---
+title: "QoderWork"
+description: "在 QoderWork 中使用 OpenYida：桌面 AI 智能体，安装即用，对话构建宜搭应用。"
+icon: "wand-magic-sparkles"
+---
+
+QoderWork 是 Qoder 推出的桌面 AI 智能体应用，专为日常工作效率设计。安装 OpenYida 后技能包自动注入，在对话中描述需求就能构建宜搭应用。
+
+---
+
+## 一次性准备
+
+<Steps>
+  <Step title="下载 QoderWork">
+    访问 [qoder.com](https://qoder.com) 下载 QoderWork 桌面应用，支持 macOS / Windows。
+  </Step>
+
+  <Step title="安装 OpenYida">
+    在系统终端中运行：
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    安装完成后，技能包自动注入 QoderWork（路径：`~/.qoderwork/skills/yida-skills/`），无需额外配置。
+  </Step>
+
+  <Step title="告诉 AI 登录宜搭">
+    在 QoderWork 对话中说：
+
+    ```
+    帮我登录宜搭
+    ```
+
+    AI 会打开浏览器让你完成登录。登录一次后凭证缓存，后续无需重复。
+  </Step>
+</Steps>
+
+<Tip>
+  就这样，准备完成了。接下来你只需要和 AI 对话就好。
+</Tip>
+
+---
+
+## 模型选择
+
+在 QoderWork 对话界面通过模型选择器切换：
+
+| 模型 | 推荐场景 |
+|------|----------|
+| **Premium**（推荐） | 复杂应用构建，多表关联，工具调用能力强 |
+| **Standard** | 日常简单操作，速度快 |
+
+构建宜搭应用建议使用 Premium，工具调用更稳定。
+
+---
+
+## 开始构建
+
+直接在对话中描述你想要的应用：
+
+```
+在宜搭上创建一个设备巡检系统：
+- 设备台账：编号、名称、位置、状态、责任人
+- 巡检记录：关联设备、巡检日期、巡检人、结果、备注
+```
+
+```
+帮我搭一个简单的员工通讯录应用
+```
+
+```
+给我的报销系统加一个审批流程
+```
+
+AI 全程自动执行，你只管提需求。
+
+---
+
+## 实际对话示例
+
+> **你**：创建一个招聘管理应用
+>
+> **AI**：好的，我来帮你创建招聘管理系统。
+>
+> ✓ 已创建应用「招聘管理」
+> ✓ 已创建「职位信息」表单：职位名称、部门、级别、薪资范围、状态
+> ✓ 已创建「候选人」表单：姓名、应聘职位、简历附件、面试状态、评价
+>
+> 需要我添加面试安排的流程表单吗？
+
+---
+
+## QoderWork 特色
+
+QoderWork 作为全功能桌面智能体，使用 OpenYida 时有几个额外优势：
+
+<CardGroup cols={2}>
+  <Card title="多工具协同" icon="layer-group">
+    可以同时使用宜搭、飞书、浏览器等多种能力，在一次对话中完成跨平台任务。
+  </Card>
+  <Card title="后台任务" icon="clock">
+    支持将宜搭构建任务放到后台执行，不阻塞其他工作。
+  </Card>
+  <Card title="文件处理" icon="file">
+    可以读取本地文件并直接导入宜搭，例如从 Excel 批量创建表单字段。
+  </Card>
+  <Card title="定时任务" icon="calendar">
+    可以设置定时任务，定期检查宜搭应用状态或生成报告。
+  </Card>
+</CardGroup>
+
+---
+
+## 常见问题
+
+<AccordionGroup>
+  <Accordion title="AI 没有识别到 OpenYida">
+    确认安装成功：在系统终端运行 `openyida --version`。技能包路径为 `~/.qoderwork/skills/yida-skills/`，如果缺失可运行 `openyida copy -skills`。
+  </Accordion>
+
+  <Accordion title="登录过期">
+    告诉 AI「宜搭登录过期了，帮我重新登录」。
+  </Accordion>
+
+  <Accordion title="更新 OpenYida">
+    告诉 AI「帮我更新 openyida」，或手动运行 `npm install -g openyida@latest`。
+  </Accordion>
+</AccordionGroup>
