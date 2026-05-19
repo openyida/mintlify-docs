@@ -44,6 +44,18 @@
             ]
           },
           {
+            "group": "IDE 配置",
+            "pages": [
+              "zh/ide/codex",
+              "zh/ide/claude-code",
+              "zh/ide/cursor",
+              "zh/ide/vscode",
+              "zh/ide/qoder",
+              "zh/ide/wukong",
+              "zh/ide/opencode"
+            ]
+          },
+          {
             "group": "使用指南",
             "pages": [
               "zh/guides/best-practices",
