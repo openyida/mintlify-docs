@@ -75,7 +75,14 @@
               "zh/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "开始使用",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "en",
@@ -141,7 +148,14 @@
               "en/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "Get Started",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "zh-Hant",
@@ -204,7 +218,14 @@
               "zh-Hant/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "開始使用",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "ja",
@@ -267,7 +288,14 @@
               "ja/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "始めましょう",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "ko",
@@ -330,7 +358,14 @@
               "ko/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "시작하기",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "fr",
@@ -393,7 +428,14 @@
               "fr/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "Commencer",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "de",
@@ -456,7 +498,14 @@
               "de/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "Loslegen",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "es",
@@ -519,7 +568,14 @@
               "es/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "Comenzar",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "pt",
@@ -582,7 +638,14 @@
               "pt/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "Começar",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "vi",
@@ -645,7 +708,14 @@
               "vi/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "Bắt đầu",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "hi",
@@ -708,7 +778,14 @@
               "hi/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "शुरू करें",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       },
       {
         "language": "ar",
@@ -771,7 +848,14 @@
               "ar/license"
             ]
           }
-        ]
+        ],
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "ابدأ الآن",
+            "href": "https://www.npmjs.com/package/openyida"
+          }
+        }
       }
     ],
     "global": {
@@ -813,15 +897,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
