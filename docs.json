@@ -807,7 +807,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "开始使用",
+      "label": "Get Started",
       "href": "https://www.npmjs.com/package/openyida"
     }
   },
