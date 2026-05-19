@@ -1,0 +1,102 @@
+---
+title: "Qoder"
+description: "OpenYida in der Qoder Desktop-App verwenden: Installieren und sofort loslegen, Yida-Anwendungen per Konversation erstellen."
+icon: "robot"
+---
+
+Qoder ist ein Desktop-KI-Agent. Nach der Installation von OpenYida wird das Skill-Paket automatisch injiziert, und Sie können Yida-Anwendungen direkt in der Konversation erstellen, indem Sie Ihre Anforderungen beschreiben.
+
+---
+
+## Einmalige Vorbereitung
+
+<Steps>
+  <Step title="Qoder herunterladen">
+    Besuchen Sie [qoder.com](https://qoder.com), um die Desktop-Anwendung herunterzuladen, unterstützt macOS / Windows.
+  </Step>
+
+  <Step title="OpenYida installieren">
+    ```bash
+    npm install -g openyida
+    ```
+
+    Das Skill-Paket wird automatisch in Qoder injiziert, keine zusätzliche Konfiguration erforderlich.
+  </Step>
+
+  <Step title="Die KI bitten, sich bei Yida anzumelden">
+    Sagen Sie in der Qoder-Konversation:
+
+    ```
+    Hilf mir, mich bei Yida anzumelden
+    ```
+
+    Folgen Sie den Anweisungen zur Anmeldung.
+  </Step>
+</Steps>
+
+---
+
+## Modellauswahl
+
+Wechseln Sie das Modell über den Selektor in der Qoder-Konversationsoberfläche:
+
+| Modell | Empfohlenes Szenario |
+|--------|---------------------|
+| **Premium** | Komplexe Anwendungserstellung, Multi-Tabellen-Verknüpfungen |
+| **Standard** | Tägliche Nutzung, schnell |
+
+Für einfache Formularerstellung reicht Standard aus, für komplexe Geschäftssysteme wird Premium empfohlen.
+
+---
+
+## Mit dem Erstellen beginnen
+
+Beschreiben Sie Ihre Anforderungen direkt in der Konversation:
+
+```
+Erstelle auf Yida ein Geräteinspektionssystem:
+- Geräteregister: Nummer, Name, Standort, Status, Verantwortlicher
+- Inspektionsprotokoll: verknüpft mit Gerät, Inspektionsdatum, Prüfer, Ergebnis, Bemerkungen
+```
+
+```
+Baue mir eine einfache Mitarbeiterverzeichnis-Anwendung
+```
+
+```
+Füge meinem Erstattungssystem einen Genehmigungsworkflow hinzu
+```
+
+Die KI führt alles automatisch aus, Sie müssen nur Ihre Anforderungen nennen.
+
+---
+
+## Beispiel einer realen Konversation
+
+> **Sie**: Erstelle eine Bewerbermanagement-Anwendung
+>
+> **KI**: Gut, ich erstelle das Bewerbermanagementsystem.
+>
+> ✓ Anwendung „Bewerbermanagement" erstellt
+> ✓ Formular „Stelleninformationen" erstellt: Stellenbezeichnung, Abteilung, Stufe, Gehaltsrahmen, Status
+> ✓ Formular „Kandidaten" erstellt: Name, beworbene Stelle, Lebenslauf-Anhang, Interviewstatus, Bewertung
+>
+> Soll ich ein Workflow-Formular für die Interviewplanung hinzufügen?
+
+---
+
+## Häufig gestellte Fragen
+
+<AccordionGroup>
+  <Accordion title="Die KI erkennt OpenYida nicht">
+    Überprüfen Sie die erfolgreiche Installation: `openyida --version`. Der Skill-Paket-Pfad ist `~/.qoder/skills/yida-skills/`, falls er fehlt, führen Sie `openyida copy -skills` aus.
+  </Accordion>
+
+  <Accordion title="Anmeldung abgelaufen">
+    Sagen Sie der KI „Meine Yida-Anmeldung ist abgelaufen, melde mich bitte erneut an".
+  </Accordion>
+
+  <Accordion title="OpenYida aktualisieren">
+    Sagen Sie der KI „Aktualisiere openyida" oder führen Sie manuell `npm install -g openyida@latest` aus.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,120 @@
+---
+title: "VS Code"
+description: "Use OpenYida in Visual Studio Code via Copilot Chat to build Yida apps through conversation."
+icon: "code"
+---
+
+Visual Studio Code supports tool calling through GitHub Copilot Chat's Agent mode. After configuring MCP, you can build Yida apps using natural language conversation in VS Code.
+
+---
+
+## One-Time Setup
+
+<Steps>
+  <Step title="Install GitHub Copilot Chat">
+    Search and install **GitHub Copilot** and **GitHub Copilot Chat** from the VS Code extension marketplace. Requires a GitHub Copilot subscription.
+  </Step>
+
+  <Step title="Install OpenYida">
+    Open the VS Code terminal (`` Ctrl+` ``), and run:
+
+    ```bash
+    npm install -g openyida
+    ```
+  </Step>
+
+  <Step title="Configure MCP">
+    Create `.vscode/mcp.json` in your project root:
+
+    ```json
+    {
+      "servers": {
+        "openyida": {
+          "command": "npx",
+          "args": ["-y", "@openyida/mcp-app", "--stdio"]
+        }
+      }
+    }
+    ```
+
+    Reload VS Code (`Cmd+Shift+P` → "Reload Window").
+  </Step>
+
+  <Step title="Tell the AI to log in to Yida">
+    Open Copilot Chat, switch to Agent mode, and say:
+
+    ```
+    Help me log in to Yida
+    ```
+  </Step>
+</Steps>
+
+<Info>
+  VS Code's Copilot Chat requires MCP to call OpenYida tools. This differs from Cursor and Claude Code (which integrate automatically via skill packs).
+</Info>
+
+---
+
+## Model Selection
+
+Click the model selector in the Copilot Chat panel to switch:
+
+| Model | Recommended For |
+|-------|----------------|
+| **Claude Sonnet 4** (recommended) | Most stable for tool calling |
+| GPT-4o | Fast response, simple tasks |
+| Claude Opus 4 | Complex tasks (requires Copilot Pro+) |
+
+---
+
+## Start Building
+
+Chat in Copilot Chat's Agent mode:
+
+```
+Help me create an expense management system on Yida:
+- Expense request form: applicant, expense type, amount, reason, attachments
+- Approval workflow: department manager approval
+```
+
+```
+Create a meeting minutes app that can record meeting topic, attendees, and action items
+```
+
+```
+Show me what apps I have on Yida
+```
+
+The AI will complete operations automatically through MCP tools.
+
+---
+
+## Example Conversation
+
+> **You**: Help me create a simple library book lending system
+>
+> **AI**: I'll create that for you using OpenYida.
+>
+> ✓ Created app "Library Book Lending"
+> ✓ Created "Book Info" form: title, author, ISBN, category, stock quantity
+> ✓ Created "Lending Records" form: linked to book, borrower, checkout date, return date
+>
+> Would you like me to add a book search display page?
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="No Agent mode in Copilot Chat">
+    Requires VS Code 1.99+ and the latest Copilot Chat extension. Update and restart VS Code.
+  </Accordion>
+
+  <Accordion title="AI isn't using OpenYida tools">
+    Confirm `.vscode/mcp.json` is configured correctly and you've reloaded the window. Explicitly mentioning "Yida" or "openyida" in conversation helps the Agent identify intent.
+  </Accordion>
+
+  <Accordion title="MCP Server fails to start">
+    Test in the terminal: `npx @openyida/mcp-app --stdio`. If it errors, it's usually because the Node.js version is too low — upgrade to 18+.
+  </Accordion>
+</AccordionGroup>

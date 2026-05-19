@@ -1,0 +1,118 @@
+---
+title: "Wukong"
+description: "Sử dụng OpenYida trong DingTalk Wukong: hội thoại trực tiếp để xây dựng ứng dụng Yida, trải nghiệm gốc trong DingTalk."
+icon: "hat-wizard"
+---
+
+Wukong là trợ lý lập trình AI tích hợp trong DingTalk. OpenYida được tối ưu sâu cho Wukong — sau khi cài đặt, mô tả yêu cầu trong hội thoại để xây dựng ứng dụng Yida.
+
+---
+
+## Chuẩn bị một lần
+
+<Steps>
+  <Step title="Vào không gian làm việc Wukong">
+    Mở DingTalk → Vào không gian làm việc Wukong. Wukong đã tích hợp sẵn runtime Node.js, không cần cài đặt riêng.
+  </Step>
+
+  <Step title="Cài đặt OpenYida">
+    Trong terminal Wukong, chạy:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    <Warning>
+      Nếu gặp lỗi quyền, hãy cấu hình đường dẫn Node.js tích hợp của Wukong trước:
+      ```bash
+      export PATH="$HOME/.real/.bin/node/bin:$PATH"
+      npm install -g openyida
+      ```
+    </Warning>
+  </Step>
+
+  <Step title="Yêu cầu AI đăng nhập Yida">
+    Nói trực tiếp trong hội thoại Wukong:
+
+    ```
+    Giúp tôi đăng nhập Yida
+    ```
+
+    Khuyến nghị dùng phương thức quét mã — AI sẽ hiển thị mã QR trong hộp thoại, dùng DingTalk trên điện thoại để quét.
+  </Step>
+</Steps>
+
+---
+
+## Thông tin về mô hình
+
+Wukong sử dụng mô hình AI thống nhất do nền tảng DingTalk cung cấp, không cần cấu hình thủ công. Mô hình được tối ưu sâu cho ngữ cảnh tiếng Trung và công việc doanh nghiệp. Sử dụng trực tiếp.
+
+---
+
+## Bắt đầu xây dựng
+
+Nói trực tiếp yêu cầu trong hội thoại Wukong:
+
+```
+Tạo hệ thống hoàn trả chi phí công tác trên Yida:
+- Đề nghị công tác: người đề nghị, mục đích, nơi xuất phát, điểm đến, ngày
+- Hoàn trả chi phí: liên kết đề nghị công tác, chi tiết chi phí, số tiền, chứng từ
+- Quy trình phê duyệt
+```
+
+```
+Giúp tôi xây dựng ứng dụng đặt phòng họp
+```
+
+```
+Xuất bản trang vừa tạo thành liên kết công khai
+```
+
+---
+
+## Ví dụ hội thoại thực tế
+
+> **Bạn**: Tạo hệ thống quản lý báo cáo tuần
+>
+> **AI**: Được, tôi sẽ giúp bạn tạo trên Yida.
+>
+> ✓ Đã tạo ứng dụng "Quản lý báo cáo tuần"
+> ✓ Đã tạo biểu mẫu "Nộp báo cáo tuần": hoàn thành tuần này, kế hoạch tuần sau, cần hỗ trợ, chỉ số chính
+> ✓ Liên kết ứng dụng: https://www.aliwork.com/APP_XXXXX/...
+>
+> Bạn có muốn tôi thêm bảng tổng hợp báo cáo tuần của nhóm không?
+
+---
+
+## Lưu ý đặc biệt về Wukong
+
+<Info>
+  Không gian làm việc Wukong là môi trường sandbox, có một số điểm đặc biệt cần biết:
+
+  - **Đường dẫn workspace**: Chứa UUID động (`~/.real/users/{uuid}/workspace/`), OpenYida tự động nhận diện
+  - **Khởi tạo file**: Lần đầu sử dụng, nói với AI "khởi tạo workspace Yida", AI sẽ tự động xử lý
+  - **Timeout lệnh**: Nếu thao tác nào chậm, có thể yêu cầu AI thực hiện từng bước
+</Info>
+
+---
+
+## Câu hỏi thường gặp
+
+<AccordionGroup>
+  <Accordion title="npm install báo lỗi quyền">
+    Cấu hình đường dẫn Node.js tích hợp của Wukong rồi thử lại:
+    ```bash
+    export PATH="$HOME/.real/.bin/node/bin:$PATH"
+    npm install -g openyida
+    ```
+  </Accordion>
+
+  <Accordion title="AI không nhận diện lệnh liên quan Yida">
+    Xác nhận cài đặt thành công: chạy `openyida --version` trong terminal Wukong. Nếu lệnh tồn tại nhưng AI không kích hoạt, đề cập rõ ràng từ khóa "Yida" trong hội thoại.
+  </Accordion>
+
+  <Accordion title="Mã QR đăng nhập không hiển thị">
+    Nói với AI: "đăng nhập Yida bằng phương thức quét mã". AI sẽ sử dụng chế độ `--agent-qr` để hiển thị mã QR trong hộp thoại.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,136 @@
+---
+title: "Claude Code"
+description: "在 Claude Code 中使用 OpenYida：一次安裝，然後用自然語言構建宜搭應用。"
+icon: "message-bot"
+---
+
+Claude Code 是 Anthropic 推出的終端 AI 助手。安裝 OpenYida 後，你只需和 AI 對話，它會自動呼叫所有命令幫你完成應用構建。
+
+---
+
+## 一次性準備
+
+整個過程只需要兩步，之後就可以純對話操作了。
+
+<Steps>
+  <Step title="安裝 OpenYida">
+    確保已有 [Node.js ≥ 18](https://nodejs.org)，然後在終端執行：
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    安裝完成後，OpenYida 的技能包會自動注入 Claude Code，無需其他配置。
+  </Step>
+
+  <Step title="告訴 AI 登入宜搭">
+    啟動 Claude Code，直接說：
+
+    ```
+    幫我登入宜搭
+    ```
+
+    AI 會自動呼叫登入命令，打開瀏覽器或展示二維碼讓你掃碼。登入一次後憑證會快取，後續無需重複操作。
+  </Step>
+</Steps>
+
+<Tip>
+  就這樣，準備完成了。接下來你只需要和 AI 對話就好。
+</Tip>
+
+---
+
+## 模型選擇
+
+Claude Code 預設使用 Claude 系列模型，可透過 `/model` 命令切換：
+
+| 模型 | 推薦場景 |
+|------|----------|
+| **Claude Sonnet 4**（預設） | 日常應用構建，速度快 |
+| **Claude Opus 4** | 複雜多表單業務系統 |
+
+兩者都能很好地驅動 OpenYida，日常使用 Sonnet 即可。
+
+---
+
+## 開始構建
+
+直接用自然語言描述你想要的應用，AI 會全程自動處理：
+
+```
+幫我在宜搭上創建一個 CRM 系統，包含：
+- 線索表單：姓名、公司、電話、來源、狀態
+- 客戶表單：公司名稱、行業、聯絡人、客戶經理
+- 商機表單：關聯客戶、金額、階段、預計成交日期
+```
+
+```
+創建一個 IT 資產管理應用，能錄入設備資訊、追蹤領用歸還
+```
+
+```
+把這個頁面發佈出去，設定為公開存取
+```
+
+AI 會自動完成創建應用、創建表單、發佈頁面等所有步驟，你不需要記任何命令。
+
+---
+
+## 實際對話示例
+
+以下是一次典型的對話流程：
+
+> **你**：幫我創建一個員工請假系統
+>
+> **AI**：好的，我來幫你創建。先檢查一下環境和登入狀態...
+>
+> 環境正常，已登入。現在開始創建應用...
+>
+> 請假系統已創建完成！包含：
+> - 請假申請表單（申請人、請假類型、開始/結束日期、原因）
+> - 應用連結：https://www.aliwork.com/APP_XXXXX/...
+>
+> 需要我繼續添加審批流程嗎？
+
+你全程只需要說需求，AI 負責執行。
+
+---
+
+## 進階用法
+
+當你更熟悉後，可以給 AI 更精確的指令：
+
+```
+獲取「客戶資訊」表單的欄位列表，我想確認一下欄位配置
+```
+
+```
+幫我把這個 curl 命令創建成宜搭連接器：
+curl -H "Authorization: Bearer xxx" https://api.example.com/users
+```
+
+```
+檢查一下環境有沒有問題
+```
+
+---
+
+## 常見問題
+
+<AccordionGroup>
+  <Accordion title="AI 說找不到 openyida 命令">
+    在終端中確認安裝成功：`openyida --version`。如果已安裝但 Claude Code 找不到，退出重新啟動 Claude Code。
+  </Accordion>
+
+  <Accordion title="登入過期了怎麼辦">
+    直接告訴 AI「重新登入宜搭」，它會自動處理。
+  </Accordion>
+
+  <Accordion title="AI 沒有使用 OpenYida 技能">
+    在對話中提及「宜搭」關鍵詞即可觸發。例如「在宜搭上創建一個表單」。
+  </Accordion>
+
+  <Accordion title="想更新到最新版本">
+    告訴 AI「幫我更新 openyida」，或手動執行 `npm install -g openyida@latest`。
+  </Accordion>
+</AccordionGroup>

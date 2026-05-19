@@ -1,0 +1,131 @@
+---
+title: "Cursor"
+description: "Use OpenYida in Cursor: install and use Agent mode to build Yida apps through conversation."
+icon: "i-cursor"
+---
+
+Cursor is an AI code editor based on VS Code with a powerful built-in Agent mode. After installing OpenYida, simply chat in Agent mode and the AI will automatically build Yida apps for you.
+
+---
+
+## One-Time Setup
+
+<Steps>
+  <Step title="Download Cursor">
+    Visit [cursor.com](https://cursor.com/) to download and install. Supports macOS / Windows / Linux.
+  </Step>
+
+  <Step title="Install OpenYida">
+    Open Cursor's built-in terminal (`` Ctrl+` `` or `` Cmd+` ``), and run:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    The skill pack is injected automatically — no extra configuration needed.
+  </Step>
+
+  <Step title="Tell the AI to log in to Yida">
+    Open Composer (`Cmd+I`), switch to **Agent** mode, and say:
+
+    ```
+    Help me log in to Yida
+    ```
+
+    Follow the prompts to complete QR code or browser login.
+  </Step>
+</Steps>
+
+---
+
+## Model Selection
+
+Switch models in Cursor's model selector. Recommended:
+
+| Model | Recommended For |
+|-------|----------------|
+| **Claude Sonnet 4** (recommended) | Strong tool-calling, best for everyday building |
+| **Claude Opus 4** | Complex systems, multi-form relationships |
+| GPT-4o | Simple forms, fast response |
+
+<Tip>
+  You must use **Agent mode** (not Ask mode) for the AI to execute commands. In Composer, click the mode toggle to switch to Agent.
+</Tip>
+
+---
+
+## Start Building
+
+Describe your requirements directly in Agent mode:
+
+```
+Create a project management system on Yida:
+- Project form: project name, owner, start date, end date, status
+- Task form: linked to project, task name, priority, assignee, due date
+- Create a project overview dashboard page
+```
+
+```
+Help me create a meeting room booking app
+```
+
+```
+Add a refund approval workflow to the "Order Management" app
+```
+
+The AI executes all operations automatically — just review the results and provide feedback.
+
+---
+
+## Example Conversation
+
+> **You**: Help me build a simple customer feedback collection system
+>
+> **AI**: I'll help you create that.
+>
+> ✓ Created app "Customer Feedback Collection"
+> ✓ Created form: feedback type (suggestion/complaint/inquiry), customer name, contact info, feedback content, priority
+> ✓ App link: https://www.aliwork.com/APP_XXXXX/...
+>
+> Would you like me to add a feedback statistics dashboard?
+
+---
+
+## MCP Mode (Optional Enhancement)
+
+If you want interactive visualization capabilities (such as dashboard cards, chart previews), you can additionally configure MCP. Create `.cursor/mcp.json` in your project root:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+After configuring, restart Cursor, and the AI can render Yida charts and form previews directly in conversation.
+
+<Info>
+  MCP is an optional enhancement. Without MCP configured, all of OpenYida's core capabilities (creating apps, forms, pages, publishing, etc.) work normally.
+</Info>
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="AI isn't automatically calling OpenYida">
+    Confirm you're in **Agent mode**. Ask mode can only answer questions — it cannot execute commands. Also, mentioning "Yida" keywords in conversation helps the AI identify intent.
+  </Accordion>
+
+  <Accordion title="Login expired">
+    Tell the AI "My Yida login seems to have expired, please help me re-login."
+  </Accordion>
+
+  <Accordion title="Want to update OpenYida">
+    Tell the AI "Help me update openyida to the latest version", or run `npm install -g openyida@latest` in the terminal.
+  </Accordion>
+</AccordionGroup>

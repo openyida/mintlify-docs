@@ -1,0 +1,131 @@
+---
+title: "Cursor"
+description: "Usar OpenYida en Cursor: tras la instalación, conversa en modo Agent para construir aplicaciones Yida automáticamente."
+icon: "i-cursor"
+---
+
+Cursor es un editor de código con IA basado en VS Code, con un potente modo Agent integrado. Tras instalar OpenYida, conversa directamente en el modo Agent y la IA construirá automáticamente tus aplicaciones Yida.
+
+---
+
+## Preparación inicial
+
+<Steps>
+  <Step title="Descargar Cursor">
+    Visita [cursor.com](https://cursor.com/) para descargar e instalar, compatible con macOS / Windows / Linux.
+  </Step>
+
+  <Step title="Instalar OpenYida">
+    Abre la terminal integrada de Cursor (`` Ctrl+` `` o `` Cmd+` ``) y ejecuta:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    El paquete de habilidades se inyecta automáticamente, sin configuración adicional necesaria.
+  </Step>
+
+  <Step title="Pedir a la IA que inicie sesión en Yida">
+    Abre el Composer (`Cmd+I`), cambia al modo **Agent** y di:
+
+    ```
+    Ayúdame a iniciar sesión en Yida
+    ```
+
+    Sigue las instrucciones para escanear el código QR o iniciar sesión por navegador.
+  </Step>
+</Steps>
+
+---
+
+## Selección de modelo
+
+Cambia el modelo en el selector de modelos de Cursor. Recomendaciones:
+
+| Modelo | Escenario recomendado |
+|--------|----------------------|
+| **Claude Sonnet 4** (recomendado) | Excelentes capacidades de llamada a herramientas, primera opción para el día a día |
+| **Claude Opus 4** | Sistemas complejos, asociaciones multi-formulario |
+| GPT-4o | Formularios simples, respuesta rápida |
+
+<Tip>
+  Debes usar el **modo Agent** (no el modo Ask) para que la IA pueda ejecutar comandos. En el Composer, haz clic para cambiar al modo Agent.
+</Tip>
+
+---
+
+## Empezar a construir
+
+Describe tus necesidades directamente en el modo Agent:
+
+```
+Crea en Yida un sistema de gestión de proyectos:
+- Formulario de proyecto: nombre del proyecto, responsable, fecha de inicio, fecha de fin, estado
+- Formulario de tareas: vinculado al proyecto, nombre de tarea, prioridad, ejecutor, fecha límite
+- Crea una página de panel con vista general de proyectos
+```
+
+```
+Créame una aplicación de reserva de salas de reuniones
+```
+
+```
+Añade un flujo de aprobación de reembolso a la aplicación «Gestión de pedidos»
+```
+
+La IA ejecuta todas las operaciones automáticamente, tú solo miras los resultados y das tu feedback.
+
+---
+
+## Ejemplo de conversación real
+
+> **Tú**: Construye un sistema simple de recopilación de feedback de clientes
+>
+> **IA**: Voy a crearlo.
+>
+> ✓ Aplicación «Recopilación de feedback de clientes» creada
+> ✓ Formulario creado: tipo de feedback (sugerencia/queja/consulta), nombre del cliente, datos de contacto, contenido del feedback, prioridad
+> ✓ Enlace de la aplicación: https://www.aliwork.com/APP_XXXXX/...
+>
+> ¿Quieres que añada un panel de estadísticas de feedback?
+
+---
+
+## Modo MCP (mejora opcional)
+
+Si deseas capacidades de visualización interactiva (tarjetas de dashboard, previsualización de gráficos), puedes configurar adicionalmente el MCP. Crea un archivo `.cursor/mcp.json` en la raíz del proyecto:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+Tras la configuración, reinicia Cursor y la IA podrá renderizar directamente gráficos y vistas previas de formularios de Yida en la conversación.
+
+<Info>
+  El MCP es una mejora opcional. Sin configuración MCP, todas las funcionalidades principales de OpenYida (crear aplicaciones, formularios, páginas, publicar, etc.) funcionan con normalidad.
+</Info>
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="La IA no llama automáticamente a OpenYida">
+    Confirma que estás en **modo Agent**. El modo Ask solo puede responder preguntas, no ejecutar comandos. Además, mencionar la palabra clave «Yida» en la conversación ayuda a la IA a identificar la intención.
+  </Accordion>
+
+  <Accordion title="La sesión ha expirado">
+    Di a la IA «Mi sesión de Yida parece haber expirado, vuelve a iniciar sesión por mí».
+  </Accordion>
+
+  <Accordion title="Actualizar OpenYida">
+    Di a la IA «Actualiza openyida a la última versión», o ejecuta en la terminal `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

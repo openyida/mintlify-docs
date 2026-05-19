@@ -1,0 +1,136 @@
+---
+title: "Claude Code"
+description: "Sử dụng OpenYida trong Claude Code: cài đặt một lần, sau đó dùng ngôn ngữ tự nhiên để xây dựng ứng dụng Yida."
+icon: "message-bot"
+---
+
+Claude Code là trợ lý AI dòng lệnh của Anthropic. Sau khi cài đặt OpenYida, bạn chỉ cần trò chuyện với AI, nó sẽ tự động gọi tất cả các lệnh để hoàn thành việc xây dựng ứng dụng.
+
+---
+
+## Chuẩn bị một lần
+
+Toàn bộ quy trình chỉ cần hai bước, sau đó mọi thứ đều thao tác bằng hội thoại.
+
+<Steps>
+  <Step title="Cài đặt OpenYida">
+    Đảm bảo đã có [Node.js ≥ 18](https://nodejs.org), sau đó chạy trong terminal:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Sau khi cài đặt, gói kỹ năng của OpenYida được tự động chèn vào Claude Code, không cần cấu hình thêm.
+  </Step>
+
+  <Step title="Yêu cầu AI đăng nhập Yida">
+    Khởi động Claude Code, nói trực tiếp:
+
+    ```
+    Giúp tôi đăng nhập Yida
+    ```
+
+    AI sẽ tự động gọi lệnh đăng nhập, mở trình duyệt hoặc hiển thị mã QR để quét. Sau lần đăng nhập đầu tiên, thông tin xác thực được lưu cache, không cần lặp lại.
+  </Step>
+</Steps>
+
+<Tip>
+  Vậy thôi, chuẩn bị xong. Từ giờ bạn chỉ cần trò chuyện với AI.
+</Tip>
+
+---
+
+## Chọn mô hình
+
+Claude Code mặc định sử dụng các mô hình dòng Claude, có thể chuyển đổi qua lệnh `/model`:
+
+| Mô hình | Tình huống khuyến nghị |
+|---------|------------------------|
+| **Claude Sonnet 4** (mặc định) | Xây dựng ứng dụng hàng ngày, nhanh |
+| **Claude Opus 4** | Hệ thống phức tạp với nhiều biểu mẫu |
+
+Cả hai đều hoạt động tốt với OpenYida. Sử dụng hàng ngày thì Sonnet là đủ.
+
+---
+
+## Bắt đầu xây dựng
+
+Mô tả trực tiếp bằng ngôn ngữ tự nhiên ứng dụng bạn muốn, AI sẽ tự động xử lý toàn bộ:
+
+```
+Giúp tôi tạo hệ thống CRM trên Yida, bao gồm:
+- Biểu mẫu lead: tên, công ty, điện thoại, nguồn, trạng thái
+- Biểu mẫu khách hàng: tên công ty, ngành, người liên hệ, quản lý khách hàng
+- Biểu mẫu cơ hội: liên kết khách hàng, số tiền, giai đoạn, ngày dự kiến chốt
+```
+
+```
+Tạo ứng dụng quản lý tài sản IT, có thể nhập thông tin thiết bị, theo dõi mượn và trả
+```
+
+```
+Xuất bản trang này, đặt thành truy cập công khai
+```
+
+AI sẽ tự động hoàn thành tất cả các bước như tạo ứng dụng, tạo biểu mẫu, xuất bản trang, v.v. Bạn không cần nhớ bất kỳ lệnh nào.
+
+---
+
+## Ví dụ hội thoại thực tế
+
+Dưới đây là một quy trình hội thoại điển hình:
+
+> **Bạn**: Giúp tôi tạo hệ thống xin nghỉ phép cho nhân viên
+>
+> **AI**: Được, tôi sẽ giúp bạn tạo. Để tôi kiểm tra môi trường và trạng thái đăng nhập...
+>
+> Môi trường bình thường, đã đăng nhập. Bắt đầu tạo ứng dụng...
+>
+> Hệ thống xin nghỉ phép đã tạo xong! Bao gồm:
+> - Biểu mẫu xin nghỉ phép (người xin, loại nghỉ, ngày bắt đầu/kết thúc, lý do)
+> - Liên kết ứng dụng: https://www.aliwork.com/APP_XXXXX/...
+>
+> Bạn có muốn tôi thêm quy trình phê duyệt không?
+
+Bạn chỉ cần nói yêu cầu, AI chịu trách nhiệm thực thi.
+
+---
+
+## Sử dụng nâng cao
+
+Khi đã quen hơn, bạn có thể đưa ra chỉ dẫn chính xác hơn cho AI:
+
+```
+Lấy danh sách trường của biểu mẫu "Thông tin khách hàng", tôi muốn xác nhận cấu hình trường
+```
+
+```
+Giúp tôi tạo connector Yida từ lệnh curl này:
+curl -H "Authorization: Bearer xxx" https://api.example.com/users
+```
+
+```
+Kiểm tra xem môi trường có vấn đề gì không
+```
+
+---
+
+## Câu hỏi thường gặp
+
+<AccordionGroup>
+  <Accordion title="AI nói không tìm thấy lệnh openyida">
+    Xác nhận cài đặt thành công trong terminal: `openyida --version`. Nếu đã cài nhưng Claude Code không tìm thấy, thoát và khởi động lại Claude Code.
+  </Accordion>
+
+  <Accordion title="Đăng nhập hết hạn thì làm sao">
+    Nói trực tiếp với AI "đăng nhập lại Yida", AI sẽ tự động xử lý.
+  </Accordion>
+
+  <Accordion title="AI không sử dụng kỹ năng OpenYida">
+    Đề cập từ khóa "Yida" trong hội thoại để kích hoạt. Ví dụ: "tạo biểu mẫu trên Yida".
+  </Accordion>
+
+  <Accordion title="Muốn cập nhật lên phiên bản mới nhất">
+    Nói với AI "giúp tôi cập nhật openyida" hoặc chạy thủ công `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

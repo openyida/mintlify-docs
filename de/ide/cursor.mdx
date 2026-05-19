@@ -1,0 +1,131 @@
+---
+title: "Cursor"
+description: "OpenYida in Cursor verwenden: Nach der Installation im Agent-Modus kommunizieren und Yida-Anwendungen automatisch erstellen."
+icon: "i-cursor"
+---
+
+Cursor ist ein KI-Code-Editor auf Basis von VS Code mit einem leistungsstarken integrierten Agent-Modus. Nach der Installation von OpenYida können Sie direkt im Agent-Modus kommunizieren und die KI erstellt automatisch Ihre Yida-Anwendungen.
+
+---
+
+## Einmalige Vorbereitung
+
+<Steps>
+  <Step title="Cursor herunterladen">
+    Besuchen Sie [cursor.com](https://cursor.com/) zum Herunterladen und Installieren, unterstützt macOS / Windows / Linux.
+  </Step>
+
+  <Step title="OpenYida installieren">
+    Öffnen Sie das integrierte Terminal von Cursor (`` Ctrl+` `` oder `` Cmd+` ``) und führen Sie aus:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Das Skill-Paket wird automatisch injiziert, keine zusätzliche Konfiguration erforderlich.
+  </Step>
+
+  <Step title="Die KI bitten, sich bei Yida anzumelden">
+    Öffnen Sie den Composer (`Cmd+I`), wechseln Sie in den **Agent**-Modus und sagen Sie:
+
+    ```
+    Hilf mir, mich bei Yida anzumelden
+    ```
+
+    Folgen Sie den Anweisungen zum QR-Code-Scannen oder zur Browser-Anmeldung.
+  </Step>
+</Steps>
+
+---
+
+## Modellauswahl
+
+Wechseln Sie im Modell-Selektor von Cursor. Empfehlungen:
+
+| Modell | Empfohlenes Szenario |
+|--------|---------------------|
+| **Claude Sonnet 4** (empfohlen) | Starke Tool-Aufruf-Fähigkeiten, erste Wahl für den Alltag |
+| **Claude Opus 4** | Komplexe Systeme, Multi-Formular-Verknüpfungen |
+| GPT-4o | Einfache Formulare, schnelle Antwort |
+
+<Tip>
+  Sie müssen den **Agent-Modus** verwenden (nicht den Ask-Modus), damit die KI Befehle ausführen kann. Klicken Sie im Composer auf den Modus-Schalter, um zu Agent zu wechseln.
+</Tip>
+
+---
+
+## Mit dem Erstellen beginnen
+
+Beschreiben Sie Ihre Anforderungen direkt im Agent-Modus:
+
+```
+Erstelle auf Yida ein Projektmanagementsystem:
+- Projektformular: Projektname, Verantwortlicher, Startdatum, Enddatum, Status
+- Aufgabenformular: verknüpft mit Projekt, Aufgabenname, Priorität, Bearbeiter, Fälligkeitsdatum
+- Erstelle eine Dashboard-Seite mit Projektübersicht
+```
+
+```
+Erstelle mir eine Anwendung zur Besprechungsraumreservierung
+```
+
+```
+Füge der Anwendung „Auftragsverwaltung" einen Erstattungsgenehmigungsworkflow hinzu
+```
+
+Die KI führt alle Operationen automatisch aus, Sie müssen nur die Ergebnisse prüfen und Feedback geben.
+
+---
+
+## Beispiel einer realen Konversation
+
+> **Sie**: Baue mir ein einfaches Kundenfeedback-Erfassungssystem
+>
+> **KI**: Ich erstelle es für Sie.
+>
+> ✓ Anwendung „Kundenfeedback-Erfassung" erstellt
+> ✓ Formular erstellt: Feedback-Typ (Vorschlag/Beschwerde/Anfrage), Kundenname, Kontaktdaten, Feedback-Inhalt, Priorität
+> ✓ Anwendungslink: https://www.aliwork.com/APP_XXXXX/...
+>
+> Soll ich ein Feedback-Statistik-Dashboard hinzufügen?
+
+---
+
+## MCP-Modus (optionale Erweiterung)
+
+Wenn Sie interaktive Visualisierungsfähigkeiten (Dashboard-Karten, Diagrammvorschauen) wünschen, können Sie zusätzlich MCP konfigurieren. Erstellen Sie eine `.cursor/mcp.json` im Projektstammverzeichnis:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+Nach der Konfiguration starten Sie Cursor neu, und die KI kann in der Konversation direkt Yida-Diagramme und Formularvorschauen rendern.
+
+<Info>
+  MCP ist eine optionale Erweiterung. Ohne MCP-Konfiguration funktionieren alle Kernfunktionen von OpenYida (Anwendungen, Formulare, Seiten erstellen, veröffentlichen usw.) vollständig.
+</Info>
+
+---
+
+## Häufig gestellte Fragen
+
+<AccordionGroup>
+  <Accordion title="Die KI ruft OpenYida nicht automatisch auf">
+    Bestätigen Sie, dass Sie sich im **Agent-Modus** befinden. Der Ask-Modus kann nur Fragen beantworten, keine Befehle ausführen. Außerdem hilft die Erwähnung des Schlüsselworts „Yida" in der Konversation der KI, die Absicht zu erkennen.
+  </Accordion>
+
+  <Accordion title="Anmeldung abgelaufen">
+    Sagen Sie der KI „Meine Yida-Anmeldung scheint abgelaufen zu sein, melde mich bitte erneut an".
+  </Accordion>
+
+  <Accordion title="OpenYida aktualisieren">
+    Sagen Sie der KI „Aktualisiere openyida auf die neueste Version", oder führen Sie im Terminal `npm install -g openyida@latest` aus.
+  </Accordion>
+</AccordionGroup>

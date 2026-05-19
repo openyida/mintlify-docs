@@ -1,0 +1,131 @@
+---
+title: "Cursor"
+description: "Sử dụng OpenYida trong Cursor: sau khi cài đặt, dùng chế độ Agent để hội thoại và tự động xây dựng ứng dụng Yida."
+icon: "i-cursor"
+---
+
+Cursor là trình soạn thảo mã AI dựa trên VS Code, tích hợp sẵn chế độ Agent mạnh mẽ. Sau khi cài đặt OpenYida, hội thoại trực tiếp trong chế độ Agent và AI sẽ tự động xây dựng ứng dụng Yida cho bạn.
+
+---
+
+## Chuẩn bị một lần
+
+<Steps>
+  <Step title="Tải Cursor">
+    Truy cập [cursor.com](https://cursor.com/) để tải và cài đặt. Hỗ trợ macOS / Windows / Linux.
+  </Step>
+
+  <Step title="Cài đặt OpenYida">
+    Mở terminal tích hợp của Cursor (`` Ctrl+` `` hoặc `` Cmd+` ``), chạy:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Gói kỹ năng được tự động chèn, không cần cấu hình thêm.
+  </Step>
+
+  <Step title="Yêu cầu AI đăng nhập Yida">
+    Mở Composer (`Cmd+I`), chuyển sang chế độ **Agent**, nói:
+
+    ```
+    Giúp tôi đăng nhập Yida
+    ```
+
+    Làm theo hướng dẫn để hoàn tất đăng nhập qua mã QR hoặc trình duyệt.
+  </Step>
+</Steps>
+
+---
+
+## Chọn mô hình
+
+Chuyển đổi trong bộ chọn mô hình của Cursor. Khuyến nghị:
+
+| Mô hình | Tình huống khuyến nghị |
+|---------|------------------------|
+| **Claude Sonnet 4** (khuyến nghị) | Khả năng gọi công cụ mạnh, lựa chọn hàng đầu cho xây dựng hàng ngày |
+| **Claude Opus 4** | Hệ thống phức tạp, nhiều biểu mẫu liên kết |
+| GPT-4o | Biểu mẫu đơn giản, phản hồi nhanh |
+
+<Tip>
+  Phải sử dụng **chế độ Agent** (không phải chế độ Ask) để AI có thể thực thi lệnh. Trong Composer, nhấp để chuyển sang Agent.
+</Tip>
+
+---
+
+## Bắt đầu xây dựng
+
+Trong chế độ Agent, mô tả trực tiếp yêu cầu:
+
+```
+Tạo hệ thống quản lý dự án trên Yida:
+- Biểu mẫu dự án: tên dự án, người phụ trách, ngày bắt đầu, ngày kết thúc, trạng thái
+- Biểu mẫu nhiệm vụ: liên kết dự án, tên nhiệm vụ, độ ưu tiên, người thực hiện, hạn chót
+- Tạo trang dashboard tổng quan dự án
+```
+
+```
+Giúp tôi tạo ứng dụng đặt phòng họp
+```
+
+```
+Thêm quy trình phê duyệt hoàn tiền vào ứng dụng "Quản lý đơn hàng"
+```
+
+AI sẽ tự động thực hiện tất cả thao tác. Bạn chỉ cần xem kết quả và phản hồi.
+
+---
+
+## Ví dụ hội thoại thực tế
+
+> **Bạn**: Giúp tôi xây dựng hệ thống thu thập phản hồi khách hàng đơn giản
+>
+> **AI**: Tôi sẽ giúp bạn tạo.
+>
+> ✓ Đã tạo ứng dụng "Thu thập phản hồi khách hàng"
+> ✓ Đã tạo biểu mẫu: loại phản hồi (góp ý/khiếu nại/tư vấn), tên khách hàng, thông tin liên hệ, nội dung phản hồi, mức ưu tiên
+> ✓ Liên kết ứng dụng: https://www.aliwork.com/APP_XXXXX/...
+>
+> Bạn có muốn tôi thêm bảng thống kê phản hồi không?
+
+---
+
+## Chế độ MCP (tùy chọn nâng cao)
+
+Nếu bạn muốn có khả năng trực quan hóa tương tác (như card dashboard, xem trước biểu đồ), có thể cấu hình thêm MCP. Tạo `.cursor/mcp.json` ở thư mục gốc dự án:
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+Sau khi cấu hình, khởi động lại Cursor. AI có thể render trực tiếp biểu đồ và xem trước biểu mẫu Yida trong hội thoại.
+
+<Info>
+  MCP là tính năng nâng cao tùy chọn. Không cấu hình MCP, tất cả khả năng cốt lõi của OpenYida (tạo ứng dụng, biểu mẫu, trang, xuất bản, v.v.) đều hoạt động bình thường.
+</Info>
+
+---
+
+## Câu hỏi thường gặp
+
+<AccordionGroup>
+  <Accordion title="AI không tự động gọi OpenYida">
+    Xác nhận bạn đang ở **chế độ Agent**. Chế độ Ask chỉ trả lời câu hỏi, không thể thực thi lệnh. Ngoài ra, đề cập từ khóa "Yida" trong hội thoại giúp AI nhận diện ý định.
+  </Accordion>
+
+  <Accordion title="Đăng nhập hết hạn">
+    Nói với AI "đăng nhập Yida hình như hết hạn rồi, giúp tôi đăng nhập lại".
+  </Accordion>
+
+  <Accordion title="Muốn cập nhật OpenYida">
+    Nói với AI "giúp tôi cập nhật openyida lên phiên bản mới nhất" hoặc chạy trong terminal `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

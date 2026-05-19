@@ -1,0 +1,118 @@
+---
+title: "Wukong"
+description: "OpenYida in DingTalk Wukong verwenden: Yida-Anwendungen per Konversation erstellen, natives Erlebnis in DingTalk."
+icon: "hat-wizard"
+---
+
+Wukong ist der in DingTalk integrierte KI-Programmierassistent. OpenYida ist tief an Wukong angepasst — nach der Installation können Sie in der Konversation Ihre Anforderungen beschreiben und Yida-Anwendungen erstellen.
+
+---
+
+## Einmalige Vorbereitung
+
+<Steps>
+  <Step title="Wukong-Arbeitsbereich öffnen">
+    Öffnen Sie DingTalk → gehen Sie zum Wukong-Arbeitsbereich. Wukong enthält eine Node.js-Runtime, eine separate Installation ist nicht erforderlich.
+  </Step>
+
+  <Step title="OpenYida installieren">
+    Führen Sie im Wukong-Terminal aus:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    <Warning>
+      Bei einem Berechtigungsfehler konfigurieren Sie zuerst den in Wukong integrierten Node.js-Pfad:
+      ```bash
+      export PATH="$HOME/.real/.bin/node/bin:$PATH"
+      npm install -g openyida
+      ```
+    </Warning>
+  </Step>
+
+  <Step title="Die KI bitten, sich bei Yida anzumelden">
+    Sagen Sie direkt in der Wukong-Konversation:
+
+    ```
+    Hilf mir, mich bei Yida anzumelden
+    ```
+
+    Die QR-Code-Methode wird empfohlen — die KI zeigt einen QR-Code im Dialogfeld an, scannen Sie ihn mit DingTalk auf Ihrem Smartphone.
+  </Step>
+</Steps>
+
+---
+
+## Modellinformationen
+
+Wukong verwendet das einheitliche KI-Modell der DingTalk-Plattform, keine manuelle Konfiguration erforderlich. Das Modell ist für chinesischsprachige Szenarien und Unternehmensarbeit tiefgehend optimiert, verwenden Sie es direkt.
+
+---
+
+## Mit dem Erstellen beginnen
+
+Nennen Sie Ihre Anforderungen direkt in der Wukong-Konversation:
+
+```
+Erstelle auf Yida ein Reisekostenabrechnungssystem:
+- Dienstreiseantrag: Antragsteller, Zweck, Abfahrtsort, Zielort, Datum
+- Kostenabrechnung: verknüpft mit Dienstreiseantrag, Kostendetails, Betrag, Belege
+- Genehmigungsworkflow
+```
+
+```
+Baue mir eine Besprechungsraumreservierungs-Anwendung
+```
+
+```
+Veröffentliche die gerade erstellte Seite als öffentlichen Link
+```
+
+---
+
+## Beispiel einer realen Konversation
+
+> **Sie**: Erstelle ein Wochenberichtsmanagementsystem
+>
+> **KI**: Gut, ich erstelle es auf Yida.
+>
+> ✓ Anwendung „Wochenberichtsmanagement" erstellt
+> ✓ Formular „Wochenbericht-Einreichung" erstellt: diese Woche erledigt, Plan nächste Woche, benötigte Unterstützung, Schlüsselkennzahlen
+> ✓ Anwendungslink: https://www.aliwork.com/APP_XXXXX/...
+>
+> Soll ich ein Team-Wochenbericht-Zusammenfassungsdashboard hinzufügen?
+
+---
+
+## Besondere Hinweise zu Wukong
+
+<Info>
+  Der Wukong-Arbeitsbereich ist eine Sandbox-Umgebung mit einigen Besonderheiten:
+
+  - **Arbeitsbereichspfad**: Enthält eine dynamische UUID (`~/.real/users/{uuid}/workspace/`), OpenYida erkennt dies automatisch
+  - **Datei-Initialisierung**: Bei der ersten Nutzung sagen Sie der KI „Initialisiere den Yida-Arbeitsbereich" und sie erledigt es automatisch
+  - **Befehls-Timeout**: Wenn eine Operation langsam ist, können Sie die KI bitten, schrittweise vorzugehen
+</Info>
+
+---
+
+## Häufig gestellte Fragen
+
+<AccordionGroup>
+  <Accordion title="npm install zeigt einen Berechtigungsfehler">
+    Konfigurieren Sie den in Wukong integrierten Node.js-Pfad und versuchen Sie es erneut:
+    ```bash
+    export PATH="$HOME/.real/.bin/node/bin:$PATH"
+    npm install -g openyida
+    ```
+  </Accordion>
+
+  <Accordion title="Die KI erkennt Yida-bezogene Befehle nicht">
+    Überprüfen Sie die erfolgreiche Installation: Führen Sie `openyida --version` im Wukong-Terminal aus. Wenn der Befehl existiert aber die KI nicht reagiert, erwähnen Sie explizit das Schlüsselwort „Yida" in der Konversation.
+  </Accordion>
+
+  <Accordion title="Anmelde-QR-Code wird nicht angezeigt">
+    Sagen Sie der KI: „Melde mich per QR-Code bei Yida an". Die KI verwendet den `--agent-qr`-Modus, um den QR-Code im Dialogfeld anzuzeigen.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,118 @@
+---
+title: "Wukong"
+description: "Utiliser OpenYida dans Wukong de DingTalk : construisez des applications Yida par conversation, avec une expérience native dans DingTalk."
+icon: "hat-wizard"
+---
+
+Wukong est l'assistant de programmation IA intégré à DingTalk. OpenYida est profondément adapté à Wukong — après installation, décrivez vos besoins dans la conversation pour construire des applications Yida.
+
+---
+
+## Préparation initiale
+
+<Steps>
+  <Step title="Accéder à l'espace de travail Wukong">
+    Ouvrez DingTalk → accédez à l'espace de travail Wukong. Wukong intègre un runtime Node.js, pas besoin d'installation séparée.
+  </Step>
+
+  <Step title="Installer OpenYida">
+    Dans le terminal Wukong, exécutez :
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    <Warning>
+      En cas d'erreur de permissions, configurez d'abord le chemin Node.js intégré à Wukong :
+      ```bash
+      export PATH="$HOME/.real/.bin/node/bin:$PATH"
+      npm install -g openyida
+      ```
+    </Warning>
+  </Step>
+
+  <Step title="Demander à l'IA de se connecter à Yida">
+    Dites directement dans la conversation Wukong :
+
+    ```
+    Aide-moi à me connecter à Yida
+    ```
+
+    La méthode par QR code est recommandée — l'IA affichera un QR code dans la zone de conversation, scannez-le avec DingTalk sur votre téléphone.
+  </Step>
+</Steps>
+
+---
+
+## Informations sur le modèle
+
+Wukong utilise le modèle IA unifié fourni par la plateforme DingTalk, aucune configuration manuelle n'est nécessaire. Le modèle est profondément optimisé pour les scénarios en chinois et la bureautique d'entreprise, utilisez-le directement.
+
+---
+
+## Commencer à construire
+
+Exprimez directement vos besoins dans la conversation Wukong :
+
+```
+Crée sur Yida un système de remboursement de frais de déplacement :
+- Demande de déplacement : demandeur, objectif, lieu de départ, destination, dates
+- Remboursement de frais : lié à la demande de déplacement, détail des dépenses, montant, justificatifs
+- Workflow d'approbation
+```
+
+```
+Construis-moi une application de réservation de salles de réunion
+```
+
+```
+Publie la page que l'on vient de créer en lien public
+```
+
+---
+
+## Exemple de conversation réelle
+
+> **Vous** : Crée un système de gestion des rapports hebdomadaires
+>
+> **IA** : D'accord, je vais le créer sur Yida.
+>
+> ✓ Application « Gestion des rapports hebdomadaires » créée
+> ✓ Formulaire « Soumission du rapport » créé : réalisations de la semaine, plan de la semaine prochaine, aide nécessaire, indicateurs clés
+> ✓ Lien de l'application : https://www.aliwork.com/APP_XXXXX/...
+>
+> Voulez-vous que j'ajoute un tableau de bord de synthèse des rapports d'équipe ?
+
+---
+
+## Notes spécifiques à Wukong
+
+<Info>
+  L'espace de travail Wukong est un environnement sandbox, avec quelques particularités à connaître :
+
+  - **Chemin de l'espace de travail** : contient un UUID dynamique (`~/.real/users/{uuid}/workspace/`), OpenYida le détecte automatiquement
+  - **Initialisation des fichiers** : à la première utilisation, dites à l'IA « Initialise l'espace de travail Yida » et elle s'en occupera automatiquement
+  - **Timeout des commandes** : si une opération est lente, vous pouvez demander à l'IA de procéder par étapes
+</Info>
+
+---
+
+## Questions fréquentes
+
+<AccordionGroup>
+  <Accordion title="npm install affiche une erreur de permissions">
+    Configurez le chemin Node.js intégré à Wukong puis réessayez :
+    ```bash
+    export PATH="$HOME/.real/.bin/node/bin:$PATH"
+    npm install -g openyida
+    ```
+  </Accordion>
+
+  <Accordion title="L'IA ne reconnaît pas les instructions liées à Yida">
+    Vérifiez que l'installation a réussi : exécutez `openyida --version` dans le terminal Wukong. Si la commande existe mais que l'IA ne se déclenche pas, mentionnez explicitement le mot-clé « Yida » dans la conversation.
+  </Accordion>
+
+  <Accordion title="Le QR code de connexion ne s'affiche pas">
+    Dites à l'IA : « Connecte-moi à Yida par QR code ». L'IA utilisera le mode `--agent-qr` pour afficher le QR code dans la zone de conversation.
+  </Accordion>
+</AccordionGroup>

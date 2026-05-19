@@ -1,0 +1,127 @@
+---
+title: "OpenCode"
+description: "Sử dụng OpenYida trong OpenCode: cấu hình mô hình rồi xây dựng ứng dụng Yida bằng hội thoại."
+icon: "terminal"
+---
+
+OpenCode là trợ lý AI dòng lệnh mã nguồn mở, hỗ trợ nhiều backend mô hình. Sau khi cài đặt OpenYida, gói kỹ năng được tự động chèn. Kết hợp với mô hình bạn thích để xây dựng ứng dụng Yida bằng hội thoại.
+
+---
+
+## Chuẩn bị một lần
+
+<Steps>
+  <Step title="Cài đặt OpenCode">
+    ```bash
+    # Homebrew (macOS)
+    brew install opencode
+
+    # Hoặc Go install
+    go install github.com/opencode-ai/opencode@latest
+    ```
+
+    Xem thêm tại [opencode.ai](https://opencode.ai).
+  </Step>
+
+  <Step title="Cấu hình API Key cho mô hình">
+    OpenCode yêu cầu bạn tự cấu hình mô hình. Khuyến nghị Anthropic (dòng Claude):
+
+    ```bash
+    export ANTHROPIC_API_KEY="API Key của bạn"
+    ```
+
+    Cũng hỗ trợ OpenAI, DeepSeek và các giao diện tương thích khác:
+
+    ```bash
+    # OpenAI
+    export OPENAI_API_KEY="Key của bạn"
+
+    # DeepSeek
+    export OPENAI_API_KEY="Key của bạn"
+    export OPENAI_BASE_URL="https://api.deepseek.com/v1"
+    ```
+  </Step>
+
+  <Step title="Cài đặt OpenYida">
+    ```bash
+    npm install -g openyida
+    ```
+
+    Gói kỹ năng được tự động chèn vào OpenCode.
+  </Step>
+
+  <Step title="Yêu cầu AI đăng nhập Yida">
+    Sau khi khởi động OpenCode, nói:
+
+    ```
+    Giúp tôi đăng nhập Yida
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Mô hình khuyến nghị
+
+| Mô hình | Tình huống khuyến nghị | Ghi chú |
+|---------|------------------------|---------|
+| **Claude Sonnet 4** (khuyến nghị) | Xây dựng hàng ngày | Khả năng gọi công cụ tốt nhất |
+| Claude Opus 4 | Hệ thống phức tạp | Suy luận sâu |
+| DeepSeek V3 | Ngữ cảnh tiếng Trung | Giá thành hợp lý |
+| GPT-4o | Đa dụng | Cân bằng |
+
+<Tip>
+  Mô hình phải hỗ trợ gọi công cụ (Tool Use / Function Calling) mới có thể điều khiển OpenYida. Một số mô hình mã nguồn mở nhỏ có thể không hỗ trợ. Khuyến nghị ưu tiên Claude Sonnet 4.
+</Tip>
+
+---
+
+## Bắt đầu xây dựng
+
+Hội thoại với AI mô tả yêu cầu:
+
+```
+Tạo hệ thống mua sắm vật tư trên Yida:
+- Đề nghị mua: người đề nghị, tên vật tư, số lượng, ngân sách, mục đích
+- Quy trình phê duyệt: trưởng phòng → phê duyệt tài chính
+```
+
+```
+Tạo ứng dụng đăng ký sự kiện, bao gồm biểu mẫu đăng ký và bảng thống kê
+```
+
+```
+Xem tất cả ứng dụng của tôi trên Yida
+```
+
+---
+
+## Ví dụ hội thoại thực tế
+
+> **Bạn**: Giúp tôi tạo ứng dụng xếp lịch trực
+>
+> **AI**: Được, tôi sẽ tạo hệ thống xếp lịch trực.
+>
+> ✓ Đã tạo ứng dụng "Xếp lịch trực"
+> ✓ Đã tạo biểu mẫu "Bảng phân công": ngày, ca, người trực, ghi chú
+> ✓ Đã tạo biểu mẫu "Đề nghị đổi ca": người trực ban đầu, người thay, ngày, lý do
+>
+> Bạn có muốn thêm quy trình phê duyệt đổi ca không?
+
+---
+
+## Câu hỏi thường gặp
+
+<AccordionGroup>
+  <Accordion title="AI gọi lệnh openyida thất bại">
+    Xác nhận cài đặt: `openyida --version`. Nếu lệnh tồn tại nhưng AI không sử dụng, có thể mô hình không hỗ trợ gọi công cụ. Thử chuyển sang Claude Sonnet 4.
+  </Accordion>
+
+  <Accordion title="Đăng nhập hết hạn">
+    Nói với AI "đăng nhập lại Yida".
+  </Accordion>
+
+  <Accordion title="Cập nhật OpenYida">
+    `npm install -g openyida@latest`, hoặc nhờ AI cập nhật giúp.
+  </Accordion>
+</AccordionGroup>

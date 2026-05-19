@@ -1,0 +1,131 @@
+---
+title: "Cursor"
+description: "在 Cursor 中使用 OpenYida：安装后用 Agent 模式对话，自动构建宜搭应用。"
+icon: "i-cursor"
+---
+
+Cursor 是基于 VS Code 的 AI 代码编辑器，内置强大的 Agent 模式。安装 OpenYida 后，在 Agent 模式中直接对话，AI 就会帮你自动构建宜搭应用。
+
+---
+
+## 一次性准备
+
+<Steps>
+  <Step title="下载 Cursor">
+    访问 [cursor.com](https://cursor.com/) 下载安装，支持 macOS / Windows / Linux。
+  </Step>
+
+  <Step title="安装 OpenYida">
+    打开 Cursor 内置终端（`` Ctrl+` `` 或 `` Cmd+` ``），运行：
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    技能包会自动注入，无需额外配置。
+  </Step>
+
+  <Step title="告诉 AI 登录宜搭">
+    打开 Composer（`Cmd+I`），切换到 **Agent** 模式，说：
+
+    ```
+    帮我登录宜搭
+    ```
+
+    按提示完成扫码或浏览器登录即可。
+  </Step>
+</Steps>
+
+---
+
+## 模型选择
+
+在 Cursor 的模型选择器中切换。推荐：
+
+| 模型 | 推荐场景 |
+|------|----------|
+| **Claude Sonnet 4**（推荐） | 工具调用能力强，日常构建首选 |
+| **Claude Opus 4** | 复杂系统，多表单关联 |
+| GPT-4o | 简单表单，响应快 |
+
+<Tip>
+  必须使用 **Agent 模式**（不是 Ask 模式）才能让 AI 执行命令。在 Composer 中点击模式切换到 Agent。
+</Tip>
+
+---
+
+## 开始构建
+
+在 Agent 模式中直接描述需求：
+
+```
+在宜搭上创建一个项目管理系统：
+- 项目表单：项目名称、负责人、开始日期、结束日期、状态
+- 任务表单：关联项目、任务名称、优先级、执行人、截止日期
+- 做一个项目概览的看板页面
+```
+
+```
+帮我创建一个会议室预约应用
+```
+
+```
+给「订单管理」应用添加一个退款审批流程
+```
+
+AI 会自动执行所有操作，你只需要看结果、提反馈。
+
+---
+
+## 实际对话示例
+
+> **你**：帮我搭一个简单的客户反馈收集系统
+>
+> **AI**：我来帮你创建。
+>
+> ✓ 已创建应用「客户反馈收集」
+> ✓ 已创建表单：反馈类型（建议/投诉/咨询）、客户姓名、联系方式、反馈内容、优先级
+> ✓ 应用链接：https://www.aliwork.com/APP_XXXXX/...
+>
+> 需要我添加一个反馈统计看板吗？
+
+---
+
+## MCP 模式（可选增强）
+
+如果你想要交互式可视化能力（如仪表盘卡片、图表预览），可以额外配置 MCP。在项目根目录创建 `.cursor/mcp.json`：
+
+```json
+{
+  "mcpServers": {
+    "openyida": {
+      "command": "npx",
+      "args": ["-y", "@openyida/mcp-app", "--stdio"]
+    }
+  }
+}
+```
+
+配置后重启 Cursor，AI 对话中就能直接渲染宜搭的图表和表单预览了。
+
+<Info>
+  MCP 是可选的增强功能。不配置 MCP，OpenYida 的所有核心能力（创建应用、表单、页面、发布等）都能正常使用。
+</Info>
+
+---
+
+## 常见问题
+
+<AccordionGroup>
+  <Accordion title="AI 没有自动调用 OpenYida">
+    确认你在 **Agent 模式**下。Ask 模式只能回答问题，不能执行命令。另外，对话中提及「宜搭」关键词会帮助 AI 识别意图。
+  </Accordion>
+
+  <Accordion title="登录过期了">
+    告诉 AI「宜搭登录好像过期了，帮我重新登录」。
+  </Accordion>
+
+  <Accordion title="想更新 OpenYida">
+    告诉 AI「帮我更新 openyida 到最新版」，或在终端运行 `npm install -g openyida@latest`。
+  </Accordion>
+</AccordionGroup>

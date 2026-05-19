@@ -1,0 +1,118 @@
+---
+title: "悟空"
+description: "在釘釘悟空中使用 OpenYida：直接對話構建宜搭應用，釘釘內原生體驗。"
+icon: "hat-wizard"
+---
+
+悟空是釘釘內建的 AI 程式設計助手。OpenYida 與悟空深度適配，安裝後在對話中描述需求即可構建宜搭應用。
+
+---
+
+## 一次性準備
+
+<Steps>
+  <Step title="進入悟空工作區">
+    打開釘釘 → 進入悟空工作區。悟空自帶 Node.js 執行環境，無需單獨安裝。
+  </Step>
+
+  <Step title="安裝 OpenYida">
+    在悟空終端中執行：
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    <Warning>
+      如果提示權限錯誤，先配置悟空自帶的 Node.js 路徑：
+      ```bash
+      export PATH="$HOME/.real/.bin/node/bin:$PATH"
+      npm install -g openyida
+      ```
+    </Warning>
+  </Step>
+
+  <Step title="告訴 AI 登入宜搭">
+    直接在悟空對話中說：
+
+    ```
+    幫我登入宜搭
+    ```
+
+    推薦使用掃碼方式 — AI 會在對話框中展示二維碼，用手機釘釘掃碼即可。
+  </Step>
+</Steps>
+
+---
+
+## 模型說明
+
+悟空使用釘釘平台統一提供的 AI 模型，無需手動配置。模型針對中文場景和企業辦公做了深度最佳化，直接使用即可。
+
+---
+
+## 開始構建
+
+在悟空對話中直接說需求：
+
+```
+在宜搭上創建一個差旅報銷系統：
+- 出差申請：申請人、目的、出發地、目的地、日期
+- 費用報銷：關聯出差申請、費用明細、金額、憑證
+- 審批流程
+```
+
+```
+幫我搭一個會議室預約應用
+```
+
+```
+把剛才創建的頁面發佈成公開連結
+```
+
+---
+
+## 實際對話示例
+
+> **你**：創建一個週報管理系統
+>
+> **AI**：好的，我來幫你在宜搭上創建。
+>
+> ✓ 已創建應用「週報管理」
+> ✓ 已創建「週報提交」表單：本週完成、下週計劃、需要協助、關鍵指標
+> ✓ 應用連結：https://www.aliwork.com/APP_XXXXX/...
+>
+> 需要我加一個團隊週報彙總的看板嗎？
+
+---
+
+## 悟空特別說明
+
+<Info>
+  悟空工作區是沙箱環境，有幾個特殊點值得了解：
+
+  - **工作區路徑**：包含動態 UUID（`~/.real/users/{uuid}/workspace/`），OpenYida 會自動識別
+  - **檔案初始化**：第一次使用時告訴 AI「初始化宜搭工作區」，它會自動處理
+  - **命令逾時**：如果某個操作較慢，可以讓 AI 分步執行
+</Info>
+
+---
+
+## 常見問題
+
+<AccordionGroup>
+  <Accordion title="npm install 提示權限錯誤">
+    配置悟空自帶的 Node.js 路徑後重試：
+    ```bash
+    export PATH="$HOME/.real/.bin/node/bin:$PATH"
+    npm install -g openyida
+    ```
+  </Accordion>
+
+  <Accordion title="AI 不識別宜搭相關指令">
+    確認安裝成功：在悟空終端執行 `openyida --version`。如果命令存在但 AI 不觸發，在對話中明確提及「宜搭」關鍵詞。
+  </Accordion>
+
+  <Accordion title="登入二維碼不顯示">
+    告訴 AI：「用掃碼方式登入宜搭」。AI 會使用 `--agent-qr` 模式在對話框中展示二維碼。
+  </Accordion>
+</AccordionGroup>

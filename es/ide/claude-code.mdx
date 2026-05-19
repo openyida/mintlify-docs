@@ -1,0 +1,136 @@
+---
+title: "Claude Code"
+description: "Usar OpenYida en Claude Code: una sola instalación, luego crea aplicaciones Yida con lenguaje natural."
+icon: "message-bot"
+---
+
+Claude Code es el asistente de IA de terminal de Anthropic. Tras instalar OpenYida, solo necesitas conversar con la IA y ella llamará automáticamente a todos los comandos para construir tus aplicaciones.
+
+---
+
+## Preparación inicial
+
+Todo el proceso requiere solo dos pasos, después todo se hace por conversación.
+
+<Steps>
+  <Step title="Instalar OpenYida">
+    Asegúrate de tener [Node.js ≥ 18](https://nodejs.org) y luego ejecuta en la terminal:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Tras la instalación, el paquete de habilidades de OpenYida se inyecta automáticamente en Claude Code, sin necesidad de configuración adicional.
+  </Step>
+
+  <Step title="Pedir a la IA que inicie sesión en Yida">
+    Inicia Claude Code y di simplemente:
+
+    ```
+    Ayúdame a iniciar sesión en Yida
+    ```
+
+    La IA llamará automáticamente al comando de inicio de sesión, abrirá el navegador o mostrará un código QR para escanear. Una vez conectado, las credenciales se almacenan en caché y no necesitarás repetir la operación.
+  </Step>
+</Steps>
+
+<Tip>
+  Eso es todo, la preparación está completa. A partir de ahora solo necesitas conversar con la IA.
+</Tip>
+
+---
+
+## Selección de modelo
+
+Claude Code usa por defecto modelos de la serie Claude, que puedes cambiar con el comando `/model`:
+
+| Modelo | Escenario recomendado |
+|--------|----------------------|
+| **Claude Sonnet 4** (por defecto) | Construcción de aplicaciones cotidianas, rápido |
+| **Claude Opus 4** | Sistemas de negocio complejos multi-formulario |
+
+Ambos funcionan muy bien con OpenYida, Sonnet es suficiente para el uso diario.
+
+---
+
+## Empezar a construir
+
+Simplemente describe en lenguaje natural la aplicación que deseas, la IA se encarga de todo automáticamente:
+
+```
+Créame en Yida un sistema CRM que incluya:
+- Formulario de leads: nombre, empresa, teléfono, origen, estado
+- Formulario de clientes: nombre de empresa, sector, contacto, gestor de cuenta
+- Formulario de oportunidades: vinculado a cliente, importe, etapa, fecha prevista de cierre
+```
+
+```
+Crea una aplicación de gestión de activos IT, que permita registrar información de equipos y hacer seguimiento de préstamos y devoluciones
+```
+
+```
+Publica esta página y configúrala con acceso público
+```
+
+La IA completa automáticamente todos los pasos: crear la aplicación, los formularios, publicar páginas, etc. No necesitas recordar ningún comando.
+
+---
+
+## Ejemplo de conversación real
+
+Este es un flujo de conversación típico:
+
+> **Tú**: Créame un sistema de solicitud de vacaciones
+>
+> **IA**: De acuerdo, voy a crearlo. Primero verifico el entorno y el estado de la sesión...
+>
+> Entorno OK, sesión activa. Empiezo a crear la aplicación...
+>
+> ¡El sistema de vacaciones está listo! Incluye:
+> - Formulario de solicitud de vacaciones (solicitante, tipo de ausencia, fechas de inicio/fin, motivo)
+> - Enlace de la aplicación: https://www.aliwork.com/APP_XXXXX/...
+>
+> ¿Quieres que añada un flujo de aprobación?
+
+Solo necesitas expresar tus necesidades, la IA se encarga de la ejecución.
+
+---
+
+## Uso avanzado
+
+Cuando tengas más experiencia, puedes dar instrucciones más precisas a la IA:
+
+```
+Obtén la lista de campos del formulario «Información de clientes», quiero verificar la configuración de los campos
+```
+
+```
+Crea un conector Yida a partir de este comando curl:
+curl -H "Authorization: Bearer xxx" https://api.example.com/users
+```
+
+```
+Verifica si hay algún problema con el entorno
+```
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="La IA dice que no encuentra el comando openyida">
+    Confirma en la terminal que la instalación fue exitosa: `openyida --version`. Si está instalado pero Claude Code no lo encuentra, cierra y reinicia Claude Code.
+  </Accordion>
+
+  <Accordion title="Qué hacer si la sesión ha expirado">
+    Simplemente di a la IA «Vuelve a iniciar sesión en Yida» y se encargará automáticamente.
+  </Accordion>
+
+  <Accordion title="La IA no usa las habilidades de OpenYida">
+    Menciona la palabra clave «Yida» en la conversación para activar las habilidades. Por ejemplo, «Crea un formulario en Yida».
+  </Accordion>
+
+  <Accordion title="Actualizar a la última versión">
+    Di a la IA «Actualiza openyida por mí», o ejecuta manualmente `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

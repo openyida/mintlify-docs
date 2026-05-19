@@ -1,0 +1,118 @@
+---
+title: "Wukong"
+description: "Usar OpenYida en Wukong de DingTalk: construye aplicaciones Yida por conversación, experiencia nativa dentro de DingTalk."
+icon: "hat-wizard"
+---
+
+Wukong es el asistente de programación con IA integrado en DingTalk. OpenYida está profundamente adaptado a Wukong — tras la instalación, describe tus necesidades en la conversación para construir aplicaciones Yida.
+
+---
+
+## Preparación inicial
+
+<Steps>
+  <Step title="Acceder al espacio de trabajo de Wukong">
+    Abre DingTalk → accede al espacio de trabajo de Wukong. Wukong incluye un runtime de Node.js, no necesitas instalarlo por separado.
+  </Step>
+
+  <Step title="Instalar OpenYida">
+    En la terminal de Wukong, ejecuta:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    <Warning>
+      Si aparece un error de permisos, configura primero la ruta de Node.js integrado en Wukong:
+      ```bash
+      export PATH="$HOME/.real/.bin/node/bin:$PATH"
+      npm install -g openyida
+      ```
+    </Warning>
+  </Step>
+
+  <Step title="Pedir a la IA que inicie sesión en Yida">
+    Di directamente en la conversación de Wukong:
+
+    ```
+    Ayúdame a iniciar sesión en Yida
+    ```
+
+    Se recomienda el método por código QR — la IA mostrará un código QR en el cuadro de diálogo, escanéalo con DingTalk en tu teléfono.
+  </Step>
+</Steps>
+
+---
+
+## Información del modelo
+
+Wukong usa el modelo de IA unificado proporcionado por la plataforma DingTalk, sin necesidad de configuración manual. El modelo está profundamente optimizado para escenarios en chino y trabajo empresarial, úsalo directamente.
+
+---
+
+## Empezar a construir
+
+Expresa tus necesidades directamente en la conversación de Wukong:
+
+```
+Crea en Yida un sistema de reembolso de gastos de viaje:
+- Solicitud de viaje: solicitante, objetivo, lugar de salida, destino, fechas
+- Reembolso de gastos: vinculado a solicitud de viaje, detalle de gastos, importe, justificantes
+- Flujo de aprobación
+```
+
+```
+Construye una aplicación de reserva de salas de reuniones
+```
+
+```
+Publica la página que acabamos de crear como enlace público
+```
+
+---
+
+## Ejemplo de conversación real
+
+> **Tú**: Crea un sistema de gestión de informes semanales
+>
+> **IA**: De acuerdo, voy a crearlo en Yida.
+>
+> ✓ Aplicación «Gestión de informes semanales» creada
+> ✓ Formulario «Envío de informe semanal» creado: completado esta semana, plan para la próxima semana, ayuda necesaria, indicadores clave
+> ✓ Enlace de la aplicación: https://www.aliwork.com/APP_XXXXX/...
+>
+> ¿Quieres que añada un panel de resumen de informes del equipo?
+
+---
+
+## Notas específicas de Wukong
+
+<Info>
+  El espacio de trabajo de Wukong es un entorno sandbox con algunas particularidades:
+
+  - **Ruta del espacio de trabajo**: contiene un UUID dinámico (`~/.real/users/{uuid}/workspace/`), OpenYida lo detecta automáticamente
+  - **Inicialización de archivos**: la primera vez que lo uses, di a la IA «Inicializa el espacio de trabajo de Yida» y se encargará automáticamente
+  - **Timeout de comandos**: si una operación es lenta, puedes pedir a la IA que ejecute por pasos
+</Info>
+
+---
+
+## Preguntas frecuentes
+
+<AccordionGroup>
+  <Accordion title="npm install muestra un error de permisos">
+    Configura la ruta de Node.js integrado en Wukong y vuelve a intentarlo:
+    ```bash
+    export PATH="$HOME/.real/.bin/node/bin:$PATH"
+    npm install -g openyida
+    ```
+  </Accordion>
+
+  <Accordion title="La IA no reconoce instrucciones relacionadas con Yida">
+    Verifica que la instalación fue exitosa: ejecuta `openyida --version` en la terminal de Wukong. Si el comando existe pero la IA no reacciona, menciona explícitamente la palabra clave «Yida» en la conversación.
+  </Accordion>
+
+  <Accordion title="El código QR de inicio de sesión no se muestra">
+    Di a la IA: «Inicia sesión en Yida con código QR». La IA usará el modo `--agent-qr` para mostrar el código QR en el cuadro de diálogo.
+  </Accordion>
+</AccordionGroup>

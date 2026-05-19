@@ -1,0 +1,153 @@
+---
+title: "Codex"
+description: "Sử dụng OpenYida trong OpenAI Codex: tích hợp plugin gốc, truy cập một chạm qua menu @, xây dựng ứng dụng Yida bằng hội thoại."
+icon: "bolt"
+---
+
+Codex là môi trường lập trình AI của OpenAI. OpenYida có **tích hợp cấp plugin gốc** với Codex — sau khi cài đặt, nó tự động đăng ký làm plugin cục bộ của Codex, xuất hiện trực tiếp trong menu `@` với mục "Yida", đồng thời tích hợp sẵn MCP Server cung cấp khả năng gọi công cụ. Đây là tích hợp sâu nhất trong tất cả các IDE được hỗ trợ.
+
+---
+
+## Chuẩn bị một lần
+
+<Steps>
+  <Step title="Cài đặt OpenYida">
+    Đảm bảo đã có [Node.js ≥ 18](https://nodejs.org), sau đó chạy:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Sau khi cài đặt, tự động:
+    - Đăng ký OpenYida làm plugin cục bộ của Codex (xuất hiện trong menu `@`)
+    - Cấu hình MCP Server (AI có thể gọi trực tiếp các công cụ Yida)
+    - Chèn đầy đủ gói kỹ năng
+  </Step>
+
+  <Step title="Yêu cầu AI đăng nhập Yida">
+    Mở Codex, nói trực tiếp:
+
+    ```
+    Giúp tôi đăng nhập Yida
+    ```
+
+    AI sẽ mở trình duyệt cục bộ để hoàn tất đăng nhập. Nếu bạn thuộc nhiều tổ chức, Codex sẽ hiển thị điều khiển chọn gốc để bạn lựa chọn.
+  </Step>
+</Steps>
+
+<Tip>
+  Cài xong là dùng được ngay. OpenYida là "công dân hạng nhất" trong Codex — bạn thậm chí không cần biết CLI tồn tại.
+</Tip>
+
+---
+
+## Cách sử dụng
+
+### Cách 1: Menu @ (Khuyến nghị)
+
+Trong hộp thoại Codex, gõ `@`, bạn sẽ thấy tùy chọn "Yida". Nhấp vào, AI tự động vào chế độ phát triển Yida:
+
+```
+@Yida Giúp tôi tạo một hệ thống quản lý dự án
+```
+
+### Cách 2: Hội thoại trực tiếp
+
+Không cần dùng @, chỉ cần đề cập từ khóa liên quan đến "Yida", AI sẽ tự động sử dụng plugin OpenYida:
+
+```
+Xây dựng hệ thống quản lý đào tạo nhân viên trên Yida, bao gồm bảng khóa học, biểu mẫu đăng ký và bảng điểm đánh giá
+```
+
+---
+
+## Thông tin về mô hình
+
+Codex sử dụng mô hình tích hợp của OpenAI, không cần cấu hình thủ công. Mô hình hỗ trợ tốt cả gọi công cụ và sinh mã.
+
+---
+
+## Bắt đầu xây dựng
+
+Một số ví dụ hội thoại:
+
+```
+Giúp tôi tạo hệ thống CRM quản lý quan hệ khách hàng:
+- Quản lý lead: tên, công ty, điện thoại, nguồn, trạng thái theo dõi
+- Hồ sơ khách hàng: liên kết lead, ngành, doanh thu năm, quản lý khách hàng
+- Theo dõi cơ hội: liên kết khách hàng, số tiền, giai đoạn, ngày dự kiến chốt
+```
+
+```
+Thêm bảng thống kê dữ liệu vào ứng dụng của tôi, hiển thị tổng giá trị cơ hội và tỷ lệ chuyển đổi trong tháng
+```
+
+```
+Giúp tôi cấu hình quy trình phê duyệt: nghỉ phép trên 3 ngày cần trưởng phòng phê duyệt
+```
+
+---
+
+## Ví dụ hội thoại thực tế
+
+> **Bạn**: @Yida Tạo hệ thống hoàn trả chi phí công tác
+>
+> **AI**: Được, tôi sẽ tạo hệ thống hoàn trả chi phí công tác.
+>
+> ✓ Đã tạo ứng dụng "Quản lý hoàn trả công tác"
+> ✓ Đã tạo biểu mẫu "Đề nghị công tác": người đề nghị, điểm đến, ngày đi, ngày về, lý do
+> ✓ Đã tạo biểu mẫu "Hoàn trả chi phí": liên kết đề nghị công tác, loại chi phí (biểu mẫu con), tổng số tiền, tệp đính kèm
+> ✓ Đã cấu hình quy trình phê duyệt: Trưởng phòng → Tài chính
+>
+> Liên kết ứng dụng: https://www.aliwork.com/APP_XXXXX/...
+>
+> Bạn có muốn tôi tạo thêm bảng thống kê hoàn trả không?
+
+---
+
+## Khả năng độc quyền của Codex
+
+So với các IDE khác, OpenYida trong Codex có một số ưu thế độc quyền:
+
+<CardGroup cols={2}>
+  <Card title="Plugin gốc" icon="puzzle-piece">
+    Được đăng ký trong hệ thống plugin của Codex, không chỉ là file kỹ năng. AI hiểu OpenYida sâu hơn.
+  </Card>
+  <Card title="MCP tích hợp" icon="plug">
+    MCP Server được cấu hình tự động. AI tương tác với Yida thông qua gọi công cụ có cấu trúc, không chỉ thực thi lệnh.
+  </Card>
+  <Card title="Truy cập qua menu @" icon="at">
+    Chọn "Yida" trực tiếp trong menu @, vào chế độ phát triển ứng dụng chỉ với một nhấp chuột.
+  </Card>
+  <Card title="Chọn tổ chức gốc" icon="building">
+    Trong trường hợp đa tổ chức, chọn tổ chức mục tiêu qua điều khiển UI gốc của Codex, trải nghiệm mượt mà hơn.
+  </Card>
+</CardGroup>
+
+---
+
+## Câu hỏi thường gặp
+
+<AccordionGroup>
+  <Accordion title="Không thấy 'Yida' trong menu @">
+    Xác nhận OpenYida đã cài đặt đúng: `openyida --version`. Nếu sau khi cài vẫn không hiển thị, khởi động lại Codex để quét lại plugin. Cũng có thể kiểm tra thủ công thư mục plugin:
+    ```bash
+    ls ~/.openyida/codex-plugin/plugins/openyida/.codex-plugin/plugin.json
+    ```
+  </Accordion>
+
+  <Accordion title="Không hiển thị lựa chọn tổ chức khi đăng nhập">
+    Nếu bạn chỉ thuộc một tổ chức Yida, nó sẽ được chọn tự động. Điều khiển chọn chỉ xuất hiện khi có nhiều tổ chức.
+  </Accordion>
+
+  <Accordion title="Đăng nhập hết hạn">
+    Nói với AI "đăng nhập Yida hình như hết hạn rồi", AI sẽ tự động kích hoạt lại quy trình đăng nhập.
+  </Accordion>
+
+  <Accordion title="Cập nhật OpenYida">
+    ```bash
+    npm install -g openyida@latest
+    ```
+    Sau khi cập nhật, plugin Codex cũng tự động được cập nhật.
+  </Accordion>
+</AccordionGroup>

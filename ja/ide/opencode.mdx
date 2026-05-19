@@ -1,0 +1,127 @@
+---
+title: "OpenCode"
+description: "OpenCode で OpenYida を使用：モデルを設定後、対話で Yida アプリを構築。"
+icon: "terminal"
+---
+
+OpenCode はオープンソースのターミナル AI アシスタントで、複数のモデルバックエンドをサポートしています。OpenYida をインストールするとスキルパックが自動注入され、お好みのモデルと組み合わせて対話で Yida アプリを構築できます。
+
+---
+
+## 初期セットアップ
+
+<Steps>
+  <Step title="OpenCode をインストール">
+    ```bash
+    # Homebrew（macOS）
+    brew install opencode
+
+    # または Go install
+    go install github.com/opencode-ai/opencode@latest
+    ```
+
+    詳細は [opencode.ai](https://opencode.ai) をご覧ください。
+  </Step>
+
+  <Step title="モデルの API Key を設定">
+    OpenCode ではモデルを自分で設定する必要があります。Anthropic（Claude シリーズ）を推奨します：
+
+    ```bash
+    export ANTHROPIC_API_KEY="あなたの API Key"
+    ```
+
+    OpenAI、DeepSeek など互換インターフェースもサポートしています：
+
+    ```bash
+    # OpenAI
+    export OPENAI_API_KEY="あなたの Key"
+
+    # DeepSeek
+    export OPENAI_API_KEY="あなたの Key"
+    export OPENAI_BASE_URL="https://api.deepseek.com/v1"
+    ```
+  </Step>
+
+  <Step title="OpenYida をインストール">
+    ```bash
+    npm install -g openyida
+    ```
+
+    スキルパックが自動的に OpenCode に注入されます。
+  </Step>
+
+  <Step title="AI に Yida へのログインを依頼">
+    OpenCode を起動した後、次のように言います：
+
+    ```
+    Yidaにログインして
+    ```
+  </Step>
+</Steps>
+
+---
+
+## モデル推奨
+
+| モデル | 推奨シーン | 説明 |
+|------|----------|------|
+| **Claude Sonnet 4**（推奨） | 日常構築 | ツール呼び出し能力が最も強い |
+| Claude Opus 4 | 複雑なシステム | 深い推論 |
+| DeepSeek V3 | 中国語シーン | コストパフォーマンスが高い |
+| GPT-4o | 汎用 | バランス型 |
+
+<Tip>
+  OpenYida を駆動するには、モデルがツール呼び出し（Tool Use / Function Calling）をサポートしている必要があります。一部のオープンソース小規模モデルはサポートしていない場合があるため、Claude Sonnet 4 を優先的に選択することをお勧めします。
+</Tip>
+
+---
+
+## 構築を始める
+
+AI と対話して要件を記述します：
+
+```
+Yidaで物資調達システムを作成して：
+- 調達申請：申請者、物資名、数量、予算、用途
+- 承認フロー：部門マネージャー → 経理承認
+```
+
+```
+イベント参加申込アプリを作成して、申込フォームと申込統計ダッシュボードを含めて
+```
+
+```
+Yidaにあるすべてのアプリを確認して
+```
+
+---
+
+## 実際の対話例
+
+> **あなた**：当番スケジュールアプリを作って
+>
+> **AI**：わかりました。当番スケジュールシステムを作成します。
+>
+> ✓ アプリ「当番スケジュール」を作成しました
+> ✓ 「シフト表」フォームを作成しました：日付、時間帯、当番者、備考
+> ✓ 「シフト交代申請」フォームを作成しました：元の当番者、代理者、日付、理由
+>
+> シフト交代の承認フローも追加しますか？
+
+---
+
+## よくある質問
+
+<AccordionGroup>
+  <Accordion title="AI の openyida コマンド呼び出しが失敗する">
+    インストールを確認してください：`openyida --version`。コマンドは存在するのに AI が使用しない場合、モデルがツール呼び出しをサポートしていない可能性があります。Claude Sonnet 4 に切り替えて試してください。
+  </Accordion>
+
+  <Accordion title="ログインの有効期限切れ">
+    AI に「Yidaに再ログインして」と伝えてください。
+  </Accordion>
+
+  <Accordion title="OpenYida のアップデート">
+    `npm install -g openyida@latest` を実行するか、AI にアップデートを依頼してください。
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,120 @@
+---
+title: "VS Code"
+description: "Visual Studio Code에서 Copilot Chat을 통해 OpenYida를 사용하여 대화식으로 Yida 앱을 구축."
+icon: "code"
+---
+
+Visual Studio Code는 GitHub Copilot Chat의 Agent 모드를 통해 도구 호출을 지원합니다. MCP를 설정하면 VS Code 내에서 자연어 대화로 Yida 앱을 구축할 수 있습니다.
+
+---
+
+## 초기 설정
+
+<Steps>
+  <Step title="GitHub Copilot Chat 설치">
+    VS Code 확장 마켓플레이스에서 **GitHub Copilot**과 **GitHub Copilot Chat**을 검색하여 설치합니다. GitHub Copilot 구독이 필요합니다.
+  </Step>
+
+  <Step title="OpenYida 설치">
+    VS Code 터미널(`` Ctrl+` ``)을 열고 실행합니다:
+
+    ```bash
+    npm install -g openyida
+    ```
+  </Step>
+
+  <Step title="MCP 설정">
+    프로젝트 루트에 `.vscode/mcp.json`을 생성합니다:
+
+    ```json
+    {
+      "servers": {
+        "openyida": {
+          "command": "npx",
+          "args": ["-y", "@openyida/mcp-app", "--stdio"]
+        }
+      }
+    }
+    ```
+
+    VS Code를 리로드합니다(`Cmd+Shift+P` → "Reload Window").
+  </Step>
+
+  <Step title="AI에게 Yida 로그인 요청">
+    Copilot Chat을 열고 Agent 모드로 전환한 후 다음과 같이 말합니다:
+
+    ```
+    Yida에 로그인해 줘
+    ```
+  </Step>
+</Steps>
+
+<Info>
+  VS Code의 Copilot Chat은 MCP를 통해 OpenYida 도구를 호출해야 합니다. 이는 Cursor나 Claude Code와 다릅니다(그들은 스킬팩으로 자동 통합됩니다).
+</Info>
+
+---
+
+## 모델 선택
+
+Copilot Chat 패널에서 모델 선택기를 클릭하여 전환합니다:
+
+| 모델 | 권장 시나리오 |
+|------|----------|
+| **Claude Sonnet 4** (권장) | 도구 호출이 가장 안정적 |
+| GPT-4o | 빠른 응답, 간단한 작업 |
+| Claude Opus 4 | 복잡한 작업 (Copilot Pro+ 필요) |
+
+---
+
+## 구축 시작
+
+Copilot Chat의 Agent 모드에서 대화합니다:
+
+```
+Yida에서 경비 정산 관리 시스템을 만들어 줘:
+- 정산 신청 양식: 신청자, 비용 유형, 금액, 사유, 첨부파일
+- 승인 프로세스: 부서장 승인
+```
+
+```
+회의록 앱을 만들어 줘, 회의 주제, 참석자, 결정 사항을 기록할 수 있게
+```
+
+```
+Yida에 있는 내 앱들을 확인해 줘
+```
+
+AI가 MCP 도구를 통해 자동으로 작업을 완료합니다.
+
+---
+
+## 실제 대화 예시
+
+> **사용자**: 간단한 도서 대출 시스템을 만들어 줘
+>
+> **AI**: OpenYida를 통해 만들어 드리겠습니다.
+>
+> ✓ 앱 「도서 대출 관리」를 생성했습니다
+> ✓ 「도서 정보」 양식을 생성했습니다: 서명, 저자, ISBN, 분류, 재고 수량
+> ✓ 「대출 기록」 양식을 생성했습니다: 도서 연동, 대출자, 대출일, 반납일
+>
+> 도서 검색 표시 페이지도 추가할까요?
+
+---
+
+## 자주 묻는 질문
+
+<AccordionGroup>
+  <Accordion title="Copilot Chat에 Agent 모드가 없음">
+    VS Code 1.99 이상과 최신 버전의 Copilot Chat 확장이 필요합니다. 업데이트 후 VS Code를 재시작하세요.
+  </Accordion>
+
+  <Accordion title="AI가 OpenYida 도구를 사용하지 않음">
+    `.vscode/mcp.json` 설정이 올바른지 확인하고 창을 리로드하세요. 대화에서 명확하게 「Yida」 또는 「openyida」를 언급하면 Agent의 의도 인식에 도움이 됩니다.
+  </Accordion>
+
+  <Accordion title="MCP Server 시작 실패">
+    터미널에서 테스트하세요: `npx @openyida/mcp-app --stdio`. 에러가 발생하면 보통 Node.js 버전이 너무 낮은 것입니다. 18 이상으로 업그레이드하세요.
+  </Accordion>
+</AccordionGroup>

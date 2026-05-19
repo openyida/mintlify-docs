@@ -1,0 +1,118 @@
+---
+title: "Wukong"
+description: "Use OpenYida in DingTalk Wukong: build Yida apps through conversation with a native DingTalk experience."
+icon: "hat-wizard"
+---
+
+Wukong is DingTalk's built-in AI programming assistant. OpenYida is deeply adapted for Wukong — after installation, simply describe your requirements in conversation to build Yida apps.
+
+---
+
+## One-Time Setup
+
+<Steps>
+  <Step title="Enter the Wukong workspace">
+    Open DingTalk → Enter the Wukong workspace. Wukong comes with a Node.js runtime, so no separate installation is needed.
+  </Step>
+
+  <Step title="Install OpenYida">
+    Run in the Wukong terminal:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    <Warning>
+      If you get a permission error, first configure Wukong's built-in Node.js path:
+      ```bash
+      export PATH="$HOME/.real/.bin/node/bin:$PATH"
+      npm install -g openyida
+      ```
+    </Warning>
+  </Step>
+
+  <Step title="Tell the AI to log in to Yida">
+    Say directly in the Wukong conversation:
+
+    ```
+    Help me log in to Yida
+    ```
+
+    QR code login is recommended — the AI will display a QR code in the chat window for you to scan with the DingTalk mobile app.
+  </Step>
+</Steps>
+
+---
+
+## Model Notes
+
+Wukong uses the unified AI model provided by the DingTalk platform — no manual configuration needed. The model is deeply optimized for Chinese-language scenarios and enterprise workflows, so you can use it as-is.
+
+---
+
+## Start Building
+
+Describe your requirements directly in the Wukong conversation:
+
+```
+Create a travel expense reimbursement system on Yida:
+- Travel request: applicant, purpose, origin, destination, dates
+- Expense reimbursement: linked to travel request, expense details, amount, receipts
+- Approval workflow
+```
+
+```
+Help me build a meeting room booking app
+```
+
+```
+Publish the page I just created as a public link
+```
+
+---
+
+## Example Conversation
+
+> **You**: Create a weekly report management system
+>
+> **AI**: Sure, I'll help you create that on Yida.
+>
+> ✓ Created app "Weekly Report Management"
+> ✓ Created "Weekly Report Submission" form: this week's accomplishments, next week's plans, help needed, key metrics
+> ✓ App link: https://www.aliwork.com/APP_XXXXX/...
+>
+> Would you like me to add a team weekly summary dashboard?
+
+---
+
+## Wukong-Specific Notes
+
+<Info>
+  The Wukong workspace is a sandbox environment with a few special points worth knowing:
+
+  - **Workspace path**: Contains a dynamic UUID (`~/.real/users/{uuid}/workspace/`). OpenYida will detect this automatically.
+  - **File initialization**: The first time you use it, tell the AI "Initialize the Yida workspace" and it will handle everything automatically.
+  - **Command timeouts**: If an operation is slow, you can ask the AI to execute it step by step.
+</Info>
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="npm install shows a permission error">
+    Configure Wukong's built-in Node.js path and retry:
+    ```bash
+    export PATH="$HOME/.real/.bin/node/bin:$PATH"
+    npm install -g openyida
+    ```
+  </Accordion>
+
+  <Accordion title="AI doesn't recognize Yida-related commands">
+    Confirm installation: run `openyida --version` in the Wukong terminal. If the command exists but the AI doesn't trigger, explicitly mention "Yida" keywords in conversation.
+  </Accordion>
+
+  <Accordion title="Login QR code doesn't display">
+    Tell the AI: "Log in to Yida using QR code." The AI will use `--agent-qr` mode to display the QR code in the chat window.
+  </Accordion>
+</AccordionGroup>

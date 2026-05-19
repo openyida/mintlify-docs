@@ -1,0 +1,120 @@
+---
+title: "VS Code"
+description: "Sử dụng OpenYida trong Visual Studio Code thông qua Copilot Chat để xây dựng ứng dụng Yida bằng hội thoại."
+icon: "code"
+---
+
+Visual Studio Code hỗ trợ gọi công cụ thông qua chế độ Agent của GitHub Copilot Chat. Sau khi cấu hình MCP, bạn có thể xây dựng ứng dụng Yida bằng ngôn ngữ tự nhiên trong VS Code.
+
+---
+
+## Chuẩn bị một lần
+
+<Steps>
+  <Step title="Cài đặt GitHub Copilot Chat">
+    Trong marketplace tiện ích mở rộng VS Code, tìm và cài đặt **GitHub Copilot** và **GitHub Copilot Chat**. Cần đăng ký GitHub Copilot.
+  </Step>
+
+  <Step title="Cài đặt OpenYida">
+    Mở terminal VS Code (`` Ctrl+` ``), chạy:
+
+    ```bash
+    npm install -g openyida
+    ```
+  </Step>
+
+  <Step title="Cấu hình MCP">
+    Tạo `.vscode/mcp.json` ở thư mục gốc dự án:
+
+    ```json
+    {
+      "servers": {
+        "openyida": {
+          "command": "npx",
+          "args": ["-y", "@openyida/mcp-app", "--stdio"]
+        }
+      }
+    }
+    ```
+
+    Tải lại VS Code (`Cmd+Shift+P` → "Reload Window").
+  </Step>
+
+  <Step title="Yêu cầu AI đăng nhập Yida">
+    Mở Copilot Chat, chuyển sang chế độ Agent, nói:
+
+    ```
+    Giúp tôi đăng nhập Yida
+    ```
+  </Step>
+</Steps>
+
+<Info>
+  Copilot Chat của VS Code cần MCP để gọi các công cụ OpenYida. Điều này khác với Cursor và Claude Code (chúng tự động tích hợp thông qua gói kỹ năng).
+</Info>
+
+---
+
+## Chọn mô hình
+
+Nhấp vào bộ chọn mô hình trong bảng Copilot Chat để chuyển đổi:
+
+| Mô hình | Tình huống khuyến nghị |
+|---------|------------------------|
+| **Claude Sonnet 4** (khuyến nghị) | Gọi công cụ ổn định nhất |
+| GPT-4o | Phản hồi nhanh, tác vụ đơn giản |
+| Claude Opus 4 | Tác vụ phức tạp (cần Copilot Pro+) |
+
+---
+
+## Bắt đầu xây dựng
+
+Hội thoại trong chế độ Agent của Copilot Chat:
+
+```
+Giúp tôi tạo hệ thống quản lý hoàn trả chi phí trên Yida:
+- Biểu mẫu đề nghị hoàn trả: người đề nghị, loại chi phí, số tiền, lý do, tệp đính kèm
+- Quy trình phê duyệt: trưởng phòng phê duyệt
+```
+
+```
+Tạo ứng dụng biên bản họp, có thể ghi lại chủ đề, người tham dự, các quyết định
+```
+
+```
+Kiểm tra xem tôi có những ứng dụng nào trên Yida
+```
+
+AI sẽ tự động hoàn thành thao tác thông qua công cụ MCP.
+
+---
+
+## Ví dụ hội thoại thực tế
+
+> **Bạn**: Giúp tôi tạo hệ thống mượn sách đơn giản
+>
+> **AI**: Tôi sẽ tạo thông qua OpenYida.
+>
+> ✓ Đã tạo ứng dụng "Quản lý mượn sách"
+> ✓ Đã tạo biểu mẫu "Thông tin sách": tên sách, tác giả, ISBN, phân loại, số lượng tồn
+> ✓ Đã tạo biểu mẫu "Lịch sử mượn": liên kết sách, người mượn, ngày mượn, ngày trả
+>
+> Bạn có muốn tôi thêm trang tra cứu sách không?
+
+---
+
+## Câu hỏi thường gặp
+
+<AccordionGroup>
+  <Accordion title="Không thấy chế độ Agent trong Copilot Chat">
+    Cần VS Code 1.99+ và phiên bản mới nhất của tiện ích mở rộng Copilot Chat. Cập nhật rồi khởi động lại VS Code.
+  </Accordion>
+
+  <Accordion title="AI không sử dụng công cụ OpenYida">
+    Xác nhận `.vscode/mcp.json` đã cấu hình đúng và cửa sổ đã được tải lại. Đề cập rõ ràng "Yida" hoặc "openyida" trong hội thoại để giúp Agent nhận diện ý định.
+  </Accordion>
+
+  <Accordion title="MCP Server khởi động thất bại">
+    Kiểm tra trong terminal: `npx @openyida/mcp-app --stdio`. Nếu có lỗi, thường là do phiên bản Node.js quá cũ, cần nâng cấp lên 18+.
+  </Accordion>
+</AccordionGroup>

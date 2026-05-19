@@ -1,0 +1,120 @@
+---
+title: "VS Code"
+description: "在 Visual Studio Code 中透過 Copilot Chat 使用 OpenYida，對話式構建宜搭應用。"
+icon: "code"
+---
+
+Visual Studio Code 透過 GitHub Copilot Chat 的 Agent 模式支援工具呼叫。配置 MCP 後，你可以在 VS Code 中用自然語言對話構建宜搭應用。
+
+---
+
+## 一次性準備
+
+<Steps>
+  <Step title="安裝 GitHub Copilot Chat">
+    在 VS Code 擴充市場搜尋並安裝 **GitHub Copilot** 和 **GitHub Copilot Chat**。需要 GitHub Copilot 訂閱。
+  </Step>
+
+  <Step title="安裝 OpenYida">
+    打開 VS Code 終端（`` Ctrl+` ``），執行：
+
+    ```bash
+    npm install -g openyida
+    ```
+  </Step>
+
+  <Step title="配置 MCP">
+    在專案根目錄創建 `.vscode/mcp.json`：
+
+    ```json
+    {
+      "servers": {
+        "openyida": {
+          "command": "npx",
+          "args": ["-y", "@openyida/mcp-app", "--stdio"]
+        }
+      }
+    }
+    ```
+
+    重新載入 VS Code（`Cmd+Shift+P` → "Reload Window"）。
+  </Step>
+
+  <Step title="告訴 AI 登入宜搭">
+    打開 Copilot Chat，切換到 Agent 模式，說：
+
+    ```
+    幫我登入宜搭
+    ```
+  </Step>
+</Steps>
+
+<Info>
+  VS Code 的 Copilot Chat 需要透過 MCP 來呼叫 OpenYida 工具。這和 Cursor、Claude Code 不同（它們透過技能包自動整合）。
+</Info>
+
+---
+
+## 模型選擇
+
+在 Copilot Chat 面板點擊模型選擇器切換：
+
+| 模型 | 推薦場景 |
+|------|----------|
+| **Claude Sonnet 4**（推薦） | 工具呼叫最穩定 |
+| GPT-4o | 回應快，簡單任務 |
+| Claude Opus 4 | 複雜任務（需 Copilot Pro+） |
+
+---
+
+## 開始構建
+
+在 Copilot Chat 的 Agent 模式中對話：
+
+```
+在宜搭上幫我創建一個報銷管理系統：
+- 報銷申請表單：申請人、費用類型、金額、事由、附件
+- 審批流程：部門經理審批
+```
+
+```
+創建一個會議紀要應用，可以記錄會議主題、參會人、決議事項
+```
+
+```
+查一下我宜搭上有哪些應用
+```
+
+AI 會透過 MCP 工具自動完成操作。
+
+---
+
+## 實際對話示例
+
+> **你**：幫我創建一個簡單的圖書借閱系統
+>
+> **AI**：我來透過 OpenYida 幫你創建。
+>
+> ✓ 已創建應用「圖書借閱管理」
+> ✓ 已創建「圖書資訊」表單：書名、作者、ISBN、分類、庫存數量
+> ✓ 已創建「借閱記錄」表單：關聯圖書、借閱人、借出日期、歸還日期
+>
+> 需要我添加一個圖書查詢的展示頁面嗎？
+
+---
+
+## 常見問題
+
+<AccordionGroup>
+  <Accordion title="Copilot Chat 中沒有 Agent 模式">
+    需要 VS Code 1.99+ 和最新版 Copilot Chat 擴充。更新後重啟 VS Code。
+  </Accordion>
+
+  <Accordion title="AI 沒有使用 OpenYida 工具">
+    確認 `.vscode/mcp.json` 配置正確且已重新載入視窗。在對話中明確提及「宜搭」或「openyida」幫助 Agent 識別意圖。
+  </Accordion>
+
+  <Accordion title="MCP Server 啟動失敗">
+    在終端測試：`npx @openyida/mcp-app --stdio`。如果報錯，通常是 Node.js 版本過低，需升級到 18+。
+  </Accordion>
+</AccordionGroup>
