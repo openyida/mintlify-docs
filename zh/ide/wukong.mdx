@@ -120,7 +120,10 @@ icon: "hat-wizard"
   </Accordion>
 
   <Accordion title="AI 不识别宜搭相关指令">
-    确认安装成功：在悟空终端运行 `openyida --version`。如果命令存在但 AI 不触发，在对话中明确提及「宜搭」关键词。
+    确认安装成功：在悟空终端运行 `openyida --version`。如果命令存在但 AI 不触发：
+
+    1. 在对话中明确提及「宜搭」关键词
+    2. 检查悟空内置的「应用开发」技能是否与 OpenYida 冲突 — 悟空自带的应用开发技能可能权重更高，导致 AI 优先使用它而非 OpenYida。如果不需要内置技能，可以在悟空技能管理页面将其禁用。
   </Accordion>
 
   <Accordion title="登录二维码不显示">

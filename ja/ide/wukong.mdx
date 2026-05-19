@@ -120,7 +120,10 @@ Yidaで出張精算システムを作成して：
   </Accordion>
 
   <Accordion title="AI が Yida 関連のコマンドを認識しない">
-    インストールを確認してください：Wukong ターミナルで `openyida --version` を実行します。コマンドは存在するのに AI がトリガーしない場合は、対話で明確に「Yida」キーワードを言及してください。
+    インストールを確認してください：Wukong ターミナルで `openyida --version` を実行します。コマンドは存在するのに AI がトリガーしない場合：
+
+    1. 対話で明確に「Yida」キーワードを言及する
+    2. Wukong 内蔵の「アプリ開発」スキルが OpenYida と競合していないか確認する — Wukong に組み込まれたアプリ開発スキルの方が優先度が高く、AI が OpenYida ではなくそちらを使用する場合があります。内蔵スキルが不要であれば、Wukong のスキル管理ページで無効にできます。
   </Accordion>
 
   <Accordion title="ログイン用 QR コードが表示されない">

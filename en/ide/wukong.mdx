@@ -120,7 +120,10 @@ Publish the page I just created as a public link
   </Accordion>
 
   <Accordion title="AI doesn't recognize Yida-related commands">
-    Confirm installation: run `openyida --version` in the Wukong terminal. If the command exists but the AI doesn't trigger, explicitly mention "Yida" keywords in conversation.
+    Confirm installation: run `openyida --version` in the Wukong terminal. If the command exists but the AI doesn't trigger:
+
+    1. Explicitly mention "Yida" keywords in conversation
+    2. Check if Wukong's built-in "App Development" skill conflicts with OpenYida — Wukong's built-in App Development skill may have higher priority, causing the AI to use it instead of OpenYida. If you don't need the built-in skill, you can disable it in Wukong's skill management page.
   </Accordion>
 
   <Accordion title="Login QR code doesn't display">

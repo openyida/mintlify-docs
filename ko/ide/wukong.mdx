@@ -120,7 +120,10 @@ Yida에서 출장 정산 시스템을 만들어 줘:
   </Accordion>
 
   <Accordion title="AI가 Yida 관련 명령을 인식하지 않음">
-    설치를 확인하세요: Wukong 터미널에서 `openyida --version`을 실행합니다. 명령이 존재하는데 AI가 트리거하지 않으면 대화에서 명확하게 「Yida」 키워드를 언급하세요.
+    설치를 확인하세요: Wukong 터미널에서 `openyida --version`을 실행합니다. 명령이 존재하는데 AI가 트리거하지 않으면:
+
+    1. 대화에서 명확하게 「Yida」 키워드를 언급하세요
+    2. Wukong 내장 「앱 개발」 스킬이 OpenYida와 충돌하는지 확인하세요 — Wukong에 기본 탑재된 앱 개발 스킬의 우선순위가 더 높아 AI가 OpenYida 대신 이를 사용할 수 있습니다. 내장 스킬이 필요 없다면 Wukong의 스킬 관리 페이지에서 비활성화할 수 있습니다.
   </Accordion>
 
   <Accordion title="로그인 QR 코드가 표시되지 않음">

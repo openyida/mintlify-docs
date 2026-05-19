@@ -120,7 +120,10 @@ Veröffentliche die gerade erstellte Seite als öffentlichen Link
   </Accordion>
 
   <Accordion title="Die KI erkennt Yida-bezogene Befehle nicht">
-    Überprüfen Sie die erfolgreiche Installation: Führen Sie `openyida --version` im Wukong-Terminal aus. Wenn der Befehl existiert aber die KI nicht reagiert, erwähnen Sie explizit das Schlüsselwort „Yida" in der Konversation.
+    Überprüfen Sie die erfolgreiche Installation: Führen Sie `openyida --version` im Wukong-Terminal aus. Wenn der Befehl existiert, aber die KI nicht reagiert:
+
+    1. Erwähnen Sie explizit das Schlüsselwort „Yida" in der Konversation
+    2. Prüfen Sie, ob der in Wukong integrierte Skill „App-Entwicklung" mit OpenYida in Konflikt steht — der integrierte App-Entwicklungs-Skill von Wukong hat möglicherweise eine höhere Priorität, sodass die KI diesen anstelle von OpenYida verwendet. Wenn Sie den integrierten Skill nicht benötigen, können Sie ihn auf der Skill-Verwaltungsseite von Wukong deaktivieren.
   </Accordion>
 
   <Accordion title="Anmelde-QR-Code wird nicht angezeigt">

@@ -120,7 +120,10 @@ Publie la page que l'on vient de créer en lien public
   </Accordion>
 
   <Accordion title="L'IA ne reconnaît pas les instructions liées à Yida">
-    Vérifiez que l'installation a réussi : exécutez `openyida --version` dans le terminal Wukong. Si la commande existe mais que l'IA ne se déclenche pas, mentionnez explicitement le mot-clé « Yida » dans la conversation.
+    Vérifiez que l'installation a réussi : exécutez `openyida --version` dans le terminal Wukong. Si la commande existe mais que l'IA ne se déclenche pas :
+
+    1. Mentionnez explicitement le mot-clé « Yida » dans la conversation
+    2. Vérifiez si la compétence « Développement d'applications » intégrée à Wukong entre en conflit avec OpenYida — la compétence intégrée de développement d'applications de Wukong peut avoir une priorité plus élevée, amenant l'IA à l'utiliser au lieu d'OpenYida. Si vous n'avez pas besoin de la compétence intégrée, vous pouvez la désactiver dans la page de gestion des compétences de Wukong.
   </Accordion>
 
   <Accordion title="Le QR code de connexion ne s'affiche pas">
