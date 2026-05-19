@@ -1,0 +1,129 @@
+---
+title: "QoderWork"
+description: "QoderWork で OpenYida を使う：デスクトップ AI エージェント、インストールするだけで会話から Yida アプリを構築。"
+icon: "wand-magic-sparkles"
+---
+
+QoderWork は Qoder が提供するデスクトップ AI エージェントアプリで、日常の業務効率化のために設計されています。OpenYida をインストールするとスキルパックが自動的に注入され、会話で要件を説明するだけで Yida アプリを構築できます。
+
+---
+
+## 初回セットアップ
+
+<Steps>
+  <Step title="QoderWork をダウンロード">
+    [qoder.com](https://qoder.com) にアクセスして QoderWork デスクトップアプリをダウンロードします。macOS / Windows に対応しています。
+  </Step>
+
+  <Step title="OpenYida をインストール">
+    システムターミナルで実行します：
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    インストール完了後、スキルパックが自動的に QoderWork に注入されます（パス：`~/.qoderwork/skills/yida-skills/`）。追加の設定は不要です。
+  </Step>
+
+  <Step title="AI に Yida へのログインを依頼">
+    QoderWork の会話で次のように言います：
+
+    ```
+    Yida にログインして
+    ```
+
+    AI がブラウザを開いてログインを完了させます。一度ログインすると認証情報がキャッシュされるため、繰り返す必要はありません。
+  </Step>
+</Steps>
+
+<Tip>
+  以上でセットアップは完了です。あとは AI と会話するだけです。
+</Tip>
+
+---
+
+## モデル選択
+
+QoderWork の会話画面でモデルセレクターを使って切り替えます：
+
+| モデル | 推奨シーン |
+|--------|-----------|
+| **Premium**（推奨） | 複雑なアプリ構築、多テーブル連携、ツール呼び出し能力が高い |
+| **Standard** | 日常の簡単な操作、レスポンスが速い |
+
+Yida アプリの構築には Premium を推奨します。ツール呼び出しがより安定しています。
+
+---
+
+## 構築を始める
+
+会話で作りたいアプリを直接説明してください：
+
+```
+Yida で設備点検システムを作って：
+- 設備台帳：番号、名称、場所、状態、担当者
+- 点検記録：設備と関連付け、点検日、点検者、結果、備考
+```
+
+```
+簡単な社員名簿アプリを作って
+```
+
+```
+経費精算システムに承認フローを追加して
+```
+
+AI がすべて自動で実行します。要件を伝えるだけで大丈夫です。
+
+---
+
+## 実際の会話例
+
+> **あなた**：採用管理アプリを作って
+>
+> **AI**：分かりました。採用管理システムを作成します。
+>
+> ✓ アプリ「採用管理」を作成しました
+> ✓ 「求人情報」フォームを作成しました：職種名、部署、レベル、給与レンジ、ステータス
+> ✓ 「候補者」フォームを作成しました：氏名、応募職種、履歴書添付、面接ステータス、評価
+>
+> 面接スケジュールのフローフォームを追加しますか？
+
+---
+
+## QoderWork の特徴
+
+QoderWork はフル機能のデスクトップエージェントとして、OpenYida の使用時にいくつかの追加メリットがあります：
+
+<CardGroup cols={2}>
+  <Card title="マルチツール連携" icon="layer-group">
+    Yida、Lark、ブラウザなど複数の機能を同時に使用し、1 回の会話でクロスプラットフォームのタスクを完了できます。
+  </Card>
+  <Card title="バックグラウンドタスク" icon="clock">
+    Yida の構築タスクをバックグラウンドで実行し、他の作業をブロックしません。
+  </Card>
+  <Card title="ファイル処理" icon="file">
+    ローカルファイルを読み込んで直接 Yida にインポートできます。例えば Excel からフォームフィールドを一括作成できます。
+  </Card>
+  <Card title="定時タスク" icon="calendar">
+    定時タスクを設定して、定期的に Yida アプリの状態を確認したりレポートを生成できます。
+  </Card>
+</CardGroup>
+
+---
+
+## よくある質問
+
+<AccordionGroup>
+  <Accordion title="AI が OpenYida を認識しない">
+    インストールが成功しているか確認してください：システムターミナルで `openyida --version` を実行します。スキルパックのパスは `~/.qoderwork/skills/yida-skills/` です。存在しない場合は `openyida copy -skills` を実行してください。
+  </Accordion>
+
+  <Accordion title="ログインの有効期限切れ">
+    AI に「Yida のログインが切れたから再ログインして」と伝えてください。
+  </Accordion>
+
+  <Accordion title="OpenYida を更新する">
+    AI に「openyida を更新して」と伝えるか、手動で `npm install -g openyida@latest` を実行してください。
+  </Accordion>
+</AccordionGroup>

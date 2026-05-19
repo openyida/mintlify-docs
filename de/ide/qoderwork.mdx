@@ -1,0 +1,129 @@
+---
+title: "QoderWork"
+description: "OpenYida in QoderWork verwenden: ein Desktop-KI-Agent, sofort einsatzbereit nach der Installation, um Yida-Apps im Dialog zu erstellen."
+icon: "wand-magic-sparkles"
+---
+
+QoderWork ist eine Desktop-KI-Agent-Anwendung von Qoder, die für die tägliche Arbeitsproduktivität entwickelt wurde. Nach der Installation von OpenYida wird das Skill-Paket automatisch eingebunden — beschreiben Sie einfach Ihre Anforderungen im Gespräch, um Yida-Apps zu erstellen.
+
+---
+
+## Einmalige Einrichtung
+
+<Steps>
+  <Step title="QoderWork herunterladen">
+    Besuchen Sie [qoder.com](https://qoder.com), um die QoderWork Desktop-App herunterzuladen. Verfügbar für macOS / Windows.
+  </Step>
+
+  <Step title="OpenYida installieren">
+    Führen Sie in Ihrem Systemterminal aus:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Nach der Installation wird das Skill-Paket automatisch in QoderWork eingebunden (Pfad: `~/.qoderwork/skills/yida-skills/`) — keine zusätzliche Konfiguration erforderlich.
+  </Step>
+
+  <Step title="KI bitten, sich bei Yida anzumelden">
+    Sagen Sie im QoderWork-Dialog:
+
+    ```
+    Hilf mir, mich bei Yida anzumelden
+    ```
+
+    Die KI öffnet einen Browser, damit Sie die Anmeldung abschließen können. Die Anmeldedaten werden nach dem ersten Login zwischengespeichert, sodass Sie es nicht wiederholen müssen.
+  </Step>
+</Steps>
+
+<Tip>
+  Das war's — die Einrichtung ist abgeschlossen. Ab jetzt müssen Sie nur noch mit der KI chatten.
+</Tip>
+
+---
+
+## Modellauswahl
+
+Wechseln Sie das Modell über den Modell-Selektor in der QoderWork-Dialogoberfläche:
+
+| Modell | Empfohlener Einsatz |
+|--------|---------------------|
+| **Premium** (Empfohlen) | Komplexe App-Erstellung, Multi-Tabellen-Beziehungen, starke Tool-Aufruf-Fähigkeiten |
+| **Standard** | Einfache tägliche Aufgaben, schnellere Antwort |
+
+Für den Bau von Yida-Apps wird Premium empfohlen — Tool-Aufrufe sind zuverlässiger.
+
+---
+
+## Mit dem Bauen beginnen
+
+Beschreiben Sie die gewünschte App direkt im Gespräch:
+
+```
+Erstelle ein Geräte-Inspektionssystem auf Yida:
+- Geräteregister: Nummer, Name, Standort, Status, Verantwortlicher
+- Inspektionsprotokolle: verknüpftes Gerät, Inspektionsdatum, Prüfer, Ergebnis, Anmerkungen
+```
+
+```
+Hilf mir, eine einfache Mitarbeiterverzeichnis-App zu erstellen
+```
+
+```
+Füge meinem Spesenerstattungssystem einen Genehmigungsworkflow hinzu
+```
+
+Die KI führt alles automatisch aus — Sie müssen nur Ihre Anforderungen nennen.
+
+---
+
+## Beispiel einer echten Konversation
+
+> **Sie**: Erstelle eine Bewerbermanagement-App
+>
+> **KI**: In Ordnung, ich erstelle ein Bewerbermanagementsystem für Sie.
+>
+> ✓ App „Bewerbermanagement" erstellt
+> ✓ Formular „Stelleninformationen" erstellt: Stellenbezeichnung, Abteilung, Ebene, Gehaltsbereich, Status
+> ✓ Formular „Kandidaten" erstellt: Name, beworbene Stelle, Lebenslauf-Anhang, Interview-Status, Bewertung
+>
+> Soll ich ein Workflow-Formular für die Interviewplanung hinzufügen?
+
+---
+
+## QoderWork-Vorteile
+
+Als voll ausgestatteter Desktop-Agent bietet QoderWork bei der Nutzung von OpenYida mehrere zusätzliche Vorteile:
+
+<CardGroup cols={2}>
+  <Card title="Multi-Tool-Zusammenarbeit" icon="layer-group">
+    Nutzen Sie Yida, Lark, Browser und andere Fähigkeiten gleichzeitig, um plattformübergreifende Aufgaben in einer einzigen Konversation zu erledigen.
+  </Card>
+  <Card title="Hintergrundaufgaben" icon="clock">
+    Führen Sie Yida-Bauaufgaben im Hintergrund aus, ohne Ihre andere Arbeit zu blockieren.
+  </Card>
+  <Card title="Dateiverarbeitung" icon="file">
+    Lesen Sie lokale Dateien und importieren Sie sie direkt in Yida — zum Beispiel Formularfelder aus einer Excel-Datei massenweise erstellen.
+  </Card>
+  <Card title="Geplante Aufgaben" icon="calendar">
+    Richten Sie geplante Aufgaben ein, um regelmäßig den Status von Yida-Apps zu überprüfen oder Berichte zu generieren.
+  </Card>
+</CardGroup>
+
+---
+
+## Häufig gestellte Fragen
+
+<AccordionGroup>
+  <Accordion title="KI erkennt OpenYida nicht">
+    Bestätigen Sie, dass die Installation erfolgreich war: Führen Sie `openyida --version` in Ihrem Systemterminal aus. Der Skill-Paket-Pfad ist `~/.qoderwork/skills/yida-skills/` — falls dieser fehlt, führen Sie `openyida copy -skills` aus.
+  </Accordion>
+
+  <Accordion title="Anmeldung abgelaufen">
+    Sagen Sie der KI: „Meine Yida-Anmeldung ist abgelaufen, hilf mir, mich erneut anzumelden."
+  </Accordion>
+
+  <Accordion title="OpenYida aktualisieren">
+    Sagen Sie der KI: „Hilf mir, openyida zu aktualisieren", oder führen Sie manuell `npm install -g openyida@latest` aus.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,129 @@
+---
+title: "QoderWork"
+description: "Using OpenYida in QoderWork: a desktop AI agent that works out of the box — install and build Yida apps through conversation."
+icon: "wand-magic-sparkles"
+---
+
+QoderWork is a desktop AI agent application from Qoder, designed for everyday work productivity. After installing OpenYida, the skill pack is automatically injected, allowing you to build Yida apps simply by describing your needs in a conversation.
+
+---
+
+## One-Time Setup
+
+<Steps>
+  <Step title="Download QoderWork">
+    Visit [qoder.com](https://qoder.com) to download the QoderWork desktop app, available for macOS / Windows.
+  </Step>
+
+  <Step title="Install OpenYida">
+    Run in your system terminal:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Once installed, the skill pack is automatically injected into QoderWork (path: `~/.qoderwork/skills/yida-skills/`) — no additional configuration needed.
+  </Step>
+
+  <Step title="Tell AI to Log In to Yida">
+    In the QoderWork conversation, say:
+
+    ```
+    Help me log in to Yida
+    ```
+
+    The AI will open a browser for you to complete the login. Credentials are cached after the first login, so you won't need to repeat this.
+  </Step>
+</Steps>
+
+<Tip>
+  That's it — setup is complete. From here, you just need to chat with the AI.
+</Tip>
+
+---
+
+## Model Selection
+
+Switch models using the model selector in the QoderWork conversation interface:
+
+| Model | Recommended Use Case |
+|-------|---------------------|
+| **Premium** (Recommended) | Complex app building, multi-table relationships, strong tool-calling capabilities |
+| **Standard** | Simple daily tasks, faster response |
+
+Premium is recommended for building Yida apps — tool calling is more reliable.
+
+---
+
+## Start Building
+
+Describe the app you want directly in the conversation:
+
+```
+Create an equipment inspection system on Yida:
+- Equipment registry: ID, name, location, status, responsible person
+- Inspection records: linked equipment, inspection date, inspector, result, notes
+```
+
+```
+Help me build a simple employee directory app
+```
+
+```
+Add an approval workflow to my expense reimbursement system
+```
+
+The AI handles everything automatically — just state your requirements.
+
+---
+
+## Real Conversation Example
+
+> **You**: Create a recruitment management app
+>
+> **AI**: Sure, I'll help you create a recruitment management system.
+>
+> ✓ Created app "Recruitment Management"
+> ✓ Created "Job Positions" form: position name, department, level, salary range, status
+> ✓ Created "Candidates" form: name, applied position, resume attachment, interview status, evaluation
+>
+> Would you like me to add an interview scheduling workflow form?
+
+---
+
+## QoderWork Advantages
+
+As a full-featured desktop agent, QoderWork offers several extra benefits when using OpenYida:
+
+<CardGroup cols={2}>
+  <Card title="Multi-Tool Collaboration" icon="layer-group">
+    Use Yida, Lark, browser, and other capabilities simultaneously to complete cross-platform tasks in a single conversation.
+  </Card>
+  <Card title="Background Tasks" icon="clock">
+    Run Yida building tasks in the background without blocking your other work.
+  </Card>
+  <Card title="File Processing" icon="file">
+    Read local files and import them directly into Yida — for example, bulk-creating form fields from an Excel file.
+  </Card>
+  <Card title="Scheduled Tasks" icon="calendar">
+    Set up scheduled tasks to periodically check Yida app status or generate reports.
+  </Card>
+</CardGroup>
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="AI doesn't recognize OpenYida">
+    Confirm the installation succeeded: run `openyida --version` in your system terminal. The skill pack path is `~/.qoderwork/skills/yida-skills/` — if it's missing, run `openyida copy -skills`.
+  </Accordion>
+
+  <Accordion title="Login expired">
+    Tell the AI: "My Yida login has expired, help me log in again."
+  </Accordion>
+
+  <Accordion title="Update OpenYida">
+    Tell the AI: "Help me update openyida," or manually run `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

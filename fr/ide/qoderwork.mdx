@@ -1,0 +1,129 @@
+---
+title: "QoderWork"
+description: "Utiliser OpenYida dans QoderWork : un agent IA de bureau, prêt à l'emploi dès l'installation, pour construire des applications Yida par la conversation."
+icon: "wand-magic-sparkles"
+---
+
+QoderWork est une application d'agent IA de bureau proposée par Qoder, conçue pour la productivité quotidienne. Après l'installation d'OpenYida, le pack de compétences est automatiquement injecté, vous permettant de construire des applications Yida simplement en décrivant vos besoins dans une conversation.
+
+---
+
+## Configuration initiale
+
+<Steps>
+  <Step title="Télécharger QoderWork">
+    Rendez-vous sur [qoder.com](https://qoder.com) pour télécharger l'application de bureau QoderWork, disponible pour macOS / Windows.
+  </Step>
+
+  <Step title="Installer OpenYida">
+    Exécutez dans votre terminal système :
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Une fois installé, le pack de compétences est automatiquement injecté dans QoderWork (chemin : `~/.qoderwork/skills/yida-skills/`) — aucune configuration supplémentaire nécessaire.
+  </Step>
+
+  <Step title="Demander à l'IA de se connecter à Yida">
+    Dans la conversation QoderWork, dites :
+
+    ```
+    Aide-moi à me connecter à Yida
+    ```
+
+    L'IA ouvrira un navigateur pour vous permettre de terminer la connexion. Les identifiants sont mis en cache après la première connexion, vous n'aurez pas besoin de recommencer.
+  </Step>
+</Steps>
+
+<Tip>
+  C'est tout — la configuration est terminée. Désormais, il vous suffit de discuter avec l'IA.
+</Tip>
+
+---
+
+## Choix du modèle
+
+Changez de modèle via le sélecteur dans l'interface de conversation QoderWork :
+
+| Modèle | Cas d'utilisation recommandé |
+|--------|------------------------------|
+| **Premium** (Recommandé) | Construction d'applications complexes, relations multi-tables, capacités d'appel d'outils puissantes |
+| **Standard** | Tâches quotidiennes simples, réponse rapide |
+
+Premium est recommandé pour la construction d'applications Yida — l'appel d'outils est plus fiable.
+
+---
+
+## Commencer à construire
+
+Décrivez directement l'application souhaitée dans la conversation :
+
+```
+Crée un système d'inspection d'équipements sur Yida :
+- Registre des équipements : numéro, nom, emplacement, état, responsable
+- Fiches d'inspection : équipement lié, date d'inspection, inspecteur, résultat, remarques
+```
+
+```
+Aide-moi à créer une application simple d'annuaire des employés
+```
+
+```
+Ajoute un workflow d'approbation à mon système de notes de frais
+```
+
+L'IA gère tout automatiquement — il vous suffit d'exprimer vos besoins.
+
+---
+
+## Exemple de conversation réelle
+
+> **Vous** : Crée une application de gestion du recrutement
+>
+> **IA** : D'accord, je vais créer un système de gestion du recrutement pour vous.
+>
+> ✓ Application « Gestion du recrutement » créée
+> ✓ Formulaire « Postes » créé : intitulé du poste, département, niveau, fourchette salariale, statut
+> ✓ Formulaire « Candidats » créé : nom, poste visé, CV joint, statut d'entretien, évaluation
+>
+> Souhaitez-vous que j'ajoute un formulaire de workflow pour la planification des entretiens ?
+
+---
+
+## Avantages de QoderWork
+
+En tant qu'agent de bureau complet, QoderWork offre plusieurs avantages supplémentaires lors de l'utilisation d'OpenYida :
+
+<CardGroup cols={2}>
+  <Card title="Collaboration multi-outils" icon="layer-group">
+    Utilisez Yida, Lark, le navigateur et d'autres fonctionnalités simultanément pour accomplir des tâches multi-plateformes en une seule conversation.
+  </Card>
+  <Card title="Tâches en arrière-plan" icon="clock">
+    Exécutez les tâches de construction Yida en arrière-plan sans bloquer votre autre travail.
+  </Card>
+  <Card title="Traitement de fichiers" icon="file">
+    Lisez des fichiers locaux et importez-les directement dans Yida — par exemple, créez en masse des champs de formulaire à partir d'un fichier Excel.
+  </Card>
+  <Card title="Tâches planifiées" icon="calendar">
+    Configurez des tâches planifiées pour vérifier périodiquement l'état des applications Yida ou générer des rapports.
+  </Card>
+</CardGroup>
+
+---
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="L'IA ne reconnaît pas OpenYida">
+    Vérifiez que l'installation a réussi : exécutez `openyida --version` dans votre terminal système. Le chemin du pack de compétences est `~/.qoderwork/skills/yida-skills/` — s'il est manquant, exécutez `openyida copy -skills`.
+  </Accordion>
+
+  <Accordion title="Connexion expirée">
+    Dites à l'IA : « Ma connexion Yida a expiré, aide-moi à me reconnecter. »
+  </Accordion>
+
+  <Accordion title="Mettre à jour OpenYida">
+    Dites à l'IA : « Aide-moi à mettre à jour openyida », ou exécutez manuellement `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>

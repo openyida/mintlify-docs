@@ -1,0 +1,129 @@
+---
+title: "QoderWork"
+description: "Sử dụng OpenYida trong QoderWork: trợ lý AI trên máy tính, cài đặt là dùng được, xây dựng ứng dụng Yida qua hội thoại."
+icon: "wand-magic-sparkles"
+---
+
+QoderWork là ứng dụng trợ lý AI trên máy tính do Qoder phát triển, được thiết kế để nâng cao hiệu suất công việc hàng ngày. Sau khi cài đặt OpenYida, gói kỹ năng sẽ tự động được tích hợp, cho phép bạn xây dựng ứng dụng Yida chỉ bằng cách mô tả yêu cầu trong cuộc hội thoại.
+
+---
+
+## Thiết lập ban đầu
+
+<Steps>
+  <Step title="Tải QoderWork">
+    Truy cập [qoder.com](https://qoder.com) để tải ứng dụng QoderWork cho máy tính, hỗ trợ macOS / Windows.
+  </Step>
+
+  <Step title="Cài đặt OpenYida">
+    Chạy lệnh sau trong terminal hệ thống:
+
+    ```bash
+    npm install -g openyida
+    ```
+
+    Sau khi cài đặt, gói kỹ năng sẽ tự động được tích hợp vào QoderWork (đường dẫn: `~/.qoderwork/skills/yida-skills/`) — không cần cấu hình thêm.
+  </Step>
+
+  <Step title="Yêu cầu AI đăng nhập Yida">
+    Trong cuộc hội thoại QoderWork, nói:
+
+    ```
+    Giúp tôi đăng nhập Yida
+    ```
+
+    AI sẽ mở trình duyệt để bạn hoàn tất đăng nhập. Thông tin đăng nhập được lưu cache sau lần đầu, bạn không cần lặp lại.
+  </Step>
+</Steps>
+
+<Tip>
+  Vậy là xong — thiết lập đã hoàn tất. Từ giờ bạn chỉ cần trò chuyện với AI.
+</Tip>
+
+---
+
+## Lựa chọn mô hình
+
+Chuyển đổi mô hình qua bộ chọn trong giao diện hội thoại QoderWork:
+
+| Mô hình | Trường hợp sử dụng khuyến nghị |
+|---------|-------------------------------|
+| **Premium** (Khuyến nghị) | Xây dựng ứng dụng phức tạp, quan hệ đa bảng, khả năng gọi công cụ mạnh |
+| **Standard** | Tác vụ đơn giản hàng ngày, phản hồi nhanh |
+
+Khuyến nghị dùng Premium để xây dựng ứng dụng Yida — việc gọi công cụ ổn định hơn.
+
+---
+
+## Bắt đầu xây dựng
+
+Mô tả trực tiếp ứng dụng bạn muốn trong cuộc hội thoại:
+
+```
+Tạo hệ thống kiểm tra thiết bị trên Yida:
+- Sổ thiết bị: mã số, tên, vị trí, trạng thái, người phụ trách
+- Bản ghi kiểm tra: thiết bị liên kết, ngày kiểm tra, người kiểm tra, kết quả, ghi chú
+```
+
+```
+Giúp tôi tạo một ứng dụng danh bạ nhân viên đơn giản
+```
+
+```
+Thêm quy trình phê duyệt vào hệ thống hoàn trả chi phí của tôi
+```
+
+AI tự động thực hiện toàn bộ — bạn chỉ cần nêu yêu cầu.
+
+---
+
+## Ví dụ hội thoại thực tế
+
+> **Bạn**: Tạo một ứng dụng quản lý tuyển dụng
+>
+> **AI**: Được, tôi sẽ tạo hệ thống quản lý tuyển dụng cho bạn.
+>
+> ✓ Đã tạo ứng dụng "Quản lý Tuyển dụng"
+> ✓ Đã tạo biểu mẫu "Thông tin Vị trí": tên vị trí, phòng ban, cấp bậc, mức lương, trạng thái
+> ✓ Đã tạo biểu mẫu "Ứng viên": họ tên, vị trí ứng tuyển, CV đính kèm, trạng thái phỏng vấn, đánh giá
+>
+> Bạn có muốn tôi thêm biểu mẫu quy trình sắp xếp phỏng vấn không?
+
+---
+
+## Ưu điểm của QoderWork
+
+Là trợ lý desktop đầy đủ tính năng, QoderWork mang đến một số lợi thế bổ sung khi sử dụng OpenYida:
+
+<CardGroup cols={2}>
+  <Card title="Phối hợp đa công cụ" icon="layer-group">
+    Sử dụng đồng thời Yida, Lark, trình duyệt và nhiều khả năng khác để hoàn thành tác vụ đa nền tảng trong một cuộc hội thoại.
+  </Card>
+  <Card title="Tác vụ nền" icon="clock">
+    Chạy tác vụ xây dựng Yida ở chế độ nền mà không chặn công việc khác của bạn.
+  </Card>
+  <Card title="Xử lý tệp" icon="file">
+    Đọc tệp cục bộ và nhập trực tiếp vào Yida — ví dụ tạo hàng loạt trường biểu mẫu từ tệp Excel.
+  </Card>
+  <Card title="Tác vụ định kỳ" icon="calendar">
+    Thiết lập tác vụ định kỳ để kiểm tra trạng thái ứng dụng Yida hoặc tạo báo cáo theo lịch.
+  </Card>
+</CardGroup>
+
+---
+
+## Câu hỏi thường gặp
+
+<AccordionGroup>
+  <Accordion title="AI không nhận diện OpenYida">
+    Xác nhận cài đặt thành công: chạy `openyida --version` trong terminal hệ thống. Đường dẫn gói kỹ năng là `~/.qoderwork/skills/yida-skills/` — nếu thiếu, hãy chạy `openyida copy -skills`.
+  </Accordion>
+
+  <Accordion title="Đăng nhập hết hạn">
+    Nói với AI: "Đăng nhập Yida của tôi đã hết hạn, giúp tôi đăng nhập lại."
+  </Accordion>
+
+  <Accordion title="Cập nhật OpenYida">
+    Nói với AI: "Giúp tôi cập nhật openyida", hoặc chạy thủ công `npm install -g openyida@latest`.
+  </Accordion>
+</AccordionGroup>
