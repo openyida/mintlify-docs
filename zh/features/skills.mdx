@@ -65,8 +65,8 @@ openyida commands --json           # 输出当前 CLI manifest
 openyida app-list [--size N]
 
 # 创建应用
-openyida create-app "<名称>" [desc] [icon] [color] [themeColor] [--open|--no-open]
-openyida create-app --name "<名称>" [--desc "<描述>"] [--theme deepBlue] [--open|--no-open]
+openyida create-app "<名称>" [desc] [icon] [color] [themeColor] [--locale zh_CN|en_US|ja_JP] [--open|--no-open]
+openyida create-app --name "<名称>" [--desc "<描述>"] [--theme deepBlue] [--locale zh_CN|en_US|ja_JP] [--open|--no-open]
 
 # 导出应用
 openyida export <appType> [output] # 生成迁移包
@@ -79,6 +79,10 @@ openyida update-app <appType> --name "<名称>" [--desc "<描述>"] [--icon "<�
 
 # 管理应用级权限
 openyida app-permission <get|set|add|remove|search-user> ...
+
+# 应用导航分组与多语言
+openyida nav-group <list|create|rename|delete|move|hide|show> <appType> ...
+openyida i18n <overview|config|languages|list|upsert|batch-upsert|bind|delete|translate|translate-all|upgrade> <appType> ...
 ```
 
 | 选项 | 缩写 | 说明 |
@@ -106,6 +110,43 @@ openyida app-permission remove <appType> <main|data|dev> --users <userId1,userId
 | `main` | 应用主管理员 | 不能为空 |
 | `data` | 数据管理员 | 可清空 |
 | `dev` | 开发成员 | 可清空 |
+
+### 应用导航分组
+
+管理宜搭应用左侧导航树。
+
+```bash
+openyida nav-group list <appType> [--flat] [--include-system] [--raw]
+openyida nav-group create <appType> "<分组名>" [--parent <groupNavUuid|groupName>] [--en "<英文名>"]
+openyida nav-group rename <appType> <groupNavUuid|groupName> "<新分组名>" [--en "<英文名>"]
+openyida nav-group delete <appType> <groupNavUuid|groupName> [--force]
+openyida nav-group move <appType> <navUuid|formUuid|name> --to <groupNavUuid|groupName|root> [--before <node>] [--after <node>]
+openyida nav-group hide <appType> <navUuid|formUuid|name>
+openyida nav-group show <appType> <navUuid|formUuid|name>
+```
+
+移动或删除导航项前先执行 `list --flat`，确认准确的 `navUuid`、`formUuid` 和目标分组。根分组可用 `root` 表示。
+
+### 应用多语言
+
+管理应用语言配置、多语言词条、页面绑定、翻译和旧应用多语言升级。
+
+```bash
+openyida i18n overview <appType>
+openyida i18n config get <appType>
+openyida i18n config set <appType> --default zh_CN --languages zh_CN,en_US,ja_JP
+openyida i18n languages <appType> [--extend]
+openyida i18n list <appType> [--keyword <text>] [--page N] [--size N] [--form-uuid <formUuid>] [--target-type page|flow|views|other|ALL]
+openyida i18n upsert <appType> <i18nKey> --zh-CN <text> --en-US <text> [--ja-JP <text>] [--bind <formUuid>] [--target-type page]
+openyida i18n batch-upsert <appType> --file <items.json>
+openyida i18n bind <appType> <formUuid> --keys <i18nKey1,i18nKey2> [--target-type page]
+openyida i18n delete <appType> <i18nKey> --confirm
+openyida i18n translate <appType> --text <text> --source <locale> --targets <locale1,locale2>
+openyida i18n translate-all <appType> --targets <locale1,locale2> --confirm
+openyida i18n upgrade <appType> --confirm
+```
+
+先运行 `openyida i18n overview <appType>` 检查组织是否已开通国际化能力，以及应用是否已升级到多语言配置。
 
 ### 平台管理
 
@@ -145,10 +186,16 @@ openyida corp-manager address-book set [--all-visible y|n] [--admin-visible y|n]
 openyida create-form create <appType> "<表单名>" <字段JSON> \
   [--layout <布局>] \
   [--theme <主题>] \
-  [--label-align <对齐>]
+  [--label-align <对齐>] \
+  [--locale zh_CN|en_US|ja_JP]
 
 # 更新表单
-openyida create-form update <appType> <formUuid> <修改JSON> [--force]
+openyida create-form update <appType> <formUuid> <修改Json或文件> [--force] [--locale zh_CN|en_US|ja_JP] [--open|--no-open]
+
+# 高级 Schema 补丁、字段规则、远程选项数据源
+openyida create-form patch <appType> <formUuid> <patchJsonOrFile> [--open|--no-open]
+openyida create-form rule <appType> <formUuid> <rulesJsonOrFile> [--open|--no-open]
+openyida create-form bind-datasource <appType> <formUuid> <fieldLabelOrId> <dataSourceJsonOrFile> [--open|--no-open]
 
 # 给 SelectField、RadioField、CheckboxField、MultiSelectField 增加选项
 openyida create-form add-option <appType> <formUuid> <fieldLabel> <option1> [option2] ...
@@ -169,6 +216,18 @@ openyida list-forms <appType> [--keyword <关键词>]
 <Warning>
   宜搭字段 ID 由平台随机生成（如 `textField_eftt1aa5m`、`selectField_fix024y92`），无法从字段名称推断。在执行任何涉及字段 ID 的操作前（包括创建/更新数据、配置查询条件、编写自定义页面），**必须**先运行 `openyida get-schema` 获取真实字段 ID。
 </Warning>
+
+### 表单补丁、规则与远程数据源
+
+当高阶表单 DSL 还没有覆盖某个设计器能力时，可使用这些更新模式。
+
+| 模式 | 适用场景 |
+|------|----------|
+| `patch` | 对 V5 Schema 做受控补丁，包括字段 props、表单 props、JSON Pointer Patch、动作模块、字段动作绑定和底层数据源绑定 |
+| `rule` | 生成字段联动规则，例如动态显隐/只读，以及 `onChange` 自动赋值 |
+| `bind-datasource` | 为 `SelectField`、`MultiSelectField`、`RadioField`、`CheckboxField` 绑定远程搜索数据源 |
+
+使用 `patch` 前先执行 `openyida get-schema <appType> <formUuid> --json`，补丁文件建议放在 `.cache/openyida/<项目名>/` 下。
 
 <Info>
   更新已有数据的表单时，CLI 会在修改前进行安全检查。如果检测到已有记录且未设置 `--force`，命令会输出包含 `requiresConfirmation: true` 的 JSON 响应并退出，不会进行任何修改。传入 `--force` 可跳过确认并继续更新。
@@ -322,7 +381,7 @@ openyida list-forms APP_XXXXX --keyword "客户"
 
 ```bash
 # 创建自定义页面
-openyida create-page <appType> "<页面名>" [--mode dashboard] [--open|--no-open]
+openyida create-page <appType> "<页面名>" [--mode dashboard] [--locale zh_CN|en_US|ja_JP] [--open|--no-open]
 
 # 生成、构建、检查和编译自定义页面
 openyida generate-page <template> [--spec <file>] [--output <file>] [--compile] [--var KEY=VALUE]
@@ -419,6 +478,25 @@ openyida task-center proxy [--page N] [--size N] [--keyword TEXT]
 <Info>
   与 `openyida data query tasks` 不同，`task-center` 命令查询的是全局任务中心数据，不需要传入 `appType` 参数。
 </Info>
+
+---
+
+## 代理中心
+
+管理在职流程代理和离职代理。
+
+```bash
+openyida agent-center list [--status ALL|DIS|EFF|OUT|CANCEL] [--keyword TEXT] [--page N] [--size N]
+openyida agent-center search-user <keyword> [--dept <text>] [--size N]
+openyida agent-center create --source-user <userId> --target-user <userId> [--type normal|departure] [options]
+openyida agent-center update <agentUuid> --target-user <userId> [--type normal|departure] [options]
+openyida agent-center cancel <agentUuid> --type normal|departure
+openyida agent-center range <agentUuid>
+openyida agent-center is-leader
+openyida agent-center last-departure
+```
+
+在职代理支持 `--start`、`--end`、`--category execute|start`、`--notify-source y|n`、`--range all|part`、`--range-form <appType:formUuid,...>`、`--range-json <json>`、`--range-file <file>`。姓名可能重名时，先用 `search-user` 确认 userId。
 
 ---
 
@@ -883,7 +961,7 @@ openyida export-conversation -i conversation.json -o result.md
 
 ---
 
-## AI、A2A、模板与批处理
+## AI、公式、A2A、模板与批处理
 
 ```bash
 # 宜搭 AI
@@ -891,6 +969,10 @@ openyida ai text --prompt "<提示词>" [--max-tokens 3000] [--json]
 openyida ai text --file prompt.txt [--json]
 openyida ai image --file ./image.png --app-type APP_XXX [--form-uuid FORM_XXX] [--json]
 openyida ai image --image-url https://... [--json]
+
+# 公式语法检查
+openyida formula evaluate '<公式>' [--schema schema.json] [--json]
+openyida formula evaluate formula.txt [--schema schema.json] [--json]
 
 # 本地只读 A2A Adapter
 openyida a2a agent-card [--host 127.0.0.1] [--port 8787] [--base-url <url>]
