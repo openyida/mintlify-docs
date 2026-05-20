@@ -35,7 +35,8 @@ icon: "hat-wizard"
     悟空需要手动上传技能包 zip 文件（其他 IDE 是自动注入的，悟空例外）。
 
     1. 前往 [OpenYida Releases](https://github.com/openyida/openyida/releases/latest) 下载最新版本的 **`openyida-skills.zip`**
-    2. 在悟空工作区的技能管理页面，上传下载好的 zip 文件
+    2. 在悟空工作区的技能管理页面，选择「新技能」→「上传技能」
+    3. 上传下载好的 zip 文件，勾选识别出的 `openyida` 技能并创建；如果提示已存在同名技能，勾选后会覆盖安装
 
     <Info>
       每次 OpenYida 发布新版本时，建议重新下载并上传最新的 `openyida-skills.zip`，以获得最新的宜搭能力支持。
@@ -43,15 +44,62 @@ icon: "hat-wizard"
   </Step>
 
   <Step title="告诉 AI 登录宜搭">
+    在对话框点击「技能」，选择 `openyida` 后再发送登录指令：
+
     直接在悟空对话中说：
 
     ```
-    帮我登录宜搭
+    帮我登录下宜搭
     ```
 
-    推荐使用扫码方式 — AI 会在对话框中展示二维码，用手机钉钉扫码即可。
+    登录成功后，AI 会返回当前组织、用户、域名，并提示「已登录，可直接使用宜搭」。
   </Step>
 </Steps>
+
+---
+
+## 图形化上传与登录
+
+如果你在悟空界面里操作，按下面的截图流程走一遍即可。
+
+### 上传 OpenYida 技能
+
+1. 在悟空左侧或技能页进入「我的技能」，点击右上角「新技能」，选择「上传技能」。
+
+![在悟空我的技能页选择上传技能](/images/wukong/openyida-upload-skill-menu.png)
+
+2. 选择下载好的 `openyida-skills.zip`。上传后，弹窗会识别出 `openyida` 技能；勾选它，再点击「创建技能」。
+
+![上传 openyida-skills.zip 并勾选 openyida 技能](/images/wukong/openyida-upload-confirm.jpg)
+
+<Info>
+  如果弹窗提示「已存在同名技能，勾选后将覆盖安装」，通常表示你之前已经装过 OpenYida。需要更新技能包时，勾选 `openyida` 后继续创建即可。
+</Info>
+
+### 避免内置技能抢占
+
+悟空内置的「应用开发」技能也能响应“开发应用”类需求。为了让宜搭登录、建应用、建表单等指令稳定走 OpenYida，建议在不需要内置技能时打开「应用开发」技能详情，点击右上角「禁用」。
+
+![禁用悟空内置应用开发技能](/images/wukong/openyida-disable-app-dev-skill.jpg)
+
+### 在对话中选择 openyida 并登录
+
+1. 回到悟空首页，在输入框下方点击「技能」。
+2. 在技能列表中选择 `openyida`；找不到时，点击底部「探索和管理技能」进入技能页确认是否已上传。
+
+![从悟空对话框的技能列表进入探索和管理技能](/images/wukong/openyida-skill-menu-manage.jpg)
+
+![在悟空对话框中选择 openyida 技能](/images/wukong/openyida-select-skill.jpg)
+
+3. 看到输入框左上方出现 `openyida` 标签后，发送：
+
+```text
+帮我登录下宜搭
+```
+
+登录成功时，回复里会显示组织、用户和域名，后续就可以继续创建应用、表单或页面。
+
+![悟空中使用 openyida 登录宜搭成功](/images/wukong/openyida-login-success.jpg)
 
 ---
 
